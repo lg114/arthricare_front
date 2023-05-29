@@ -6,7 +6,7 @@ Here is the front-end team repository.<br>
 Coding languages: HTML & JAVASCRIPT & VUE
 
 ## Website
-https://lg114.github.io/arthriCare/
+https://lg114.github.io/arthricare/
 
 ## Project setup
 ### Prepare your environment
