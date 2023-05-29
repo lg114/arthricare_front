@@ -16,7 +16,7 @@ Coding languages: HTML & JAVASCRIPT & VUE
 3. eslint v7.32.0 https://eslint.org/
 4. eslint-plugin-vue v8.7.1 https://eslint.vuejs.org/
 ## Website
-https://lg114.github.io/arthriCare/
+https://lg114.github.io/arthricare/
 
 ## Project setup
 ### Prepare your environment
