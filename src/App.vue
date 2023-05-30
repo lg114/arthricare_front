@@ -17,13 +17,12 @@
 
 <style scoped>
   .container{
-    display: flex;
+    display: grid;
     flex-direction: column;
     justify-content: center;
     height: 100vh;
-    padding: 20px;
     background-color: #1890FF;
-    overflow: hidden;
+    overflow:hidden;
   }
   h1{
     margin-left: 35px;
@@ -50,19 +49,57 @@
     height: 63px;
     margin-bottom: 10px;
     border-radius: 10px;
-
   }
   .login-button{
-  margin-left: 10px;
-  background: #FFFFFF;
-  color:#1890FF;
+    margin-left: 10px;
+    background: #FFFFFF;
+    color:#1890FF;
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+    transition: background-color 0.5s, color 0.5s;
   }
   .signup-button{
-  margin-left: 10px;
-  background: #1890FF;
-  color:#FFFFFF;
-  border: 3px solid #FFFFFF;
+    background: #1890FF;
+    color:#FFFFFF;
+    border: 3px solid #FFFFFF;
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+    transition: background-color 0.5s, color 0.5s;
   }
+  .login-button:hover, .signup-button:hover{
+    background-color: #FFFFFF;
+    color: #1890FF;
+    transform: translateZ(10px);
+  }
+  .login-button::before .signup-button::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: #FFFFFF;
+    transition: width 0.3s;
+    z-index: -1;
+  }
+  .login-button:hover, .signup-button:hover{
+    background-color: #FFFFFF;
+    color: #1890FF;
+    border-radius: 10px;
+  }
+.login-button:hover::before, .signup-button:hover::before{
+  width: 100%;
+  border-radius: 10px;
+}
+
 </style>
 
 <script>
