@@ -49,6 +49,7 @@
     height: 63px;
     margin-bottom: 10px;
     border-radius: 10px;
+    font-weight: 700;
   }
   .login-button{
     margin-left: 10px;
