@@ -9,7 +9,7 @@
     </div>
     <div class = "buttons">
       <el-button class = "login-button">LOG IN</el-button>
-      <el-button class = "signup-button">LOG IN</el-button>
+      <el-button class = "signup-button">SIGN UP</el-button>
     </div>
   </div>
 </template>
@@ -26,12 +26,18 @@
     overflow: hidden;
   }
   h1{
+    margin-left: 35px;
     color: #FFFFFF;
     font-weight: 600;
-    font-size: 75px;
+    font-size: 40px;
+    margin-bottom: 200px;
   }
   .logo{
-    margin-bottom: 	20px
+    margin-left: -20px;
+    margin-bottom: 	20px;
+  }
+  img{
+    width: 250px;
   }
   .buttons{
     display: flex;
@@ -40,15 +46,23 @@
     justify-content: center;
   }
   .login-button, .signup-button{
-    width: 500px;
+    width: 319px;
     height: 63px;
     margin-bottom: 10px;
-    background: #FFFFFF;
     border-radius: 10px;
+
   }
   .login-button{
   margin-left: 10px;
-}
+  background: #FFFFFF;
+  color:#1890FF;
+  }
+  .signup-button{
+  margin-left: 10px;
+  background: #1890FF;
+  color:#FFFFFF;
+  border: 3px solid #FFFFFF;
+  }
 </style>
 
 <script>
