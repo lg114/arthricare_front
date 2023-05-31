@@ -25,15 +25,15 @@
     overflow:hidden;
   }
   h1{
-    margin-left: 35px;
+    text-align: left;
+    margin-left: 20px;
     color: #FFFFFF;
     font-weight: 600;
     font-size: 45px;
     margin-bottom: 200px;
   }
   .logo{
-    margin-left: -20px;
-    margin-bottom: 	20px;
+    margin: 20px -20px;
   }
   img{
     width: 250px;
