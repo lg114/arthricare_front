@@ -1,5 +1,5 @@
 <template>
-    Login
+    Sign up
 </template>
 
 <style scoped>
@@ -8,7 +8,7 @@
 <script>
     export default{
     mounted(){
-        document.title = 'Login | ArthriCare';
+        document.title = 'Sign Up | ArthriCare';
     },
     };
 </script>

@@ -1,5 +1,5 @@
 <template>
-    Login
+    Reset password
 </template>
 
 <style scoped>
@@ -8,7 +8,7 @@
 <script>
     export default{
     mounted(){
-        document.title = 'Login | ArthriCare';
+        document.title = 'Reset Password | ArthriCare';
     },
     };
 </script>
