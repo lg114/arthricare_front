@@ -1,11 +1,3 @@
-<script>
-    export default{
-    mounted(){
-        document.title = 'Welcome | ArthriCare';
-    },
-    };
-</script>
-
 <template>
   <div class = "container">
     <div class = "logo">
@@ -15,8 +7,8 @@
       <h1>Welcome to<br>ArthriCare</h1>
     </div>
     <div class = "buttons">
-      <el-button class = "login-button">LOG IN</el-button>
-      <el-button class = "signup-button">SIGN UP</el-button>
+      <router-link to = "/login"><el-button class = "login-button">LOG IN</el-button></router-link>
+      <router-link to = "/signup"><el-button class = "signup-button">SIGN UP</el-button></router-link>
     </div>
   </div>
 </template>
@@ -58,10 +50,6 @@
     margin-bottom: 10px;
     border-radius: 10px;
     font-weight: 700;
-}
-
-.login-button{
-  margin-left: 12px;
 }
 
 .login-button,
@@ -111,3 +99,10 @@
 }
 </style>
 
+<script>
+    export default{
+    mounted(){
+        document.title = 'Welcome | ArthriCare';
+    },
+    };
+</script>
