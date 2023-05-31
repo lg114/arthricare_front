@@ -1,3 +1,4 @@
+<!--Welcome Page -->
 <template>
   <div class = "container">
     <div class = "logo">

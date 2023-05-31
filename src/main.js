@@ -5,5 +5,5 @@ import App from './App.vue';
 import 'element-plus/dist/index.css';
 import router from './router';
 
-//Use Element Plus
+//Use Element Plus, Router
 createApp(App).use(ElementPlus).use(router).mount('#app');

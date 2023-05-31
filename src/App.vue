@@ -1,4 +1,3 @@
-<!--Welcome Page -->
 <template>
   <router-view/>
 </template>
