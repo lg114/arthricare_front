@@ -29,11 +29,11 @@
     color: #FFFFFF;
     font-weight: 600;
     font-size: 40px;
-    margin-bottom: 200px;
+    margin-bottom: 300px;
   }
   .logo{
     margin-left: -20px;
-    margin-top: 	150px;
+    margin-top: 	90px;
   }
   img{
     width: 250px;
