@@ -9,7 +9,7 @@
     </div>
     <div class = "buttons">
       <router-link to = "/login"><el-button class = "login-button">LOG IN</el-button></router-link>
-      <router-link to = "/signup"><el-button class = "signup-button">SIGN UP</el-button></router-link>
+      <router-link to = "/Signup"><el-button class = "signup-button">SIGN UP</el-button></router-link>
     </div>
   </div>
 </template>
