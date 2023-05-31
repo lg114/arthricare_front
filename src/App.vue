@@ -28,78 +28,76 @@
     margin-left: 35px;
     color: #FFFFFF;
     font-weight: 600;
-    font-size: 45px;
+    font-size: 40px;
     margin-bottom: 200px;
   }
   .logo{
     margin-left: -20px;
-    margin-bottom: 	20px;
+    margin-top: 	150px;
   }
   img{
     width: 250px;
   }
-  .buttons {
+  .buttons{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
   }
-
-.login-button,
-.signup-button{
+  .login-button, .signup-button{
     width: 319px;
     height: 63px;
     margin-bottom: 10px;
     border-radius: 10px;
     font-weight: 700;
-}
-
-.login-button{
-  margin-left: 12px;
-}
-
-.login-button,
-.signup-button{
-  background: #FFFFFF;
-  color: #1890FF;
-  position: relative;
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: transparent;
-  color: white;
-  border: 2px solid white;
-  transition: background-color 0.5s, color 0.5s;
-}
-
-.login-button:hover,
-.signup-button:hover{
-  background-color: #FFFFFF;
-  color: #1890FF;
-  transform: translateZ(10px);
-}
-
-.login-button::before,
-.signup-button::before{
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 100%;
-  background-color: #FFFFFF;
-  transition: width 0.3s;
-  z-index: -1;
-}
-
-.login-button:hover,
-.signup-button:hover{
-  background-color: #FFFFFF;
-  color: #1890FF;
-  border-radius: 10px;
-}
-
-.login-button:hover::before,
-.signup-button:hover::before{
+  }
+  .login-button{
+    margin-left: 10px;
+    background: #FFFFFF;
+    color:#1890FF;
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+    transition: background-color 0.5s, color 0.5s;
+  }
+  .signup-button{
+    background: #1890FF;
+    color:#FFFFFF;
+    border: 3px solid #FFFFFF;
+    position: relative;
+    margin-bottom: 100px;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+    transition: background-color 0.5s, color 0.5s;
+  }
+  .login-button:hover, .signup-button:hover{
+    background-color: #FFFFFF;
+    color: #1890FF;
+    transform: translateZ(10px);
+  }
+  .login-button::before .signup-button::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: #FFFFFF;
+    transition: width 0.3s;
+    z-index: -1;
+  }
+  .login-button:hover, .signup-button:hover{
+    background-color: #FFFFFF;
+    color: #1890FF;
+    border-radius: 10px;
+  }
+.login-button:hover::before, .signup-button:hover::before{
   width: 100%;
   border-radius: 10px;
 }
