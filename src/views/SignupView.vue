@@ -1,8 +1,10 @@
+<!--Signup Page -->
 <template>
     Sign up
 </template>
 
 <style scoped>
+
 </style>
 
 <script>

@@ -15,7 +15,7 @@
 </template>
 
 <style scoped>
-.container{
+  .container{
     display: grid;
     flex-direction: column;
     justify-content: center;
@@ -37,7 +37,7 @@
   img{
     width: 250px;
   }
-  .buttons {
+  .buttons{
     display: flex;
     flex-direction: column;
     align-items: center;

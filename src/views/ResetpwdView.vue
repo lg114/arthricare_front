@@ -1,3 +1,4 @@
+<!--Resetpassword Page -->
 <template>
     Reset password
 </template>
