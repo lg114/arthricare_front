@@ -2,7 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 import WelcomePage from '@/views/WelcomeView.vue';
 import LoginPage from '@/views/LoginView.vue';
 import SignUpPage from '@/views/SignupView.vue';
-import ResetPwdPage from '@/views/ResetowdView.vue';
+import ResetPwdPage from '@/views/ResetpwdView.vue';
 
 const router  = createRouter({
     history : createWebHashHistory(),
