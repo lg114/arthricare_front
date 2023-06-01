@@ -71,6 +71,10 @@ npm run deploy
 ```
 Now you should see the changes on the github website.
 
-###
+## Pull from Github
+```
+git pull origin main
+```
+
 ## Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
