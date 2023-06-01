@@ -77,6 +77,7 @@ const password = ref('');
         height: 40px;
         border-radius: 10px;
         margin-top: 5px;
+        padding-right: 5px;
     }
     ::placeholder{
         color: #FFFFFF;
