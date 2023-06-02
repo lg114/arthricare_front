@@ -1,31 +1,39 @@
 <!--Resetpassword Page -->
 <script setup>
-import { ArrowLeftBold } from '@element-plus/icons'
-import { ref } from 'vue'
-const email = ref('');
-const newPassword = ref('');
-const confirmPassword = ref('');
+    import { ArrowLeftBold } from '@element-plus/icons'
+    import { ref } from 'vue'
+    const email = ref('');
+    const newPassword = ref('');
+    const confirmPassword = ref('');
 </script>
 
 <template>
     <div class="container">
-        <router-link to = "/Login"><el-icon class="backBtn">
-            <ArrowLeftBold />
-        </el-icon></router-link>
-        <div id="form">
-            <div class = "input-container">
-                <h2>Reset Your Password</h2>
-                <label>Email Address</label>
-                <input id="input" type="email" placeholder="Please enter your email" v-model="email"/><br>
-                <label>New Password</label>
-                <input id="input" type="password" placeholder="Please enter new password" v-model="newPassword"/><br>
-                <label>Confirm New Password</label>
-                <input id="input" type="password" placeholder="Please enter new password" v-model="confirmPassword"/>
-            </div>
-        </div>
-        <div class="buttons">
-            <el-button class = "login-button">CONTINUE</el-button> 
-        </div>
+        <el-container class = "content-container">
+            <el-header>
+                <router-link to = "/">
+                    <el-icon class="backBtn"><ArrowLeftBold /></el-icon>
+                </router-link>  
+            </el-header>
+            <el-main style = "height: 500px;">
+                <div class = "input-container">
+                    <h2>Reset Your Password</h2>
+                    <b><label>Email Address</label></b>
+                    <input id="input" type="email" placeholder="Please enter your email" v-model="email"/><br>
+                    <b><label>New Password</label></b>
+                    <input id="input" type="password" placeholder="Please enter new password" v-model="newPassword"/><br>
+                    <b><label>Confirm New Password</label></b>
+                    <input id="input" type="password" placeholder="Please enter new password" v-model="confirmPassword"/>
+                </div>
+            </el-main>
+            <el-footer>
+                <div class="buttons">
+                    <router-link>
+                        <el-button class = "login-button">CONTINUE</el-button>
+                    </router-link>
+                </div>
+            </el-footer>
+        </el-container>
     </div>
 </template>
 
@@ -33,32 +41,35 @@ const confirmPassword = ref('');
     .container{
         display: grid;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        place-items: center;
         height: 100vh;
         background-color: #1890FF;
         overflow:hidden;
     }
+    .content-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
     .backBtn{
         font-size: 30px;
-        margin-top: 80px;
+        margin: -170px;
+        margin-top: 20px;
         color:#FFFFFF;
     }
-    h1{
-        font-weight: 400;
-    }
-    #form{
-        text-align: center;
-        color: #ffffff;
-    }
     .input-container{
-        display: flex; /* 使用Flexbox布局 */
-        flex-direction: column; /* 垂直方向排列 */
-        align-items: flex-start;
-        transform: translateY(-120px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color:#FFFFFF;
+        margin-bottom: 40px;
+        text-align: left;
     }
     .input-container h2{
         margin: 10;
+        font-weight: 600;
     }
     #input{
         color: white;

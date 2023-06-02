@@ -1,14 +1,119 @@
 <!--Signup Page -->
+<script setup>
+    import { ArrowLeftBold } from '@element-plus/icons-vue';
+</script>
 <template>
-    Sign up
-    <div>
-        <el-icon><ChatLineRound /></el-icon>
+    <div class = "container">
+        <el-container class = "content-container">
+            <el-header>
+                <router-link to = "/">
+                    <el-icon class = "backBtn"><ArrowLeftBold /></el-icon>
+                </router-link>
+            </el-header>
+            <el-main style = "height: 500px">
+                    <div class = "input-container">
+                      
+                    </div>
+
+            </el-main>
+            <el-footer>
+                <div class="buttons">
+                    <el-button class = "login-button">SIGN UP</el-button> 
+                </div>
+            </el-footer>
+        </el-container>
     </div>
 </template>
-
+  
 <style scoped>
+    .container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #1890FF;
+        overflow: auto;
+    }
 
+    .content-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .backBtn{
+        font-size: 30px;
+        margin: -170px;
+        margin-top: 20px;
+        color:#FFFFFF;
+    }
+    .input-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color:#FFFFFF;
+        margin-bottom: 40px;
+        text-align: left;
+    }
+
+    .buttons{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .login-button{
+        width: 319px;
+        height: 63px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        font-weight: 700;
+    }
+
+    .login-button{
+    background: #FFFFFF;
+    color: #1890FF;
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+    transition: background-color 0.5s, color 0.5s;
+    }
+
+    .login-button:hover{
+    background-color: #FFFFFF;
+    color: #1890FF;
+    transform: translateZ(10px);
+    }
+
+    .login-button::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: #FFFFFF;
+    transition: width 0.3s;
+    z-index: -1;
+    }
+
+    .login-button:hover{
+    background-color: #FFFFFF;
+    color: #1890FF;
+    border-radius: 10px;
+    }
+
+    .login-button:hover::before{
+    width: 100%;
+    border-radius: 10px;
+    }
 </style>
+  
 
 <script>
     export default{

@@ -4,66 +4,83 @@
     import { ref } from 'vue';
     const email = ref('');
     const password = ref('');
-
 </script>
 <template>
     <div class="container" >
-        <router-link to = "/">
-            <el-icon class = "backBtn"><ArrowLeftBold /></el-icon>
-        </router-link>
-        <div id="form">
-            <h1>Welcome Back</h1>
-            <p>Login to your account</p><br>
-            Email Address<br>
-            <input id="input" type="email" placeholder="Please enter your email" v-model="email"/><br><br>
-            Password<br>
-            <input id="input" type="password" placeholder="Please enter your passowrd" v-model="password"/>
-        </div>
-        <div id="mid">
-            Don't have an account? 
-            <router-link to = "/Signup">Sign Up</router-link>
-            <hr>
-            Forget your password? 
-            <router-link to = "/Resetpassword">Click Here</router-link>
-        </div>
-        <!--等做完homepage再把登录的链接补上！！-->
-        <div class="buttons">
-            <el-button class = "login-button">LOG IN</el-button> 
-        </div>
+        <el-container class = "content-container">
+            <el-header>
+                <router-link to = "/">
+                    <el-icon class = "backBtn"><ArrowLeftBold /></el-icon>
+                </router-link>
+            </el-header>
+            <el-main style = "height: 500px">
+                    <div class = "input-container">
+                        <h2>Welcome Back</h2>
+                        <p>Login to your account</p>
+                        <b><label>Email Address</label></b>
+                        <input id="input" type="email" placeholder="Please enter your email" v-model="email"/><br>
+                        <b><label>Password</label></b>
+                        <input id="input" type="password" placeholder="Please enter your passowrd" v-model="password"/>
+                    </div>
+                    <div id="mid">
+                        Don't have an account?
+                        <router-link to = "/Signup">Sign Up</router-link>
+                        <hr>
+                        Forget your password? 
+                        <router-link to = "/Resetpassword">Click Here</router-link>
+                    </div>
+            </el-main>
+            <el-footer>
+                <!--等做完homepage再把登录的链接补上！！-->
+                <div class="buttons">
+                    <el-button class = "login-button">LOG IN</el-button> 
+                </div>
+            </el-footer>
+        </el-container>
     </div>
 </template>
 
 <style scoped>
     .container{
-        display: grid;
-        flex-direction: column;
+        display: flex;
         justify-content: center;
+        align-items: center;
         height: 100vh;
         background-color: #1890FF;
-        overflow:hidden;
+        overflow: auto;
+    }
+
+    .content-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
     .backBtn{
         font-size: 30px;
-        margin-top: 80px;
+        margin: -170px;
+        margin-top: 20px;
         color:#FFFFFF;
     }
-    #form{
+    .input-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color:#FFFFFF;
+        margin-bottom: 40px;
         text-align: left;
-        color:#ffffff;
-        margin-left: 20px;
-        bottom:40%;
+    }
+    .input-container h2{
+        margin: 10;
+        font-weight: 600;
     }
     #mid{
         color: #FFFFFF;
         font-size: small;
-
         text-align: center;
         bottom: 30%;
     }
-    h1{
-        font-weight: 400;
-    }
-
     #input{
         color: white;
         background-color: #1890FF;
@@ -144,8 +161,8 @@
 
 <script>
     export default{
-        mounted(){
-            document.title = 'Login | ArthriCare';
-        },
-    };
+    mounted() {
+        document.title = "Login | ArthriCare";
+    }
+};
 </script>

@@ -1,37 +1,57 @@
 <!--Welcome Page -->
 <template>
   <div class = "container">
-    <div class = "logo">
-      <img src="@/assets/icon.png" alt="ArthriCare Logo">
-    </div>
-    <div class = "welcome-text">
-      <h1>Welcome to<br>ArthriCare</h1>
-    </div>
-    <div class = "buttons">
-      <router-link to = "/login"><el-button class = "login-button">LOG IN</el-button></router-link>
-      <router-link to = "/Signup"><el-button class = "signup-button">SIGN UP</el-button></router-link>
-    </div>
+    <el-container class = "content-container">
+      <el-header>
+        <div class = "logo">
+          <img src="@/assets/icon.png" alt="ArthriCare Logo">
+        </div>        
+      </el-header>
+      <el-main>
+        <div class = "welcome-text">
+          <h1>Welcome to<br>ArthriCare</h1>
+        </div>        
+      </el-main>
+      <el-footer>
+        <div class = "buttons">
+          <router-link to = "/login">
+            <el-button class = "login-button">LOG IN</el-button>
+          </router-link>
+          <router-link to = "/Signup">
+            <el-button class = "signup-button">SIGN UP</el-button>
+          </router-link>
+        </div>        
+      </el-footer>
+    </el-container>
   </div>
 </template>
 
 <style scoped>
   .container{
-    display: grid;
-    flex-direction: column;
+    display: flex;
     justify-content: center;
+    align-items: center;
     height: 100vh;
     background-color: #1890FF;
     overflow: hidden;
   }
+  .content-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .welcome-text{
+    margin-left: -20px;
+  }
   h1{
-    margin-left: 20px;
     color: #FFFFFF;
     font-weight: 600;
     font-size: 45px;
-    margin-bottom: 200px;
   }
   .logo{
-    margin: 20px -20px;
+    margin: -200px;
   }
   img{
     width: 250px;
@@ -41,6 +61,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-top: 100px;
   }
 
 .login-button,
