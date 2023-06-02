@@ -1,6 +1,9 @@
 <!--Signup Page -->
 <template>
     Sign up
+    <div>
+        <el-icon><ChatLineRound /></el-icon>
+    </div>
 </template>
 
 <style scoped>

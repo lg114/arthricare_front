@@ -1,17 +1,16 @@
 <!--Login Page -->
 <script setup>
-//这里我用了element plus的icon，如果没安装的话要先安装
-import { ArrowLeftBold } from '@element-plus/icons'
-import { ref } from 'vue'
-const email = ref('');
-const password = ref('');
+    import { Back } from '@element-plus/icons-vue';
+    import { ref } from 'vue';
+    const email = ref('');
+    const password = ref('');
 
 </script>
 <template>
     <div class="container" >
-        <router-link to = "/"><el-icon class="backBtn">
-            <ArrowLeftBold />
-        </el-icon></router-link>
+        <router-link to = "/">
+            <el-icon class = "backBtn"><Back /></el-icon>
+        </router-link>
         <div id="form">
             <h1>Welcome Back</h1>
             <p>Login to your account</p><br>
@@ -47,7 +46,7 @@ const password = ref('');
         font-size: 30px;
         margin-top: 80px;
         margin-right: 400px;
-        color:#FFFFFF;
+        color:white;
     }
     #form{
         font-family: 'Myanmar Khyay';
@@ -149,8 +148,8 @@ const password = ref('');
 
 <script>
     export default{
-    mounted(){
-        document.title = 'Login | ArthriCare';
-    },
+        mounted(){
+            document.title = 'Login | ArthriCare';
+        },
     };
 </script>

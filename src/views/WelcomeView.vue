@@ -21,10 +21,9 @@
     justify-content: center;
     height: 100vh;
     background-color: #1890FF;
-    overflow:hidden;
+    overflow: hidden;
   }
   h1{
-    text-align: left;
     margin-left: 20px;
     color: #FFFFFF;
     font-weight: 600;
