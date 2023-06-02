@@ -28,7 +28,7 @@
             </el-main>
             <el-footer>
                 <div class="buttons">
-                    <router-link>
+                    <router-link to = "/">
                         <el-button class = "login-button">CONTINUE</el-button>
                     </router-link>
                 </div>
