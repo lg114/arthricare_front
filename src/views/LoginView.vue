@@ -1,6 +1,6 @@
 <!--Login Page -->
 <script setup>
-    import { Back } from '@element-plus/icons-vue';
+    import { ArrowLeftBold } from '@element-plus/icons-vue';
     import { ref } from 'vue';
     const email = ref('');
     const password = ref('');
@@ -9,7 +9,7 @@
 <template>
     <div class="container" >
         <router-link to = "/">
-            <el-icon class = "backBtn"><Back /></el-icon>
+            <el-icon class = "backBtn"><ArrowLeftBold /></el-icon>
         </router-link>
         <div id="form">
             <h1>Welcome Back</h1>
@@ -35,13 +35,13 @@
 
 <style scoped>
     .container{
-    display: grid;
-    flex-direction: column;
-    justify-content: center;
-    height: 100vh;
-    background-color: #1890FF;
-    overflow:hidden;
-}
+        display: grid;
+        flex-direction: column;
+        justify-content: center;
+        height: 100vh;
+        background-color: #1890FF;
+        overflow:hidden;
+    }
     .backBtn{
         font-size: 30px;
         margin-top: 80px;
@@ -51,13 +51,12 @@
         text-align: left;
         color:#ffffff;
         margin-left: 20px;
-        position:sticky;
         bottom:40%;
     }
     #mid{
         color: #FFFFFF;
         font-size: small;
-        position:sticky;
+
         text-align: center;
         bottom: 30%;
     }

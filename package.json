@@ -10,6 +10,7 @@
     "deploy": "gh-pages -d dist -r https://github.com/lg114/arthricare.git -b gh-pages"
   },
   "dependencies": {
+    "@element-plus/icons": "^0.0.11",
     "axios": "^1.4.0",
     "core-js": "^3.8.3",
     "element-plus": "^2.3.5",

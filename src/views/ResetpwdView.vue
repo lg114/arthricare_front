@@ -1,6 +1,5 @@
 <!--Resetpassword Page -->
 <script setup>
-//这里我用了element plus的icon，如果没安装的话要先安装
 import { ArrowLeftBold } from '@element-plus/icons'
 import { ref } from 'vue'
 const email = ref('');
@@ -14,13 +13,15 @@ const confirmPassword = ref('');
             <ArrowLeftBold />
         </el-icon></router-link>
         <div id="form">
-            <h1>Reset Your Password</h1><br>
-            Email Address<br>
-            <input id="input" type="email" placeholder="Please enter your email" v-model="email"/><br><br>
-            New Password<br>
-            <input id="input" type="password" placeholder="Please enter new password" v-model="newPassword"/><br><br>
-            Confirm New Password<br>
-            <input id="input" type="password" placeholder="Please enter new password" v-model="confirmPassword"/>
+            <div class = "input-container">
+                <h2>Reset Your Password</h2>
+                <label>Email Address</label>
+                <input id="input" type="email" placeholder="Please enter your email" v-model="email"/><br>
+                <label>New Password</label>
+                <input id="input" type="password" placeholder="Please enter new password" v-model="newPassword"/><br>
+                <label>Confirm New Password</label>
+                <input id="input" type="password" placeholder="Please enter new password" v-model="confirmPassword"/>
+            </div>
         </div>
         <div class="buttons">
             <el-button class = "login-button">CONTINUE</el-button> 
@@ -30,13 +31,14 @@ const confirmPassword = ref('');
 
 <style scoped>
     .container{
-    display: grid;
-    flex-direction: column;
-    justify-content: center;
-    height: 100vh;
-    background-color: #1890FF;
-    overflow:hidden;
-}
+        display: grid;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #1890FF;
+        overflow:hidden;
+    }
     .backBtn{
         font-size: 30px;
         margin-top: 80px;
@@ -46,11 +48,17 @@ const confirmPassword = ref('');
         font-weight: 400;
     }
     #form{
-        text-align: left;
-        color:#ffffff;
-        margin-left: 20px;
-        position:sticky;
-        bottom: 35%;
+        text-align: center;
+        color: #ffffff;
+    }
+    .input-container{
+        display: flex; /* 使用Flexbox布局 */
+        flex-direction: column; /* 垂直方向排列 */
+        align-items: flex-start;
+        transform: translateY(-120px);
+    }
+    .input-container h2{
+        margin: 10;
     }
     #input{
         color: white;
