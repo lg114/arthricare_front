@@ -21,10 +21,10 @@
         </div>
         <div id="mid">
             Don't have an account? 
-            <a href="/Signup">Sign up</a><br>
+            <router-link to = "/Signup">Sign Up</router-link>
             <hr>
             Forget your password? 
-            <a href="/Resetpassword">Click here</a>
+            <router-link to = "/Resetpassword">Click Here</router-link>
         </div>
         <!--等做完homepage再把登录的链接补上！！-->
         <div class="buttons">
@@ -45,24 +45,21 @@
     .backBtn{
         font-size: 30px;
         margin-top: 80px;
-        margin-right: 400px;
-        color:white;
+        color:#FFFFFF;
     }
     #form{
-        font-family: 'Myanmar Khyay';
         text-align: left;
         color:#ffffff;
         margin-left: 20px;
         position:sticky;
-        bottom: 40%;
+        bottom:40%;
     }
     #mid{
         color: #FFFFFF;
         font-size: small;
         position:sticky;
-        bottom: 30%;
         text-align: center;
-        right:39%;
+        bottom: 30%;
     }
     h1{
         font-weight: 400;
@@ -72,11 +69,12 @@
         color: white;
         background-color: #1890FF;
         border: 2px solid white;
-        width: 319px;
+        width: 300px;
         height: 40px;
         border-radius: 10px;
         margin-top: 5px;
-        padding-right: 5px;
+        padding-left: 10px;
+        outline: none;
     }
     ::placeholder{
         color: #FFFFFF;
@@ -93,7 +91,6 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        margin-right:60px;
     }
 
     .login-button{
