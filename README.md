@@ -17,13 +17,13 @@ Coding languages: HTML & JAVASCRIPT & VUE
 3. eslint v7.32.0 https://eslint.org/
 4. eslint-plugin-vue v8.7.1 https://eslint.vuejs.org/
 5. @vue/cli-plugin-babel v5.0.0
-6. @vue/cli-plugin-eslint v~5.0.0
+6. @vue/cli-plugin-eslint v5.0.0
 7. @vue/cli-service v5.0.0
 8. unplugin-auto-import v0.16.3
 9. unplugin-vue-components v0.24.1
 
 ## Website
-https://lg114.github.io/arthricare/
+(https://lg114.github.io/arthricare_front/)
 
 ## Project setup
 ### Prepare your environment
