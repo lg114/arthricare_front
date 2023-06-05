@@ -1,4 +1,4 @@
-<!--Welcome Page -->
+<!-- Welcome Page -->
 <template>
   <div class = "container">
     <el-container class = "content-container">

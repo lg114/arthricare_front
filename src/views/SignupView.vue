@@ -2,6 +2,7 @@
 <script setup>
     import { ArrowLeftBold } from '@element-plus/icons-vue';
 </script>
+
 <template>
     <div class = "container">
         <el-container class = "content-container">

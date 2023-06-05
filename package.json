@@ -11,11 +11,19 @@
   },
   "dependencies": {
     "@element-plus/icons": "^0.0.11",
+    "@element-plus/icons-vue": "^2.1.0",
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.13.3",
+    "@syncfusion/ej2-vue-buttons": "^21.2.6",
+    "@syncfusion/ej2-vue-dropdowns": "^21.2.8",
     "axios": "^1.4.0",
     "core-js": "^3.8.3",
     "element-plus": "^2.3.5",
     "gh-pages": "^5.0.0",
     "vue": "^3.2.13",
+    "vue-material-design-icons": "^5.2.0",
     "vue-router": "^4.2.2"
   },
   "devDependencies": {
@@ -24,8 +32,11 @@
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
+    "autoprefixer": "^10.4.14",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
+    "postcss": "^8.4.24",
+    "tailwindcss": "^3.3.2",
     "unplugin-auto-import": "^0.16.3",
     "unplugin-vue-components": "^0.24.1"
   },
