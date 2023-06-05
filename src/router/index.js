@@ -3,7 +3,7 @@ import WelcomePage from '@/views/WelcomeView.vue';
 import LoginPage from '@/views/LoginView.vue';
 import SignUpPage from '@/views/SignupView.vue';
 import ResetPwdPage from '@/views/ResetpwdView.vue';
-import MyMedsPage from '@/views/MyMedsView.vue';
+import MyMedsPage from '@/views/MyMeds/MyMedsView.vue';
 
 const router  = createRouter({
     history : createWebHashHistory(),
