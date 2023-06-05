@@ -2,7 +2,10 @@
 <script setup>
     import { ArrowLeftBold } from '@element-plus/icons-vue';
     import { ref} from 'vue';
+<<<<<<< HEAD
     import axios from 'axios';
+=======
+>>>>>>> 1bcdcfaa4485506fdcf12472d5f85fe20397a0cb
     const name = ref('');
     const selectedAge = ref('');
     const gender = ref('');
@@ -210,6 +213,7 @@
                 return options;
             },
 
+<<<<<<< HEAD
             signUp(){
                 const userData = {
                     name: this.name,
@@ -230,6 +234,8 @@
                         console.error(error);
                     });
             }
+=======
+>>>>>>> 1bcdcfaa4485506fdcf12472d5f85fe20397a0cb
         },
     };
 </script>
