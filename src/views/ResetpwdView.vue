@@ -11,7 +11,7 @@
     <div class="container">
         <el-container class = "content-container">
             <el-header>
-                <router-link to = "/">
+                <router-link to = "/Login">
                     <el-icon class="backBtn"><ArrowLeftBold /></el-icon>
                 </router-link>  
             </el-header>
@@ -23,14 +23,16 @@
                     <b><label>New Password</label></b>
                     <input id="input" type="password" placeholder="Please enter new password" v-model="newPassword"/><br>
                     <b><label>Confirm New Password</label></b>
-                    <input id="input" type="password" placeholder="Please enter new password" v-model="confirmPassword"/>
+                    <input id="input" type="password" placeholder="Please confirm new password" v-model="confirmPassword"/>
+                    <p v-if="showErrorEmpty" class="error">Please enter email address or password</p>
+                    <p v-if="showErrorDifferent" class="error">Password confirmation doesn't match the password</p>
                 </div>
             </el-main>
             <el-footer>
                 <div class="buttons">
-                    <router-link to = "/">
-                        <el-button class = "login-button">CONTINUE</el-button>
-                    </router-link>
+                    
+                        <el-button class = "login-button" @click="checkInput">CONTINUE</el-button>
+                        <router-link to = "/"></router-link>
                 </div>
             </el-footer>
         </el-container>
@@ -140,19 +142,44 @@
     width: 100%;
     border-radius: 10px;
     }
+    
+    .error{
+        color: #FF5F5F;
+        font-size:x-large;
+
+    }
 </style>
 
 <script>
     export default{
-    data(){
+        data(){
         return {
             email: '',
             newPassword: '',
-            confirmPassword: ''
+            confirmPassword: '',
+            showErrorEmpty: false,
+            showErrorDifferent: false
         };
+    },
+    methods:{
+        checkInput(){
+            if(this.email === '' || this.newPassword === '' || this.confirmPassword === ''){
+                this.showErrorEmpty = true;
+                this.showErrorDifferent = false;
+                this.$forceUpdate();
+        }
+        else if(this.newPassword !== this.confirmPassword){
+            this.showErrorDifferent = true;
+            this.showErrorEmpty = false;
+                this.$forceUpdate();
+        }
+        else{
+            alert('Password successfully updated');
+        }
     },
     mounted(){
         document.title = 'Reset Password | ArthriCare';
     },
-    };
+}
+};
 </script>

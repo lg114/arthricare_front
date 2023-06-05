@@ -28,12 +28,14 @@
                         <hr>
                         Forget your password? 
                         <router-link to = "/Resetpassword">Click Here</router-link>
+                        
+                    <p v-if="showError" class="error">Please enter email address or password</p>
                     </div>
             </el-main>
             <el-footer>
                 <!--等做完homepage再把登录的链接补上！！-->
                 <div class="buttons">
-                    <el-button class = "login-button">LOG IN</el-button> 
+                    <el-button class = "login-button" @click="checkInput">LOG IN</el-button> 
                 </div>
             </el-footer>
         </el-container>
@@ -157,12 +159,35 @@
     width: 100%;
     border-radius: 10px;
     }
+
+    .error{
+        color: #FF5F5F;
+        font-size:x-large;
+
+    }
 </style>
 
 <script>
     export default{
+    data(){
+        return {
+            username: '',
+            password: '',
+            showError: false
+        };
+    },
+    methods:{
+        checkInput(){
+            if(this.username === '' || this.password === ''){
+                this.showError = true;
+    
+        }else{
+            this.showError = false;
+        }
+    },
     mounted() {
         document.title = "Login | ArthriCare";
     }
+}
 };
 </script>
