@@ -2,7 +2,6 @@
 <script setup>
     import { ArrowLeftBold } from '@element-plus/icons-vue';
     import { ref} from 'vue';
-    import axios from 'axios';
     const name = ref('');
     const selectedAge = ref('');
     const gender = ref('');
@@ -209,26 +208,6 @@
                 return options;
             },
 
-            signUp(){
-                const userData = {
-                    name: this.name,
-                    age: this.selectedAge,
-                    gender: this.gender,
-                    weight: this.selectedWeight,
-                    email: this.email,
-                    password: this.password
-                    };
-
-                    axios.post('/api/signup', userData)
-                    .then(response => {
-                        //Handle the success response
-                        console.log(response.data);
-                    })
-                    .catch(error => {
-                        //Handle errors
-                        console.error(error);
-                    });
-            }
         },
     };
 </script>
