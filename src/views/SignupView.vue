@@ -17,7 +17,7 @@
                     <el-icon class = "backBtn"><ArrowLeftBold /></el-icon>
                 </router-link>
             </el-header>
-            <el-main style = "height: 500px; width: auto;">
+            <el-main style = "height: 500px; width: 700px;">
                     <div class = "input-container">
                             <h2>Sign Up</h2>
                             <b><label for = "name">Name:</label></b>
@@ -111,7 +111,7 @@
         color: white;
         background-color: #1890FF;
         border: 2px solid white;
-        width: 120px;
+        width: 60px;
         height: 40px;
         border-radius: 10px;
         margin: 10px;
