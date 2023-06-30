@@ -77,7 +77,7 @@
         align-items: center;
         height: 100vh;
         background-color: #1890FF;
-        overflow: auto;
+        overflow: hidden;
     }
 
     .content-container {
@@ -122,7 +122,7 @@
         outline: none;
         text-align: left;
         justify-content: center;
-        margin: 10px;
+        margin: 8px;
     }
     .row-input{
         color: white;
