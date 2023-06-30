@@ -17,34 +17,48 @@
                     <el-icon class = "backBtn"><ArrowLeftBold /></el-icon>
                 </router-link>
             </el-header>
-            <el-main style = "height: 500px; width: 700px;">
+            <el-main style = "height: 100%; width: 100%;">
                     <div class = "input-container">
                             <h2>Sign Up</h2>
-                            <b><label for = "name">Name:</label></b>
-                            <input id = "name" type="text" class = "input" placeholder="Please enter your full name" v-model="name" />
+                            <div class = "input-row">
+                                <b><label for = "name">Name:</label></b>
+                                <input id = "name" type="text" class = "input" placeholder="Please enter your full name" v-model="name" />
+                            </div>
+                            
                             <div class = "input-row">
                                 <b><label for = "age">Age:</label></b>
                                 <select name="age" id="age" class="row-input" v-model="selectedAge">
                                     <option value="" disabled selected>Select Age</option>
                                     <option v-for="age in ageOptions" :value="age" :key="age">{{ age }}</option>
                                 </select>
+                            </div>
+                            
+                            <div class = "input-row">
                                 <b><label for = "gender">Gender:</label></b>
                                 <select name="gender" id="gender" class = "row-input" v-model="gender">
                                     <option value="" disabled selected>Select Gender</option>
                                     <option value="male">Male</option>
                                     <option value="female">Female</option>
                                 </select>
+                            </div>
+                            
+                            <div class = "input-row">
                                 <b><label for = "weight">Weight:</label></b>
                                 <select name = "weight" id = "weight" class = "row-input" v-model = "selectedWeight">
                                     <option value="" disabled selected>Select Weight</option>
                                     <option v-for="weight in weightOptions" :value="weight" :key="weight">{{ weight }} kg</option>
-                                </select>                                
+                                </select>   
                             </div>
-                            <b><label for = "email">Email:</label></b>
-                            <input id = "email" type="email" class = "input" placeholder="Please enter your email" v-model="email" /><br>
+                             
+                            <div class = "input-row">
+                                <b><label for = "email">Email:</label></b>
+                                <input id = "email" type="email" class = "input" placeholder="Please enter your email" v-model="email" /><br>
+                            </div>
 
-                            <b><label for = "password">Password:</label></b>
-                            <input id = "password" type="password" class = "input" placeholder="Please enter your password" v-model="password" />
+                            <div class = "input-row">
+                                <b><label for = "password">Password:</label></b>
+                                <input id = "password" type="password" class = "input" placeholder="Please enter your password" v-model="password" />
+                            </div>
                     </div>
             </el-main>
             <el-footer>
@@ -98,9 +112,12 @@
         padding-left: 10px;
         outline: none;
     }
-
+    .label-container{
+        margin-right: 10px;
+    }
     .input-row{
         display: flex;
+        flex-direction: column;
         align-items: center;
         outline: none;
         text-align: left;
@@ -111,13 +128,14 @@
         color: white;
         background-color: #1890FF;
         border: 2px solid white;
-        width: 60px;
+        width: 150px;
         height: 40px;
         border-radius: 10px;
-        margin: 10px;
+        margin: 3.5px;
         padding-left: 10px;
         outline: none;
     }
+    
     ::placeholder{
         color: #FFFFFF;
     }
@@ -187,9 +205,9 @@
         data(){
             return {
             selectedAge: '',
-            ageOptions: this.generateAgeOptions(18, 100),
+            ageOptions: this.generateAgeOptions(10, 100),
             selectedWeight: '',
-            weightOptions: this.generateWeightOptions(45, 200),
+            weightOptions: this.generateWeightOptions(35, 200),
             };
         },
         methods:{
