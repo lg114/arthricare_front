@@ -31,9 +31,8 @@
                     </div>
             </el-main>
             <el-footer>
-                <!--等做完homepage再把登录的链接补上！！-->
                 <div class="buttons">
-                    <el-button class = "login-button">LOG IN</el-button> 
+                     <router-link to = "/Home"><el-button class = "login-button">LOG IN</el-button></router-link>
                 </div>
             </el-footer>
         </el-container>
