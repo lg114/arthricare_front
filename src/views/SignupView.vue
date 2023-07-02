@@ -1,13 +1,51 @@
 <!--Signup Page -->
-<script setup>
-    import { ArrowLeftBold } from '@element-plus/icons-vue';
+<script>
     import { ref} from 'vue';
-    const name = ref('');
-    const selectedAge = ref('');
-    const gender = ref('');
-    const selectedWeight = ref('');
-    const email = ref('');
-    const password = ref('');
+    import { ArrowLeftBold } from '@element-plus/icons-vue';
+
+    export default{
+        mounted(){
+            document.title = 'Sign Up | ArthriCare';
+        },
+        setup(){
+            const name = ref('');
+            const selectedAge = ref('');
+            const gender = ref('');
+            const selectedWeight = ref('');
+            const email = ref('');
+            const password = ref('');
+
+            const generateAgeOptions = (start, end) => {
+            const options = [];
+            for (let i = start; i <= end; i++) {
+                options.push(i.toString());
+            }
+            return options;
+            };
+
+            const generateWeightOptions = (start, end) => {
+            const options = [];
+            for (let i = start; i <= end; i++) {
+                options.push(i.toString());
+            }
+            return options;
+            };
+
+            return {
+            name,
+            selectedAge,
+            gender,
+            selectedWeight,
+            email,
+            password,
+            ageOptions: generateAgeOptions(10, 100),
+            weightOptions: generateWeightOptions(35, 200),
+            };
+        },
+        components:{
+            ArrowLeftBold,
+            }
+    };
 </script>
 <template>
     <div class = "container">
@@ -69,7 +107,9 @@
         </el-container>
     </div>
 </template>
-  
+
+
+
 <style scoped>
     .container{
         display: flex;
@@ -90,7 +130,7 @@
         font-size: 30px;
         margin: -170px;
         margin-top: 20px;
-        color:#FFFFFF;
+        color:#ffffff;
     }
     .input-container{
         display: flex;
@@ -195,37 +235,3 @@
     border-radius: 10px;
     }
 </style>
-  
-
-<script>
-    export default{
-        mounted(){
-            document.title = 'Sign Up | ArthriCare';
-        },
-        data(){
-            return {
-            selectedAge: '',
-            ageOptions: this.generateAgeOptions(10, 100),
-            selectedWeight: '',
-            weightOptions: this.generateWeightOptions(35, 200),
-            };
-        },
-        methods:{
-            generateAgeOptions(start, end){
-                const options = [];
-                for (let i = start; i <= end; i++) {
-                    options.push(i.toString());
-                }
-                return options;
-            },
-            generateWeightOptions(start, end){
-                const options = [];
-                for (let i = start; i <= end; i++) {
-                    options.push(i.toString());
-                }
-                return options;
-            },
-
-        },
-    };
-</script>

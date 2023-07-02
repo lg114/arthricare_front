@@ -1,9 +1,25 @@
 <!--Login Page -->
-<script setup>
+<script>
     import { ArrowLeftBold } from '@element-plus/icons-vue';
     import { ref } from 'vue';
-    const email = ref('');
-    const password = ref('');
+
+    export default{
+        mounted() {
+            document.title = "Login | ArthriCare";
+        },
+        setup(){
+            const email = ref('');
+            const password = ref('');
+
+            return{
+                email,
+                password
+            }
+        },
+        components: {
+            ArrowLeftBold
+            }
+    };
 </script>
 <template>
     <div class="container" >
@@ -157,11 +173,3 @@
     border-radius: 10px;
     }
 </style>
-
-<script>
-    export default{
-    mounted() {
-        document.title = "Login | ArthriCare";
-    }
-};
-</script>

@@ -1,7 +1,12 @@
 <!--Home Page-->
-<script setup>
-
+<script>
+    export default{
+        mounted() {
+            document.title = "Home | ArthriCare";
+        },
+};
 </script>
+
 <template>
     <div>
         <el-container>
@@ -20,10 +25,3 @@
 <style scoped>
 
 </style>
-<script>
-    export default{
-    mounted() {
-        document.title = "Home | ArthriCare";
-    }
-};
-</script>

@@ -1,10 +1,27 @@
 <!--Resetpassword Page -->
-<script setup>
+<script>
     import { ArrowLeftBold } from '@element-plus/icons'
     import { ref } from 'vue'
-    const email = ref('');
-    const newPassword = ref('');
-    const confirmPassword = ref('');
+
+    export default{
+        mounted(){
+            document.title = 'Reset Password | ArthriCare';
+        },
+        setup(){
+            const email = ref('');
+            const newPassword = ref('');
+            const confirmPassword = ref('');
+
+            return{
+                email,
+                newPassword,
+                confirmPassword
+            };
+        },
+        components:{
+            ArrowLeftBold
+            }
+    };
 </script>
 
 <template>
@@ -141,18 +158,3 @@
     border-radius: 10px;
     }
 </style>
-
-<script>
-    export default{
-    data(){
-        return {
-            email: '',
-            newPassword: '',
-            confirmPassword: ''
-        };
-    },
-    mounted(){
-        document.title = 'Reset Password | ArthriCare';
-    },
-    };
-</script>
