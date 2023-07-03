@@ -3,7 +3,7 @@
     import { ref} from 'vue';
     import { User, Bell} from '@element-plus/icons-vue';
     import { ElDrawer } from 'element-plus';
-    import axios from 'axios';
+
 
     export default{
         mounted() {
