@@ -2,7 +2,7 @@
 <script>
     import { ref} from 'vue';
     import { User, Bell} from '@element-plus/icons-vue';
-    import { ElDrawer } from 'element-plus';
+    
 
 
     export default{
@@ -26,7 +26,6 @@
         components:{
         User,
         Bell,
-        ElDrawer,
     }
 };
 </script>
