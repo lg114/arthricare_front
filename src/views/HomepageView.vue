@@ -16,15 +16,6 @@
             };
         },
         methods:{
-            fetchUsername(){
-                axios.get('')
-                    .then(response => {
-                        this.username = response.data.username;
-                    })
-                    .catch(error => {
-                        console.error(error);
-                    });
-            },
             openDrawer() {
             this.drawer = true;
             },
