@@ -1,14 +1,51 @@
 <!--Signup Page -->
-<script setup>
-    import { ArrowLeftBold } from '@element-plus/icons-vue';
+<script>
     import { ref} from 'vue';
-    import axios from 'axios';
-    const name = ref('');
-    const selectedAge = ref('');
-    const gender = ref('');
-    const selectedWeight = ref('');
-    const email = ref('');
-    const password = ref('');
+    import { ArrowLeftBold } from '@element-plus/icons-vue';
+
+    export default{
+        mounted(){
+            document.title = 'Sign Up | ArthriCare';
+        },
+        setup(){
+            const name = ref('');
+            const selectedAge = ref('');
+            const gender = ref('');
+            const selectedWeight = ref('');
+            const email = ref('');
+            const password = ref('');
+
+            const generateAgeOptions = (start, end) => {
+            const options = [];
+            for (let i = start; i <= end; i++) {
+                options.push(i.toString());
+            }
+            return options;
+            };
+
+            const generateWeightOptions = (start, end) => {
+            const options = [];
+            for (let i = start; i <= end; i++) {
+                options.push(i.toString());
+            }
+            return options;
+            };
+
+            return {
+            name,
+            selectedAge,
+            gender,
+            selectedWeight,
+            email,
+            password,
+            ageOptions: generateAgeOptions(10, 100),
+            weightOptions: generateWeightOptions(35, 200),
+            };
+        },
+        components:{
+            ArrowLeftBold,
+            }
+    };
 </script>
 <template>
     <div class = "container">
@@ -18,34 +55,48 @@
                     <el-icon class = "backBtn"><ArrowLeftBold /></el-icon>
                 </router-link>
             </el-header>
-            <el-main style = "height: 500px; width: auto;">
+            <el-main style = "height: 100%; width: 100%;">
                     <div class = "input-container">
                             <h2>Sign Up</h2>
-                            <b><label for = "name">Name:</label></b>
-                            <input id = "name" type="text" class = "input" placeholder="Please enter your full name" v-model="name" />
+                            <div class = "input-row">
+                                <b><label for = "name">Name:</label></b>
+                                <input id = "name" type="text" class = "input" placeholder="Please enter your full name" v-model="name" />
+                            </div>
+                            
                             <div class = "input-row">
                                 <b><label for = "age">Age:</label></b>
                                 <select name="age" id="age" class="row-input" v-model="selectedAge">
                                     <option value="" disabled selected>Select Age</option>
                                     <option v-for="age in ageOptions" :value="age" :key="age">{{ age }}</option>
                                 </select>
+                            </div>
+                            
+                            <div class = "input-row">
                                 <b><label for = "gender">Gender:</label></b>
                                 <select name="gender" id="gender" class = "row-input" v-model="gender">
                                     <option value="" disabled selected>Select Gender</option>
                                     <option value="male">Male</option>
                                     <option value="female">Female</option>
                                 </select>
+                            </div>
+                            
+                            <div class = "input-row">
                                 <b><label for = "weight">Weight:</label></b>
                                 <select name = "weight" id = "weight" class = "row-input" v-model = "selectedWeight">
                                     <option value="" disabled selected>Select Weight</option>
                                     <option v-for="weight in weightOptions" :value="weight" :key="weight">{{ weight }} kg</option>
-                                </select>                                
+                                </select>   
                             </div>
-                            <b><label for = "email">Email:</label></b>
-                            <input id = "email" type="email" class = "input" placeholder="Please enter your email" v-model="email" /><br>
+                             
+                            <div class = "input-row">
+                                <b><label for = "email">Email:</label></b>
+                                <input id = "email" type="email" class = "input" placeholder="Please enter your email" v-model="email" /><br>
+                            </div>
 
-                            <b><label for = "password">Password:</label></b>
-                            <input id = "password" type="password" class = "input" placeholder="Please enter your password" v-model="password" />
+                            <div class = "input-row">
+                                <b><label for = "password">Password:</label></b>
+                                <input id = "password" type="password" class = "input" placeholder="Please enter your password" v-model="password" />
+                            </div>
                     </div>
             </el-main>
             <el-footer>
@@ -56,7 +107,7 @@
         </el-container>
     </div>
 </template>
-  
+
 <style scoped>
     .container{
         display: flex;
@@ -64,7 +115,7 @@
         align-items: center;
         height: 100vh;
         background-color: #1890FF;
-        overflow: auto;
+        overflow: hidden;
     }
 
     .content-container {
@@ -77,7 +128,7 @@
         font-size: 30px;
         margin: -170px;
         margin-top: 20px;
-        color:#FFFFFF;
+        color:#ffffff;
     }
     .input-container{
         display: flex;
@@ -99,26 +150,30 @@
         padding-left: 10px;
         outline: none;
     }
-
+    .label-container{
+        margin-right: 10px;
+    }
     .input-row{
         display: flex;
+        flex-direction: column;
         align-items: center;
         outline: none;
         text-align: left;
         justify-content: center;
-        margin: 10px;
+        margin: 8px;
     }
     .row-input{
         color: white;
         background-color: #1890FF;
         border: 2px solid white;
-        width: 120px;
+        width: 150px;
         height: 40px;
         border-radius: 10px;
-        margin: 10px;
+        margin: 3.5px;
         padding-left: 10px;
         outline: none;
     }
+    
     ::placeholder{
         color: #FFFFFF;
     }
@@ -178,57 +233,3 @@
     border-radius: 10px;
     }
 </style>
-  
-
-<script>
-    export default{
-        mounted(){
-            document.title = 'Sign Up | ArthriCare';
-        },
-        data(){
-            return {
-            selectedAge: '',
-            ageOptions: this.generateAgeOptions(18, 100),
-            selectedWeight: '',
-            weightOptions: this.generateWeightOptions(45, 200),
-            };
-        },
-        methods:{
-            generateAgeOptions(start, end){
-                const options = [];
-                for (let i = start; i <= end; i++) {
-                    options.push(i.toString());
-                }
-                return options;
-            },
-            generateWeightOptions(start, end){
-                const options = [];
-                for (let i = start; i <= end; i++) {
-                    options.push(i.toString());
-                }
-                return options;
-            },
-
-            signUp(){
-                const userData = {
-                    name: this.name,
-                    age: this.selectedAge,
-                    gender: this.gender,
-                    weight: this.selectedWeight,
-                    email: this.email,
-                    password: this.password
-                    };
-
-                    axios.post('/api/signup', userData)
-                    .then(response => {
-                        //Handle the success response
-                        console.log(response.data);
-                    })
-                    .catch(error => {
-                        //Handle errors
-                        console.error(error);
-                    });
-            }
-        },
-    };
-</script>

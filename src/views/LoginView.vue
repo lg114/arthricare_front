@@ -1,9 +1,25 @@
 <!--Login Page -->
-<script setup>
+<script>
     import { ArrowLeftBold } from '@element-plus/icons-vue';
     import { ref } from 'vue';
-    const email = ref('');
-    const password = ref('');
+
+    export default{
+        mounted() {
+            document.title = "Login | ArthriCare";
+        },
+        setup(){
+            const email = ref('');
+            const password = ref('');
+
+            return{
+                email,
+                password
+            }
+        },
+        components: {
+            ArrowLeftBold
+            }
+    };
 </script>
 <template>
     <div class="container" >
@@ -31,9 +47,8 @@
                     </div>
             </el-main>
             <el-footer>
-                <!--等做完homepage再把登录的链接补上！！-->
                 <div class="buttons">
-                    <el-button class = "login-button">LOG IN</el-button> 
+                     <router-link to = "/Home"><el-button class = "login-button">LOG IN</el-button></router-link>
                 </div>
             </el-footer>
         </el-container>
@@ -158,11 +173,3 @@
     border-radius: 10px;
     }
 </style>
-
-<script>
-    export default{
-    mounted() {
-        document.title = "Login | ArthriCare";
-    }
-};
-</script>
