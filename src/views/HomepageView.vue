@@ -17,7 +17,7 @@
         },
         methods:{
             fetchUsername(){
-                axios.get('/api/getUsername')
+                axios.get('')
                     .then(response => {
                         this.username = response.data.username;
                     })
