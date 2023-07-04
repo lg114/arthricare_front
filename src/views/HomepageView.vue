@@ -214,7 +214,7 @@
         align-items: center;
         justify-content: space-between;
         width: 100%;
-        margin-top: 200px;
+        margin-top: 130px;
     }
     .menu-button3 p{
         font-size: 20px;
