@@ -150,7 +150,7 @@
     .username{
         position: relative;
         top: 15px;
-        left: 40px;
+        left: 55px;
         color: #ffffff;
         font-weight: 550;
         font-size: 20px;
