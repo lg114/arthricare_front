@@ -3,8 +3,6 @@
     import { ref} from 'vue';
     import { User, Bell} from '@element-plus/icons-vue';
     
-
-
     export default{
         mounted() {
             document.title = "Home | ArthriCare";
@@ -44,7 +42,7 @@
             <el-footer class = "footer">
                 footer
             </el-footer>
-            <el-drawer v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="50%" :append-to-body = "true" :before-close = "beforeDrawerClose">
+            <el-drawer v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
                 <span>Hello</span>
             </el-drawer>
         </el-container>
@@ -71,7 +69,7 @@
         background-color: #ffffff;
     }
     .footer{
-
+        height: 50px;
     }
     .userbtn{
         position: absolute;
