@@ -20,6 +20,9 @@
           <router-link to = "/Signup">
             <el-button class = "signup-button">SIGN UP</el-button>
           </router-link>
+          <router-link to = "/addMed">
+            <el-button class = "signup-button">aaaa</el-button>
+          </router-link>
         </div>        
       </el-footer>
     </el-container>

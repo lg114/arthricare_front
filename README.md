@@ -33,6 +33,10 @@ Coding languages: HTML & JAVASCRIPT & VUE
 ```
 npm install
 ```
+4. Install datepicker.
+```
+npm install @vuepic/vue-datepicker
+```
 ### Compiles and hot-reloads for development
 Run the following command in the directory where you cloned this application:<br>
 When you run this command, it starts a development server, listening on the specified port, and compiles and refreshes your project code in real time.<br>
