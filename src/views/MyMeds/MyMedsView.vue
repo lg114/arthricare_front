@@ -4,7 +4,7 @@
       <div class="header"></div>
   
       <!-- Current Medication -->
-      <div class="d-flex align-center flex-column">
+      <div class="d-flex align-center flex-column scrollable">
         <h1>Current Medication</h1>
         <hr>
         <div class="card" v-for="medicine in medicineData" :key="medicine.name">
@@ -121,6 +121,11 @@
   
   .button-wrapper:hover Plus {
     opacity: 1;
+  }
+
+  .scrollable {
+    overflow-y: auto;
+    max-height: 400px; /* Adjust the max-height to your preference */
   }
   </style>
   
