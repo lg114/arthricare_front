@@ -12,7 +12,12 @@
                 username: '',
                 drawer: ref(false),
                 imgUrl: '',
+                dates: [],
+                selectedDate: null
             };
+        },
+        created(){
+            this.initDates();
         },
         methods:{
             openDrawer() {
@@ -36,6 +41,36 @@
                 }
                 return true;
             },
+            formatDate(date){ 
+                if (!(date instanceof Date)) {
+                    return '';
+                }
+                const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                const month = months[date.getMonth()];
+                const day = date.getDate();
+                return `${month} ${day}`;
+            },
+            selectDate(date) {
+                this.selectedDate = date;
+            },
+            initDates() {
+                const currentDate = new Date();
+                const dates = [];
+                for (let i = -3; i <= 3; i++) {
+                    const newDate = new Date(currentDate);
+                    newDate.setDate(currentDate.getDate() + i);
+                    dates.push(newDate);
+                }
+                this.dates = dates;
+                this.selectedDate = this.formatDate(currentDate);
+            }
+        },
+        computed:{
+            getFullDate(){
+                return(date) =>{
+                    return date.getDate();
+                };
+            }
         },
         components:{
         User,
@@ -61,7 +96,47 @@
                 <el-icon class = "bellbtn"><Bell /></el-icon>
             </el-header>
             <el-main class = "main">
-                Main
+                <div class = "calendar">
+                    <button class = "arrow" @click="scrollDates(-1)">&#8249;</button>
+                    <div class = "dates-contaniner">
+                        <div class = "date">
+                            <div class="weekday">Sun</div>
+                            <div class="fulldate">{{ getFullDate(dates[0]) }}</div>
+                        </div>
+                        <div class = "date">
+                            <div class="weekday">Mon</div>
+                            <div class = "fulldate">{{ getFullDate(dates[1]) }}</div>
+                        </div>
+                        <div class = "date">
+                            <div class="weekday">Tue</div>
+                            <div class = "fulldate">{{ getFullDate(dates[2]) }}</div>
+                        </div>
+                        <div class = "date">
+                            <div class="weekday">Wed</div>
+                            <div class = "fulldate">{{ getFullDate(dates[3]) }}</div>
+                        </div>
+                        <div class = "date">
+                            <div class="weekday">Thu</div>
+                            <div class = "fulldate">{{ getFullDate(dates[4]) }}</div>
+                        </div>
+                        <div class = "date">
+                            <div class="weekday">Fri</div>
+                            <div class = "fulldate">{{ getFullDate(dates[5]) }}</div>
+                        </div>
+                        <div class = "date">
+                            <div class="weekday">Sat</div>
+                            <div class = "fulldate">{{ getFullDate(dates[6]) }}</div>
+                        </div>
+                    </div>
+                    <button class = "arrow" @click = "scrollDate(1)">&#8250;</button><br>
+                    <div>{{ formatDate(selectedDate) }}</div>
+                </div>
+                <div class = "medi-info-container">
+                        <div class = "medi-info">
+                            <p>12321</p>
+                        </div>
+                        
+                    </div>
             </el-main>
             <el-footer class = "footer">
                 footer
@@ -132,8 +207,6 @@
         height: 50px;
     }
     .main{
-        width: 100%;
-        height: 100%;
         background-color: #ffffff;
     }
     .footer{
@@ -225,5 +298,53 @@
         font-size: 20px;
         font-weight: 550;
         margin: 30px 30px;
+    }
+    .main{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .calendar{
+        display: flex;
+        align-items: center;
+    }
+    .arrow{
+        width: 30px;
+        height: 30px;
+        font-size: 20px;
+        color: #ffffff;
+        background-color: #1890FF;
+        border: 0ch;
+        border-radius: 10px;
+    }
+    .arrow:hover{
+        background-color: lightgray;
+    }
+    .dates-contaniner{
+        display: flex;
+        overflow-x: auto;
+    }
+    .date{
+        padding: 3px;
+        margin-right: 10px;
+        font-weight: bold;
+        color: #1890FF;
+    }
+    .date.selected{
+        background-color: #f0f0f0;
+    }
+    .date:hover {
+        background-color: lightgray;
+    }
+    .medi-info-container{
+        display: flex;
+        align-items: center;
+    }
+    .medi-info {
+        width: 300px;
+        padding: 20px;
+        background-color: #f0f0f0;
+        border-radius: 10px;
+        text-align: center;
     }
 </style>
