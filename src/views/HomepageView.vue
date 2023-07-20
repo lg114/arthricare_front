@@ -1,7 +1,7 @@
 <!--Home Page-->
 <script>
     import { ref} from 'vue';
-    import { User, Bell, UserFilled, Avatar, CaretRight, Message, MessageBox, Reading, WarningFilled, SwitchButton} from '@element-plus/icons-vue';
+    import { User, Bell, UserFilled, Avatar, CaretRight, Message, MessageBox, Reading, WarningFilled, SwitchButton, HomeFilled, Calendar, CirclePlusFilled, Sugar, Present} from '@element-plus/icons-vue';
     
     export default{
         mounted() {
@@ -13,11 +13,12 @@
                 drawer: ref(false),
                 imgUrl: '',
                 dates: [],
-                selectedDate: null
+                currentDate: new Date(),
+                weekdays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
             };
         },
         created(){
-            this.initDates();
+            this.updateCalendar();
         },
         methods:{
             openDrawer() {
@@ -41,36 +42,26 @@
                 }
                 return true;
             },
-            formatDate(date){ 
-                if (!(date instanceof Date)) {
-                    return '';
-                }
-                const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-                const month = months[date.getMonth()];
-                const day = date.getDate();
-                return `${month} ${day}`;
+            updateCalendar(){
+                const firstDayOfWeek = new Date(this.currentDate);
+                    firstDayOfWeek.setDate(firstDayOfWeek.getDate() - firstDayOfWeek.getDay());
+
+                    this.dates = [];
+                    const options = { month: 'short', day: 'numeric'};
+                    for (let i = 0; i < 7; i++) {
+                        const day = new Date(firstDayOfWeek);
+                        day.setDate(day.getDate() + i);
+                        this.dates.push(day.toLocaleDateString('en-US',options));
+                    }
             },
-            selectDate(date) {
-                this.selectedDate = date;
+            prevWeek() {
+                    this.currentDate.setDate(this.currentDate.getDate() - 7);
+                    this.updateCalendar();
+                },
+            nextWeek() {
+                this.currentDate.setDate(this.currentDate.getDate() + 7);
+                this.updateCalendar();
             },
-            initDates() {
-                const currentDate = new Date();
-                const dates = [];
-                for (let i = -3; i <= 3; i++) {
-                    const newDate = new Date(currentDate);
-                    newDate.setDate(currentDate.getDate() + i);
-                    dates.push(newDate);
-                }
-                this.dates = dates;
-                this.selectedDate = this.formatDate(currentDate);
-            }
-        },
-        computed:{
-            getFullDate(){
-                return(date) =>{
-                    return date.getDate();
-                };
-            }
         },
         components:{
         User,
@@ -82,7 +73,12 @@
         MessageBox,
         Reading,
         WarningFilled,
-        SwitchButton
+        SwitchButton,
+        HomeFilled,
+        Calendar,
+        CirclePlusFilled,
+        Sugar,
+        Present
     }
 };
 </script>
@@ -97,49 +93,38 @@
             </el-header>
             <el-main class = "main">
                 <div class = "calendar">
-                    <button class = "arrow" @click="scrollDates(-1)">&#8249;</button>
+                    <button class = "arrow" @click="prevWeek">&#8249;</button>
                     <div class = "dates-contaniner">
-                        <div class = "date">
-                            <div class="weekday">Sun</div>
-                            <div class="fulldate">{{ getFullDate(dates[0]) }}</div>
+                        <div class = "weekdays">
+                            <!-- Weekday headers -->
+                            <div v-for="day in weekdays" :key="day" class="date">{{ day }}</div>
                         </div>
-                        <div class = "date">
-                            <div class="weekday">Mon</div>
-                            <div class = "fulldate">{{ getFullDate(dates[1]) }}</div>
-                        </div>
-                        <div class = "date">
-                            <div class="weekday">Tue</div>
-                            <div class = "fulldate">{{ getFullDate(dates[2]) }}</div>
-                        </div>
-                        <div class = "date">
-                            <div class="weekday">Wed</div>
-                            <div class = "fulldate">{{ getFullDate(dates[3]) }}</div>
-                        </div>
-                        <div class = "date">
-                            <div class="weekday">Thu</div>
-                            <div class = "fulldate">{{ getFullDate(dates[4]) }}</div>
-                        </div>
-                        <div class = "date">
-                            <div class="weekday">Fri</div>
-                            <div class = "fulldate">{{ getFullDate(dates[5]) }}</div>
-                        </div>
-                        <div class = "date">
-                            <div class="weekday">Sat</div>
-                            <div class = "fulldate">{{ getFullDate(dates[6]) }}</div>
+                        <div class = "dates">
+                            <!-- Dates -->
+                            <div v-for="(date, index) in dates" :key="index" class="date">{{ date }}</div>
                         </div>
                     </div>
-                    <button class = "arrow" @click = "scrollDate(1)">&#8250;</button><br>
-                    <div>{{ formatDate(selectedDate) }}</div>
+                    <button class = "arrow" @click = "nextWeek">&#8250;</button>
                 </div>
                 <div class = "medi-info-container">
                         <div class = "medi-info">
-                            <p>12321</p>
+                            <router-link to="/AddMed">
+                                <el-button class = "addmedbtn" round>Add a med</el-button>
+                            </router-link>
                         </div>
                         
                     </div>
             </el-main>
             <el-footer class = "footer">
-                footer
+                <router-link to = "/Home">
+                <el-icon class="footerBtn" id="home"><HomeFilled></HomeFilled></el-icon>                    
+                </router-link>
+                <el-icon class="footerBtn" id="calendar"><Calendar></Calendar></el-icon>
+                <router-link to = "/AddMed">
+                    <el-icon class="footerBtn" id="addMed"><CirclePlusFilled></CirclePlusFilled></el-icon>
+                </router-link>
+                <el-icon class="footerBtn" id="medication"><Sugar></Sugar></el-icon>
+                <el-icon class="footerBtn" id="rewards"><Present></Present></el-icon>
             </el-footer>
             <el-drawer style="background-color: #1890FF;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
                 <div class = "sidebar">
@@ -210,7 +195,24 @@
         background-color: #ffffff;
     }
     .footer{
+        background-color: #1890FF;
+        position:fixed;
+        bottom:0;
+        height: 60px;
+        width:100%;
+        text-align: center;
+    }
+    .footerBtn{
+        font-size: 45px;
+        color: #ffffff;
         height: 50px;
+        width: 50px;
+        padding-top: 5px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    #addMed{
+        color: #ffffff;
     }
     .userbtn{
         position: absolute;
@@ -322,7 +324,9 @@
     }
     .dates-contaniner{
         display: flex;
-        overflow-x: auto;
+        flex-direction: column;
+        flex: 1;
+        align-items: center;
     }
     .date{
         padding: 3px;
@@ -330,21 +334,45 @@
         font-weight: bold;
         color: #1890FF;
     }
+    .weekdays{
+        display: flex;
+    }
+    .dates{
+        display: flex;
+    }
+    .weekdays .date{
+        margin-right: 8px;
+    }
+    .dates .date{
+        margin-right: -1px;
+        margin-left: 6px;
+    }
     .date.selected{
         background-color: #f0f0f0;
     }
     .date:hover {
         background-color: lightgray;
+        border-radius: 5px;
     }
     .medi-info-container{
         display: flex;
         align-items: center;
     }
     .medi-info {
-        width: 300px;
+        margin-top: 20px;
+        width: 320px;
         padding: 20px;
-        background-color: #f0f0f0;
+        background-color: #ffffff;
         border-radius: 10px;
         text-align: center;
+    }
+    .addmedbtn{
+        background-color: #1890FF;
+        color: #ffffff;
+        font-size: 20px;
+        font-weight: 800;
+        width: 300px;
+        height: 40px;
+        margin-top: 598px;
     }
 </style>
