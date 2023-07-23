@@ -4,6 +4,7 @@
     import { User, Bell, UserFilled, Avatar, CaretRight, Message, MessageBox, Reading, WarningFilled, SwitchButton, HomeFilled, Calendar, CirclePlusFilled, Sugar, Present} from '@element-plus/icons-vue';
     
     export default{
+        //title
         mounted() {
             document.title = "Home | ArthriCare";
         },
@@ -21,27 +22,16 @@
             this.updateCalendar();
         },
         methods:{
-            openDrawer() {
+            //Drawer
+            openDrawer(){
             this.drawer = true;
             },
-            beforeDrawerClose(done) {
+            beforeDrawerClose(done){
                 done();
             },
-            handleAvatarSuccess(response, uploadFile){
-                this.imgUrl = URL.createObjectURL(uploadFile.raw);
-                console.log('handleAvatarSuccess executed');
-                console.log('imgUrl:', this.imgUrl);
-            },
-            beforeAvatarUpload(rawFile){
-                if (rawFile.type !== 'image/jpeg') {
-                    this.$message.error('Avatar picture must be JPG format!');
-                    return false;
-                } else if (rawFile.size / 1024 / 1024 > 2) {
-                    this.$message.error('Avatar picture size cannot exceed 2MB!');
-                    return false;
-                }
-                return true;
-            },
+            //Avatar
+
+            //Calendar
             updateCalendar(){
                 const firstDayOfWeek = new Date(this.currentDate);
                     firstDayOfWeek.setDate(firstDayOfWeek.getDate() - firstDayOfWeek.getDay());
@@ -54,14 +44,20 @@
                         this.dates.push(day.toLocaleDateString('en-US',options));
                     }
             },
-            prevWeek() {
+            //Calendar
+            prevWeek(){
                     this.currentDate.setDate(this.currentDate.getDate() - 7);
                     this.updateCalendar();
-                },
-            nextWeek() {
+            },
+            //Calendar
+            nextWeek(){
                 this.currentDate.setDate(this.currentDate.getDate() + 7);
                 this.updateCalendar();
             },
+            //Router
+            goToUserProfile(){
+                this.$router.push('/UserProfile');
+            }
         },
         components:{
         User,
@@ -133,14 +129,14 @@
                                 <!--Action是模拟接口，与后端连接时更换-->
                                 <el-upload action="" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
                                     <el-avatar :size="65">
-                                    <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
-                                    <template v-else>
-                                        <UserFilled class="defalut-avatar" />
-                                    </template>
+                                        <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
+                                        <template v-else>
+                                            <UserFilled class="defalut-avatar" />
+                                        </template>
                                     </el-avatar>
                                 </el-upload>                                
                                 <div class = "menu-item">
-                                    <div class = "menu-button">
+                                    <div class = "menu-button" @click = "goToUserProfile">
                                         <el-icon class="menu-icon"><Avatar/></el-icon>
                                         <p>My Profile</p>
                                         <el-icon class="menu-icon"><CaretRight /></el-icon>
@@ -193,6 +189,10 @@
     }
     .main{
         background-color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
     }
     .footer{
         background-color: #1890FF;
@@ -283,6 +283,7 @@
         align-items: center;
         justify-content: space-between;
         width: 100%;
+        cursor: pointer;
     }
     .menu-button3{
         display: flex;
@@ -290,6 +291,7 @@
         justify-content: space-between;
         width: 100%;
         margin-top: 130px;
+        cursor: pointer;
     }
     .menu-button3 p{
         font-size: 20px;
@@ -365,6 +367,7 @@
         background-color: #ffffff;
         border-radius: 10px;
         text-align: center;
+        margin-top: 500px;
     }
     .addmedbtn{
         background-color: #1890FF;
@@ -373,6 +376,5 @@
         font-weight: 800;
         width: 300px;
         height: 40px;
-        margin-top: 598px;
     }
 </style>

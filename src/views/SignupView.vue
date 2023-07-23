@@ -1,20 +1,44 @@
 <!--Signup Page -->
 <script>
-    import { ref} from 'vue';
+    import { reactive} from 'vue';
     import { ArrowLeftBold } from '@element-plus/icons-vue';
+    import router from '@/router';
 
     export default{
+        //title
         mounted(){
             document.title = 'Sign Up | ArthriCare';
         },
         setup(){
-            const name = ref('');
-            const selectedAge = ref('');
-            const gender = ref('');
-            const selectedWeight = ref('');
-            const email = ref('');
-            const password = ref('');
+            //set up register data
+            const registerForm = reactive({
+                name: '',
+                gender: '',
+                email: '',
+                password: '',
+                weight: '',
+                Age: '',
 
+            });
+
+            //handle sign up process
+            const handleregister = () => {
+
+            }
+
+            //submit register form
+            const submitRegisterForm = () => {
+                try{
+                    //Here, axios is used to send network requests, assuming the address of the backend API is '/api/register'
+
+                    //jump to login page
+                    router.push("/login");
+                }catch(error){
+                    console.error("Registration failed!", error);
+                }
+            }
+
+            //age selection
             const generateAgeOptions = (start, end) => {
             const options = [];
             for (let i = start; i <= end; i++) {
@@ -23,6 +47,7 @@
             return options;
             };
 
+            //weight selection
             const generateWeightOptions = (start, end) => {
             const options = [];
             for (let i = start; i <= end; i++) {
@@ -32,19 +57,17 @@
             };
 
             return {
-            name,
-            selectedAge,
-            gender,
-            selectedWeight,
-            email,
-            password,
+            registerForm,
+            handleregister,
+            submitRegisterForm,
             ageOptions: generateAgeOptions(10, 100),
             weightOptions: generateWeightOptions(35, 200),
             };
         },
+
         components:{
             ArrowLeftBold,
-            }
+        }
     };
 </script>
 <template>
@@ -60,12 +83,12 @@
                             <h2>Sign Up</h2>
                             <div class = "input-row">
                                 <b><label for = "name">Name:</label></b>
-                                <input id = "name" type="text" class = "input" placeholder="Please enter your full name" v-model="name" />
+                                <input id = "name" type="text" class = "input" placeholder="Please enter your full name" v-model="registerForm.name" required/>
                             </div>
                             
                             <div class = "input-row">
                                 <b><label for = "age">Age:</label></b>
-                                <select name="age" id="age" class="row-input" v-model="selectedAge">
+                                <select name="age" id="age" class="input" v-model="registerForm.Age" required>
                                     <option value="" disabled selected>Select Age</option>
                                     <option v-for="age in ageOptions" :value="age" :key="age">{{ age }}</option>
                                 </select>
@@ -73,7 +96,7 @@
                             
                             <div class = "input-row">
                                 <b><label for = "gender">Gender:</label></b>
-                                <select name="gender" id="gender" class = "row-input" v-model="gender">
+                                <select name="gender" id="gender" class = "input" v-model="registerForm.gender" required>
                                     <option value="" disabled selected>Select Gender</option>
                                     <option value="male">Male</option>
                                     <option value="female">Female</option>
@@ -82,7 +105,7 @@
                             
                             <div class = "input-row">
                                 <b><label for = "weight">Weight:</label></b>
-                                <select name = "weight" id = "weight" class = "row-input" v-model = "selectedWeight">
+                                <select name = "weight" id = "weight" class = "input" v-model = "registerForm.weight" required>
                                     <option value="" disabled selected>Select Weight</option>
                                     <option v-for="weight in weightOptions" :value="weight" :key="weight">{{ weight }} kg</option>
                                 </select>   
@@ -90,18 +113,18 @@
                              
                             <div class = "input-row">
                                 <b><label for = "email">Email:</label></b>
-                                <input id = "email" type="email" class = "input" placeholder="Please enter your email" v-model="email" /><br>
+                                <input id = "email" type="email" class = "input" placeholder="Please enter your email" v-model="registerForm.email" required/><br>
                             </div>
 
                             <div class = "input-row">
                                 <b><label for = "password">Password:</label></b>
-                                <input id = "password" type="password" class = "input" placeholder="Please enter your password" v-model="password" />
+                                <input id = "password" type="password" class = "input" placeholder="Please enter your password" v-model="registerForm.password" required/>
                             </div>
                     </div>
             </el-main>
             <el-footer>
                 <div class="buttons">
-                    <el-button class = "login-button">SIGN UP</el-button> 
+                    <el-button class = "login-button" @click = "submitRegisterForm">SIGN UP</el-button> 
                 </div>
             </el-footer>
         </el-container>

@@ -1,25 +1,57 @@
 <!--Login Page -->
 <script>
     import { ArrowLeftBold } from '@element-plus/icons-vue';
-    import { ref } from 'vue';
+    import { ref,reactive } from 'vue';
+    import router from '@/router';
 
     export default{
+        //title
         mounted() {
             document.title = "Login | ArthriCare";
         },
         setup(){
-            const email = ref('');
-            const password = ref('');
+            //setup login data
+            const loginForm = reactive({
+                email: '',
+                password: '',
+            });
+
+            //default show error message
+            const showError = ref(false);
+
+            //handle login process
+            const handlelogin = () => {
+                if(loginForm.email === '' || loginForm.password === ''){
+                    showError.value = true;
+                }else{
+                    showError.value = false;
+                    router.push('/Home');
+                }
+            };
+
+            //submit login form
+            const submitLoginForm = () => {
+                try{
+                    //Here, axios is used to send network requests, assuming the address of the backend API is '/api/login'
+                    
+                    //jump to login page
+                    router.push("/home");
+                }catch(error){
+                    console.error("Login failed!", error);
+                }
+            };
 
             return{
-                email,
-                password
-            }
+                loginForm,
+                handlelogin,
+                submitLoginForm,
+                showError,
+            };
         },
         components: {
             ArrowLeftBold
-            }
-    };
+        },
+    }
 </script>
 <template>
     <div class="container" >
@@ -34,9 +66,9 @@
                         <h2>Welcome Back</h2>
                         <p>Login to your account</p>
                         <b><label>Email Address</label></b>
-                        <input id="input" type="email" placeholder="Please enter your email" v-model="email"/><br>
+                        <input class="input" id = "email" type="email" placeholder="Please enter your email" v-model="loginForm.email"/><br>
                         <b><label>Password</label></b>
-                        <input id="input" type="password" placeholder="Please enter your passowrd" v-model="password"/>
+                        <input class="input" id = "password" type="password" placeholder="Please enter your passowrd" v-model="loginForm.password"/>
                     </div>
                     <div id="mid">
                         Don't have an account?
@@ -44,11 +76,13 @@
                         <hr>
                         Forget your password? 
                         <router-link to = "/Resetpassword">Click Here</router-link>
+
+                        <p v-if="showError" class="error">Please enter email address or password</p>
                     </div>
             </el-main>
             <el-footer>
                 <div class="buttons">
-                     <router-link to = "/Home"><el-button class = "login-button">LOG IN</el-button></router-link>
+                     <el-button class = "login-button" @click = "submitLoginForm">LOG IN</el-button>
                 </div>
             </el-footer>
         </el-container>
@@ -96,7 +130,7 @@
         text-align: center;
         bottom: 30%;
     }
-    #input{
+    .input{
         color: white;
         background-color: #1890FF;
         border: 2px solid white;
@@ -171,5 +205,10 @@
     .login-button:hover::before{
     width: 100%;
     border-radius: 10px;
+    }
+    .error{
+        color: #FF5F5F;
+        font-size:x-large;
+
     }
 </style>
