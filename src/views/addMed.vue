@@ -1,4 +1,4 @@
-<!--add Med Page -->
+<!--add med Page -->
 <script setup>
   import {ArrowLeftBold} from '@element-plus/icons-vue';
   import {Bell} from '@element-plus/icons-vue';

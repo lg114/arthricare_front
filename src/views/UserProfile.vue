@@ -16,22 +16,6 @@
                     points: '420'
                 },
                 drawer: ref(false),
-                MoreFilled,
-                UserFilled,
-                Calendar,
-                CirclePlus,
-                HomeFilled,
-                Sugar,
-                Present,
-                Edit,
-                CirclePlusFilled,
-                Avatar,
-                CaretRight,
-                Reading,
-                WarningFilled,
-                SwitchButton,
-                Message,
-                MessageBox
             };
         },
         methods:{
@@ -40,7 +24,29 @@
             },
             beforeDrawerClose(done) {
                 done();
+            },
+            //Router
+            goToUserProfile(){
+                this.$router.push('/UserProfile');
             }
+        },
+        components: {
+            MoreFilled,
+            UserFilled,
+            Calendar,
+            CirclePlus,
+            HomeFilled,
+            Message,
+            MessageBox,
+            Reading,
+            WarningFilled,
+            Sugar,
+            SwitchButton,
+            Edit,
+            CaretRight,
+            Avatar,
+            Present,
+            CirclePlusFilled
         }
     };
 </script>
@@ -77,7 +83,9 @@
             </el-main> 
         </el-container>
         <el-footer class="footer">
-                <el-icon class="footerBtn" id="home"><HomeFilled></HomeFilled></el-icon>
+                <router-link to = "/Home">
+                <el-icon class="footerBtn" id="home"><HomeFilled></HomeFilled></el-icon>                    
+                </router-link>
                 <el-icon class="footerBtn" id="calendar"><Calendar></Calendar></el-icon>
                 <router-link to = "/AddMed">
                     <el-icon class="footerBtn" id="addMed"><CirclePlusFilled></CirclePlusFilled></el-icon>
@@ -98,7 +106,7 @@
                                     </el-avatar>
                                 </el-upload>                                
                                 <div class = "menu-item">
-                                    <div class = "menu-button">
+                                    <div class = "menu-button" @click = "goToUserProfile">
                                         <el-icon class="menu-icon"><Avatar/></el-icon>
                                         <p>My Profile</p>
                                         <el-icon class="menu-icon"><CaretRight /></el-icon>
@@ -133,6 +141,8 @@
             </el-drawer>
     </div>
 </template>
+
+
 
 <style scoped>
 .header{
@@ -279,6 +289,7 @@ p{
         align-items: center;
         justify-content: space-between;
         width: 100%;
+        cursor: pointer;
     }
     .menu-button3{
         display: flex;
@@ -286,6 +297,7 @@ p{
         justify-content: space-between;
         width: 100%;
         margin-top: 130px;
+        cursor: pointer;
     }
     .menu-button3 p{
         font-size: 20px;
@@ -296,5 +308,6 @@ p{
         font-size: 20px;
         font-weight: 550;
         margin: 30px 30px;
+        text-decoration: none;
     }
 </style>
