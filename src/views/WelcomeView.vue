@@ -122,8 +122,9 @@
 
 <script>
     export default{
-    mounted(){
-        document.title = 'Welcome | ArthriCare';
-    },
+      //title
+      mounted(){
+          document.title = 'Welcome | ArthriCare';
+      },
     };
 </script>
