@@ -11,6 +11,8 @@ Coding languages: HTML & JAVASCRIPT & VUE
 2. axios v1.4.0 https://axios-http.com/ (HTTP request library)
 3. Vue-router v4.2.2 https://github.com/vuejs/router#readme (Official Route Manager)
 4. element-plus/icons v0.0.11 (Icons)
+5. mdi/font(npm install @mdi/font)
+
 ### Development dependencies
 1. @babel/core v7.22.1 https://babel.dev/docs/babel-core 
 2. @babel/eslint-parser v7.21.8 https://babel.dev/

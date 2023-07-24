@@ -18,7 +18,6 @@
                 password: '',
                 weight: '',
                 Age: '',
-
             });
 
             //handle sign up process
@@ -83,12 +82,12 @@
                             <h2>Sign Up</h2>
                             <div class = "input-row">
                                 <b><label for = "name">Name:</label></b>
-                                <input id = "name" type="text" class = "input" placeholder="Please enter your full name" v-model="registerForm.name" required/>
+                                <input id = "name" type="text" class = "input" placeholder="Please enter your full name" v-model="registerForm.name"/>
                             </div>
                             
                             <div class = "input-row">
                                 <b><label for = "age">Age:</label></b>
-                                <select name="age" id="age" class="input" v-model="registerForm.Age" required>
+                                <select name="age" id="age" class="input" v-model="registerForm.Age">
                                     <option value="" disabled selected>Select Age</option>
                                     <option v-for="age in ageOptions" :value="age" :key="age">{{ age }}</option>
                                 </select>
@@ -96,7 +95,7 @@
                             
                             <div class = "input-row">
                                 <b><label for = "gender">Gender:</label></b>
-                                <select name="gender" id="gender" class = "input" v-model="registerForm.gender" required>
+                                <select name="gender" id="gender" class = "input" v-model="registerForm.gender">
                                     <option value="" disabled selected>Select Gender</option>
                                     <option value="male">Male</option>
                                     <option value="female">Female</option>
@@ -105,7 +104,7 @@
                             
                             <div class = "input-row">
                                 <b><label for = "weight">Weight:</label></b>
-                                <select name = "weight" id = "weight" class = "input" v-model = "registerForm.weight" required>
+                                <select name = "weight" id = "weight" class = "input" v-model = "registerForm.weight">
                                     <option value="" disabled selected>Select Weight</option>
                                     <option v-for="weight in weightOptions" :value="weight" :key="weight">{{ weight }} kg</option>
                                 </select>   
