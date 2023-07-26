@@ -1,7 +1,6 @@
 <!--Edit Med Page -->
 <script setup>
   import {ArrowLeftBold} from '@element-plus/icons-vue';
-  import {Bell} from '@element-plus/icons-vue';
   
 </script>
 <template>
@@ -59,9 +58,6 @@
 
           <div class = "note">Reminder
             </div>   
-          <router-link to = "/">
-            <el-icon class="BellBtn"><Bell/></el-icon>
-          </router-link>
 
         </div>  
         <div class="Button" >
@@ -105,13 +101,7 @@
           display:flex;
         }
 
-        .BellBtn{
-          font-size: 30px;
-          color: #1890FF;
-          position:relative;
-          margin-left:60%;
-          size:40%;
-      }
+
         
         .note{
           position:relative;

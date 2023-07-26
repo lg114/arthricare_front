@@ -78,6 +78,8 @@
     </div>
 </template>
 
+
+<!-- the following is all css-->
 <style scoped>
     .container{
         display: grid;

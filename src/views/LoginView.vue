@@ -5,6 +5,7 @@
     import router from '@/router';
 
     export default{
+
         //title
         mounted() {
             document.title = "Login | ArthriCare";
@@ -89,6 +90,9 @@
     </div>
 </template>
 
+
+
+<!-- the following is all css-->
 <style scoped>
     .container{
         display: flex;
@@ -96,7 +100,7 @@
         align-items: center;
         height: 100vh;
         background-color: #1890FF;
-        overflow: auto;
+        overflow: hidden;
     }
 
     .content-container {
@@ -167,33 +171,33 @@
     }
 
     .login-button{
-    background: #FFFFFF;
-    color: #1890FF;
-    position: relative;
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: transparent;
-    color: white;
-    border: 2px solid white;
-    transition: background-color 0.5s, color 0.5s;
+        background: #FFFFFF;
+        color: #1890FF;
+        position: relative;
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: transparent;
+        color: white;
+        border: 2px solid white;
+        transition: background-color 0.5s, color 0.5s;
     }
 
     .login-button:hover{
-    background-color: #FFFFFF;
-    color: #1890FF;
-    transform: translateZ(10px);
+        background-color: #FFFFFF;
+        color: #1890FF;
+        transform: translateZ(10px);
     }
 
     .login-button::before{
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 100%;
-    background-color: #FFFFFF;
-    transition: width 0.3s;
-    z-index: -1;
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 100%;
+        background-color: #FFFFFF;
+        transition: width 0.3s;
+        z-index: -1;
     }
 
     .login-button:hover{
@@ -203,12 +207,49 @@
     }
 
     .login-button:hover::before{
-    width: 100%;
-    border-radius: 10px;
+        width: 100%;
+        border-radius: 10px;
     }
     .error{
         color: #FF5F5F;
         font-size:x-large;
 
+    }
+    @media screen and (max-width: 400px) {
+        .container{
+            overflow-y: auto;
+        }
+        .input-row{
+            width: 100%;
+        }
+        
+        .input{
+            width: 300px;
+            height: 25px;
+        }
+        .row-input{
+            width: 318px;
+            height: 32px;
+        }
+        
+        .backBtn{
+            font-size: 30px;
+            margin: -170px;
+            margin-top: 60px;
+            color:#ffffff;
+        }
+
+        .buttons{
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .login-button{
+            width: 100%;
+            height: 63px;
+        }
+        .login-button::before{
+            width: 2px;
+        }
     }
 </style>

@@ -1,7 +1,7 @@
 <!--Home Page-->
 <script>
     import { ref} from 'vue';
-    import { User, Bell, UserFilled, Avatar, CaretRight, Message, MessageBox, Reading, WarningFilled, SwitchButton, HomeFilled, Calendar, CirclePlusFilled, Sugar, Present} from '@element-plus/icons-vue';
+    import { User, UserFilled, Avatar, CaretRight, Message, MessageBox, Reading, WarningFilled, SwitchButton, HomeFilled, Calendar, CirclePlusFilled, Sugar, Present} from '@element-plus/icons-vue';
     
     export default{
         //title
@@ -61,7 +61,6 @@
         },
         components:{
         User,
-        Bell,
         UserFilled,
         Avatar,
         CaretRight,
@@ -85,7 +84,7 @@
             <el-header class = "header">
                 <el-icon class="userbtn" @click="drawer = true"><User /></el-icon>
                 <span class = "username">Hello, {{ username }}</span>
-                <el-icon class = "bellbtn"><Bell /></el-icon>
+                
             </el-header>
             <el-main class = "main">
                 <div class = "calendar">
@@ -93,7 +92,7 @@
                     <div class = "dates-contaniner">
                         <div class = "weekdays">
                             <!-- Weekday headers -->
-                            <div v-for="day in weekdays" :key="day" class="date">{{ day }}</div>
+                            <div v-for="day in weekdays" :key="day" class="day">{{ day }}</div>
                         </div>
                         <div class = "dates">
                             <!-- Dates -->
@@ -109,7 +108,7 @@
                             </router-link>
                         </div>
                         
-                    </div>
+                </div>
             </el-main>
             <el-footer class = "footer">
                 <router-link to = "/Home">
@@ -173,16 +172,21 @@
     </div>
 </template>
 
+
+
+<!-- the following is all css-->
 <style scoped>
     .container{
         display: flex;
         justify-content: center;
         height: 100vh;
         background-color: #1890FF;
-        overflow: hidden;
     }
     .content-container{
         display: flex;
+        flex-direction: column;
+        flex: 1;
+        overflow-y: auto;
     }
     .header{
         height: 50px;
@@ -193,6 +197,7 @@
         flex-direction: column;
         align-items: center;
         flex: 1;
+        padding-bottom: 50px;
     }
     .footer{
         background-color: #1890FF;
@@ -229,13 +234,6 @@
         color: #ffffff;
         font-weight: 550;
         font-size: 20px;
-    }
-    .bellbtn{
-        position: absolute;
-        right: 20px;
-        top: 10px;
-        font-size: 30px;
-        color: #ffffff;
     }
     .sidebar{
         display: flex;
@@ -303,11 +301,7 @@
         font-weight: 550;
         margin: 30px 30px;
     }
-    .main{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+
     .calendar{
         display: flex;
         align-items: center;
@@ -331,6 +325,12 @@
         align-items: center;
     }
     .date{
+        padding: 3px;
+        margin-right: 10px;
+        font-weight: bold;
+        color: #1890FF;
+    }
+    .day{
         padding: 3px;
         margin-right: 10px;
         font-weight: bold;
@@ -376,5 +376,28 @@
         font-weight: 800;
         width: 300px;
         height: 40px;
+    }
+    @media screen and (max-width: 400px) {
+        .content-container{
+            overflow-y: auto;
+            overflow-x: auto;
+        }
+        .arrow{
+            width: 25px;
+            height: 25px;
+        }
+        .dates .date{
+            margin-right: -2px;
+            margin-left: 2px;
+            padding: 10px;
+        }
+        .footerBtn{
+            font-size: 25px;
+            height: 50px;
+            width: 50px;
+            padding-top: 5px;
+            padding-left: 2px;
+            padding-right: 2px;
+        }
     }
 </style>

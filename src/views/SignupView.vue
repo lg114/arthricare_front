@@ -73,12 +73,13 @@
     <div class = "container">
         <el-container class = "content-container">
             <el-header>
-                <router-link to = "/">
-                    <el-icon class = "backBtn"><ArrowLeftBold /></el-icon>
-                </router-link>
+
             </el-header>
             <el-main style = "height: 100%; width: 100%;">
                     <div class = "input-container">
+                        <router-link to = "/">
+                            <el-icon class = "backBtn"><ArrowLeftBold /></el-icon>
+                            </router-link>
                             <h2>Sign Up</h2>
                             <div class = "input-row">
                                 <b><label for = "name">Name:</label></b>
@@ -87,7 +88,7 @@
                             
                             <div class = "input-row">
                                 <b><label for = "age">Age:</label></b>
-                                <select name="age" id="age" class="input" v-model="registerForm.Age">
+                                <select name="age" id="age" class="row-input" v-model="registerForm.Age">
                                     <option value="" disabled selected>Select Age</option>
                                     <option v-for="age in ageOptions" :value="age" :key="age">{{ age }}</option>
                                 </select>
@@ -95,7 +96,7 @@
                             
                             <div class = "input-row">
                                 <b><label for = "gender">Gender:</label></b>
-                                <select name="gender" id="gender" class = "input" v-model="registerForm.gender">
+                                <select name="gender" id="gender" class = "row-input" v-model="registerForm.gender">
                                     <option value="" disabled selected>Select Gender</option>
                                     <option value="male">Male</option>
                                     <option value="female">Female</option>
@@ -104,7 +105,7 @@
                             
                             <div class = "input-row">
                                 <b><label for = "weight">Weight:</label></b>
-                                <select name = "weight" id = "weight" class = "input" v-model = "registerForm.weight">
+                                <select name = "weight" id = "weight" class = "row-input" v-model = "registerForm.weight">
                                     <option value="" disabled selected>Select Weight</option>
                                     <option v-for="weight in weightOptions" :value="weight" :key="weight">{{ weight }} kg</option>
                                 </select>   
@@ -112,7 +113,7 @@
                              
                             <div class = "input-row">
                                 <b><label for = "email">Email:</label></b>
-                                <input id = "email" type="email" class = "input" placeholder="Please enter your email" v-model="registerForm.email" required/><br>
+                                <input id = "email" type="email" class = "input" placeholder="Please enter your email" v-model="registerForm.email" required/>
                             </div>
 
                             <div class = "input-row">
@@ -130,6 +131,9 @@
     </div>
 </template>
 
+
+
+<!-- the following is all css-->
 <style scoped>
     .container{
         display: flex;
@@ -139,18 +143,19 @@
         background-color: #1890FF;
         overflow: hidden;
     }
-
     .content-container {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        max-width: 600px;
+        width: 100%;
     }
     .backBtn{
         font-size: 30px;
-        margin: -170px;
-        margin-top: 20px;
         color:#ffffff;
+        position: sticky;
+        top: 30px;
     }
     .input-container{
         display: flex;
@@ -158,7 +163,7 @@
         align-items: center;
         justify-content: center;
         color:#FFFFFF;
-        margin-bottom: 40px;
+        margin-bottom: 100px;
         text-align: left;
     }
     .input{
@@ -188,22 +193,61 @@
         color: white;
         background-color: #1890FF;
         border: 2px solid white;
-        width: 150px;
-        height: 40px;
+        width: 317px;
+        height: 45px;
         border-radius: 10px;
         margin: 3.5px;
         padding-left: 10px;
         outline: none;
     }
-    
+    /* small screen */
+    @media screen and (max-width: 400px) {
+        .container{
+            overflow-y: auto;
+        }
+        .input-row{
+            width: 100%;
+        }
+        
+        .input{
+            width: 300px;
+            height: 25px;
+        }
+        .row-input{
+            width: 318px;
+            height: 32px;
+        }
+        
+        .backBtn{
+            font-size: 30px;
+            margin: -170px;
+            margin-top: 60px;
+            color:#ffffff;
+        }
+
+        .buttons{
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .login-button{
+            width: 100%;
+            height: 63px;
+        }
+        .login-button::before{
+            width: 2px;
+        }
+    }
+    /* placeholder */
     ::placeholder{
         color: #FFFFFF;
     }
+    /* following is the button styling */
     .buttons{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     .login-button{
@@ -212,46 +256,43 @@
         margin-bottom: 10px;
         border-radius: 10px;
         font-weight: 700;
-    }
-
-    .login-button{
-    background: #FFFFFF;
-    color: #1890FF;
-    position: relative;
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: transparent;
-    color: white;
-    border: 2px solid white;
-    transition: background-color 0.5s, color 0.5s;
+        background: #FFFFFF;
+        color: #1890FF;
+        position: relative;
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: transparent;
+        color: white;
+        border: 2px solid white;
+        transition: background-color 0.5s, color 0.5s;
     }
 
     .login-button:hover{
-    background-color: #FFFFFF;
-    color: #1890FF;
-    transform: translateZ(10px);
+        background-color: #FFFFFF;
+        color: #1890FF;
+        transform: translateZ(10px);
     }
 
     .login-button::before{
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 100%;
-    background-color: #FFFFFF;
-    transition: width 0.3s;
-    z-index: -1;
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 100%;
+        background-color: #FFFFFF;
+        transition: width 0.3s;
+        z-index: -1;
     }
 
     .login-button:hover{
-    background-color: #FFFFFF;
-    color: #1890FF;
-    border-radius: 10px;
+        background-color: #FFFFFF;
+        color: #1890FF;
+        border-radius: 10px;
     }
 
     .login-button:hover::before{
-    width: 100%;
-    border-radius: 10px;
+        width: 100%;
+        border-radius: 10px;
     }
 </style>
