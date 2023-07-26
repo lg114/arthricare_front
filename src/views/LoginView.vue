@@ -240,16 +240,14 @@
         }
 
         .buttons{
+            position: relative;
             bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
         }
         .login-button{
-            width: 100%;
+
             height: 63px;
-        }
-        .login-button::before{
-            width: 2px;
         }
     }
 </style>
