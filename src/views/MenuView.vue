@@ -1,3 +1,29 @@
+<script>
+  export default {
+    data() {
+      return {
+        menuItems: [
+          { id: 1, title: 'Option 1' },
+          { id: 2, title: 'Option 2' },
+          { id: 3, title: 'Option 3' },
+          // Add more options as needed
+        ],
+        selectedItem: null,
+        showOptions: false,
+      };
+    },
+    methods: {
+      handleItemClick(item) {
+        this.selectedItem = item;
+        this.showOptions = false;
+      },
+      toggleOptions() {
+        this.showOptions = !this.showOptions;
+      },
+    },
+  };
+</script>
+
 <template>
     <div class="menu">
       <div class="selected-option" @click="toggleOptions">
@@ -9,9 +35,10 @@
         </li>
       </ul>
     </div>
-  </template>
-  
-  <style>
+</template>
+
+
+<style>
   .menu {
     position: relative;
     display: inline-block;
@@ -52,30 +79,4 @@
   .options li:hover {
     background-color: #e0e0e0;
   }
-  </style>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        menuItems: [
-          { id: 1, title: 'Option 1' },
-          { id: 2, title: 'Option 2' },
-          { id: 3, title: 'Option 3' },
-          // Add more options as needed
-        ],
-        selectedItem: null,
-        showOptions: false,
-      };
-    },
-    methods: {
-      handleItemClick(item) {
-        this.selectedItem = item;
-        this.showOptions = false;
-      },
-      toggleOptions() {
-        this.showOptions = !this.showOptions;
-      },
-    },
-  };
-  </script>
+</style>

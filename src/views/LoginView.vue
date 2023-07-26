@@ -56,37 +56,39 @@
 </script>
 <template>
     <div class="container" >
-        <el-container class = "content-container">
-            <el-header>
-                <router-link to = "/">
-                    <el-icon class = "backBtn"><ArrowLeftBold /></el-icon>
-                </router-link>
-            </el-header>
-            <el-main style = "height: 500px">
-                    <div class = "input-container">
-                        <h2>Welcome Back</h2>
-                        <p>Login to your account</p>
-                        <b><label>Email Address</label></b>
-                        <input class="input" id = "email" type="email" placeholder="Please enter your email" v-model="loginForm.email"/><br>
-                        <b><label>Password</label></b>
-                        <input class="input" id = "password" type="password" placeholder="Please enter your passowrd" v-model="loginForm.password"/>
-                    </div>
-                    <div id="mid">
-                        Don't have an account?
-                        <router-link to = "/Signup">Sign Up</router-link>
-                        <hr>
-                        Forget your password? 
-                        <router-link to = "/Resetpassword">Click Here</router-link>
+        <Transition name = "fade">
+            <el-container class = "content-container">
+                <el-header>
+                    <router-link to = "/">
+                        <el-icon class = "backBtn"><ArrowLeftBold /></el-icon>
+                    </router-link>
+                </el-header>
+                <el-main style = "height: 500px">
+                        <div class = "input-container">
+                            <h2>Welcome Back</h2>
+                            <p>Login to your account</p>
+                            <b><label>Email Address</label></b>
+                            <input class="input" id = "email" type="email" placeholder="Please enter your email" v-model="loginForm.email"/><br>
+                            <b><label>Password</label></b>
+                            <input class="input" id = "password" type="password" placeholder="Please enter your passowrd" v-model="loginForm.password"/>
+                        </div>
+                        <div id="mid">
+                            Don't have an account?
+                            <router-link to = "/Signup">Sign Up</router-link>
+                            <hr>
+                            Forget your password? 
+                            <router-link to = "/Resetpassword">Click Here</router-link>
 
-                        <p v-if="showError" class="error">Please enter email address or password</p>
+                            <p v-if="showError" class="error">Please enter email address or password</p>
+                        </div>
+                </el-main>
+                <el-footer>
+                    <div class="buttons">
+                        <el-button class = "login-button" @click = "submitLoginForm">LOG IN</el-button>
                     </div>
-            </el-main>
-            <el-footer>
-                <div class="buttons">
-                     <el-button class = "login-button" @click = "submitLoginForm">LOG IN</el-button>
-                </div>
-            </el-footer>
-        </el-container>
+                </el-footer>
+            </el-container>
+        </Transition>
     </div>
 </template>
 
@@ -94,6 +96,7 @@
 
 <!-- the following is all css-->
 <style scoped>
+    /* -------------------------------- Base Layout -----------------------------------------------*/
     .container{
         display: flex;
         justify-content: center;
@@ -109,12 +112,18 @@
         justify-content: center;
         align-items: center;
     }
+    /* -------------------------------- Base Layout -----------------------------------------------*/
+
+    /* -------------------------------- Back Button -----------------------------------------------*/
     .backBtn{
         font-size: 30px;
         margin: -170px;
         margin-top: 20px;
         color:#FFFFFF;
     }
+    /* -------------------------------- Back Button -----------------------------------------------*/
+
+    /* -------------------------------- Component -------------------------------------------------*/
     .input-container{
         display: flex;
         flex-direction: column;
@@ -155,6 +164,9 @@
         color: #FFFFFF;
         text-decoration: underline;
     }
+    /* -------------------------------- Component -------------------------------------------------*/
+
+    /* -------------------------------- Buttons -------------------------------------------------*/
     .buttons{
         display: flex;
         flex-direction: column;
@@ -210,11 +222,17 @@
         width: 100%;
         border-radius: 10px;
     }
+    /* -------------------------------- Buttons -------------------------------------------------*/
+
+    /* -------------------------------- Error Message ------------------------------------------*/
     .error{
         color: #FF5F5F;
         font-size:x-large;
 
     }
+    /* -------------------------------- Error Message ------------------------------------------*/
+
+    /* -------------------------------- Small Screen -------------------------------------------*/
     @media screen and (max-width: 400px) {
         .container{
             overflow-y: auto;
@@ -246,8 +264,8 @@
             transform: translateX(-50%);
         }
         .login-button{
-
             height: 63px;
         }
     }
+    /* -------------------------------- Small Screen -------------------------------------------*/
 </style>

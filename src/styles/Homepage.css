@@ -1,0 +1,203 @@
+.container{
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    background-color: #1890FF;
+    overflow: hidden;
+}
+.content-container{
+    display: flex;
+}
+.header{
+    height: 50px;
+}
+.main{
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100vw;
+}
+.footer{
+    background-color: #1890FF;
+    position:fixed;
+    bottom:0;
+    height: 60px;
+    width:100%;
+    text-align: center;
+}
+.footerBtn{
+    font-size: 45px;
+    color: #ffffff;
+    height: 50px;
+    width: 50px;
+    padding-top: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+#addMed{
+    color: #ffffff;
+}
+.userbtn{
+    position: absolute;
+    left: 20px;
+    top: 10px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #ffffff;
+}
+.username{
+    position: relative;
+    top: 15px;
+    left: 55px;
+    color: #ffffff;
+    font-weight: 550;
+    font-size: 20px;
+}
+.bellbtn{
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    font-size: 30px;
+    color: #ffffff;
+}
+.sidebar{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+}
+.uploaded-avatar {
+    width: 100%;
+    height: 100%;
+}
+.defalut-avatar{
+    width: 70%;
+    height: 80%;
+}
+.menu-item{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+}
+.menu-icon{
+    color: #ffffff;
+    font-size: 20px;
+}
+.menu-icon1{
+    color: #ffffff;
+    font-size: 25px;
+    margin-right: 15px;
+}
+.menu-icon2{
+    color: #ffffff;
+    font-size: 25px;
+    margin-right: 5px;
+}
+.menu-icon3{
+    color: #ffffff;
+    font-size: 25px;
+    margin-right: 1px;
+}
+.menu-button{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    cursor: pointer;
+}
+.menu-button3{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 130px;
+    cursor: pointer;
+}
+.menu-button3 p{
+    font-size: 20px;
+    font-weight: 550;
+    margin: 20px 35px;
+}
+.menu-button p{
+    font-size: 20px;
+    font-weight: 550;
+    margin: 30px 30px;
+}
+.main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.calendar{
+    display: flex;
+    align-items: center;
+}
+.arrow{
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+    color: #ffffff;
+    background-color: #1890FF;
+    border: 0ch;
+    border-radius: 10px;
+}
+.arrow:hover{
+    background-color: lightgray;
+}
+.dates-contaniner{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-items: center;
+}
+.date{
+    padding: 3px;
+    margin-right: 10px;
+    font-weight: bold;
+    color: #1890FF;
+}
+.weekdays{
+    display: flex;
+}
+.dates{
+    display: flex;
+}
+.weekdays .date{
+    margin-right: 8px;
+}
+.dates .date{
+    margin-right: -1px;
+    margin-left: 6px;
+}
+.date.selected{
+    background-color: #f0f0f0;
+}
+.date:hover {
+    background-color: lightgray;
+    border-radius: 5px;
+}
+.medi-info-container{
+    display: flex;
+    align-items: center;
+}
+.medi-info {
+    margin-top: 20px;
+    width: 320px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 500px;
+}
+.addmedbtn{
+    background-color: #1890FF;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 800;
+    width: 300px;
+    height: 40px;
+}

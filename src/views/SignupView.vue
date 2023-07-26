@@ -135,6 +135,7 @@
 
 <!-- the following is all css-->
 <style scoped>
+    /* -------------------------------- Base Layout -----------------------------------------------*/
     .container{
         display: flex;
         justify-content: center;
@@ -151,12 +152,19 @@
         max-width: 600px;
         width: 100%;
     }
+    /* -------------------------------- Base Layout -----------------------------------------------*/
+
+    /* -------------------------------- Back Button -----------------------------------------------*/
     .backBtn{
+        margin: -170px;
         font-size: 30px;
         color:#ffffff;
         position: sticky;
         top: 30px;
     }
+    /* -------------------------------- Back Button -----------------------------------------------*/
+
+    /* -------------------------------- Component -------------------------------------------------*/
     .input-container{
         display: flex;
         flex-direction: column;
@@ -200,7 +208,9 @@
         padding-left: 10px;
         outline: none;
     }
-    /* small screen */
+    /* -------------------------------- Component -------------------------------------------------*/
+
+    /* -------------------------------- Small Screen -------------------------------------------*/
     @media screen and (max-width: 400px) {
         .container{
             overflow-y: auto;
@@ -238,11 +248,12 @@
             width: 2px;
         }
     }
+    /* -------------------------------- Small Screen -------------------------------------------*/
     /* placeholder */
     ::placeholder{
         color: #FFFFFF;
     }
-    /* following is the button styling */
+    /* -------------------------------- Buttons -------------------------------------------------*/
     .buttons{
         position: fixed;
         bottom: 20px;
@@ -295,4 +306,5 @@
         width: 100%;
         border-radius: 10px;
     }
+    /* -------------------------------- Buttons -------------------------------------------------*/
 </style>

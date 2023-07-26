@@ -145,169 +145,169 @@
 
 
 <style scoped>
-.header{
-    display: flex;
-    align-items: center;
-    color: white;
-}
-.more{
-    margin-left: 5px;
-    margin-right: 50px;
-    font-size: 30px;
-}
-.user{
-    margin-left: 10px;
-    margin-right: 10px;
-    font-size: 30px;
-}
-.edit{
-    margin-left: 100px;
-    font-size: 30px;
-}
-.pageTitle{
-    font-size: 20px;
-    white-space: nowrap;
-}
-.container{
-    display: grid;
-    flex-direction: column;
-    place-items: center;
-    height: 100vh;
-    background-color: #1890FF;
-    overflow:hidden;
-}
-.main{
-    justify-content: center;
-    align-items: center;
-    overflow-y: auto;
-    height: 100vh;
-}
-h2{
-    text-align: center;
-    color: white;
-}
-p{
-    text-align: center;
-    color: white;
-}
-.avatar{
-    display: flex;
-    align-items: center;
-    width: 130px;
-    height: 130px;
-    margin-left: 115px;
-    border: 3px solid white;
-    box-shadow: 2px 2px 2px rgb(83, 83, 83);
-}
-.box{
-    width: 350px;
-    height: 90px;
-    background-color: white;
-    border-radius: 20px;
-    box-shadow: 2px 2px 2px rgb(83, 83, 83);
-    margin-left: 5px;
-    margin-bottom: 15px;
-}
-.boxTitle{
-    padding-left: 15px;
-}
-.add{
-    font-size: 40px;
-    margin-left: 300px;
-    color: #1890FF;
-}
-.image{
-    height: 20px;
-    width: 40px;
-    margin-left: 10px;
-    padding-right: 5px;
-    padding-left: 5px;
-}
-.footer{
-    background-color: white;
-    position:fixed;
-    bottom:0;
-    height: 60px;
-    width:100%;
-    text-align: center;
-}
-.sidebar{
+    .header{
         display: flex;
         align-items: center;
+        color: white;
+    }
+    .more{
+        margin-left: 5px;
+        margin-right: 50px;
+        font-size: 30px;
+    }
+    .user{
+        margin-left: 10px;
+        margin-right: 10px;
+        font-size: 30px;
+    }
+    .edit{
+        margin-left: 100px;
+        font-size: 30px;
+    }
+    .pageTitle{
+        font-size: 20px;
+        white-space: nowrap;
+    }
+    .container{
+        display: grid;
         flex-direction: column;
-        padding: 20px;
+        place-items: center;
+        height: 100vh;
+        background-color: #1890FF;
+        overflow:hidden;
     }
-#addMed{
-    color: #1890FF;
-}
-.footerBtn{
-    font-size: 45px;
-    color: gray;
-    height: 50px;
-    width: 50px;
-    padding-top: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-.uploaded-avatar {
-        width: 100%;
-        height: 100%;
-    }
-    .defalut-avatar{
-        width: 70%;
-        height: 80%;
-    }
-    .menu-item{
-        margin-top: 30px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    .main{
         justify-content: center;
-        color: #ffffff;
+        align-items: center;
+        overflow-y: auto;
+        height: 100vh;
     }
-    .menu-icon{
-        color: #ffffff;
-        font-size: 20px;
+    h2{
+        text-align: center;
+        color: white;
     }
-    .menu-icon1{
-        color: #ffffff;
-        font-size: 25px;
-        margin-right: 15px;
+    p{
+        text-align: center;
+        color: white;
     }
-    .menu-icon2{
-        color: #ffffff;
-        font-size: 25px;
-        margin-right: 5px;
-    }
-    .menu-icon3{
-        color: #ffffff;
-        font-size: 25px;
-        margin-right: 1px;
-    }
-    .menu-button{
+    .avatar{
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        cursor: pointer;
+        width: 130px;
+        height: 130px;
+        margin-left: 115px;
+        border: 3px solid white;
+        box-shadow: 2px 2px 2px rgb(83, 83, 83);
     }
-    .menu-button3{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        margin-top: 130px;
-        cursor: pointer;
+    .box{
+        width: 350px;
+        height: 90px;
+        background-color: white;
+        border-radius: 20px;
+        box-shadow: 2px 2px 2px rgb(83, 83, 83);
+        margin-left: 5px;
+        margin-bottom: 15px;
     }
-    .menu-button3 p{
-        font-size: 20px;
-        font-weight: 550;
-        margin: 20px 35px;
+    .boxTitle{
+        padding-left: 15px;
     }
-    .menu-button p{
-        font-size: 20px;
-        font-weight: 550;
-        margin: 30px 30px;
-        text-decoration: none;
+    .add{
+        font-size: 40px;
+        margin-left: 300px;
+        color: #1890FF;
     }
+    .image{
+        height: 20px;
+        width: 40px;
+        margin-left: 10px;
+        padding-right: 5px;
+        padding-left: 5px;
+    }
+    .footer{
+        background-color: white;
+        position:fixed;
+        bottom:0;
+        height: 60px;
+        width:100%;
+        text-align: center;
+    }
+    .sidebar{
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+    #addMed{
+        color: #1890FF;
+    }
+    .footerBtn{
+        font-size: 45px;
+        color: gray;
+        height: 50px;
+        width: 50px;
+        padding-top: 5px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .uploaded-avatar {
+            width: 100%;
+            height: 100%;
+        }
+        .defalut-avatar{
+            width: 70%;
+            height: 80%;
+        }
+        .menu-item{
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+        }
+        .menu-icon{
+            color: #ffffff;
+            font-size: 20px;
+        }
+        .menu-icon1{
+            color: #ffffff;
+            font-size: 25px;
+            margin-right: 15px;
+        }
+        .menu-icon2{
+            color: #ffffff;
+            font-size: 25px;
+            margin-right: 5px;
+        }
+        .menu-icon3{
+            color: #ffffff;
+            font-size: 25px;
+            margin-right: 1px;
+        }
+        .menu-button{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            cursor: pointer;
+        }
+        .menu-button3{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 130px;
+            cursor: pointer;
+        }
+        .menu-button3 p{
+            font-size: 20px;
+            font-weight: 550;
+            margin: 20px 35px;
+        }
+        .menu-button p{
+            font-size: 20px;
+            font-weight: 550;
+            margin: 30px 30px;
+            text-decoration: none;
+        }
 </style>

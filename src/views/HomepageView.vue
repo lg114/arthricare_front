@@ -176,6 +176,7 @@
 
 <!-- the following is all css-->
 <style scoped>
+    /* -------------------------------- Base Layout -----------------------------------------------*/
     .container{
         display: flex;
         justify-content: center;
@@ -188,6 +189,9 @@
         flex: 1;
         overflow-y: auto;
     }
+    /* -------------------------------- Base Layout -----------------------------------------------*/
+
+    /* -------------------------------- Component Layout ------------------------------------------*/
     .header{
         height: 50px;
     }
@@ -207,6 +211,9 @@
         width:100%;
         text-align: center;
     }
+    /* -------------------------------- Component Layout -------------------------------------------*/
+
+    /* -------------------------------- Footer -----------------------------------------------------*/
     .footerBtn{
         font-size: 45px;
         color: #ffffff;
@@ -219,6 +226,9 @@
     #addMed{
         color: #ffffff;
     }
+    /* -------------------------------- Footer -----------------------------------------------------*/
+
+    /* -------------------------------- Header -----------------------------------------------------*/
     .userbtn{
         position: absolute;
         left: 20px;
@@ -235,6 +245,9 @@
         font-weight: 550;
         font-size: 20px;
     }
+    /* -------------------------------- Header ------------------------------------------------------*/
+
+    /* -------------------------------- Side Bar ----------------------------------------------------*/
     .sidebar{
         display: flex;
         align-items: center;
@@ -301,7 +314,9 @@
         font-weight: 550;
         margin: 30px 30px;
     }
+    /* -------------------------------- Side Bar ----------------------------------------------------*/
 
+    /* -------------------------------- Top Calendar ------------------------------------------------*/
     .calendar{
         display: flex;
         align-items: center;
@@ -318,6 +333,7 @@
     .arrow:hover{
         background-color: lightgray;
     }
+    
     .dates-contaniner{
         display: flex;
         flex-direction: column;
@@ -356,6 +372,9 @@
         background-color: lightgray;
         border-radius: 5px;
     }
+    /* -------------------------------- Top Calendar ------------------------------------------------*/
+
+    /* -------------------------------- Medication Display Container --------------------------------*/
     .medi-info-container{
         display: flex;
         align-items: center;
@@ -369,6 +388,9 @@
         text-align: center;
         margin-top: 500px;
     }
+    /* -------------------------------- Medication Display Container --------------------------------*/
+
+    /* -------------------------------- Add Med Button ----------------------------------------------*/
     .addmedbtn{
         background-color: #1890FF;
         color: #ffffff;
@@ -377,6 +399,9 @@
         width: 300px;
         height: 40px;
     }
+    /* -------------------------------- Add Med Button ----------------------------------------------*/
+
+    /* -------------------------------- Small Screen -----------------------------------------------*/
     @media screen and (max-width: 400px) {
         .content-container{
             overflow-y: auto;
@@ -400,4 +425,5 @@
             padding-right: 2px;
         }
     }
+    /* -------------------------------- Small Screen ------------------------------------------------*/
 </style>

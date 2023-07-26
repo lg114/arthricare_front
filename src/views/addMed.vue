@@ -1,9 +1,103 @@
 <!--add med Page -->
 <script setup>
   import {ArrowLeftBold} from '@element-plus/icons-vue';
-
-  
 </script>
+
+<script>
+  import VueDatePicker1 from '@vuepic/vue-datepicker';
+  import VueDatePicker2 from '@vuepic/vue-datepicker';
+  import '@vuepic/vue-datepicker/dist/main.css'
+  import { ref} from 'vue';
+
+  export default {
+    components: { VueDatePicker1 , VueDatePicker2},
+    data() {
+      return {
+        date1: null,
+        date2: null,
+        counter: 0,
+
+        category: [
+          { id: 1, title: 'Pill' },
+          { id: 2, title: 'Tablet' },
+          { id: 3, title: 'Injection' },
+          { id: 4, title: 'Drop' }
+        ],
+        selectedCategory: null,
+        showCategory: false,
+
+        selectedUnit: null,
+        showUnit: false,
+
+
+      };
+    },
+    methods: {
+      increaseCounter() {
+        
+          this.counter++;
+        
+      },
+      decreaseCounter() {
+        if(this.counter == 0){
+          this.counter += 0
+        }else{
+          this.counter--;
+        }
+      },
+      handleItemClick(category) {
+        this.selectedCategory = category;
+        this.showCategory = false;
+      },
+      toggleOptions() {
+        this.showCategory = !this.showCategory;
+      }
+
+      
+      
+    },
+    mounted(){
+              document.title = 'Add Med | ArthriCare';
+          },
+          setup(){
+              const name = ref('');
+              const selectedAge = ref('');
+              const gender = ref('');
+              const selectedWeight = ref('');
+              const email = ref('');
+              const password = ref('');
+
+              const generateAgeOptions = (start, end) => {
+              const options = [];
+              for (let i = start; i <= end; i++) {
+                  options.push(i.toString());
+              }
+              return options;
+              };
+
+              const generateWeightOptions = (start, end) => {
+              const options = [];
+              for (let i = start; i <= end; i++) {
+                  options.push(i.toString());
+              }
+              return options;
+              };
+
+              return {
+              name,
+              selectedAge,
+              gender,
+              selectedWeight,
+              email,
+              password,
+              ageOptions: generateAgeOptions(10, 100),
+              weightOptions: generateWeightOptions(35, 200),
+              };
+          }
+      
+  }
+</script>
+
 <template>
    <el-container class = "container">
    
@@ -71,7 +165,6 @@
 </template>
 
 <style scoped>
-
         #textarea1{
           background-image: linear-gradient(#F1F1F1 50%, #F9F9F9 50%);
           background-size: 100% 4rem;
@@ -319,104 +412,4 @@
       position: relative;
       display: inline-block;
     }
-
-    
-        
 </style>
-
-<script>
-import VueDatePicker1 from '@vuepic/vue-datepicker';
-import VueDatePicker2 from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
-import { ref} from 'vue';
-
-export default {
-  components: { VueDatePicker1 , VueDatePicker2},
-  data() {
-    return {
-      date1: null,
-      date2: null,
-      counter: 0,
-
-      category: [
-        { id: 1, title: 'Pill' },
-        { id: 2, title: 'Tablet' },
-        { id: 3, title: 'Injection' },
-        { id: 4, title: 'Drop' }
-      ],
-      selectedCategory: null,
-      showCategory: false,
-
-      selectedUnit: null,
-      showUnit: false,
-
-
-    };
-  },
-  methods: {
-    increaseCounter() {
-      
-        this.counter++;
-      
-    },
-    decreaseCounter() {
-      if(this.counter == 0){
-        this.counter += 0
-      }else{
-        this.counter--;
-      }
-    },
-    handleItemClick(category) {
-      this.selectedCategory = category;
-      this.showCategory = false;
-    },
-    toggleOptions() {
-      this.showCategory = !this.showCategory;
-    }
-
-    
-    
-  },
-  mounted(){
-            document.title = 'Sign Up | ArthriCare';
-        },
-        setup(){
-            const name = ref('');
-            const selectedAge = ref('');
-            const gender = ref('');
-            const selectedWeight = ref('');
-            const email = ref('');
-            const password = ref('');
-
-            const generateAgeOptions = (start, end) => {
-            const options = [];
-            for (let i = start; i <= end; i++) {
-                options.push(i.toString());
-            }
-            return options;
-            };
-
-            const generateWeightOptions = (start, end) => {
-            const options = [];
-            for (let i = start; i <= end; i++) {
-                options.push(i.toString());
-            }
-            return options;
-            };
-
-            return {
-            name,
-            selectedAge,
-            gender,
-            selectedWeight,
-            email,
-            password,
-            ageOptions: generateAgeOptions(10, 100),
-            weightOptions: generateWeightOptions(35, 200),
-            };
-        }
-    
-}
-
-
-</script>
