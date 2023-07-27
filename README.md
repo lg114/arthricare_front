@@ -25,7 +25,7 @@ Coding languages: HTML & JAVASCRIPT & VUE
 9. unplugin-vue-components v0.24.1
 
 ## Website
-(https://lg114.github.io/arthricare_front/)
+(https://arthricare.netlify.app/#/)
 
 ## Project setup
 ### Prepare your environment
