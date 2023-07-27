@@ -2,7 +2,7 @@
 <script>
     import { reactive} from 'vue';
     import { ArrowLeftBold } from '@element-plus/icons-vue';
-    import router from '@/router';
+    import { ElMessage } from 'element-plus';
 
     export default{
         //title
@@ -17,47 +17,79 @@
                 email: '',
                 password: '',
                 weight: '',
-                Age: '',
+                age: '',
             });
 
-            //handle sign up process
-            const handleregister = () => {
-
-            }
+            //email regular expression
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
             //submit register form
             const submitRegisterForm = () => {
                 try{
-                    //Here, axios is used to send network requests, assuming the address of the backend API is '/api/register'
+                    //validate the form
+                    if(!emailRegex.test(registerForm.email) || registerForm.password === ''){
+                        //if the validation failed
+                        ElMessage.error('Please enter a valid email address or password');
+                    }else{
+                        //check whether the value of each field is empty, and if it is empty, set it to null
+                        for(const key in registerForm){
+                            if(!registerForm[key]){
+                                registerForm[key] = null;
+                            }
+                        }
 
-                    //jump to login page
-                    router.push("/login");
+                        //data need to send
+                        //const dataToSend = {
+                            //name: registerForm.name,
+                            //gender: registerForm.gender,
+                            //email: registerForm.email,
+                            //password: registerForm.password,
+                            //weight: registerForm.weight,
+                            //age: registerForm.age,
+                        //};
+
+                        //send requeset
+                        //axios.post('api/signup', dataToSend)
+                            //.then(response => {
+                                console.log('Sign up successful');
+                                //register successful, leave all blank
+                                ElMessage.success('Registration success');
+                                registerForm.email = '';
+                                registerForm.gender = '';
+                                registerForm.name = '';
+                                registerForm.password = '';
+                                registerForm.weight = '';
+                                registerForm.age = '';
+                            //.catch(error => {
+                                //console.error('Sign up failed', error);
+                                //ElMessage.error("Invalid email or password");
+                            //});
+                    }
                 }catch(error){
                     console.error("Registration failed!", error);
                 }
-            }
+            };
 
             //age selection
             const generateAgeOptions = (start, end) => {
-            const options = [];
-            for (let i = start; i <= end; i++) {
-                options.push(i.toString());
-            }
-            return options;
+                const options = [];
+                for (let i = start; i <= end; i++) {
+                    options.push(i.toString());
+                }
+                return options;
             };
 
             //weight selection
             const generateWeightOptions = (start, end) => {
-            const options = [];
-            for (let i = start; i <= end; i++) {
-                options.push(i.toString());
-            }
-            return options;
+                const options = [];
+                for (let i = start; i <= end; i++) {
+                    options.push(i.toString());
+                }
+                return options;
             };
 
             return {
             registerForm,
-            handleregister,
             submitRegisterForm,
             ageOptions: generateAgeOptions(10, 100),
             weightOptions: generateWeightOptions(35, 200),
@@ -72,9 +104,6 @@
 <template>
     <div class = "container">
         <el-container class = "content-container">
-            <el-header>
-
-            </el-header>
             <el-main style = "height: 100%; width: 100%;">
                     <div class = "input-container">
                         <router-link to = "/">
@@ -88,7 +117,7 @@
                             
                             <div class = "input-row">
                                 <b><label for = "age">Age:</label></b>
-                                <select name="age" id="age" class="row-input" v-model="registerForm.Age">
+                                <select name="age" id="age" class="row-input" v-model="registerForm.age">
                                     <option value="" disabled selected>Select Age</option>
                                     <option v-for="age in ageOptions" :value="age" :key="age">{{ age }}</option>
                                 </select>

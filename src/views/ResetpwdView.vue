@@ -2,7 +2,7 @@
 <script>
     import { ArrowLeftBold } from '@element-plus/icons';
     import { reactive } from 'vue';
-    import router from '@/router';
+    import { ElMessage } from 'element-plus';
 
     export default{
         //title
@@ -12,33 +12,54 @@
 
         setup(){
             //reset pwd data
-            const resetpwd = reactive({
+            const resetpwdForm = reactive({
                 email: '',
                 newPassword: '',
                 confirmPassword: ''
             });
 
-            //handle reset pwd process
-            const handleResetPwd = () => {
-
-            }
+            //email regular expression
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
             //submit reset password form
             const submitResetpwdForm = () => {
                 try{
-                    //Here, axios is used to send network requests, assuming the address of the backend API is '/api/resetpwd'
-                    
-                    //jump to login page
-                    router.push("/welcome");
+                    //validate the form
+                    if(!emailRegex.test(resetpwdForm.email)){
+                        ElMessage.error('Email is not valid');
+                    }else if(resetpwdForm.newPassword !== resetpwdForm.confirmPassword){
+                        ElMessage.error('New password and confirm new password do not match');
+                    }else{
+                        //data need to send
+                        //const dataToSend = {
+                            //email: resetpwdForm.email,
+                            //newPassword: resetpwdForm.newPassword,
+                        //};
+
+                        //send request
+                        //axios.post('/api/reset-password', dataToSend)
+                            //.then(response => {
+                                console.log('Password reset successful');
+                                //After successfully resetting the password, leave it all blank
+                                ElMessage.success('Password reset successfully');
+                                resetpwdForm.email = '';
+                                resetpwdForm.newPassword = '';
+                                resetpwdForm.confirmPassword = '';
+                            //})
+                            //.catch(error => {
+                                //console.error('Password reset failed', error);
+                                //error
+                                //ElMessage.error('Password reset failed');
+                            //});
+                    }
                 }catch(error){
                     console.error("Reset failed!", error);
                 }
             }
 
             return{
-                resetpwd,
-                handleResetPwd,
-                submitResetpwdForm
+                resetpwdForm,
+                submitResetpwdForm,
             };
         },
 
@@ -60,18 +81,16 @@
                 <div class = "input-container">
                     <h2>Reset Your Password</h2>
                     <b><label>Email Address</label></b>
-                    <input id="input" type="email" placeholder="Please enter your email" v-model="resetpwd.email"/><br>
+                    <input id="input" type="email" placeholder="Please enter your email" v-model="resetpwdForm.email"/><br>
                     <b><label>New Password</label></b>
-                    <input id="input" type="password" placeholder="Please enter new password" v-model="resetpwd.newPassword"/><br>
+                    <input id="input" type="password" placeholder="Please enter new password" v-model="resetpwdForm.newPassword"/><br>
                     <b><label>Confirm New Password</label></b>
-                    <input id="input" type="password" placeholder="Please enter new password" v-model="resetpwd.confirmPassword"/>
+                    <input id="input" type="password" placeholder="Please enter new password" v-model="resetpwdForm.confirmPassword"/>
                 </div>
             </el-main>
             <el-footer>
                 <div class="buttons">
-                    <router-link to = "/">
-                        <el-button class = "login-button">CONTINUE</el-button>
-                    </router-link>
+                    <el-button class = "login-button" @click = "submitResetpwdForm">CONTINUE</el-button>
                 </div>
             </el-footer>
         </el-container>

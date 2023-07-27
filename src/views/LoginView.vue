@@ -1,9 +1,10 @@
 <!--Login Page -->
 <script>
     import { ArrowLeftBold } from '@element-plus/icons-vue';
-    import { ref,reactive } from 'vue';
+    import { reactive } from 'vue';
     import router from '@/router';
-
+    import { ElMessage } from 'element-plus';
+    
     export default{
 
         //title
@@ -17,26 +18,34 @@
                 password: '',
             });
 
-            //default show error message
-            const showError = ref(false);
-
-            //handle login process
-            const handlelogin = () => {
-                if(loginForm.email === '' || loginForm.password === ''){
-                    showError.value = true;
-                }else{
-                    showError.value = false;
-                    router.push('/Home');
-                }
-            };
+            //email regular expression
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
             //submit login form
-            const submitLoginForm = () => {
+            const submitLoginForm = async() => {
                 try{
-                    //Here, axios is used to send network requests, assuming the address of the backend API is '/api/login'
-                    
-                    //jump to login page
-                    router.push("/home");
+                    //Use regular expressions to verify email and password
+                    if(!emailRegex.test(loginForm.email) || loginForm.password === ''){
+                        //if the validation failed
+                        ElMessage.error('Please enter a valid email address or password');
+                    }else{
+                        //data need to send
+                        //const dataToSend = {
+                            //email: loginForm.email,
+                            //password: loginForm.password,
+                        //};
+
+                        //send request
+                        //axios.post('api/login', dataToSend)
+                            //.then(response => {
+                            console.log('Login successful');
+                            router.push('/home');
+                            //.catch(error => {
+                                //console.error('Login failed', error);
+                                //error
+                                //ElMessage.error("Invalid email or password");
+                        //});
+                    }
                 }catch(error){
                     console.error("Login failed!", error);
                 }
@@ -44,9 +53,7 @@
 
             return{
                 loginForm,
-                handlelogin,
                 submitLoginForm,
-                showError,
             };
         },
         components: {
@@ -56,7 +63,6 @@
 </script>
 <template>
     <div class="container" >
-        <Transition name = "fade">
             <el-container class = "content-container">
                 <el-header>
                     <router-link to = "/">
@@ -64,7 +70,7 @@
                     </router-link>
                 </el-header>
                 <el-main style = "height: 500px">
-                        <div class = "input-container">
+                        <div class="input-container">
                             <h2>Welcome Back</h2>
                             <p>Login to your account</p>
                             <b><label>Email Address</label></b>
@@ -88,7 +94,6 @@
                     </div>
                 </el-footer>
             </el-container>
-        </Transition>
     </div>
 </template>
 
@@ -223,14 +228,6 @@
         border-radius: 10px;
     }
     /* -------------------------------- Buttons -------------------------------------------------*/
-
-    /* -------------------------------- Error Message ------------------------------------------*/
-    .error{
-        color: #FF5F5F;
-        font-size:x-large;
-
-    }
-    /* -------------------------------- Error Message ------------------------------------------*/
 
     /* -------------------------------- Small Screen -------------------------------------------*/
     @media screen and (max-width: 400px) {
