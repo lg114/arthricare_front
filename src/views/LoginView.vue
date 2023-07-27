@@ -22,7 +22,7 @@
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
             //submit login form
-            const submitLoginForm = async() => {
+            const submitLoginForm = () => {
                 try{
                     //Use regular expressions to verify email and password
                     if(!emailRegex.test(loginForm.email) || loginForm.password === ''){
