@@ -126,7 +126,7 @@
                     <div>
                         <div class = "menu-item">
                                 <!--Action是模拟接口，与后端连接时更换-->
-                                <el-upload action="" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                                <el-upload action="" :show-file-list="false">
                                     <el-avatar :size="65">
                                         <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
                                         <template v-else>

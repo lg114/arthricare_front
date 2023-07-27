@@ -108,7 +108,7 @@
                     <div class = "input-container">
                         <router-link to = "/">
                             <el-icon class = "backBtn"><ArrowLeftBold /></el-icon>
-                            </router-link>
+                        </router-link>
                             <h2>Sign Up</h2>
                             <div class = "input-row">
                                 <b><label for = "name">Name:</label></b>
