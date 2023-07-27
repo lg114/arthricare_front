@@ -84,8 +84,6 @@
                             <hr>
                             Forget your password? 
                             <router-link to = "/Resetpassword">Click Here</router-link>
-
-                            <p v-if="showError" class="error">Please enter email address or password</p>
                         </div>
                 </el-main>
                 <el-footer>
