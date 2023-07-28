@@ -434,7 +434,7 @@
         this.showMed = false;
         this.$refs.MedName.value = Med;
         this.$refs.MedName.blur();
-        this.Meds2=this.getResult;
+        this.Meds2=this.getResult();
         console.log(Med);
 
       },
