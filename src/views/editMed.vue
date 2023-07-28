@@ -1,7 +1,99 @@
-<!--Edit Add Page -->
+<!--Edit Med Page -->
 <script setup>
   import {ArrowLeftBold} from '@element-plus/icons-vue';
-  
+</script>
+<script>
+  import VueDatePicker1 from '@vuepic/vue-datepicker';
+  import VueDatePicker2 from '@vuepic/vue-datepicker';
+  import '@vuepic/vue-datepicker/dist/main.css'
+
+  export default {
+    components: { VueDatePicker1 , VueDatePicker2},
+    data() {
+      return {
+        date1: null,
+        date2: null,
+        counter: 0,
+        Meds : ["Abatacept","Adalimumab","Allopurinol","Ambrisentan","Anakinra","Anifrolumab","Apremilast","Azathioprine",
+        "Baricitinib","Biosimilars","Bisphosphonates (Oral)","Bisphosphonates (Intravenous/IV)","Bosentan"
+        ,"Cannabinoids - Medicinal Cannabis","Certolizumab","Colchicine","Ciclosporin"],
+        Meds2:[],
+        Meds3:[],
+      
+
+        category: [
+          { id: 1, title: 'Pill' },
+          { id: 2, title: 'Tablet' },
+          { id: 3, title: 'Injection' },
+          { id: 4, title: 'Drop' }
+        ],
+        Med: [
+          { id: 1, meds: 'Mg' },
+          { id: 2, meds: 'Bottle'}
+        ],
+        selectedMed: null,
+        showMed: false,
+      };
+      
+    },
+    
+    methods: {
+      increaseCounter() {
+          this.counter++;
+      },
+      decreaseCounter() {
+        if(this.counter == 0){
+          this.counter += 0
+        }else{
+          this.counter--;
+        }
+      },
+    
+      filterWordsByLetter(wordsArray, letter) {
+        const lowercaseLetter = letter.toLowerCase();
+        const filteredWords = wordsArray.filter(word => word.toLowerCase().startsWith(lowercaseLetter));
+        return filteredWords;
+    },
+    showResult(){
+      if(this.$refs.MedName.value === ""){
+        this.Meds2 =this.Meds3;
+        console.log(this.Meds2);
+      }else{
+        const filteredWordsStartingWithLetters = this.filterWordsByLetter(this.Meds, this.$refs.MedName.value);
+        this.Meds2 = filteredWordsStartingWithLetters;
+        console.log(this.Meds2);
+      }
+    }
+    ,
+    getResult(){
+      const filteredWordsStartingWithLetters = this.filterWordsByLetter(this.words, this.$refs.MedName.value);
+      return filteredWordsStartingWithLetters;
+    },
+    processInput(event) {
+      if (event.keyCode !== 13) {
+          this.showResult();
+
+          }
+        },
+      handleItemClick(Med) {
+        this.selectedMed = Med;
+        this.showMed = false;
+        this.$refs.MedName.value = Med;
+        this.$refs.MedName.blur();
+        this.Meds2=this.getResult;
+        console.log(Med);
+
+      },
+      
+      toggleOptions() {
+        this.showMed = !this.showMed;
+        this.$refs.MedName.focus();
+      },
+    },
+    mounted(){
+              document.title = 'Edit Med | ArthriCare';
+          },
+  }
 </script>
 <template>
    <el-container class = "container">
@@ -25,8 +117,8 @@
 
         <p id = "label">CHANGE CATEGORY</p>
         <div>
-          <b><label for = "Category"></label></b>
-          <select name="Category" id="Category" class = "row-input" v-model="Category">
+          <b><label for = "category"></label></b>
+          <select name="category" id="category" class = "row-input" v-model="category">
            <option value="" disabled selected>Select Category</option>
            <option value="Pill">Pill</option>
            <option value="Tablet">Tablet</option>
@@ -310,10 +402,9 @@
       margin:auto;
       border:none; 
       border-bottom: 3px solid #DDDDDD;
-      color: #008866;
+      color: #000000;
       margin-left:5%;
       letter-spacing:1px;
-      
     } 
 
     input:focus
@@ -344,7 +435,7 @@
       border-radius: 5px;
       cursor: pointer;
       border: 1px solid white;
-      color:#008866;
+      color:#000000;
       font-size:17px;
       letter-spacing:1px;
     }
@@ -353,117 +444,3 @@
     
         
 </style>
-
-<script>
-  import VueDatePicker1 from '@vuepic/vue-datepicker';
-  import VueDatePicker2 from '@vuepic/vue-datepicker';
-  import '@vuepic/vue-datepicker/dist/main.css'
-  import {ref} from 'vue';
-
-  export default {
-    components: { VueDatePicker1 , VueDatePicker2},
-    data() {
-      return {
-        date1: null,
-        date2: null,
-        counter: 0,
-        Meds : ["Abatacept","Adalimumab","Allopurinol","Ambrisentan","Anakinra","Anifrolumab","Apremilast","Azathioprine",
-        "Baricitinib","Biosimilars","Bisphosphonates (Oral)","Bisphosphonates (Intravenous/IV)","Bosentan"
-        ,"Cannabinoids - Medicinal Cannabis","Certolizumab","Colchicine","Ciclosporin"],
-        Meds2:[""],
-        Meds3:[""],
-      
-
-        category: [
-          { id: 1, title: 'Pill' },
-          { id: 2, title: 'Tablet' },
-          { id: 3, title: 'Injection' },
-          { id: 4, title: 'Drop' }
-        ],
-        Med: [
-          { id: 1, meds: 'Mg' },
-          { id: 2, meds: 'Bottle'}
-        ],
-        selectedMed: null,
-        showMed: false,
-
-      };
-      
-    },
-    
-    methods: {
-      increaseCounter() {
-          this.counter++;
-      },
-      decreaseCounter() {
-        if(this.counter == 0){
-          this.counter += 0
-        }else{
-          this.counter--;
-        }
-      },
-    
-      filterWordsByLetter(wordsArray, letter) {
-        const lowercaseLetter = letter.toLowerCase();
-        const filteredWords = wordsArray.filter(word => word.toLowerCase().startsWith(lowercaseLetter));
-        return filteredWords;
-    },
-    showResult(){
-      if(this.$refs.MedName.value === ""){
-        this.Meds2 =this.Meds3;
-        console.log(this.Meds2);
-      }else{
-        const filteredWordsStartingWithLetters = this.filterWordsByLetter(this.Meds, this.$refs.MedName.value);
-        this.Meds2 = filteredWordsStartingWithLetters;
-        console.log(this.Meds2);
-      }
-    }
-    ,
-    getResult(){
-      const filteredWordsStartingWithLetters = this.filterWordsByLetter(this.words, this.$refs.MedName.value);
-      return filteredWordsStartingWithLetters;
-    },
-    processInput(event) {
-      if (event.keyCode !== 13) {
-          this.showResult();
-
-          }
-        },
-      handleItemClick(Med) {
-        this.selectedMed = Med;
-        this.showMed = false;
-        this.$refs.MedName.value = Med;
-        this.$refs.MedName.blur();
-        this.Meds2=this.getResult();
-        console.log(Med);
-
-      },
-      
-      toggleOptions() {
-        this.showMed = !this.showMed;
-        this.$refs.MedName.focus();
-      },
-    },
-    mounted(){
-              document.title = 'Sign Up | ArthriCare';
-          },
-          setup(){
-              const name = ref('');
-              const selectedAge = ref('');
-              const gender = ref('');
-              const selectedWeight = ref('');
-              const email = ref('');
-              const password = ref('');
-
-              return {
-              name,
-              selectedAge,
-              gender,
-              selectedWeight,
-              email,
-              password,
-              };
-          }
-          
-  }
-</script>

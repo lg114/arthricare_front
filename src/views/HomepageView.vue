@@ -126,6 +126,7 @@
                     <div>
                         <div class = "menu-item">
                                 <!--Action是模拟接口，与后端连接时更换-->
+                                <!--加"no meds on today""-->
                                 <el-upload action="" :show-file-list="false">
                                     <el-avatar :size="65">
                                         <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />

@@ -1,13 +1,13 @@
-<!--add med Page -->
+<!--Add Med Page -->
 <script setup>
   import {ArrowLeftBold} from '@element-plus/icons-vue';
+  
 </script>
 
 <script>
 import VueDatePicker1 from '@vuepic/vue-datepicker';
 import VueDatePicker2 from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
-import { ref} from 'vue';
 
 export default {
   components: { VueDatePicker1 , VueDatePicker2},
@@ -16,6 +16,12 @@ export default {
       date1: null,
       date2: null,
       counter: 0,
+      Meds : ["Abatacept","Adalimumab","Allopurinol","Ambrisentan","Anakinra","Anifrolumab","Apremilast","Azathioprine",
+      "Baricitinib","Biosimilars","Bisphosphonates (Oral)","Bisphosphonates (Intravenous/IV)","Bosentan"
+      ,"Cannabinoids - Medicinal Cannabis","Certolizumab","Colchicine","Ciclosporin"],
+      Meds2:[],
+      Meds3:[],
+    
 
       category: [
         { id: 1, title: 'Pill' },
@@ -23,20 +29,20 @@ export default {
         { id: 3, title: 'Injection' },
         { id: 4, title: 'Drop' }
       ],
-      selectedCategory: null,
-      showCategory: false,
-
-      selectedUnit: null,
-      showUnit: false,
-
+      Med: [
+        { id: 1, meds: 'Mg' },
+        { id: 2, meds: 'Bottle'}
+      ],
+      selectedMed: null,
+      showMed: false,
 
     };
+    
   },
+  
   methods: {
     increaseCounter() {
-      
         this.counter++;
-      
     },
     decreaseCounter() {
       if(this.counter == 0){
@@ -45,59 +51,52 @@ export default {
         this.counter--;
       }
     },
-    handleItemClick(category) {
-      this.selectedCategory = category;
-      this.showCategory = false;
-    },
-    toggleOptions() {
-      this.showCategory = !this.showCategory;
+   
+    filterWordsByLetter(wordsArray, letter) {
+      const lowercaseLetter = letter.toLowerCase();
+      const filteredWords = wordsArray.filter(word => word.toLowerCase().startsWith(lowercaseLetter));
+      return filteredWords;
+   },
+   showResult(){
+    if(this.$refs.MedName.value === ""){
+      this.Meds2 =this.Meds3;
+      console.log(this.Meds2);
+    }else{
+      const filteredWordsStartingWithLetters = this.filterWordsByLetter(this.Meds, this.$refs.MedName.value);
+      this.Meds2 = filteredWordsStartingWithLetters;
+      console.log(this.Meds2);
     }
+  }
+   ,
+   getResult(){
+    const filteredWordsStartingWithLetters = this.filterWordsByLetter(this.words, this.$refs.MedName.value);
+    return filteredWordsStartingWithLetters;
+   },
+   processInput(event) {
+     if (event.keyCode !== 13) {
+        this.showResult();
 
+         }
+      },
+    handleItemClick(Med) {
+      this.selectedMed = Med;
+      this.showMed = false;
+      this.$refs.MedName.value = Med;
+      this.$refs.MedName.blur();
+      this.Meds2=this.getResult;
+      console.log(Med);
+
+    },
     
-    
+    toggleOptions() {
+      this.showMed = !this.showMed;
+      this.$refs.MedName.focus();
+    },
   },
   mounted(){
             document.title = 'Add Med | ArthriCare';
         },
-        setup(){
-            const name = ref('');
-            const selectedAge = ref('');
-            const gender = ref('');
-            const selectedWeight = ref('');
-            const email = ref('');
-            const password = ref('');
-
-            const generateAgeOptions = (start, end) => {
-            const options = [];
-            for (let i = start; i <= end; i++) {
-                options.push(i.toString());
-            }
-            return options;
-            };
-
-            const generateWeightOptions = (start, end) => {
-            const options = [];
-            for (let i = start; i <= end; i++) {
-                options.push(i.toString());
-            }
-            return options;
-            };
-
-            return {
-            name,
-            selectedAge,
-            gender,
-            selectedWeight,
-            email,
-            password,
-            ageOptions: generateAgeOptions(10, 100),
-            weightOptions: generateWeightOptions(35, 200),
-            };
-        }
-    
 }
-
-
 </script>
 
 <template>
@@ -110,15 +109,20 @@ export default {
       <p id = "title">My Meds</p>
     </div>  
       <div id = container2>
-        <p id = "label" style = "font-size : 35px ; font-weight:500;" >Edit Medication</p>
-        <input id="Add" type="text" placeholder="*Required Field" style = "width:50%"/><br>
+        <p id = "label" style = "font-size : 35px ; font-weight:500;" >Add Medication</p>
+        <input id="Add" type="text" placeholder="Required Field*" style = "width:50%"/><br>
         <p id = "label">MEDICATION NAME</p>
-        <input id="MedName" type="text" placeholder="" />
-        <p id = "label">CHANGE CATEGORY</p>
 
-        <div class = "input-row">
-          <b><label for = "Category"></label></b>
-          <select name="Category" id="Category" class = "row-input" v-model="Category">
+        <input ref="MedName" id="MedName" type="text" placeholder="" @keyup="processInput" @focus="toggleOptions"/>
+
+        <div  class="menu" v-if="this.Meds2!==null  && showMed">
+          <div ref="MedOption"  class="selected-option" v-for="item in Meds2" :key="item" @click="handleItemClick(item)">{{ item }}</div>
+        </div> 
+
+        <p id = "label">CHANGE CATEGORY</p>
+        <div>
+          <b><label for = "category"></label></b>
+          <select name="category" id="category" class = "row-input" v-model="category">
            <option value="" disabled selected>Select Category</option>
            <option value="Pill">Pill</option>
            <option value="Tablet">Tablet</option>
@@ -151,11 +155,7 @@ export default {
         <div >
           <textarea id = "textarea1" name = "Note" column="20" row="20"></textarea>
         </div>
-        <div class = "container-flex" style="margin-top:5%">
-
-          <div class = "note">Reminder
-            </div>   
-
+        <div class = "container-flex" style="margin-top:5%">   
 
         </div>  
         <div class="Button" >
@@ -167,37 +167,46 @@ export default {
 </template>
 
 <style scoped>
+
         #textarea1{
           background-image: linear-gradient(#F1F1F1 50%, #F9F9F9 50%);
           background-size: 100% 4rem;
           border: 1px solid #CCC;
-          width: 90%;
+          width: 85%;
           line-height: 2rem;
           padding: 2% 2%;
           font-size:20px;
           color:#1890FF;
           font-weight:bold;
-          margin-left:2%;
+          margin-left:4%;
         }
 
        .row-input{
           color: #1890FF;
           background-color: #f4f4f4;
           border: 2px solid #f0dddd;
-          width: 150px;
-          height: 40px;
-          border-radius: 10px;
+          width: 40%;
+          height: 30px;
+          border-radius: 5px;
           margin: 3.5px;
           padding-left: 10px;
           outline: none;
           font-size:100%;
           font-weight:bold;
+          margin-left:4.5%;
         }
 
         .container-flex{
           display:flex;
         }
 
+        .BellBtn{
+          font-size: 30px;
+          color: #1890FF;
+          position:relative;
+          margin-left:60%;
+          size:40%;
+      }
         
         .note{
           position:relative;
@@ -205,7 +214,7 @@ export default {
           height:30px;
           top:7%;
           left:2%;
-          font-size:20px;
+          font-size:110%;
           border-radius:10px 10px 10px 10px;
           background-color: #1890FF;
           text-align: center;
@@ -223,20 +232,23 @@ export default {
           height:10px;
         }
         .number{
+          z-index: 9;
           display: block;
           float:center;
           padding: 10px;
           background-color: rgb(253, 248, 248);
-          margin-bottom: 10px;
-          width:50px;
-          height:50px;
+          margin-bottom: 6%;
+          margin-top: 6%;
+          width:40px;
+          height:40px;
           position:relative;
           font-size:35px;
           text-align: center;
           border: 4px solid #1890FF;
           border-radius:10px 10px 10px 10px;
           color:#1890FF;
-          margin-left:70px;
+          margin-left:12%;
+          margin-right:5%;
           
         }
 
@@ -244,38 +256,38 @@ export default {
         text-align: center;
         display: block;
         cursor: pointer;
-        padding: 10px;
+        padding: 1%;
         background-color: rgb(253, 248, 248);
         margin-bottom: 10px;
         width:40px;
         height:40px;
         position:relative;
-        font-size: 30px;
+        font-size:200%;
         border-radius:10px 10px 10px 10px;
         border: 2.5px solid #a39e9e;
         color: #a19191;
-        margin-top:10px;
-        margin-left:20px;
+        margin-top:7%;
+        margin-left:8%;
 
       }
 
       .DecreaseButton {
-        color: #a19191;
         text-align: center;
-        float:right;
         display: block;
         cursor: pointer;
-        padding: 10px;
+        padding: 1%;
         background-color: rgb(253, 248, 248);
         margin-bottom: 10px;
         width:40px;
+        height:40px;
         position:relative;
-        font-size: 30px;
+        font-size:200%;
         border-radius:10px 10px 10px 10px;
         border: 2.5px solid #a39e9e;
-        margin-left:70px;
-        height:40px;
-        margin-top:10px;
+        color: #a19191;
+        margin-top:7%;
+        margin-left:8%;
+
       }
       .unitButton{
         color: #a19191;
@@ -304,18 +316,18 @@ export default {
             position: relative;
             background-color: #1890FF;
             border: none;
-            font-size: 35px;
+            font-size:130%;
             color: #ffffff;
             padding: 0px;
-            width: 50%;
+            width: 70%;
             text-align: center;
             transition-duration: 0.6s;
             text-decoration: none;
             overflow: hidden;
             cursor: pointer;
-            left:22%;
+            left:15%;
             border-radius:10px 10px 10px 10px; 
-            height: 5%;
+            height: 4%;
             margin-top:40px;
             line-height: -50px;
         }
@@ -354,11 +366,10 @@ export default {
         padding-left:auto;
         padding-right:auto;
         align-items: center;
-        margin-top:4%;
+        margin-top:6%;
         background-color: rgb(253, 253, 253);
         height:200%;
         width:100%;
-        border-radius:10px 10px 0px 0px;
         padding-bottom:100px;
         justify-content: center;
         align-items: center;
@@ -366,34 +377,39 @@ export default {
     }
 
     #title{
-      font-size: 40px;
+      font-size: 130%;
       position: relative;
       color:#FFFFFF;
       margin:5px;
-      right:5%;
+      right:9%;
+      top:30%;
     }
 
     #label{   
-      width:80%;
-      font-weight:bold;
-      font-size: 100%;
+      width:95%;
+      font-weight:600;
+      font-size: 20%;
       color:  #1890FF;
-      margin-left:2%;
-      margin-bottom:25px;
+      margin-left:4%;
+      margin-bottom:2%;
+      margin-top:2%;
       text-align: left;
+      letter-spacing:1px;
     }
 
     input{
       align-items: center;
-      width:90%;    
+      width:80%;    
       height: 4%;    
-      font-size:150%;    
+      font-size:100%;    
       background-color: white;
       margin:auto;
       border:none; 
-      border-bottom: 3px solid #f0dddd;
-      color: #008866;
-      margin-left:2%;
+      border-bottom: 3px solid #DDDDDD;
+      color: #000000;
+      margin-left:5%;
+      letter-spacing:1px;
+      
     } 
 
     input:focus
@@ -403,15 +419,29 @@ export default {
     }
 
     .backBtn{
-        font-size: 30px;
+        font-size: 25px;
         color:#FFFFFF;
         position:relative;
-        margin-top:60%;
-        right:300%;
+        margin-top:80%;
+        right:350%;
     }
 
     .menu {
-      position: relative;
       display: inline-block;
+      left:4%;
+      position:relative;
+    }
+
+    .selected-option {
+
+      width: 120%;
+      padding: 10px;
+      background-color: #f4f4f4;
+      border-radius: 5px;
+      cursor: pointer;
+      border: 1px solid white;
+      color:#000000;
+      font-size:17px;
+      letter-spacing:1px;
     }
 </style>
