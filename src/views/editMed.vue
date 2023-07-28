@@ -5,7 +5,8 @@
 <script>
   import VueDatePicker1 from '@vuepic/vue-datepicker';
   import VueDatePicker2 from '@vuepic/vue-datepicker';
-  import '@vuepic/vue-datepicker/dist/main.css'
+  import '@vuepic/vue-datepicker/dist/main.css';
+  
 
   export default {
     components: { VueDatePicker1 , VueDatePicker2},
@@ -80,7 +81,7 @@
         this.showMed = false;
         this.$refs.MedName.value = Med;
         this.$refs.MedName.blur();
-        this.Meds2=this.getResult;
+        this.Meds2=this.getResult();
         console.log(Med);
 
       },
