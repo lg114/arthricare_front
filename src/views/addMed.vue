@@ -69,7 +69,7 @@ export default {
   }
    ,
    getResult(){
-    const filteredWordsStartingWithLetters = this.filterWordsByLetter(this.words, this.$refs.MedName.value);
+    const filteredWordsStartingWithLetters = this.filterWordsByLetter(this.Meds, this.$refs.MedName.value);
     return filteredWordsStartingWithLetters;
    },
    processInput(event) {

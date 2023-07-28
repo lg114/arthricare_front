@@ -67,13 +67,15 @@
                     </router-link>
                 </el-header>
                 <el-main style = "height: 500px">
-                        <div class="input-container">
-                            <h2>Welcome Back</h2>
-                            <p>Login to your account</p>
-                            <b><label>Email Address</label></b>
-                            <input class="input" id = "email" type="email" placeholder="Please enter your email" v-model="loginForm.email"/><br>
-                            <b><label>Password</label></b>
-                            <input class="input" id = "password" type="password" placeholder="Please enter your passowrd" v-model="loginForm.password"/>
+                        <div>
+                            <form class="input-container">
+                                <h2>Welcome Back</h2>
+                                <p>Login to your account</p>
+                                <b><label>Email Address</label></b>
+                                <input class="input" id = "email" type="email" placeholder="Please enter your email" v-model="loginForm.email"/><br>
+                                <b><label>Password</label></b>
+                                <input class="input" id = "password" type="password" placeholder="Please enter your passowrd" v-model="loginForm.password"/>
+                            </form>
                         </div>
                         <div id="mid">
                             Don't have an account?

@@ -100,45 +100,47 @@
                             <el-icon class = "backBtn"><ArrowLeftBold /></el-icon>
                         </router-link>
                             <h2>Sign Up</h2>
-                            <div class = "input-row">
-                                <b><label for = "name">Name:</label></b>
-                                <input id = "name" type="text" class = "input" placeholder="Please enter your full name" v-model="registerForm.name"/>
-                            </div>
-                            
-                            <div class = "input-row">
-                                <b><label for = "age">Age:</label></b>
-                                <select name="age" id="age" class="row-input" v-model="registerForm.age">
-                                    <option value="" disabled selected>Select Age</option>
-                                    <option v-for="age in ageOptions" :value="age" :key="age">{{ age }}</option>
-                                </select>
-                            </div>
-                            
-                            <div class = "input-row">
-                                <b><label for = "gender">Gender:</label></b>
-                                <select name="gender" id="gender" class = "row-input" v-model="registerForm.gender">
-                                    <option value="" disabled selected>Select Gender</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                </select>
-                            </div>
-                            
-                            <div class = "input-row">
-                                <b><label for = "weight">Weight:</label></b>
-                                <select name = "weight" id = "weight" class = "row-input" v-model = "registerForm.weight">
-                                    <option value="" disabled selected>Select Weight</option>
-                                    <option v-for="weight in weightOptions" :value="weight" :key="weight">{{ weight }} kg</option>
-                                </select>   
-                            </div>
-                             
-                            <div class = "input-row">
-                                <b><label for = "email">Email:</label></b>
-                                <input id = "email" type="email" class = "input" placeholder="Please enter your email" v-model="registerForm.email" required/>
-                            </div>
+                            <form>
+                                <div class = "input-row">
+                                    <b><label for = "name">Name:</label></b>
+                                    <input id = "name" type="text" class = "input" placeholder="Please enter your full name" v-model="registerForm.name"/>
+                                </div>
+                                
+                                <div class = "input-row">
+                                    <b><label for = "age">Age:</label></b>
+                                    <select name="age" id="age" class="row-input" v-model="registerForm.age">
+                                        <option value="" disabled selected>Select Age</option>
+                                        <option v-for="age in ageOptions" :value="age" :key="age">{{ age }}</option>
+                                    </select>
+                                </div>
+                                
+                                <div class = "input-row">
+                                    <b><label for = "gender">Gender:</label></b>
+                                    <select name="gender" id="gender" class = "row-input" v-model="registerForm.gender">
+                                        <option value="" disabled selected>Select Gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
+                                </div>
+                                
+                                <div class = "input-row">
+                                    <b><label for = "weight">Weight:</label></b>
+                                    <select name = "weight" id = "weight" class = "row-input" v-model = "registerForm.weight">
+                                        <option value="" disabled selected>Select Weight</option>
+                                        <option v-for="weight in weightOptions" :value="weight" :key="weight">{{ weight }} kg</option>
+                                    </select>   
+                                </div>
+                                
+                                <div class = "input-row">
+                                    <b><label for = "email">Email:</label></b>
+                                    <input id = "email" type="email" class = "input" placeholder="Please enter your email" v-model="registerForm.email" required/>
+                                </div>
 
-                            <div class = "input-row">
-                                <b><label for = "password">Password:</label></b>
-                                <input id = "password" type="password" class = "input" placeholder="Please enter your password" v-model="registerForm.password" required/>
-                            </div>
+                                <div class = "input-row">
+                                    <b><label for = "password">Password:</label></b>
+                                    <input id = "password" type="password" class = "input" placeholder="Please enter your password" v-model="registerForm.password" required/>
+                                </div>                                
+                            </form>
                     </div>
             </el-main>
             <el-footer>
@@ -257,6 +259,7 @@
         .buttons{
             bottom: 10px;
             left: 50%;
+            margin-left: 8px;
             transform: translateX(-50%);
         }
         .login-button{
