@@ -20,24 +20,14 @@
                 age: '',
             });
 
-            //email regular expression
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
             //submit register form
             const submitRegisterForm = () => {
                 try{
                     //validate the form
-                    if(!emailRegex.test(registerForm.email) || registerForm.password === ''){
+                    if(registerForm.email === '' || registerForm.password === ''){
                         //if the validation failed
                         ElMessage.error('Please enter a valid email address or password');
                     }else{
-                        //check whether the value of each field is empty, and if it is empty, set it to null
-                        for(const key in registerForm){
-                            if(!registerForm[key]){
-                                registerForm[key] = null;
-                            }
-                        }
-
                         //data need to send
                         //const dataToSend = {
                             //name: registerForm.name,

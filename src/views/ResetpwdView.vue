@@ -18,14 +18,11 @@
                 confirmPassword: ''
             });
 
-            //email regular expression
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
             //submit reset password form
             const submitResetpwdForm = () => {
                 try{
                     //validate the form
-                    if(!emailRegex.test(resetpwdForm.email)){
+                    if(resetpwdForm.email === ''){
                         ElMessage.error('Email is not valid');
                     }else if(resetpwdForm.newPassword !== resetpwdForm.confirmPassword){
                         ElMessage.error('New password and confirm new password do not match');

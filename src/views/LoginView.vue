@@ -18,14 +18,11 @@
                 password: '',
             });
 
-            //email regular expression
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
             //submit login form
             const submitLoginForm = () => {
                 try{
                     //Use regular expressions to verify email and password
-                    if(!emailRegex.test(loginForm.email) || loginForm.password === ''){
+                    if(loginForm.email === '' || loginForm.password === ''){
                         //if the validation failed
                         ElMessage.error('Please enter a valid email address or password');
                     }else{
