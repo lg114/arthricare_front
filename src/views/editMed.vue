@@ -370,8 +370,8 @@
         Meds : ["Abatacept","Adalimumab","Allopurinol","Ambrisentan","Anakinra","Anifrolumab","Apremilast","Azathioprine",
         "Baricitinib","Biosimilars","Bisphosphonates (Oral)","Bisphosphonates (Intravenous/IV)","Bosentan"
         ,"Cannabinoids - Medicinal Cannabis","Certolizumab","Colchicine","Ciclosporin"],
-        Meds2:[],
-        Meds3:[],
+        Meds2:[""],
+        Meds3:[""],
       
 
         category: [
