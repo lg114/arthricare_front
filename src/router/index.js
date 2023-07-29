@@ -33,16 +33,6 @@ const router  = createRouter({
             component: SignUpPage,
         },
         {
-          path: '/AddMed',
-          name: 'AddMed',
-          component: AddMedPage,
-        },
-        {
-          path: '/EditMed',
-          name: 'EditMed',
-          component: EditMedPage,
-        },
-        {
           path: '/AddMed-mobile',
           name: 'AddMed-mobile',
           component: AddMedPageMobile,
