@@ -6,8 +6,7 @@ import ResetPwdPage from '@/views/ResetpwdView.vue';
 
 import AddMedPageMobile from '@/views/AddMed-mobile.vue';
 import EditMedPageMobile from '@/views/EditMed-mobile.vue';
-import EditMedPage from '@/views/EditMed.vue';
-import AddMedPage from '@/views/AddMed.vue';
+
 
 const router  = createRouter({
     history : createWebHashHistory(),
