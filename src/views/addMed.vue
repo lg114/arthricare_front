@@ -6,7 +6,6 @@
 </script>
 <template>
    <el-container class = "container">
-   
     <div class = "container-flex">
       <router-link to = "/">
          <el-icon class = "backBtn"><ArrowLeftBold/></el-icon>
@@ -336,42 +335,29 @@
 <script>
 import VueDatePicker1 from '@vuepic/vue-datepicker';
 import VueDatePicker2 from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
-import { ref} from 'vue';
+import '@vuepic/vue-datepicker/dist/main.css';
+import axios from 'axios';
 
 export default {
-  components: { VueDatePicker1 , VueDatePicker2},
+  components: { VueDatePicker1, VueDatePicker2 },
   data() {
     return {
       date1: null,
       date2: null,
       counter: 0,
-
-      category: [
-        { id: 1, title: 'Pill' },
-        { id: 2, title: 'Tablet' },
-        { id: 3, title: 'Injection' },
-        { id: 4, title: 'Drop' }
-      ],
+      medicationName: '', // Fix 1
       selectedCategory: null,
-      showCategory: false,
-
-      selectedUnit: null,
-      showUnit: false,
-
-
+      note: '', // Fix 4
     };
   },
   methods: {
     increaseCounter() {
-      
-        this.counter++;
-      
+      this.counter++;
     },
     decreaseCounter() {
-      if(this.counter == 0){
-        this.counter += 0
-      }else{
+      if (this.counter === 0) { // Fix 5
+        this.counter = 0;
+      } else {
         this.counter--;
       }
     },
@@ -381,51 +367,74 @@ export default {
     },
     toggleOptions() {
       this.showCategory = !this.showCategory;
-    }
+    },
+    addMedicationForm(event) {
+      event.preventDefault();
 
-    
-    
+      var loggedInUser = sessionStorage.getItem('loggedInUser');
+      if (loggedInUser) {
+        loggedInUser = JSON.parse(loggedInUser);
+      } else {
+        // If the user is not logged in, do something
+        // For now, I'm showing an alert message.
+        alert('Please login first.');
+        return;
+      }
+      var userId = loggedInUser.id;
+
+      var medicationName = this.medicationName; // Fix 2
+      var medicationType = this.selectedCategory;
+      var medicationCategory = this.selectedUnit; // Assuming there is selectedUnit as a data property in your Vue component.
+      var frequency = this.counter;
+      var dosageUnit = 'mg'; // Assuming there is a default dosageUnit.
+
+      var medication = {
+        userId: userId,
+        medicationName: medicationName,
+        medicationType: medicationType,
+        medicationCategory: medicationCategory,
+        frequency: frequency,
+        dosageUnit: dosageUnit,
+        startDate: this.date1,
+        endDate: this.date2,
+        note: this.note, // Fix 2
+      };
+
+      console.log(medication);
+
+      axios
+        .post('/medications/create', medication)
+        .then((response) => {
+          if (response.status === 200) {
+            // Redirect to mymeds when success
+            this.$router.push('/MyMeds');
+          } else {
+            document.getElementById('response').innerText = 'Failed to add medication.';
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+          document.getElementById('response').innerText = 'An error occurred while adding medication.';
+        });
+    },
+    addNoteButton() {
+      var note = window.prompt('Please enter your note');
+      if (note !== null) {
+        this.note = note; // Fix 4
+      }
+    },
+    handleReminder() {
+      // Add any logic you want to execute when the "Reminder" div is clicked
+      // For example, you can show a reminder pop-up or trigger a notification
+      console.log('Reminder clicked!');
+    },
+    handleNext() {
+      // Add any logic you want to execute when the "Next" button is clicked
+      // For example, you can use this.$router.push to navigate to another page
+      this.$router.push('/nextPage');
+    },
   },
-  mounted(){
-            document.title = 'Sign Up | ArthriCare';
-        },
-        setup(){
-            const name = ref('');
-            const selectedAge = ref('');
-            const gender = ref('');
-            const selectedWeight = ref('');
-            const email = ref('');
-            const password = ref('');
-
-            const generateAgeOptions = (start, end) => {
-            const options = [];
-            for (let i = start; i <= end; i++) {
-                options.push(i.toString());
-            }
-            return options;
-            };
-
-            const generateWeightOptions = (start, end) => {
-            const options = [];
-            for (let i = start; i <= end; i++) {
-                options.push(i.toString());
-            }
-            return options;
-            };
-
-            return {
-            name,
-            selectedAge,
-            gender,
-            selectedWeight,
-            email,
-            password,
-            ageOptions: generateAgeOptions(10, 100),
-            weightOptions: generateWeightOptions(35, 200),
-            };
-        }
-    
-}
-
-
+};
 </script>
+
+

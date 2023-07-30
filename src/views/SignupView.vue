@@ -1,74 +1,105 @@
 <!--Signup Page -->
 <script>
-    import { reactive} from 'vue';
-    import { ArrowLeftBold } from '@element-plus/icons-vue';
-    import router from '@/router';
+import { ref,reactive } from 'vue';
+import { ArrowLeftBold } from '@element-plus/icons-vue';
+import router from '@/router';
+import axios from 'axios';
 
-    export default{
-        //title
-        mounted(){
-            document.title = 'Sign Up | ArthriCare';
-        },
-        setup(){
-            //set up register data
-            const registerForm = reactive({
-                name: '',
-                gender: '',
-                email: '',
-                password: '',
-                weight: '',
-                Age: '',
-            });
+export default {
+  //title
+  mounted() {
+    document.title = 'Sign Up | ArthriCare';
+  },
+  setup() {
+    //set up register data
+    const registerForm = reactive({
+      name: '',
+      gender: '',
+      email: '',
+      password: '',
+      weight: '',
+      Age: '',
+    });
 
-            //handle sign up process
-            const handleregister = () => {
+     const showError = ref(false);
 
-            }
-
-            //submit register form
-            const submitRegisterForm = () => {
-                try{
-                    //Here, axios is used to send network requests, assuming the address of the backend API is '/api/register'
-
-                    //jump to login page
-                    router.push("/login");
-                }catch(error){
-                    console.error("Registration failed!", error);
-                }
-            }
-
-            //age selection
-            const generateAgeOptions = (start, end) => {
-            const options = [];
-            for (let i = start; i <= end; i++) {
-                options.push(i.toString());
-            }
-            return options;
-            };
-
-            //weight selection
-            const generateWeightOptions = (start, end) => {
-            const options = [];
-            for (let i = start; i <= end; i++) {
-                options.push(i.toString());
-            }
-            return options;
-            };
-
-            return {
-            registerForm,
-            handleregister,
-            submitRegisterForm,
-            ageOptions: generateAgeOptions(10, 100),
-            weightOptions: generateWeightOptions(35, 200),
-            };
-        },
-
-        components:{
-            ArrowLeftBold,
-        }
+    //handle sign up process
+    const handleregister = () => {
+      if (
+        registerForm.name === '' ||
+        registerForm.gender === '' ||
+        registerForm.email === '' ||
+        registerForm.password === '' ||
+        registerForm.weight === '' ||
+        registerForm.Age === ''
+      ) {
+        showError.value = true;
+      } else {
+        showError.value = false;
+        router.push('/Login');
+      }
     };
+
+    //submit register form
+    const submitRegisterForm = async () => {
+      const name = registerForm.name;
+      const gender = registerForm.gender;
+      const email = registerForm.email;
+      const password = registerForm.password;
+      const weight = registerForm.weight;
+      const age = registerForm.Age;
+
+      try {
+        const response = await axios.post('http://localhost:8181/api/register', {
+          name: name,
+          gender: gender,
+          email: email,
+          password: password,
+          weight: weight,
+          age: age,
+        });
+        console.log(response.data); // register successful message
+        router.push('/Login'); //jump to login page
+      } catch (error) {
+        console.error('Registration failed!', error);
+      }
+    };
+
+    //age selection
+    const generateAgeOptions = (start, end) => {
+      const options = [];
+      for (let i = start; i <= end; i++) {
+        options.push(i.toString());
+      }
+      return options;
+    };
+
+    //weight selection
+    const generateWeightOptions = (start, end) => {
+      const options = [];
+      for (let i = start; i <= end; i++) {
+        options.push(i.toString());
+      }
+      return options;
+    };
+
+    return {
+      registerForm,
+      handleregister,
+      submitRegisterForm,
+      showError,
+      axios,
+      ageOptions: generateAgeOptions(10, 100),
+      weightOptions: generateWeightOptions(35, 200),
+    };
+  },
+
+  components: {
+    ArrowLeftBold,
+  },
+};
 </script>
+
 <template>
     <div class = "container">
         <el-container class = "content-container">
@@ -253,5 +284,10 @@
     .login-button:hover::before{
     width: 100%;
     border-radius: 10px;
+    }
+    .error{
+        color: #FF5F5F;
+        font-size:x-large;
+    
     }
 </style>

@@ -1,58 +1,78 @@
 <!--Login Page -->
 <script>
-    import { ArrowLeftBold } from '@element-plus/icons-vue';
-    import { ref,reactive } from 'vue';
-    import router from '@/router';
+import { ArrowLeftBold } from '@element-plus/icons-vue';
+import { ref, reactive } from 'vue';
+import router from '@/router';
+import axios from 'axios';
 
-    export default{
-        //title
-        mounted() {
-            document.title = "Login | ArthriCare";
-        },
-        setup(){
-            //setup login data
-            const loginForm = reactive({
-                email: '',
-                password: '',
-            });
+export default {
+  //title
+  mounted() {
+    document.title = 'Login | ArthriCare';
+  },
+  setup() {
+    //setup login data
+    const loginForm = reactive({
+      email: '',
+      password: '',
+      staySignedIn: false, // Add staySignedIn property to the login form data
+    });
 
-            //default show error message
-            const showError = ref(false);
+    //default show error message
+    const showError = ref(false);
 
-            //handle login process
-            const handlelogin = () => {
-                if(loginForm.email === '' || loginForm.password === ''){
-                    showError.value = true;
-                }else{
-                    showError.value = false;
-                    router.push('/Home');
-                }
-            };
+    //handle login process
+    const handlelogin = () => {
+      if (loginForm.email === '' || loginForm.password === '') {
+        showError.value = true;
+      } else {
+        showError.value = false;
+        router.push('/Home');
+      }
+    };
 
-            //submit login form
-            const submitLoginForm = () => {
-                try{
-                    //Here, axios is used to send network requests, assuming the address of the backend API is '/api/login'
-                    
-                    //jump to login page
-                    router.push("/home");
-                }catch(error){
-                    console.error("Login failed!", error);
-                }
-            };
+    //submit login form
+    const submitLoginForm = async () => {
+      const email = loginForm.email;
+      const password = loginForm.password;
+      const staySignedIn = loginForm.staySignedIn;
 
-            return{
-                loginForm,
-                handlelogin,
-                submitLoginForm,
-                showError,
-            };
-        },
-        components: {
-            ArrowLeftBold
-        },
-    }
+      try {
+        const response = await axios.post('http://localhost:8181/api/login', {
+          email: email,
+          password: password,
+        });
+        console.log(response.data); // Login successful message
+
+        // Store user login information in sessionStorage if staySignedIn is true
+        if (staySignedIn) {
+          const userData = {
+            email: email,
+            password: password,
+          };
+          sessionStorage.setItem('loggedInUser', JSON.stringify(userData));
+        }
+
+        router.push('/Home'); //jump to home page
+      } catch (error) {
+        console.error('Login failed!', error);
+      }
+    };
+
+    return {
+      loginForm,
+      handlelogin,
+      submitLoginForm,
+      showError,
+      axios,
+    };
+  },
+  components: {
+    ArrowLeftBold,
+  },
+};
 </script>
+
 <template>
     <div class="container" >
         <el-container class = "content-container">

@@ -1,51 +1,65 @@
 <!--Resetpassword Page -->
 <script>
-    import { ArrowLeftBold } from '@element-plus/icons';
-    import { reactive } from 'vue';
-    import router from '@/router';
+import { ArrowLeftBold } from '@element-plus/icons';
+import { reactive } from 'vue';
+import axios from 'axios';
+import router from '@/router';
 
-    export default{
-        //title
-        mounted(){
-            document.title = 'Reset Password | ArthriCare';
-        },
+export default {
+  //title
+  mounted() {
+    document.title = 'Reset Password | ArthriCare';
+  },
 
-        setup(){
-            //reset pwd data
-            const resetpwd = reactive({
-                email: '',
-                newPassword: '',
-                confirmPassword: ''
-            });
+  setup() {
+    //reset pwd data
+    const resetpwd = reactive({
+      email: '',
+      newPassword: '',
+      confirmPassword: '',
+    });
 
-            //handle reset pwd process
-            const handleResetPwd = () => {
+    //handle reset pwd process
+    const handleResetPwd = () => {};
 
-            }
+    //submit reset password form
+    const submitResetpwdForm = async () => {
+      const email = resetpwd.email;
+      const newPassword = resetpwd.newPassword;
+      const confirmPassword = resetpwd.confirmPassword;
 
-            //submit reset password form
-            const submitResetpwdForm = () => {
-                try{
-                    //Here, axios is used to send network requests, assuming the address of the backend API is '/api/resetpwd'
-                    
-                    //jump to login page
-                    router.push("/welcome");
-                }catch(error){
-                    console.error("Reset failed!", error);
-                }
-            }
+      if (newPassword !== confirmPassword) {
+        alert('Passwords do not match');
+        return;
+      }
 
-            return{
-                resetpwd,
-                handleResetPwd,
-                submitResetpwdForm
-            };
-        },
+      try {
+        // Send the reset password request to the backend API using axios
+        const response = await axios.put('/api/updatePassword', {
+          email: email,
+          password: newPassword,
+        });
 
-        components:{
-            ArrowLeftBold
-        }
+        alert(response.data); // Show the response from the API (e.g., "Password updated successfully")
+
+        // Redirect the user to the login page after password reset
+        router.push('/welcome');
+      } catch (error) {
+        console.error('Reset failed!', error);
+      }
     };
+
+    return {
+      resetpwd,
+      handleResetPwd,
+      submitResetpwdForm,
+    };
+  },
+
+  components: {
+    ArrowLeftBold,
+  },
+};
 </script>
 
 <template>
