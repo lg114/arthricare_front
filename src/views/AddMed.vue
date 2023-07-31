@@ -1,11 +1,15 @@
-<!--Welcome Page -->
+!--add med -->
+<!--add med-->
 <script setup>
   import {ArrowLeftBold} from '@element-plus/icons-vue';
-  import {Bell} from '@element-plus/icons-vue';
+  import store from "@/store";
+  import axios from 'axios';
   
 </script>
+
 <template>
    <el-container class = "container">
+   
     <div class = "container-flex">
       <router-link to = "/">
          <el-icon class = "backBtn"><ArrowLeftBold/></el-icon>
@@ -14,71 +18,66 @@
     </div>  
       <div id = container2>
         <p id = "label" style = "font-size : 35px ; font-weight:500;" >Add Medication</p>
-        <input id="Add" type="text" placeholder="*Required Field" style = "width:150px"/><br>
+        <input id="Add" ref = "Field" type="text" placeholder="Required Field*" style = "width:50%"/><br>
         <p id = "label">MEDICATION NAME</p>
-        <input id="MedName" type="text" placeholder="" />
-        <p id = "label">ADD CATEGORY</p>
 
-        <div class="menu">
-          <div class="selected-option" @click="toggleOptions">
-            {{ selectedCategory ? selectedCategory.title : 'Select Category' }}
-          </div>
-          <ul v-if="showCategory" class="options">
-            <li v-for="Category in category" :key="Category.id" @click="handleItemClick(Category)">
-              <i class="fas fa-circle"></i> {{ Category.title }}
-            </li>
-          </ul>
+        <input ref="MedName" id="MedName" type="text" placeholder="" @keyup="processInput" @focus="toggleOptions"/>
+
+        <div  class="menu" v-if="this.Meds2!==null  && showMed">
+          <div ref="MedOption"  class="selected-option" v-for="item in Meds2" :key="item" @click="handleItemClick(item)">{{ item }}</div>
+        </div> 
+
+        <p id = "label">CHANGE CATEGORY</p>
+        <div>
+          <b><label for = "Category"></label></b>
+          <select  ref = "Category" name="Category" id="Category" class = "row-input" v-model="Category">
+           <option value="" disabled selected>Select Category</option>
+           <option value="Pill">Pill</option>
+           <option value="Tablet">Tablet</option>
+           <option value="Injection">Injection</option>
+           <option value="Drop">Drop</option>
+         </select>
         </div>
 
-        <p id = "label">HOW OFTEN ARE YOU TAKING THIS MEDICATION?*</p>
-        <input id="input" type="text" placeholder="eg. Once a week" />
-        <p id = "label">HOW MANY UNITS DO YOU TAKE EACH TIME?*</p>
+        <p id = "label" >HOW OFTEN ARE YOU TAKING THIS MEDICATION?</p>
+        <!-- <input ref="Frequency" id="input" type="text" placeholder="  " /> -->
+        <div>
+          <select  ref="Frequency" name="Frequency" id="Frequency" class ="row-input" v-model="AAA">
+           <option value="" disabled selected>Select Category</option>
+           <option value="Every Day">EveryDay</option>
+           <option value="EveryTwoDays">EveryTwoDays</option>
+           <option value="Once a week">Once a week</option>
+           <option value="Twice a week">Twice a week</option>
+           <option value="Few times a week">Few times a week</option>
+         </select>
+        </div>
 
-        <div class = "container-flex" style = "margin-left: 42% ; margin-bottom:1%">
+        <p id = "label">HOW MANY UNITS DO YOU TAKE EACH TIME?</p>
+
+        <div class = "container-flex">
           <div class="IncreaseButton" @click="increaseCounter">+</div>
-          <div class = "number">{{ counter }}</div>
+          <div ref = "Unit" class = "number">{{ counter }}</div>
           <div class="DecreaseButton" @click="decreaseCounter">-</div>
-        </div>
-        <div class="menu">
-          <div ref="unitText" class="selected-option" @click="UnittoggleOptions">
-            {{ selectedUnit ? selectedUnit.units : 'Select Unit' }}
-          </div>
-          <ul v-if="showUnit" class="options">
-            <li v-for="Unit in unit" :key="Unit.id" @click="UnithandleItemClick(Unit)">
-              <i class="fas fa-circle"></i> {{ Unit.units }}
-            </li>
-          </ul>
         </div>
         
         <p id = "label">WHEN DID YOU START TAKING THIS MEDICATION?</p>
         <div id = "date" >
-          <VueDatePicker1 id="date1" v-model="date1"></VueDatePicker1>
+          <VueDatePicker1 ref = "StartDate" id="startDate" v-model="selectedStartDate"></VueDatePicker1>
         </div>
-
-        <p id = "label" style="margin-top: 50px;">WHEN DID YOU STOP TAKING THIS MEDICATION?*</p>
+        
+        <p id = "label" style="margin-top: 50px;">WHEN DID YOU STOP TAKING THIS MEDICATION?</p>
         <div id = "date">
-          <VueDatePicker2 id="date2" v-model="date2"></VueDatePicker2>
+          <VueDatePicker2  ref = "EndDate" id="endDate" v-model="selectedEndDate"></VueDatePicker2>
         </div>
-        
-      <div >
-        
+
+        <p id = "label" style = "margin-top:60px">ADD A NOTE ? (optional)</p>
         <div >
-          <p id = "label" style = "margin-top:60px">ADD A NOTIFICATION ? (optional)</p>
-          <textarea id = "textarea1" name = "Notification" column="20" row="20"></textarea>
+          <textarea ref="Note" id = "textarea1" name = "Note" column="20" row="20"></textarea>
         </div>
-      </div>  
+        <div class = "container-flex" style="margin-top:5%">   
 
-      <div class = "container-flex" style="margin-top:2%">
-
-        <div class = "note">Reminder
-          </div>   
-        <router-link to = "/">
-          <el-icon class="BellBtn"><Bell/></el-icon>
-        </router-link>
-
-      </div>  
-
-        <div class="Button" >
+        </div>  
+        <div class="Button" @click="saveData" >
            Next
         </div>
       </div>
@@ -88,95 +87,127 @@
 
 <style scoped>
 
-
         #textarea1{
           background-image: linear-gradient(#F1F1F1 50%, #F9F9F9 50%);
           background-size: 100% 4rem;
           border: 1px solid #CCC;
-          width: 24%;
-          line-height: 3rem;
+          width: 85%;
+          line-height: 2rem;
+          padding: 2% 2%;
           font-size:20px;
-          color:#1890FF;
+          color:black;;
           font-weight:bold;
-          margin-left:42%;
+          margin-left:4%;
+          font-family:custom;
         }
 
-      .container-flex{
-          display:flex;
-          
+       .row-input{
+          color: #1890FF;
+          background-color: #f4f4f4;
+          border: 2px solid #f0dddd;
+          width: 40%;
+          height: 30px;
+          border-radius: 5px;
+          margin: 3.5px;
+          padding-left: 10px;
+          outline: none;
+          font-size:100%;
+          font-weight:bold;
+          margin-left:4.5%;
         }
+
+        .container-flex{
+          display:flex;
+        }
+
+        .BellBtn{
+          font-size: 30px;
+          color: #1890FF;
+          position:relative;
+          margin-left:60%;
+          size:40%;
+      }
+        
         .note{
           position:relative;
-          width:130px; 
+          width:130px ; 
           height:30px;
-          font-size:20px;
+          top:7%;
+          left:2%;
+          font-size:110%;
           border-radius:10px 10px 10px 10px;
           background-color: #1890FF;
           text-align: center;
           color:white;
           cursor: pointer;
-          margin-left: 42%;
-         
-          padding:0;
         }
         .note:hover{
           background-color: grey;
         }
 
         #date{
-          margin-left: 42%;
+          margin-left: 3%;
           margin-top: 10px; 
-          width:450px ; 
+          width:90%; 
           height:10px;
         }
         .number{
-          margin-left:6%;
-          margin-right:6%;
+          z-index: 9;
           display: block;
           float:center;
           padding: 10px;
           background-color: rgb(253, 248, 248);
-          width:50px;
-          height:50px;
+          margin-bottom: 6%;
+          margin-top: 6%;
+          width:40px;
+          height:40px;
           position:relative;
           font-size:35px;
           text-align: center;
           border: 4px solid #1890FF;
           border-radius:10px 10px 10px 10px;
           color:#1890FF;
-   
+          margin-left:12%;
+          margin-right:5%;
+          
         }
 
       .IncreaseButton {
         text-align: center;
         display: block;
         cursor: pointer;
-        padding: 10px;
+        padding: 1%;
         background-color: rgb(253, 248, 248);
         margin-bottom: 10px;
         width:40px;
+        height:40px;
         position:relative;
-        font-size: 30px;
+        font-size:200%;
         border-radius:10px 10px 10px 10px;
         border: 2.5px solid #a39e9e;
         color: #a19191;
-  
+        margin-top:7%;
+        margin-left:8%;
+
       }
 
       .DecreaseButton {
-        color: #a19191;
         text-align: center;
-        float:right;
         display: block;
         cursor: pointer;
-        padding: 10px;
+        padding: 1%;
         background-color: rgb(253, 248, 248);
+        margin-bottom: 10px;
         width:40px;
+        height:40px;
         position:relative;
-        font-size: 30px;
+        font-size:200%;
         border-radius:10px 10px 10px 10px;
         border: 2.5px solid #a39e9e;
-        margin-bottom: 10px;
+        color: #a19191;
+        margin-top:7%;
+        margin-left:8%;
+
       }
       .unitButton{
         color: #a19191;
@@ -203,24 +234,24 @@
       }
         .Button{
             position: relative;
-            background-color: rgb(32, 93, 224);
+            background-color: #1890FF;
             border: none;
-            font-size: 35px;
+            font-size:130%;
             color: #ffffff;
             padding: 0px;
-            width: 13%;
+            width: 50%;
             text-align: center;
             transition-duration: 0.6s;
             text-decoration: none;
             overflow: hidden;
             cursor: pointer;
+            left:20%;
             border-radius:10px 10px 10px 10px; 
-            height: 60px;
-            margin-top:1%;
+            height: 4%;
+            margin-top:40px;
             line-height: -50px;
-            margin-left: 46%;
-      
         }
+
         .Button::after{
             content: '';
             background:#53a4f0;
@@ -241,59 +272,66 @@
         }
 
     .container{
+      overflow-y: auto;
         display: flex;
         align-items: center;
         height: 100vh;
+        width:100%;
         background-color: #1890FF;
         overflow: auto;
         flex-direction: column;
-        margin: 0 auto;
+        margin: 0 ;
     }
 
     #container2{
-        justify-content:bottom;
-        align-items: center;
-        background-color: rgb(253, 253, 253);
-        position:relative;
-        flex-direction: column;
-        display: inline-block;
-        border-radius:10px 10px 10px 10px;
+      overflow-y: auto;
         padding-left:auto;
         padding-right:auto;
         align-items: center;
-        margin-top:1%;
+        margin-top:6%;
         background-color: rgb(253, 253, 253);
         height:200%;
         width:100%;
-        
+        padding-bottom:100px;
+        justify-content: center;
+        align-items: center;
+        display:inline-block;
     }
 
     #title{
-      font-size: 40px;
+      font-size: 130%;
       position: relative;
       color:#FFFFFF;
       margin:5px;
+      right:9%;
+      top:30%;
     }
 
-    #label{
-      font-style: normal;
+    #label{   
+      width:95%;
+      font-weight:600;
+      font-size: 20%;
       color:  #1890FF;
-      margin-left:42%;
-      font-size: 18px;
-      margin-bottom:1.8%;
-      width:50%;
-      font-weight:bold;
+      margin-left:4%;
+      margin-bottom:2%;
+      margin-top:2%;
+      text-align: left;
+      letter-spacing:1px;
     }
 
     input{
-      width: 440px;    
-      height: 30px;    
-      font-size: 20px;    
+      align-items: center;
+      width:80%;    
+      height: 4%;    
+      font-size:100%;    
       background-color: white;
-      margin-left:42%;
+      margin:auto;
       border:none; 
-      border-bottom: 3px solid #f0dddd;
-      color: #008866;
+      border-bottom: 3px solid #DDDDDD;
+      color: black;
+      margin-left:5%;
+      letter-spacing:1px;
+      
     } 
 
     input:focus
@@ -303,30 +341,22 @@
     }
 
     .backBtn{
-        font-size: 30px;
+        font-size: 25px;
         color:#FFFFFF;
         position:relative;
-        margin-top:60%;
-        right:300%
-    }
-
-    .BellBtn{
-        font-size: 30px;
-        color: grey;
-        position:relative;
-        margin-left:5%;
-        size:40%;
-        color:#1890FF;
+        margin-top:80%;
+        right:350%;
     }
 
     .menu {
-      position: relative;
       display: inline-block;
-      margin-left: 42%;
+      left:4%;
+      position:relative;
     }
 
     .selected-option {
-      width: 200px;
+
+      width: 120%;
       padding: 10px;
       background-color: #f4f4f4;
       border-radius: 5px;
@@ -334,66 +364,90 @@
       border: 1px solid white;
       color:#008866;
       font-size:17px;
-      letter-spacing:2px;
+      letter-spacing:1px;
     }
 
-    .selected-option:hover{
-      border: 1px solid #ccb5b5;
-    }
 
-    .options {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      width: 220px;
-      padding: 0;
-      margin-top: 5px;
-      list-style: none;
-      background-color: #f4f4f4;
-      border-radius: 5px;
-      color:#008866;
-      letter-spacing:2px;
-    }
-
-    .options li {
-      padding: 10px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-      display: flex;
-      align-items: center;
-      border: 1px solid white;
-      border-radius:10px 10px 10px 10px;
-      
-    }
-
-    .options li i {
-      margin-right: 5px;
-      border: 1px solid #ccb5b5;
-      border-radius:10px 10px 10px 10px;
-    }
-
-    .options li:hover {
-      background-color: #e0e0e0;
-      color:#1890FF;
-      
-      font-weight:bold;
-    }
+    
         
-
 </style>
 
 <script>
 import VueDatePicker1 from '@vuepic/vue-datepicker';
 import VueDatePicker2 from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
+import '@vuepic/vue-datepicker/dist/main.css';
 
 export default {
   components: { VueDatePicker1 , VueDatePicker2},
+  computed: {
+    changeToTrue() {
+      return this.$store.state.changeToTrue;
+    },
+  },
   data() {
     return {
-      date1: null,
-      date2: null,
       counter: 0,
+      selectedStartDate: null,
+      selectedEndDate: null,
+      Meds : ["Abatacept",
+    "Adalimumab",
+    "Allopurinol",
+    "Ambrisentan",
+    "Anakinra",
+    "Anifrolumab",
+    "Apremilast",
+    "Azathioprine",
+    "Baricitinib",
+    "Biosimilars",
+    "Bisphosphonates (Oral)",
+    "Bisphosphonates (Intravenous/IV)",
+    "Bosentan",
+    "Cannabinoids - Medicinal Cannabis",
+    "Certolizumab",
+    "Colchicine",
+    "Ciclosporin",
+    "Cyclophosphamide",
+    "Denosumab",
+    "Duloxetine",
+    "Etanercept",
+    "Febuxostat",
+    "Glucosamine",
+    "Golimumab",
+    "Goserelin",
+    "Guselkumab",
+    "Hyaluronic Acid",
+    "Hydroxychloroquine",
+    "Iloprost",
+    "Infliximab",
+    "Ixekizumab",
+    "IV Immunuglobulin",
+    "Leflunomide",
+    "Methotrexate",
+    "Self-Injecting Methotrexate for the Treatment of Arthritis",
+    "Mycophenolate",
+    "NSAIDs",
+    "Opioids",
+    "Paracetamol",
+    "Prednisolone",
+    "Pregabalin",
+    "Probenecid",
+    "Raloxifene",
+    "Rituximab",
+    "Romosozumab",
+    "Secukinumab",
+    "Sulfasalazine",
+    "Tacrolimus",
+    "Teriparatide",
+    "Tocilizumab",
+    "Tofacitinib",
+    "Ustekinumab",
+    "Upadacitinib"],
+      Meds2:[],
+      Meds3:[],
+
+      // pass data to MyMed
+
+    
 
       category: [
         { id: 1, title: 'Pill' },
@@ -401,52 +455,122 @@ export default {
         { id: 3, title: 'Injection' },
         { id: 4, title: 'Drop' }
       ],
-      unit: [
-        { id: 1, units: 'Tablet' },
-        { id: 2, units: 'Bottle'}
+      Med: [
+        { id: 1, meds: 'Mg' },
+        { id: 2, meds: 'Bottle'}
       ],
-      selectedCategory: null,
-      showCategory: false,
-
-      selectedUnit: null,
-      showUnit: false,
-
+      selectedMed: null,
+      showMed: false,
 
     };
+    
   },
+  
   methods: {
     increaseCounter() {
-      if(this.$refs.unitText.innerHTML === 'Mg'){
-        this.counter+=10
-      }else if(this.$refs.unitText.innerHTML === 'Bottle'){
         this.counter++;
-      }
     },
     decreaseCounter() {
       if(this.counter == 0){
         this.counter += 0
-      }else if(this.$refs.unitText.innerHTML === 'Mg'){
-        this.counter-=10
-      }else if(this.$refs.unitText.innerHTML === 'Bottle'){
+      }else{
         this.counter--;
       }
     },
-    handleItemClick(category) {
-      this.selectedCategory = category;
-      this.showCategory = false;
-    },
-    toggleOptions() {
-      this.showCategory = !this.showCategory;
-    }, 
-    UnithandleItemClick(unit) {
-      this.counter = 0;
-      this.selectedUnit = unit;
-      this.showUnit = false;
-    },
-    UnittoggleOptions() {
-      this.showUnit = !this.showUnit;
+
+
+    // fliter letter
+    filterWordsByLetter(wordsArray, letter) {
+      const lowercaseLetter = letter.toLowerCase();
+      const filteredWords = wordsArray.filter(word => word.toLowerCase().startsWith(lowercaseLetter));
+      return filteredWords;
+   },
+   showResult(){
+    if(this.$refs.MedName.value === ""){
+      this.Meds2 =this.Meds3;
+      console.log(this.Meds2);
+    }else{
+      const filteredWordsStartingWithLetters = this.filterWordsByLetter(this.Meds, this.$refs.MedName.value);
+      this.Meds2 = filteredWordsStartingWithLetters;
+      console.log(this.Meds2);
     }
   }
+   ,
+   getResult(){
+    const filteredWordsStartingWithLetters = this.filterWordsByLetter(this.words, this.$refs.MedName.value);
+    return filteredWordsStartingWithLetters;
+   },
+   processInput(event) {
+     if (event.keyCode !== 13) {
+        this.showResult();
+
+         }
+      },
+      
+
+      //show Med in list
+    handleItemClick(Med) {
+      this.selectedMed = Med;
+      this.showMed = false;
+      this.$refs.MedName.value = Med;
+      this.$refs.MedName.blur();
+      this.Meds2=this.getResult;
+      console.log(Med);
+
+    },
+    
+    toggleOptions() {
+      this.showMed = !this.showMed;
+      this.$refs.MedName.focus();
+    },
+
+    // pass value to MyMed
+    saveData() {
+      // const dataObject = {
+      //   Field: this.$refs.Field.value,
+      //   MedName: this.$refs.MedName.value,
+      //   Category: this.$refs.Category.value,
+      //   Frequency:this.$refs.Frequency.value,
+      //   StartDate: this.$refs.StartDate.value ,
+      //   EndDate: this.$refs.EndDate.value,
+      //   Note: this.$refs.Note.value,
+
+      //  };
+
+        //  this.$router.push({
+        //       path: '/MyMeds2',
+        //       query: {
+        //         Field: this.$refs.Field.value,
+        //         MedName: this.$refs.MedName.value,
+        //         Category: this.$refs.Category.value,
+        //     }
+        //   });
+        store.commit('changeToTrue');
+        this.$router.push({
+              path: '/MyMeds2',
+              query: {
+                Field: this.$refs.Field.value,
+                MedName: this.$refs.MedName.value,
+                Category: this.$refs.Category.value,
+                Frequency:this.$refs.Frequency.value,
+                Unit:this.$refs.Unit.innerHTML,
+                StartDate: this.selectedStartDate ,
+                EndDate: this.selectedEndDate,
+                Note: this.$refs.Note.value,
+             }
+           })
+           console.log(this.selectedStartDate)
+           console.log(this.selectedEndDate)
+
+    }},
+  mounted(){
+            document.title = 'Sign Up | ArthriCare';
+        },
+        setup(){
+          
+            
+        }
 }
+
 
 </script>
