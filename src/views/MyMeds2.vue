@@ -254,7 +254,7 @@ beforeCreate(){
   data() {
     return{
       MedicineArray: [],
-
+      
       // MedName : this.$route.params.MedName,
       // Field : this.$route.params.Field,
       // Category : this.$route.params.Category
@@ -262,6 +262,11 @@ beforeCreate(){
     };
 },
   methods: {
+    formattedDate(Date) {
+
+      const dateOptions = { year: 'numeric', month: '2-digit', day: '2-digit' };
+      return new Date(Date).toLocaleDateString('en-US', dateOptions);
+    },
 
     addObjectToArray() {
           // const queryObject = this.$route.query;
@@ -280,7 +285,6 @@ beforeCreate(){
           // console.log('Start');
           // console.log(this.MedicineArray[0]);
           const dataObject = {
-            Field: this.$route.query.Field,
             MedName:  this.$route.query.MedName,
             Category:  this.$route.query.Category,
             Frequency: this.$route.query.Frequency,
@@ -288,8 +292,11 @@ beforeCreate(){
             StartDate:  this.$route.query.StartDate ,
             EndDate:  this.$route.query.EndDate,
             Note:  this.$route.query.Note,
+            timeInput1: this.$route.query.timeInput1,
+            timeInput2: this.$route.query.timeInput2,
+            timeInput3: this.$route.query.timeInput3,
           };   
-          if(dataObject.Field!=="" && dataObject.Field!== undefined){
+          if(dataObject.MedName!=="" && dataObject.MedName!== undefined){
             console.log("FUnctino CALLED")
             this.MedicineArray.push(dataObject);
             store.state.MedArray.push(dataObject);
@@ -299,7 +306,7 @@ beforeCreate(){
           }
             console.log(this.MedicineArray);
             console.log(this.MedicineArray.length);
-            console.log(store.state.MedArray.length);
+            console.log(store.state.MedArray.timeInput1);
             console.log("End");
 
         },

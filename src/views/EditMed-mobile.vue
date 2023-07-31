@@ -7,7 +7,6 @@
 </script>
 <template>
    <el-container class = "container">
-   
     <div class = "container-flex">
       <router-link to = "/">
          <el-icon class = "backBtn"><ArrowLeftBold/></el-icon>
@@ -16,7 +15,6 @@
     </div>  
       <div id = container2>
         <p id = "label" style = "font-size : 35px ; font-weight:500;" >Edit Medication</p>
-        <input id="Add" type="text" placeholder="Required Field*" ref = "Field" style = "width:50%"/><br>
         <p id = "label">MEDICATION NAME</p>
 
         <input ref="MedName" id="MedName" type="text" placeholder="" @keyup="processInput" @focus="toggleOptions"/>
@@ -28,7 +26,7 @@
         <p id = "label">CHANGE CATEGORY</p>
         <div>
           <b><label for = "Category" ref = "Category"></label></b>
-          <select v-model="selectedCategory" name="Category" id="Category" class = "row-input" >
+          <select name="Category" id="Category" class = "row-input" v-model="selectedCategory" >
            <option value="" disabled selected>Select Category</option>
            <option value="Pill">Pill</option>
            <option value="Tablet">Tablet</option>
@@ -42,29 +40,46 @@
         <div>
           <select  ref="Frequency" name="Frequency" id="Frequency" class ="row-input" v-model="selectedFrequency" >
            <option value="" disabled selected>Select Category</option>
-           <option value="Every Day">EveryDay</option>
-           <option value="everyTwoDays">EveryTwoDays</option>
-           <option value="Once a week">Once a week</option>
-           <option value="Twice a week">Twice a week</option>
-           <option value="Few times a week">Few times a week</option>
+           <option value="Once a Day">Once a Day</option>
+           <option value="Twice a Day">Twice a Day</option>
+           <option value="Three times a Day">Three times a Day</option>
+
          </select>
+
+         <div v-if="selectedFrequency === 'Once a Day'">
+          <input type="time" v-model="timeInput1" />
+        </div>
+
+        <div v-else-if="selectedFrequency === 'Twice a Day'">
+      
+          <input type="time" v-model="timeInput1" />
+          <input type="time" v-model="timeInput2" />
+        </div>
+
+        <div v-else-if="selectedFrequency === 'Three times a Day'">
+
+          <input type="time" v-model="timeInput1" />
+          <input type="time" v-model="timeInput2" />
+          <input type="time" v-model="timeInput3" />
+        </div>
+
         </div>
         <p id = "label">HOW MANY UNITS DO YOU TAKE EACH TIME?</p>
 
         <div class = "container-flex">
-          <div class="IncreaseButton" @click="increaseCounter">+</div>
-          <div ref = "Unit" class = "number">{{ counter }}</div>
           <div class="DecreaseButton" @click="decreaseCounter">-</div>
+          <div ref = "Unit" class = "number">{{ counter }}</div>
+          <div class="IncreaseButton" @click="increaseCounter">+</div>
         </div>
         
         <p id = "label">WHEN DID YOU START TAKING THIS MEDICATION?</p>
         <div id = "date" >
-          <VueDatePicker1 ref = "StartDate"  id="selectedStartDate" v-model="selectedStartDate"></VueDatePicker1>
+          <VueDatePicker1 ref = "StartDate"  id="selectedStartDate" v-model="selectedStartDate" :format="dateFormat"></VueDatePicker1>
         </div>
         
         <p id = "label" style="margin-top: 50px;">WHEN DID YOU STOP TAKING THIS MEDICATION?</p>
         <div id = "date">
-          <VueDatePicker2 ref = "EndDate" id="selectedEndDate" v-model="selectedEndDate"></VueDatePicker2>
+          <VueDatePicker2 ref = "EndDate" id="selectedEndDate" v-model="selectedEndDate" :format="dateFormat"></VueDatePicker2>
         </div>
 
         <p id = "label" style = "margin-top:60px">ADD A NOTE ? (optional)</p>
@@ -99,7 +114,7 @@
         }
 
        .row-input{
-          color: #1890FF;
+        color: #1890FF;
           background-color: #f4f4f4;
           border: 2px solid #f0dddd;
           width: 45%;
@@ -111,6 +126,7 @@
           font-size:100%;
           font-weight:bold;
           margin-left:4.5%;
+          margin-top:3%;
         }
 
         .container-flex{
@@ -335,6 +351,17 @@
       border-bottom: 3px solid #c2b5b5;
     }
 
+    input[type="time"] {
+      width:23%;
+      padding:2%;
+      font-size:100%;
+      size:5%;
+      margin-left:5%;
+      font-family:system-ui;
+      margin-top:2%;
+      margin-bottom:4%;
+    }
+
     .backBtn{
         font-size: 25px;
         color:#FFFFFF;
@@ -390,9 +417,14 @@ export default {
       counter: 0,
       selectedCategory: null,
       selectedFrequency: null,
+      dateFormat: 'yyyy-MM-dd',
 
       selectedStartDate: null,
       selectedEndDate: null,
+
+      timeInput1: '',
+      timeInput2: '',
+      timeInput3: '',
       Meds : ["Abatacept",
     "Adalimumab",
     "Allopurinol",
@@ -525,15 +557,17 @@ export default {
       const arrayIndex = parseInt(this.$route.query.Index, 10);
       if (store.state.MedArray[arrayIndex]!== null) {
           console.log(arrayIndex);
-          this.$refs.Field.value = store.state.MedArray[arrayIndex].Field,
           this.$refs.MedName.value = store.state.MedArray[arrayIndex].MedName,
           this.selectedCategory = store.state.MedArray[arrayIndex].Category,
           this.selectedFrequency = store.state.MedArray[arrayIndex].Frequency,
           this.$refs.Unit.innerHTML = store.state.MedArray[arrayIndex].Unit,
           this.selectedStartDate = store.state.MedArray[arrayIndex].StartDate,
           this.selectedEndDate = store.state.MedArray[arrayIndex].EndDate,
-          this.$refs.Note.value = store.state.MedArray[arrayIndex].Note;
-          console.log("good");
+          this.$refs.Note.value = store.state.MedArray[arrayIndex].Note,
+          this.timeInput1 = store.state.MedArray[arrayIndex].timeInput1,
+          this.timeInput2 = store.state.MedArray[arrayIndex].timeInput2,
+          this.timeInput3 = store.state.MedArray[arrayIndex].timeInput3;
+          console.log(store.state.MedArray[arrayIndex].timeInput1);
         }else{
           console.log('Do not have this object in array')
         }
@@ -543,18 +577,20 @@ export default {
       
       const arrayIndex = parseInt(this.$route.query.Index, 10);
       const dataObject = {
-            Field: this.$refs.Field.value ,
             MedName: this.$refs.MedName.value,
             Category:  this.selectedCategory,
             Frequency: this.selectedFrequency,
             Unit: this.$refs.Unit.innerHTML,
-            StartDate:   this.$refs.StartDate.value ,
-            EndDate:  this.$refs.EndDate.value,
+            StartDate:   this.selectedStartDate ,
+            EndDate:  this.selectedEndDate ,
             Note:  this.$refs.Note.value ,
+            timeInput1 : this.timeInput1,
+            timeInput2 : this.timeInput2,
+            timeInput3 : this.timeInput3,
           }
             store.state.MedArray[arrayIndex] = dataObject;
-            console.log(store.state.MedArray[0].Field)
-            console.log(store.state.MedArray[arrayIndex].Field)
+            console.log(store.state.MedArray[0].MedName)
+            console.log(store.state.MedArray[arrayIndex].MedName)
             this.$router.push({
               path: '/MyMeds2',
           
