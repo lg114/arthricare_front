@@ -20,11 +20,8 @@
           <router-link to = "/Signup">
             <el-button class = "signup-button">SIGN UP</el-button>
           </router-link>
-          <router-link to = "/EditMed">
-            <el-button class = "signup-button">Edit-Windows</el-button>
-          </router-link>
-          <router-link to = "/AddMed">
-            <el-button class = "signup-button">Add-Windows</el-button>
+          <router-link to = "/MyMeds2">
+            <el-button class = "signup-button">MyMed</el-button>
           </router-link>
           <router-link to = "/EditMed-mobile">
             <el-button class = "signup-button">Edit-mobile</el-button>
