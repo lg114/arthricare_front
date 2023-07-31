@@ -1,7 +1,8 @@
 <!--Home Page-->
 <script>
-    import { ref} from 'vue';
-    import { User, UserFilled, Avatar, CaretRight, Message, MessageBox, Reading, WarningFilled, SwitchButton, HomeFilled, Calendar, CirclePlusFilled, Sugar, Present} from '@element-plus/icons-vue';
+    import { reactive, ref} from 'vue';
+    import { User, UserFilled, Avatar, CaretRight, Message, MessageBox, Reading, WarningFilled, SwitchButton, } from '@element-plus/icons-vue';
+    import { HomeRound, MedicationOutlined, AddCircleFilled, CardGiftcardOutlined, AccountCircleOutlined} from '@vicons/material';
     
     export default{
         //title
@@ -10,12 +11,17 @@
         },
         data(){
             return{
-                username: '',
+                user: reactive({
+                        name: "",
+                        email: "",
+                        AvatarUrl: "",
+                    }),
                 drawer: ref(false),
-                imgUrl: '',
                 dates: [],
+                year: 0,
                 currentDate: new Date(),
                 weekdays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                medication: ''
             };
         },
         created(){
@@ -34,15 +40,19 @@
             //Calendar
             updateCalendar(){
                 const firstDayOfWeek = new Date(this.currentDate);
-                    firstDayOfWeek.setDate(firstDayOfWeek.getDate() - firstDayOfWeek.getDay());
-
+                const currentDayOfWeek = firstDayOfWeek.getDay(); // 获取当前日期的星期几
+                    firstDayOfWeek.setDate(firstDayOfWeek.getDate() - currentDayOfWeek); 
                     this.dates = [];
+
+
                     const options = { month: 'short', day: 'numeric'};
                     for (let i = 0; i < 7; i++) {
                         const day = new Date(firstDayOfWeek);
                         day.setDate(day.getDate() + i);
                         this.dates.push(day.toLocaleDateString('en-US',options));
                     }
+                    this.year = firstDayOfWeek.getFullYear();
+                    console.log(this.year);
             },
             //Calendar
             prevWeek(){
@@ -57,23 +67,42 @@
             //Router
             goToUserProfile(){
                 this.$router.push('/UserProfile');
-            }
+            },
+            //Handle the date click event to obtain the year, month, and day information of the selected date
+            onDateClick(selectedDate) {
+                //Create a new date object and convert the string of the selected date into a date object
+                const selectedDay = new Date(selectedDate);
+
+                // Format the selected date using the same options used in updateCalendar()
+                const options = { month: 'short', day: 'numeric' };
+                const formattedDate = selectedDay.toLocaleDateString('en-US', options);
+
+                //Get the year, month, and day information of the selected date
+                const year = selectedDay.getFullYear();
+                const month = selectedDay.getMonth() + 1; //Months are counted from 0, so add 1
+                const day = selectedDay.getDate();
+
+                //testing
+                console.log(`Selected Date: Year: ${year}, Month: ${month}, Day: ${day}`);
+                console.log(`Formatted Date: ${formattedDate}`);
+            },
+
         },
         components:{
-        User,
-        UserFilled,
-        Avatar,
-        CaretRight,
-        Message,
-        MessageBox,
-        Reading,
-        WarningFilled,
-        SwitchButton,
-        HomeFilled,
-        Calendar,
-        CirclePlusFilled,
-        Sugar,
-        Present
+            User,
+            UserFilled,
+            Avatar,
+            CaretRight,
+            Message,
+            MessageBox,
+            Reading,
+            WarningFilled,
+            SwitchButton,
+            HomeRound, 
+            MedicationOutlined, 
+            AddCircleFilled, 
+            CardGiftcardOutlined, 
+            AccountCircleOutlined
     }
 };
 </script>
@@ -83,8 +112,7 @@
         <el-container class = "content-container">
             <el-header class = "header">
                 <el-icon class="userbtn" @click="drawer = true"><User /></el-icon>
-                <span class = "username">Hello, {{ username }}</span>
-                
+                <span class = "username">Hello, {{ name }}</span>
             </el-header>
             <el-main class = "main">
                 <div class = "calendar">
@@ -96,37 +124,39 @@
                         </div>
                         <div class = "dates">
                             <!-- Dates -->
-                            <div v-for="(date, index) in dates" :key="index" class="date">{{ date }}</div>
+                            <div v-for="(date, index) in dates" :key="index" class="date" @click = "onDateClick(date)">{{ date }}</div>
                         </div>
                     </div>
                     <button class = "arrow" @click = "nextWeek">&#8250;</button>
                 </div>
                 <div class = "medi-info-container">
                         <div class = "medi-info">
-                            <router-link to="/AddMed">
-                                <el-button class = "addmedbtn" round>Add a med</el-button>
-                            </router-link>
+                            <!--加"no meds on today""-->
+                            <div v-if = "medication">{{ medication }}</div>
+                            <div v-else>No Meds on Today</div>
                         </div>
-                        
                 </div>
             </el-main>
             <el-footer class = "footer">
                 <router-link to = "/Home">
-                <el-icon class="footerBtn" id="home"><HomeFilled></HomeFilled></el-icon>                    
+                <el-icon class="footerBtn" id="home"><HomeRound/></el-icon>                    
                 </router-link>
-                <el-icon class="footerBtn" id="calendar"><Calendar></Calendar></el-icon>
+                <el-icon class="footerBtn" id="medication"><MedicationOutlined/></el-icon>
                 <router-link to = "/AddMed">
-                    <el-icon class="footerBtn" id="addMed"><CirclePlusFilled></CirclePlusFilled></el-icon>
+                    <el-icon class="footerBtn" id="addMed"><AddCircleFilled/></el-icon>
                 </router-link>
-                <el-icon class="footerBtn" id="medication"><Sugar></Sugar></el-icon>
-                <el-icon class="footerBtn" id="rewards"><Present></Present></el-icon>
+                <router-link to = "/Rewards">
+                    <el-icon class="footerBtn" id="rewards"><CardGiftcardOutlined/></el-icon>
+                </router-link>
+                <router-link to = "/UserProfile">
+                    <el-icon class="footerBtn" id="profile"><AccountCircleOutlined/></el-icon>
+                </router-link>
             </el-footer>
             <el-drawer style="background-color: #1890FF;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
                 <div class = "sidebar">
                     <div>
                         <div class = "menu-item">
                                 <!--Action是模拟接口，与后端连接时更换-->
-                                <!--加"no meds on today""-->
                                 <el-upload action="" :show-file-list="false">
                                     <el-avatar :size="65">
                                         <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
@@ -381,13 +411,14 @@
         align-items: center;
     }
     .medi-info {
-        margin-top: 20px;
+        margin-top: 10px;
         width: 320px;
         padding: 20px;
         background-color: #ffffff;
         border-radius: 10px;
         text-align: center;
-        margin-top: 500px;
+        color:#1890FF;
+        font-weight: 800;
     }
     /* -------------------------------- Medication Display Container --------------------------------*/
 
@@ -415,7 +446,7 @@
         .dates .date{
             margin-right: -2px;
             margin-left: 2px;
-            padding: 10px;
+            padding: 5px;
         }
         .footerBtn{
             font-size: 25px;
