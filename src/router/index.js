@@ -3,12 +3,12 @@ import WelcomePage from '@/views/WelcomeView.vue';
 import LoginPage from '@/views/LoginView.vue';
 import SignUpPage from '@/views/SignupView.vue';
 import ResetPwdPage from '@/views/ResetpwdView.vue';
-import HomePage from '@/views/HomepageView.vue';
-import AddMedPage from '@/views/addMed.vue';
-import MenuPage from '@/views/MenuView.vue';
-import UserProfilePage from '@/views/UserProfile.vue';
-import EditMedPage from '@/views/editMed.vue';
-import MyMedsPage from '@/views/MyMedsView.vue';
+import AddMedPageMobile from '@/views/AddMed-mobile.vue';
+import EditMedPageMobile from '@/views/EditMed-mobile.vue';
+import MyMeds2 from '@/views/MyMeds2.vue';
+import MyMeds1 from '@/views/MyMedsView.vue';
+
+
 
 const router  = createRouter({
     history : createWebHashHistory(),
@@ -34,36 +34,32 @@ const router  = createRouter({
             component: SignUpPage,
         },
         {
-            path: '/Home',
-            name: 'Home',
-            component: HomePage,
+          path: '/AddMed-mobile',
+          name: 'AddMed-mobile',
+          component: AddMedPageMobile,
+          meta: { keepAlive: true }
+         
         },
         {
-          path: '/AddMed',
-          name: 'AddMed',
-          component: AddMedPage,
-        },
-        {
-            path: '/Menu',
-            name: 'Menu',
-            component: MenuPage,
-        },
-        {
-            path: '/UserProfile',
-            name: 'UserProfile',
-            component: UserProfilePage,
-        },
-        {
-            path: '/EditMed',
-            name: 'EditMed',
-            component: EditMedPage,
-        },
-        {
-            path: '/MyMeds',
-            name: 'MyMeds',
-            component: MyMedsPage,
-        }
-    ]
-})
+          path: '/EditMed-mobile',
+          name: 'EditMed-mobile',
+          component: EditMedPageMobile,
+          meta: { keepAlive: true }
+      },
+      {
+        path: '/MyMeds2',
+        name: 'MyMeds2',
+        component: MyMeds2,
+        meta: { keepAlive: true }
+    },
+    {
+      path: '/MyMeds1',
+      name: 'MyMeds1',
+      component: MyMeds1,
+      meta: { keepAlive: true }
+  }
+      ]
+  })
+ 
+export default router 
 
-export default router;

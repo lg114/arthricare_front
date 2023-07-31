@@ -1,4 +1,4 @@
-<!--add med Page -->
+<!--Welcome Page -->
 <script setup>
   import {ArrowLeftBold} from '@element-plus/icons-vue';
   import {Bell} from '@element-plus/icons-vue';
@@ -13,58 +13,73 @@
       <p id = "title">My Meds</p>
     </div>  
       <div id = container2>
-        <p id = "label" style = "font-size : 35px ; font-weight:500;" >Edit Medication</p>
-        <input id="Add" type="text" placeholder="*Required Field" style = "width:50%"/><br>
+        <p id = "label" style = "font-size : 35px ; font-weight:500;" >Add Medication</p>
+        <input id="Add" type="text" placeholder="*Required Field" style = "width:150px"/><br>
         <p id = "label">MEDICATION NAME</p>
         <input id="MedName" type="text" placeholder="" />
-        <p id = "label">CHANGE CATEGORY</p>
+        <p id = "label">ADD CATEGORY</p>
 
-        <div class = "input-row">
-          <b><label for = "Category"></label></b>
-          <select name="Category" id="Category" class = "row-input" v-model="Category">
-           <option value="" disabled selected>Select Category</option>
-           <option value="Pill">Pill</option>
-           <option value="Tablet">Tablet</option>
-           <option value="Injection">Injection</option>
-           <option value="Drop">Drop</option>
-         </select>
+        <div class="menu">
+          <div class="selected-option" @click="toggleOptions">
+            {{ selectedCategory ? selectedCategory.title : 'Select Category' }}
+          </div>
+          <ul v-if="showCategory" class="options">
+            <li v-for="Category in category" :key="Category.id" @click="handleItemClick(Category)">
+              <i class="fas fa-circle"></i> {{ Category.title }}
+            </li>
+          </ul>
         </div>
 
-        <p id = "label">HOW OFTEN ARE YOU TAKING THIS MEDICATION?</p>
-        <input id="input" type="text" placeholder="  " />
-        <p id = "label">HOW MANY UNITS DO YOU TAKE EACH TIME?</p>
+        <p id = "label">HOW OFTEN ARE YOU TAKING THIS MEDICATION?*</p>
+        <input id="input" type="text" placeholder="eg. Once a week" />
+        <p id = "label">HOW MANY UNITS DO YOU TAKE EACH TIME?*</p>
 
-        <div class = "container-flex">
+        <div class = "container-flex" style = "margin-left: 42% ; margin-bottom:1%">
           <div class="IncreaseButton" @click="increaseCounter">+</div>
           <div class = "number">{{ counter }}</div>
           <div class="DecreaseButton" @click="decreaseCounter">-</div>
+        </div>
+        <div class="menu">
+          <div ref="unitText" class="selected-option" @click="UnittoggleOptions">
+            {{ selectedUnit ? selectedUnit.units : 'Select Unit' }}
+          </div>
+          <ul v-if="showUnit" class="options">
+            <li v-for="Unit in unit" :key="Unit.id" @click="UnithandleItemClick(Unit)">
+              <i class="fas fa-circle"></i> {{ Unit.units }}
+            </li>
+          </ul>
         </div>
         
         <p id = "label">WHEN DID YOU START TAKING THIS MEDICATION?</p>
         <div id = "date" >
           <VueDatePicker1 id="date1" v-model="date1"></VueDatePicker1>
         </div>
-        
-        <p id = "label" style="margin-top: 50px;">WHEN DID YOU STOP TAKING THIS MEDICATION?</p>
+
+        <p id = "label" style="margin-top: 50px;">WHEN DID YOU STOP TAKING THIS MEDICATION?*</p>
         <div id = "date">
           <VueDatePicker2 id="date2" v-model="date2"></VueDatePicker2>
         </div>
-
-        <p id = "label" style = "margin-top:60px">ADD A NOTE ? (optional)</p>
+        
+      <div >
+        
         <div >
-          <textarea id = "textarea1" name = "Note" column="20" row="20"></textarea>
+          <p id = "label" style = "margin-top:60px">ADD A NOTIFICATION ? (optional)</p>
+          <textarea id = "textarea1" name = "Notification" column="20" row="20"></textarea>
         </div>
-        <div class = "container-flex" style="margin-top:5%">
+      </div>  
 
-          <div class = "note">Reminder
-            </div>   
-          <router-link to = "/">
-            <el-icon class="BellBtn"><Bell/></el-icon>
-          </router-link>
+      <div class = "container-flex" style="margin-top:2%">
 
-        </div>  
+        <div class = "note">Reminder
+          </div>   
+        <router-link to = "/">
+          <el-icon class="BellBtn"><Bell/></el-icon>
+        </router-link>
+
+      </div>  
+
         <div class="Button" >
-           Next
+           Save
         </div>
       </div>
 
@@ -73,74 +88,54 @@
 
 <style scoped>
 
+
         #textarea1{
           background-image: linear-gradient(#F1F1F1 50%, #F9F9F9 50%);
           background-size: 100% 4rem;
           border: 1px solid #CCC;
-          width: 90%;
-          line-height: 2rem;
-          padding: 2% 2%;
+          width: 24%;
+          line-height: 3rem;
           font-size:20px;
           color:#1890FF;
           font-weight:bold;
-          margin-left:2%;
+          margin-left:42%;
         }
 
-       .row-input{
-          color: #1890FF;
-          background-color: #f4f4f4;
-          border: 2px solid #f0dddd;
-          width: 150px;
-          height: 40px;
-          border-radius: 10px;
-          margin: 3.5px;
-          padding-left: 10px;
-          outline: none;
-          font-size:100%;
-          font-weight:bold;
-        }
-
-        .container-flex{
+      .container-flex{
           display:flex;
+          
         }
-
-        .BellBtn{
-          font-size: 30px;
-          color: #1890FF;
-          position:relative;
-          margin-left:60%;
-          size:40%;
-      }
-        
         .note{
           position:relative;
-          width:130px ; 
+          width:130px; 
           height:30px;
-          top:7%;
-          left:2%;
           font-size:20px;
           border-radius:10px 10px 10px 10px;
           background-color: #1890FF;
           text-align: center;
           color:white;
           cursor: pointer;
+          margin-left: 42%;
+         
+          padding:0;
         }
         .note:hover{
           background-color: grey;
         }
 
         #date{
-          margin-left: 3%;
+          margin-left: 42%;
           margin-top: 10px; 
-          width:90%; 
+          width:450px ; 
           height:10px;
         }
         .number{
+          margin-left:6%;
+          margin-right:6%;
           display: block;
           float:center;
           padding: 10px;
           background-color: rgb(253, 248, 248);
-          margin-bottom: 10px;
           width:50px;
           height:50px;
           position:relative;
@@ -149,8 +144,7 @@
           border: 4px solid #1890FF;
           border-radius:10px 10px 10px 10px;
           color:#1890FF;
-          margin-left:70px;
-          
+   
         }
 
       .IncreaseButton {
@@ -161,15 +155,12 @@
         background-color: rgb(253, 248, 248);
         margin-bottom: 10px;
         width:40px;
-        height:40px;
         position:relative;
         font-size: 30px;
         border-radius:10px 10px 10px 10px;
         border: 2.5px solid #a39e9e;
         color: #a19191;
-        margin-top:10px;
-        margin-left:20px;
-
+  
       }
 
       .DecreaseButton {
@@ -180,15 +171,12 @@
         cursor: pointer;
         padding: 10px;
         background-color: rgb(253, 248, 248);
-        margin-bottom: 10px;
         width:40px;
         position:relative;
         font-size: 30px;
         border-radius:10px 10px 10px 10px;
         border: 2.5px solid #a39e9e;
-        margin-left:70px;
-        height:40px;
-        margin-top:10px;
+        margin-bottom: 10px;
       }
       .unitButton{
         color: #a19191;
@@ -215,24 +203,24 @@
       }
         .Button{
             position: relative;
-            background-color: #1890FF;
+            background-color: rgb(32, 93, 224);
             border: none;
             font-size: 35px;
             color: #ffffff;
             padding: 0px;
-            width: 50%;
+            width: 13%;
             text-align: center;
             transition-duration: 0.6s;
             text-decoration: none;
             overflow: hidden;
             cursor: pointer;
-            left:22%;
             border-radius:10px 10px 10px 10px; 
-            height: 5%;
-            margin-top:40px;
+            height: 60px;
+            margin-top:1%;
             line-height: -50px;
+            margin-left: 46%;
+      
         }
-
         .Button::after{
             content: '';
             background:#53a4f0;
@@ -256,26 +244,28 @@
         display: flex;
         align-items: center;
         height: 100vh;
-        width:100%;
         background-color: #1890FF;
         overflow: auto;
         flex-direction: column;
-        margin: 0 ;
+        margin: 0 auto;
     }
 
     #container2{
+        justify-content:bottom;
+        align-items: center;
+        background-color: rgb(253, 253, 253);
+        position:relative;
+        flex-direction: column;
+        display: inline-block;
+        border-radius:10px 10px 10px 10px;
         padding-left:auto;
         padding-right:auto;
         align-items: center;
-        margin-top:4%;
+        margin-top:1%;
         background-color: rgb(253, 253, 253);
         height:200%;
         width:100%;
-        border-radius:10px 10px 0px 0px;
-        padding-bottom:100px;
-        justify-content: center;
-        align-items: center;
-        display:inline-block;
+        
     }
 
     #title{
@@ -283,30 +273,28 @@
       position: relative;
       color:#FFFFFF;
       margin:5px;
-      right:5%;
     }
 
-    #label{   
-      width:80%;
-      font-weight:bold;
-      font-size: 100%;
+    #label{
+      font-style: normal;
       color:  #1890FF;
-      margin-left:2%;
-      margin-bottom:25px;
-      text-align: left;
+      margin-left:42%;
+      font-size: 18px;
+      margin-bottom:1.8%;
+      width:50%;
+      font-weight:bold;
     }
 
     input{
-      align-items: center;
-      width:90%;    
-      height: 4%;    
-      font-size:150%;    
+      width: 440px;    
+      height: 30px;    
+      font-size: 20px;    
       background-color: white;
-      margin:auto;
+      margin-left:42%;
+      margin-top:0.5%;
       border:none; 
       border-bottom: 3px solid #f0dddd;
       color: #008866;
-      margin-left:2%;
     } 
 
     input:focus
@@ -320,44 +308,126 @@
         color:#FFFFFF;
         position:relative;
         margin-top:60%;
-        right:300%;
+        right:300%
+    }
+
+    .BellBtn{
+        font-size: 30px;
+        color: grey;
+        position:relative;
+        margin-left:5%;
+        size:40%;
     }
 
     .menu {
       position: relative;
       display: inline-block;
+      margin-left: 42%;
     }
 
-    
+    .selected-option {
+      width: 200px;
+      padding: 10px;
+      background-color: #f4f4f4;
+      border-radius: 5px;
+      cursor: pointer;
+      border: 1px solid white;
+      color:#008866;
+      font-size:17px;
+      letter-spacing:2px;
+    }
+
+    .selected-option:hover{
+      border: 1px solid #ccb5b5;
+    }
+
+    .options {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 220px;
+      padding: 0;
+      margin-top: 5px;
+      list-style: none;
+      background-color: #f4f4f4;
+      border-radius: 5px;
+      color:#008866;
+      letter-spacing:2px;
+    }
+
+    .options li {
+      padding: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      display: flex;
+      align-items: center;
+      border: 1px solid white;
+      border-radius:10px 10px 10px 10px;
+      
+    }
+
+    .options li i {
+      margin-right: 5px;
+      border: 1px solid #ccb5b5;
+      border-radius:10px 10px 10px 10px;
+    }
+
+    .options li:hover {
+      background-color: #e0e0e0;
+      color:#1890FF;
+      
+      font-weight:bold;
+    }
         
+
 </style>
 
 <script>
 import VueDatePicker1 from '@vuepic/vue-datepicker';
 import VueDatePicker2 from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css';
-import axios from 'axios';
+import '@vuepic/vue-datepicker/dist/main.css'
 
 export default {
-  components: { VueDatePicker1, VueDatePicker2 },
+  components: { VueDatePicker1 , VueDatePicker2},
   data() {
     return {
       date1: null,
       date2: null,
       counter: 0,
-      medicationName: '', // Fix 1
+
+      category: [
+        { id: 1, title: 'Pill' },
+        { id: 2, title: 'Tablet' },
+        { id: 3, title: 'Injection' },
+        { id: 4, title: 'Drop' }
+      ],
+      unit: [
+        { id: 1, units: 'Tablet' },
+        { id: 2, units: 'Bottle'}
+      ],
       selectedCategory: null,
-      note: '', // Fix 4
+      showCategory: false,
+
+      selectedUnit: null,
+      showUnit: false,
+
+
     };
   },
   methods: {
     increaseCounter() {
-      this.counter++;
+      if(this.$refs.unitText.innerHTML === 'Mg'){
+        this.counter+=10
+      }else if(this.$refs.unitText.innerHTML === 'Bottle'){
+        this.counter++;
+      }
     },
     decreaseCounter() {
-      if (this.counter === 0) { // Fix 5
-        this.counter = 0;
-      } else {
+      if(this.counter == 0){
+        this.counter += 0
+      }else if(this.$refs.unitText.innerHTML === 'Mg'){
+        this.counter-=10
+      }else if(this.$refs.unitText.innerHTML === 'Bottle'){
         this.counter--;
       }
     },
@@ -367,74 +437,18 @@ export default {
     },
     toggleOptions() {
       this.showCategory = !this.showCategory;
+    }, 
+    UnithandleItemClick(unit) {
+      this.counter = 0;
+      this.selectedUnit = unit;
+      this.showUnit = false;
     },
-    addMedicationForm(event) {
-      event.preventDefault();
+    UnittoggleOptions() {
+      this.showUnit = !this.showUnit;
+    }
+  }
+}
 
-      var loggedInUser = sessionStorage.getItem('loggedInUser');
-      if (loggedInUser) {
-        loggedInUser = JSON.parse(loggedInUser);
-      } else {
-        // If the user is not logged in, do something
-        // For now, I'm showing an alert message.
-        alert('Please login first.');
-        return;
-      }
-      var userId = loggedInUser.id;
-
-      var medicationName = this.medicationName; // Fix 2
-      var medicationType = this.selectedCategory;
-      var medicationCategory = this.selectedUnit; // Assuming there is selectedUnit as a data property in your Vue component.
-      var frequency = this.counter;
-      var dosageUnit = 'mg'; // Assuming there is a default dosageUnit.
-
-      var medication = {
-        userId: userId,
-        medicationName: medicationName,
-        medicationType: medicationType,
-        medicationCategory: medicationCategory,
-        frequency: frequency,
-        dosageUnit: dosageUnit,
-        startDate: this.date1,
-        endDate: this.date2,
-        note: this.note, // Fix 2
-      };
-
-      console.log(medication);
-
-      axios
-        .post('/medications/create', medication)
-        .then((response) => {
-          if (response.status === 200) {
-            // Redirect to mymeds when success
-            this.$router.push('/MyMeds');
-          } else {
-            document.getElementById('response').innerText = 'Failed to add medication.';
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-          document.getElementById('response').innerText = 'An error occurred while adding medication.';
-        });
-    },
-    addNoteButton() {
-      var note = window.prompt('Please enter your note');
-      if (note !== null) {
-        this.note = note; // Fix 4
-      }
-    },
-    handleReminder() {
-      // Add any logic you want to execute when the "Reminder" div is clicked
-      // For example, you can show a reminder pop-up or trigger a notification
-      console.log('Reminder clicked!');
-    },
-    handleNext() {
-      // Add any logic you want to execute when the "Next" button is clicked
-      // For example, you can use this.$router.push to navigate to another page
-      this.$router.push('/nextPage');
-    },
-  },
-};
 </script>
 
 

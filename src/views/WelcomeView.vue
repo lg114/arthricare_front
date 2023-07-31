@@ -20,8 +20,14 @@
           <router-link to = "/Signup">
             <el-button class = "signup-button">SIGN UP</el-button>
           </router-link>
-          <router-link to = "/addMed">
-            <el-button class = "signup-button">aaaa</el-button>
+          <router-link to = "/MyMeds2">
+            <el-button class = "signup-button">MyMed</el-button>
+          </router-link>
+          <router-link to = "/EditMed-mobile">
+            <el-button class = "signup-button">Edit-mobile</el-button>
+          </router-link>
+          <router-link to = "/AddMed-mobile">
+            <el-button class = "signup-button">Add-mobile</el-button>
           </router-link>
         </div>        
       </el-footer>
@@ -34,7 +40,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 150vh;
     background-color: #1890FF;
     overflow: hidden;
   }
