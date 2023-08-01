@@ -7,6 +7,7 @@
    import {ArrowRightBold} from '@element-plus/icons-vue'
    import store from "@/store";
    import { HomeFilled, Calendar, CirclePlusFilled, Sugar, Present} from '@element-plus/icons-vue';
+   import axios from 'axios';
 </script>
 
 <template>
@@ -39,16 +40,16 @@
       </div>  
       {{ store.state.test}}</p>
     </div> -->
-      <div class = "zeroObjAlert" v-if="store.state.MedArray.length === 0">
+      <div class = "zeroObjAlert" v-if="store.state.unExperiedMedArray.length === 0 && store.state.ExperiedMedArray.length === 0">
         <p class="zeroObjAlertP">You haven't add any Medication</p>
       </div >
-      <div class="medObject" v-for="(item, index) in store.state.MedArray" :key="index" >
+      <div class="unExperiedmed" v-for="(item, index) in store.state.unExperiedMedArray" :key="index" >
         <div class = "container-flex" style = "height:100% ;width:100%">
           <el-icon class="PlusBtn"><CirclePlus/></el-icon>
           <div class = "container-block" style = "height:100% ;width:100%"> 
            <!--<  <p class="medName"> {{ index + 1}}</p> -->       
             <p class="medName"> {{ item.MedName}}</p>
-            <p class="date" >Category: {{ item.Category}}</p>
+            <p class="date" > {{ item.date}}</p>
             
            <!--<p>Input 1: {{ $route.query.Field}}</p> -->
           </div>  
@@ -56,6 +57,19 @@
           <router-link :to="{ path: '/EditMed-mobile', query: { Index: index } }">
             <el-icon class="arrowBtn"><ArrowRightBold/></el-icon>
           </router-link>
+        </div>  
+      </div>
+
+      <div class="Experiedmed" v-for="(item, index) in store.state.ExperiedMedArray" :key="index" >
+        <div class = "container-flex" style = "height:100% ;width:100%">
+          <el-icon class="PlusBtn"><CirclePlus/></el-icon>
+          <div class = "container-block" style = "height:100% ;width:100%"> 
+           <!--<  <p class="medName"> {{ index + 1}}</p> -->       
+            <p class="medName"> {{ item.MedName}}</p>
+            <p class="date" > {{ item.date}}</p>
+            
+           <!--<p>Input 1: {{ $route.query.Field}}</p> -->
+          </div>  
         </div>  
       </div>
 
@@ -234,7 +248,10 @@
         
 </style>
 
+
 <script>
+const port = 8181;
+const baseURL = `http://localhost:${port}`;
 
 
 export default {
@@ -243,12 +260,6 @@ export default {
     name(){
       return store.state.navigation
     }
-  },
-beforeCreate(){
-            console.log('beforeCreate')
-        },
-  created() {
-
   },
 
   data() {
@@ -262,68 +273,98 @@ beforeCreate(){
     };
 },
   methods: {
+  
+    fetchData() {
+      var loggedInUser = sessionStorage.getItem('loggedInUser');
+      if (loggedInUser) {
+        loggedInUser = JSON.parse(loggedInUser);
+      } else {
+        console.log("does not login in");
+      }
 
-    addObjectToArray() {
-          // const queryObject = this.$route.query;
-          // // const dataObject = {};
-          // // for (const key in queryObject) {
-          // //   dataObject[key] = queryObject[key];
-          // // }
-          
-          // // // Add the object to the array
-          // this.MedicineArray.push(queryObject);
-          // const data = JSON.parse(jsonString);
-          // const objectFromString = JSON.parse('{' + data.StringObject.replace(/&/g, ',').replace(/=/g, ':') + '}');
-     
-          // console.log(queryObject);
-          // console.log(this.$route.query.queryObject);
-          // console.log('Start');
-          // console.log(this.MedicineArray[0]);
+      axios.get(`${baseURL}/medications/findMedicationByUserId/${loggedInUser.id}`)
+        .then(response => response.data)
+        .then(medications => {
+          const medicationPromises = medications.map(medication => {
+            return axios.get(`${baseURL}/medications/checkMedicationExpiration/${medication.medicationId}`)
+              .then(response => response.data)
+              .then(isExpired => {
+
+                if (isExpired) {
+                  this.displayExpiredMedication(medication); // 使用箭头函数来保持正确的上下文
+                } else {
+                  this.displayNonExpiredMedication(medication); // 使用箭头函数来保持正确的上下文
+                }
+              })
+              .catch(error => {
+                console.log('Error checking medication expiration:', error);
+              });
+          });
+
+          return Promise.all(medicationPromises);
+        })
+        .catch(error => {
+          console.log('Error fetching user information:', error);
+        });
+    },
+
+    displayExpiredMedication(medication) {
+      axios.get('http://localhost:8181/reminders/checkMedicationTakeTimes/' + medication.medicationId)
+        .then(response => {
+          if (response.status === 200) {
+            return response.data; // Use response.data instead of response.text()
+          } else if (response.status === 404) {
+            return "Reminder have not been created yet";
+          } else {
+            return "An error occurred";
+          }
+        })
+        .then(test => {
           const dataObject = {
-            Field: this.$route.query.Field,
-            MedName:  this.$route.query.MedName,
-            Category:  this.$route.query.Category,
-            Frequency: this.$route.query.Frequency,
-            Unit: this.$route.query.Unit,
-            StartDate:  this.$route.query.StartDate ,
-            EndDate:  this.$route.query.EndDate,
-            Note:  this.$route.query.Note,
-          };   
-          if(dataObject.Field!=="" && dataObject.Field!== undefined){
-            console.log("FUnctino CALLED")
-            this.MedicineArray.push(dataObject);
-            store.state.MedArray.push(dataObject);
-            sessionStorage.setItem('MedArray', JSON.stringify(this.MedicineArray));
-          }else{
-            console.log("error")
-          }
-            console.log(this.MedicineArray);
-            console.log(this.MedicineArray.length);
-            console.log(store.state.MedArray.length);
-            console.log("End");
+            MedName:medication.medicationName,
+            date:test,
+          };
+          store.state.ExperiedMedArray.push(dataObject);
+        })
+        .catch(error => {
+          console.log('Error fetching next reminder time:', error);
+          //medicationElement.textContent += ', Error fetching next reminder time.';
+        });
+      },
 
-        },
-
-        loadStorage(){
-          const savedArrayData = sessionStorage.getItem('MedArray');
-          if (savedArrayData) {
-           this.MedicineArray = JSON.parse(savedArrayData);
+      displayNonExpiredMedication(medication) {
+      axios.get('http://localhost:8181/reminders/findNextReminderTime/' + medication.medicationId)
+        .then(response => {
+          if (response.status === 200) {
+            return response.data; // Use response.data instead of response.text()
+          } else if (response.status === 404) {
+            return "Reminder have not been created yet";
+          } else {
+            return "An error occurred";
           }
-        },
+        })
+        .then(nextReminder => {
+          const dataObject = {
+            MedName:medication.medicationName,
+            date:nextReminder,
+          };
+          store.state.unExperiedMedArray.push(dataObject);
+        })
+        .catch(error => {
+          console.log('Error fetching next reminder time:', error);
+        });
+    },
+
+    clearMedArray()
+    {
+      store.state.ExperiedMedArray = []
+      store.state.unExperiedMedArray = []
+    }
   },
       
   mounted(){
-        if(store.state.navigation){
-          this.loadStorage();
-          this.addObjectToArray();
-          store.commit('changeToFalse');
-          //store.commit("setArray", JSON.parse(sessionStorage.getItem('MedArray')));
-         // console.log(store.state.MedArray[0].Field + "ffffffffffffff")
-        }else{
-          //store.commit("setArray", JSON.parse(sessionStorage.getItem('MedArray')));
-          console.log("error mounted")
-          
-      }
+          this.clearMedArray();
+          this.fetchData();
     }
        ,
         setup(){

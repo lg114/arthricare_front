@@ -1,28 +1,14 @@
 import {createStore} from "vuex";
 
-export default createStore({
-    state:{
-        navigation:false,
-        MedArray: []
-    },
-    getters:{
+const store = createStore({
+  state: {
+    ExperiedMedArray: [],
+    unExperiedMedArray: [],
+  },
+  mutations: {
+    // 这里可以定义 mutations 来修改这两个数组的值，例如添加、删除等操作
+  },
+});
 
-    },
-    mutations:{
-      changeToFalse(state){
-      state.navigation = false;
-    },
-    changeToTrue(state){
-      state.navigation = true;
-    },
-    setArray(state, newArray) {
-      state.MedArray = newArray;
-    },
-    },
-    actions:{
+export default store;
 
-    },
-    modules:{
-
-    }
-})

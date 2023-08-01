@@ -543,6 +543,7 @@ export default {
 
       const arrayIndex = parseInt(this.$route.query.Index, 10);
       const dataObject = {
+        //medication Id not user Id
         userId: loggedInUser.id,
         medicationName: this.$refs.MedName.value,
         medicationCategory: this.selectedCategory,
@@ -560,6 +561,7 @@ export default {
         console.log(response.data);
 
         // Update the store with updated dataobject
+        /////////////////////store.state.MedArray!!!!!!!!!!!!!!!
         store.state.MedArray[arrayIndex] = dataObject;
 
         // Redirect to mymeds
