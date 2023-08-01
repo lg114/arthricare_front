@@ -258,7 +258,7 @@
     color: gray;
     height: 50px;
     width: 50px;
-    padding-top: 5px;
+    padding-top: 10px;
     padding-left: 10px;
     padding-right: 10px;
 }

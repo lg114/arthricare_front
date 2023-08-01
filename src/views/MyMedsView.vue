@@ -59,7 +59,7 @@
 
       <el-footer class="footer">
                 <router-link to = "/Home">
-                <Icon class="footerBtn" id="home"><HomeRound /></Icon>                    
+                <Icon class="footerBtn" id="home"><HomeRound /></Icon>           
                 </router-link>
                 <Icon class="footerBtn" id="medication"><MedicationOutlined /></Icon>
                 <router-link to = "/AddMed">
@@ -133,7 +133,7 @@
     color: gray;
     height: 50px;
     width: 50px;
-    padding-top: 5px;
+    padding-top: 10px;
     padding-left: 10px;
     padding-right: 10px;
 }
