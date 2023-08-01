@@ -253,6 +253,7 @@ p{
     width:100%;
     text-align: center;
     white-space: nowrap;
+    box-shadow: inset 0 0 5px grey;
 }
 .sidebar{
         display: flex;

@@ -1,9 +1,10 @@
 <!--Home Page-->
 <script>
     import { reactive, ref} from 'vue';
-    import { User, UserFilled, Avatar, CaretRight, Message, MessageBox, Reading, WarningFilled, SwitchButton, } from '@element-plus/icons-vue';
-    import { HomeRound, MedicationOutlined, AddCircleFilled, CardGiftcardOutlined, AccountCircleOutlined} from '@vicons/material';
-    
+    import { UserFilled, Avatar, CaretRight, Message, MessageBox, Reading, WarningFilled, SwitchButton, } from '@element-plus/icons-vue';
+    import { HomeRound, MedicationOutlined, AddCircleFilled, CardGiftcardOutlined, AccountCircleOutlined, MoreHorizFilled} from '@vicons/material';
+    import { Icon } from '@vicons/utils'
+
     export default{
         //title
         mounted() {
@@ -89,7 +90,6 @@
 
         },
         components:{
-            User,
             UserFilled,
             Avatar,
             CaretRight,
@@ -102,7 +102,9 @@
             MedicationOutlined, 
             AddCircleFilled, 
             CardGiftcardOutlined, 
-            AccountCircleOutlined
+            AccountCircleOutlined,
+            MoreHorizFilled,
+            Icon,
     }
 };
 </script>
@@ -111,7 +113,7 @@
     <div class = "container">
         <el-container class = "content-container">
             <el-header class = "header">
-                <el-icon class="userbtn" @click="drawer = true"><User /></el-icon>
+                <Icon class="more" @click="drawer = true"><MoreHorizFilled /></Icon>
                 <span class = "username">Hello, {{ name }}</span>
             </el-header>
             <el-main class = "main">
@@ -137,21 +139,22 @@
                         </div>
                 </div>
             </el-main>
-            <el-footer class = "footer">
-                <router-link to = "/Home">
-                <el-icon class="footerBtn" id="home"><HomeRound/></el-icon>                    
+            <el-footer class="footer">
+                
+                <Icon class="footerBtn" id="home"><HomeRound /></Icon>                  
+                <router-link to = "/MyMeds">
+                <Icon class="footerBtn" id="medication"><MedicationOutlined /></Icon>
                 </router-link>
-                <el-icon class="footerBtn" id="medication"><MedicationOutlined/></el-icon>
                 <router-link to = "/AddMed">
-                    <el-icon class="footerBtn" id="addMed"><AddCircleFilled/></el-icon>
+                    <Icon class="footerBtn" id="addMed"><AddCircleFilled /></Icon>
                 </router-link>
                 <router-link to = "/Rewards">
-                    <el-icon class="footerBtn" id="rewards"><CardGiftcardOutlined/></el-icon>
+                <Icon class="footerBtn" id="rewards"><CardGiftcardOutlined /></Icon>
                 </router-link>
                 <router-link to = "/UserProfile">
-                    <el-icon class="footerBtn" id="profile"><AccountCircleOutlined/></el-icon>
+                <Icon class="footerBtn" id="profile"><AccountCircleOutlined /></Icon>
                 </router-link>
-            </el-footer>
+        </el-footer>
             <el-drawer style="background-color: #1890FF;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
                 <div class = "sidebar">
                     <div>
@@ -209,7 +212,8 @@
 <style scoped>
     /* -------------------------------- Base Layout -----------------------------------------------*/
     .container{
-        display: flex;
+        display: grid;
+        flex-direction: column;
         justify-content: center;
         height: 100vh;
         background-color: #1890FF;
@@ -235,27 +239,35 @@
         padding-bottom: 50px;
     }
     .footer{
-        background-color: #1890FF;
-        position:fixed;
-        bottom:0;
-        height: 60px;
-        width:100%;
-        text-align: center;
-    }
+    background-color: white;
+    position:fixed;
+    bottom:0;
+    height: 60px;
+    width:100%;
+    text-align: center;
+    margin-left: 0;
+    margin-right: 0;
+    white-space: nowrap;
+    box-shadow: inset 0 0 5px grey;
+}
     /* -------------------------------- Component Layout -------------------------------------------*/
 
     /* -------------------------------- Footer -----------------------------------------------------*/
     .footerBtn{
-        font-size: 45px;
-        color: #ffffff;
-        height: 50px;
-        width: 50px;
-        padding-top: 5px;
-        padding-left: 10px;
-        padding-right: 10px;
-    }
+    font-size: 45px;
+    color: gray;
+    height: 50px;
+    width: 50px;
+    padding-top: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
     #addMed{
-        color: #ffffff;
+        color: #1890FF;
+    }
+    
+    #home{
+        color: #1890FF;
     }
     /* -------------------------------- Footer -----------------------------------------------------*/
 
@@ -276,6 +288,13 @@
         font-weight: 550;
         font-size: 20px;
     }
+    .more{
+    position: absolute;
+    left:20px;
+    top:10px;
+    font-size: 30px;
+    color: white;
+}
     /* -------------------------------- Header ------------------------------------------------------*/
 
     /* -------------------------------- Side Bar ----------------------------------------------------*/
@@ -447,14 +466,6 @@
             margin-right: -2px;
             margin-left: 2px;
             padding: 5px;
-        }
-        .footerBtn{
-            font-size: 25px;
-            height: 50px;
-            width: 50px;
-            padding-top: 5px;
-            padding-left: 2px;
-            padding-right: 2px;
         }
     }
     /* -------------------------------- Small Screen ------------------------------------------------*/

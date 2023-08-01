@@ -131,7 +131,7 @@
             <el-header class="header">
                 <Icon class="more" @click="drawer = true"><MoreHorizFilled /></Icon>
                 <Icon class="present"><CardGiftcardFilled /></Icon>
-                <b class="pageTitle">Rewards</b>
+                <b class="pageTitle"> Rewards</b>
             </el-header>
         </el-container>
         <el-main class="main">
@@ -435,6 +435,7 @@ p{
     margin-left: 0;
     margin-right: 0;
     white-space: nowrap;
+    box-shadow: inset 0 0 5px grey;
 }
 .sidebar{
         display: flex;
