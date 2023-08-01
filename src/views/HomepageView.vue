@@ -139,7 +139,8 @@
                         </div>
                 </div>
             </el-main>
-            <el-footer class="footer">
+        </el-container>
+        <el-footer class="footer">
                 
                 <Icon class="footerBtn" id="home"><HomeRound /></Icon>                  
                 <router-link to = "/MyMeds">
@@ -154,7 +155,7 @@
                 <router-link to = "/UserProfile">
                 <Icon class="footerBtn" id="profile"><AccountCircleOutlined /></Icon>
                 </router-link>
-        </el-footer>
+            </el-footer>
             <el-drawer style="background-color: #1890FF;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
                 <div class = "sidebar">
                     <div>
@@ -202,7 +203,6 @@
                         </div>
                 </div>
             </el-drawer>
-        </el-container>
     </div>
 </template>
 
@@ -248,7 +248,7 @@
     margin-left: 0;
     margin-right: 0;
     white-space: nowrap;
-    box-shadow: inset 0 0 5px grey;
+    box-shadow: inset 0 0  5px grey;
 }
     /* -------------------------------- Component Layout -------------------------------------------*/
 
