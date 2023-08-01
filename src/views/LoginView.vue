@@ -15,7 +15,6 @@ export default {
     const loginForm = reactive({
       email: '',
       password: '',
-      staySignedIn: false, // Add staySignedIn property to the login form data
     });
 
     //default show error message
@@ -35,7 +34,7 @@ export default {
     const submitLoginForm = async () => {
       const email = loginForm.email;
       const password = loginForm.password;
-      const staySignedIn = loginForm.staySignedIn;
+      //const staySignedIn = loginForm.staySignedIn;
 
       try {
         const response = await axios.post('http://localhost:8181/api/login', {
@@ -44,14 +43,8 @@ export default {
         });
         console.log(response.data); // Login successful message
 
-        // Store user login information in sessionStorage if staySignedIn is true
-        if (staySignedIn) {
-          const userData = {
-            email: email,
-            password: password,
-          };
-          sessionStorage.setItem('loggedInUser', JSON.stringify(userData));
-        }
+          sessionStorage.setItem('loggedInUser', JSON.stringify(response.data));
+
 
         router.push('/Home'); //jump to home page
       } catch (error) {

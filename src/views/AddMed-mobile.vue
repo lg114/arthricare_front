@@ -588,24 +588,47 @@ saveDataAndmedicineData() {
 
     // New function for medicineData
   medicineData() {
+  this.getReminderTimes();
   const reminderTimes = [];
 
-  reminderTimes.push(this.$refs.timePicker1.value);
-  reminderTimes.push(this.$refs.timePicker2.value);
-  reminderTimes.push(this.$refs.timePicker3.value);
-
-  // Now call this.$nextTick() after updating the array
+    // Now call this.$nextTick() after updating the array
   this.$nextTick(() => {
+    if (this.$refs.timePicker1) {
+      reminderTimes.push(this.$refs.timePicker1.value);
+    }
+    if (this.$refs.timePicker2) {
+      reminderTimes.push(this.$refs.timePicker2.value);
+    }
+    if (this.$refs.timePicker3) {
+      reminderTimes.push(this.$refs.timePicker3.value);
+    }
+
+
+  var loggedInUser = sessionStorage.getItem('loggedInUser');
+    if (loggedInUser) {
+      loggedInUser = JSON.parse(loggedInUser);
+    } else {
+      console.log ('error, user not loggedin');
+    }
+
+    
+    console.log ('TING TING IS HERE',loggedInUser.id);
+   
+
+/////////////////////////////////////////////////////////////
     const dataObject = {
-      medication_name: this.$refs.MedName.value,
-      medication_category: this.selectedCategory,
+      userId: loggedInUser.id,
+      medicationName: this.$refs.MedName.value,
+      medicationCategory: this.selectedCategory,
       frequency: this.selectedFrequency,
-      dosage_unit: this.$refs.Unit.innerHTML,
-      start_date: this.selectedStartDate,
-      end_date: this.selectedEndDate,
+      dosageUnit: this.$refs.Unit.innerHTML,
+      startDate: this.selectedStartDate,
+      endDate: this.selectedEndDate,
       note: this.$refs.Note.value,
-      reminderTimes: this.thisInputs,
+      reminderTimes: JSON.stringify(this.timeInputs),
     };
+
+    console.log('timereminder test', JSON.stringify(this.timeInputs))
 
     const backendurl = 'http://localhost:8181/medications/create';
 
