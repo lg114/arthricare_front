@@ -7,7 +7,7 @@
 </script>
 
 <template>
-   <el-container class = "container">
+   <el-container :class = "container">
    
     <div class = "container-flex">
       <router-link to = "/">
@@ -17,7 +17,6 @@
     </div>  
       <div id = container2>
         <p id = "label" style = "font-size : 35px ; font-weight:500;" >Add Medication</p>
-        <input id="Add" ref = "Field" type="text" placeholder="Required Field*" style = "width:50%"/><br>
         <p id = "label">MEDICATION NAME</p>
 
         <input ref="MedName" id="MedName" type="text" placeholder="" @keyup="processInput" @focus="toggleOptions"/>
@@ -29,7 +28,7 @@
         <p id = "label">CHANGE CATEGORY</p>
         <div>
           <b><label for = "Category"></label></b>
-          <select  ref = "Category" name="Category" id="Category" class = "row-input" v-model="Category">
+          <select  ref = "Category" name="Category" id="Category" class = "row-input" v-model="selectedCategory">
            <option value="" disabled selected>Select Category</option>
            <option value="Pill">Pill</option>
            <option value="Tablet">Tablet</option>
@@ -41,33 +40,52 @@
         <p id = "label" >HOW OFTEN ARE YOU TAKING THIS MEDICATION?</p>
         <!-- <input ref="Frequency" id="input" type="text" placeholder="  " /> -->
         <div>
-          <select  ref="Frequency" name="Frequency" id="Frequency" class ="row-input" v-model="AAA">
+          <select  ref="Frequency" name="Frequency" id="Frequency" class ="row-input" v-model="selectedFrequency">
            <option value="" disabled selected>Select Category</option>
-           <option value="Every Day">EveryDay</option>
-           <option value="EveryTwoDays">EveryTwoDays</option>
-           <option value="Once a week">Once a week</option>
-           <option value="Twice a week">Twice a week</option>
-           <option value="Few times a week">Few times a week</option>
+           <option value="Once a Day">Once a Day</option>
+           <option value="Twice a Day">Twice a Day</option>
+           <option value="Three times a Day">Three times a Day</option>
          </select>
+        </div>
+
+        <div v-if="selectedFrequency === 'Once a Day'">
+          <input type="time" v-model="timeInput1" />
+        </div>
+
+        <div v-else-if="selectedFrequency === 'Twice a Day'">
+      
+          <input type="time" v-model="timeInput1" />
+          <input type="time" v-model="timeInput2" />
+        </div>
+
+        <div v-else-if="selectedFrequency === 'Three times a Day'">
+
+          <input type="time" v-model="timeInput1" />
+          <input type="time" v-model="timeInput2" />
+          <input type="time" v-model="timeInput3" />
         </div>
 
         <p id = "label">HOW MANY UNITS DO YOU TAKE EACH TIME?</p>
 
         <div class = "container-flex">
-          <div class="IncreaseButton" @click="increaseCounter">+</div>
-          <div ref = "Unit" class = "number">{{ counter }}</div>
           <div class="DecreaseButton" @click="decreaseCounter">-</div>
+          <div ref = "Unit" class = "number">{{ counter }}</div>
+          <div class="IncreaseButton" @click="increaseCounter">+</div>
         </div>
+
         
         <p id = "label">WHEN DID YOU START TAKING THIS MEDICATION?</p>
         <div id = "date" >
-          <VueDatePicker1 ref = "StartDate" id="startDate" v-model="selectedStartDate"></VueDatePicker1>
+          <VueDatePicker1 ref = "StartDate" id="startDate"  v-model="selectedStartDate" :format="dateFormat"></VueDatePicker1>
         </div>
         
         <p id = "label" style="margin-top: 50px;">WHEN DID YOU STOP TAKING THIS MEDICATION?</p>
         <div id = "date">
-          <VueDatePicker2  ref = "EndDate" id="endDate" v-model="selectedEndDate"></VueDatePicker2>
+          <VueDatePicker2  ref = "EndDate" id="endDate" v-model="selectedEndDate" :format="dateFormat"></VueDatePicker2>
         </div>
+
+      
+      
 
         <p id = "label" style = "margin-top:60px">ADD A NOTE ? (optional)</p>
         <div >
@@ -76,15 +94,18 @@
         <div class = "container-flex" style="margin-top:5%">   
 
         </div>  
-        <div class="Button" @click="saveData" >
+        <div class="Button" @click="saveDataAndmedicineData" >
            Next
         </div>
+
+        <!-- <date-picker v-model:value = "selectedDate"></date-picker> -->
+     
       </div>
 
     </el-container>
 </template>
 
-<style scoped>
+<style scoped>  
 
         #textarea1{
           background-image: linear-gradient(#F1F1F1 50%, #F9F9F9 50%);
@@ -104,7 +125,7 @@
           color: #1890FF;
           background-color: #f4f4f4;
           border: 2px solid #f0dddd;
-          width: 40%;
+          width: 45%;
           height: 30px;
           border-radius: 5px;
           margin: 3.5px;
@@ -113,6 +134,7 @@
           font-size:100%;
           font-weight:bold;
           margin-left:4.5%;
+          margin-top:3%;
         }
 
         .container-flex{
@@ -330,9 +352,17 @@
       color: black;
       margin-left:5%;
       letter-spacing:1px;
-      
     } 
-
+    input[type="time"] {
+      width:23%;
+      padding:2%;
+      font-size:100%;
+      size:5%;
+      margin-left:5%;
+      font-family:system-ui;
+      margin-top:2%;
+      margin-bottom:4%;
+    }
     input:focus
     { 
       outline-style: none;
@@ -374,20 +404,36 @@
 <script>
 import VueDatePicker1 from '@vuepic/vue-datepicker';
 import VueDatePicker2 from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css';
+import axios from 'axios';
+// import DatePicker from 'vue-datepicker-next';
+// import 'vue-datepicker-next/index.css';
+// import 'vue-datepicker-next/locale/es';
 
 export default {
-  components: { VueDatePicker1 , VueDatePicker2},
+  components: { VueDatePicker1 , VueDatePicker2 },
   computed: {
     changeToTrue() {
       return this.$store.state.changeToTrue;
     },
+    
   },
   data() {
     return {
+      timeInput1: '',
+      timeInput2: '',
+      timeInput3: '',
+
+      /// don's Edit
+      timeInputs:[],
+
+      selectedDate: null, 
       counter: 0,
+      selectedCategory: null,
+      selectedFrequency: null,
       selectedStartDate: null,
       selectedEndDate: null,
+
+      dateFormat: 'yyyy-MM-dd',
       Meds : ["Abatacept",
     "Adalimumab",
     "Allopurinol",
@@ -446,7 +492,6 @@ export default {
 
       // pass data to MyMed
 
-    
 
       category: [
         { id: 1, title: 'Pill' },
@@ -466,6 +511,7 @@ export default {
   },
   
   methods: {
+
     increaseCounter() {
         this.counter++;
     },
@@ -476,7 +522,6 @@ export default {
         this.counter--;
       }
     },
-
 
     // fliter letter
     filterWordsByLetter(wordsArray, letter) {
@@ -514,6 +559,7 @@ export default {
       this.$refs.MedName.value = Med;
       this.$refs.MedName.blur();
       this.Meds2=this.getResult;
+      this.getReminderTimes(); // don's code. 
       console.log(Med);
 
     },
@@ -523,42 +569,80 @@ export default {
       this.$refs.MedName.focus();
     },
 
+saveDataAndmedicineData() {
+      this.saveData();
+      this.medicineData();
+    },
+
+    getReminderTimes() {
+      this.timeInputs = []; // Clear the timeInputs array
+    if (this.selectedFrequency === 'Once a Day') {
+      this.timeInputs.push(this.timeInput1);
+    } else if (this.selectedFrequency === 'Twice a Day') {
+      this.timeInputs.push(this.timeInput1, this.timeInput2);
+    } else if (this.selectedFrequency === 'Three times a Day') {
+      this.timeInputs.push(this.timeInput1, this.timeInput2, this.timeInput3);
+    }
+      console.log(this.timeInputs);
+    },
+
+    // New function for medicineData
+  medicineData() {
+  const reminderTimes = [];
+
+  reminderTimes.push(this.$refs.timePicker1.value);
+  reminderTimes.push(this.$refs.timePicker2.value);
+  reminderTimes.push(this.$refs.timePicker3.value);
+
+  // Now call this.$nextTick() after updating the array
+  this.$nextTick(() => {
+    const dataObject = {
+      medication_name: this.$refs.MedName.value,
+      medication_category: this.selectedCategory,
+      frequency: this.selectedFrequency,
+      dosage_unit: this.$refs.Unit.innerHTML,
+      start_date: this.selectedStartDate,
+      end_date: this.selectedEndDate,
+      note: this.$refs.Note.value,
+      reminderTimes: this.thisInputs,
+    };
+
+    const backendurl = 'http://localhost:8181/medications/create';
+
+    axios
+      .post(backendurl, dataObject)
+      .then((response) => {
+        console.log('Data sent successfully', response);
+      })
+      .catch((error) => {
+        console.log('Data sending failed', error);
+      });
+  }); // Here
+}, //
+
+ watch: {
+    selectedFrequency: 'getReminderTimes',
+  },
+
     // pass value to MyMed
-    saveData() {
-      // const dataObject = {
-      //   Field: this.$refs.Field.value,
-      //   MedName: this.$refs.MedName.value,
-      //   Category: this.$refs.Category.value,
-      //   Frequency:this.$refs.Frequency.value,
-      //   StartDate: this.$refs.StartDate.value ,
-      //   EndDate: this.$refs.EndDate.value,
-      //   Note: this.$refs.Note.value,
-
-      //  };
-
-        //  this.$router.push({
-        //       path: '/MyMeds2',
-        //       query: {
-        //         Field: this.$refs.Field.value,
-        //         MedName: this.$refs.MedName.value,
-        //         Category: this.$refs.Category.value,
-        //     }
-        //   });
+     saveData() {
         store.commit('changeToTrue');
         this.$router.push({
               path: '/MyMeds2',
               query: {
-                Field: this.$refs.Field.value,
                 MedName: this.$refs.MedName.value,
-                Category: this.$refs.Category.value,
-                Frequency:this.$refs.Frequency.value,
+                Category: this.selectedCategory,
+                Frequency:this.selectedFrequency,
                 Unit:this.$refs.Unit.innerHTML,
                 StartDate: this.selectedStartDate ,
                 EndDate: this.selectedEndDate,
                 Note: this.$refs.Note.value,
+                timeInput1: this.timeInput1,
+                timeInput2: this.timeInput2,
+                timeInput3: this.timeInput3,
              }
            })
-           console.log(this.selectedStartDate)
+           console.log(this.timeInput1)
            console.log(this.selectedEndDate)
 
     }},
