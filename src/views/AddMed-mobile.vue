@@ -669,13 +669,7 @@ saveDataAndmedicineData() {
            console.log(this.selectedEndDate)
 
     }},
-  mounted(){
-            document.title = 'Sign Up | ArthriCare';
-        },
-        setup(){
-          
-            
-        }
+
 }
 
 

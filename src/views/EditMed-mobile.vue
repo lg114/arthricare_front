@@ -19,7 +19,7 @@
         <input id="Add" type="text" placeholder="Required Field*" ref = "Field" style = "width:50%"/><br>
         <p id = "label">MEDICATION NAME</p>
 
-        <input ref="MedName" id="MedName" type="text" placeholder="" @keyup="processInput" @focus="toggleOptions"/>
+        <input ref="MedName" id="MedName" type="text" placeholder=""/>
 
         <div  class="menu" v-if="this.Meds2!==null  && showMed">
           <div ref="MedOption"  class="selected-option" v-for="item in Meds2" :key="item" @click="handleItemClick(item)">{{ item }}</div>
@@ -74,7 +74,7 @@
         <div class = "container-flex" style="margin-top:5%">   
 
         </div>  
-        <div class="Button" path="/MyMeds2" @click="ReplaceObjectIntoArray" >
+        <div class="Button" path="/MyMeds2" @click="updateMedication" >
            Save
         </div>
       </div>
@@ -370,8 +370,9 @@
 <script>
 import VueDatePicker1 from '@vuepic/vue-datepicker';
 import VueDatePicker2 from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
-import {ref} from 'vue';
+import '@vuepic/vue-datepicker/dist/main.css';
+import axios from 'axios';
+//import {ref} from 'vue';
 
 export default {
   components: { VueDatePicker1 , VueDatePicker2},
@@ -469,142 +470,104 @@ export default {
   
   methods: {
     increaseCounter() {
-        this.counter++;
+      this.counter++;
     },
     decreaseCounter() {
-      if(this.counter == 0){
-        this.counter += 0
-      }else{
+      if (this.counter > 0) {
         this.counter--;
       }
     },
-   
     filterWordsByLetter(wordsArray, letter) {
       const lowercaseLetter = letter.toLowerCase();
       const filteredWords = wordsArray.filter(word => word.toLowerCase().startsWith(lowercaseLetter));
       return filteredWords;
-   },
-   showResult(){
-    if(this.$refs.MedName.value === ""){
-      this.Meds2 =this.Meds3;
-      console.log(this.Meds2);
-    }else{
-      const filteredWordsStartingWithLetters = this.filterWordsByLetter(this.Meds, this.$refs.MedName.value);
-      this.Meds2 = filteredWordsStartingWithLetters;
-      console.log(this.Meds2);
-    }
-  }
-   ,
-   getResult(){
-    const filteredWordsStartingWithLetters = this.filterWordsByLetter(this.words, this.$refs.MedName.value);
-    return filteredWordsStartingWithLetters;
-   },
-   processInput(event) {
-     if (event.keyCode !== 13) {
+    },
+    showResult() {
+      if (this.$refs.MedName.value === "") {
+        this.Meds2 = this.Meds;
+        console.log(this.Meds2);
+      } else {
+        const filteredWordsStartingWithLetters = this.filterWordsByLetter(this.Meds, this.$refs.MedName.value);
+        this.Meds2 = filteredWordsStartingWithLetters;
+        console.log(this.Meds2);
+      }
+    },
+    getResult() {
+      const filteredWordsStartingWithLetters = this.filterWordsByLetter(this.words, this.$refs.MedName.value);
+      return filteredWordsStartingWithLetters;
+    },
+    processInput(event) {
+      if (event.keyCode !== 13) {
         this.showResult();
-
-         }
-      },
+      }
+    },
     handleItemClick(Med) {
       this.selectedMed = Med;
       this.showMed = false;
       this.$refs.MedName.value = Med;
       this.$refs.MedName.blur();
-      this.Meds2=this.getResult;
+      this.Meds2 = this.getResult();
       console.log(Med);
-
     },
-    
     toggleOptions() {
       this.showMed = !this.showMed;
       this.$refs.MedName.focus();
     },
-
-    EditInputValue(){
+    EditInputValue() {
       store.commit('changeToTrue');
       const arrayIndex = parseInt(this.$route.query.Index, 10);
-      if (store.state.MedArray[arrayIndex]!== null) {
-          console.log(arrayIndex);
-          this.$refs.Field.value = store.state.MedArray[arrayIndex].Field,
-          this.$refs.MedName.value = store.state.MedArray[arrayIndex].MedName,
-          this.selectedCategory = store.state.MedArray[arrayIndex].Category,
-          this.selectedFrequency = store.state.MedArray[arrayIndex].Frequency,
-          this.$refs.Unit.innerHTML = store.state.MedArray[arrayIndex].Unit,
-          this.selectedStartDate = store.state.MedArray[arrayIndex].StartDate,
-          this.selectedEndDate = store.state.MedArray[arrayIndex].EndDate,
-          this.$refs.Note.value = store.state.MedArray[arrayIndex].Note;
-          console.log("good");
-        }else{
-          console.log('Do not have this object in array')
-        }
-    },
 
-    ReplaceObjectIntoArray(){
-      
+      if (store.state.MedArray[arrayIndex] !== undefined) {
+        console.log(arrayIndex);
+        this.$refs.Field.value = store.state.MedArray[arrayIndex].Field;
+        this.$refs.MedName.value = store.state.MedArray[arrayIndex].MedName;
+        this.selectedCategory = store.state.MedArray[arrayIndex].Category;
+        this.selectedFrequency = store.state.MedArray[arrayIndex].Frequency;
+        this.counter = store.state.MedArray[arrayIndex].Unit;
+        this.selectedStartDate = store.state.MedArray[arrayIndex].StartDate;
+        this.selectedEndDate = store.state.MedArray[arrayIndex].EndDate;
+        this.$refs.Note.value = store.state.MedArray[arrayIndex].Note;
+
+        console.log("good");
+      } else {
+        console.log('Do not have this object in array');
+      }
+    },
+    async updateMedication() {
+      var loggedInUser = sessionStorage.getItem('loggedInUser');
+      if (loggedInUser) {
+        loggedInUser = JSON.parse(loggedInUser);
+      } else {
+        console.log('error, user not loggedin');
+      }
+
       const arrayIndex = parseInt(this.$route.query.Index, 10);
       const dataObject = {
-            Field: this.$refs.Field.value ,
-            MedName: this.$refs.MedName.value,
-            Category:  this.selectedCategory,
-            Frequency: this.selectedFrequency,
-            Unit: this.$refs.Unit.innerHTML,
-            StartDate:   this.$refs.StartDate.value ,
-            EndDate:  this.$refs.EndDate.value,
-            Note:  this.$refs.Note.value ,
-          }
-            store.state.MedArray[arrayIndex] = dataObject;
-            console.log(store.state.MedArray[0].Field)
-            console.log(store.state.MedArray[arrayIndex].Field)
-            this.$router.push({
-              path: '/MyMeds2',
-          
-           })
-          
+        userId: loggedInUser.id,
+        medicationName: this.$refs.MedName.value,
+        medicationCategory: this.selectedCategory,
+        frequency: this.selectedFrequency,
+        dosageUnit: this.counter,
+        startDate: this.selectedStartDate,
+        endDate: this.selectedEndDate,
+        note: this.$refs.Note.value,
+        //reminderTimes: JSON.stringify(this.timeInputs),
+      };
+
+      try {
+        // Send the updated dataObject to the backend using axios PUT request
+        const response = await axios.put(`http://localhost:8181/medications/updateMedication`, dataObject);
+        console.log(response.data);
+
+        // Update the store with updated dataobject
+        store.state.MedArray[arrayIndex] = dataObject;
+
+        // Redirect to mymeds
+        this.$router.push({ path: '/MyMeds2' });
+      } catch (error) {
+        console.error('error updating', error);
+      }
     }
-  },
- 
-  mounted(){
-            document.title = 'Sign Up | ArthriCare',
-            this.EditInputValue();
-        },
-        
-        setup(){
-            const name = ref('');
-            const selectedAge = ref('');
-            const gender = ref('');
-            const selectedWeight = ref('');
-            const email = ref('');
-            const password = ref('');
-
-            const generateAgeOptions = (start, end) => {
-            const options = [];
-            for (let i = start; i <= end; i++) {
-                options.push(i.toString());
-            }
-            return options;
-            };
-
-            const generateWeightOptions = (start, end) => {
-            const options = [];
-            for (let i = start; i <= end; i++) {
-                options.push(i.toString());
-            }
-            return options;
-            };
-
-            return {
-              name,
-              selectedAge,
-              gender,
-              selectedWeight,
-              email,
-              password,
-              ageOptions: generateAgeOptions(10, 100),
-              weightOptions: generateWeightOptions(35, 200),
-            };
-        }
-        
+  }
 }
-
-
 </script>
