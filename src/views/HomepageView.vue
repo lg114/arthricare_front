@@ -170,7 +170,11 @@
                 </router-link>
                 <router-link to = "/UserProfile">
                 <Icon class="footerBtn" id="profile"><AccountCircleOutlined /></Icon>
-                </router-link>
+                </router-link><br>
+                <span id="homeText">Home</span>
+                <span id="medText">My Meds</span>
+                <span id="rewardsText">Rewards</span>
+                <span id="profileText">Profile</span>
         </el-footer> 
         <el-drawer style="background-color: #1890FF;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
             <!--Action是模拟接口，与后端连接时更换-->
@@ -224,7 +228,7 @@
         background-color: white;
         position:fixed;
         bottom:0;
-        height: 60px;
+        height: 80px;
         width:100%;
         text-align: center;
         margin-left: 0;
@@ -236,15 +240,40 @@
     /* -------------------------------- Component Layout -------------------------------------------*/
 
     /* -------------------------------- Footer -----------------------------------------------------*/
+    br {
+            display: block; /* makes it have a width */
+            content: ""; /* clears default height */
+            margin-top: 1px; /* change this to whatever height you want it */
+}
     .footerBtn{
-        font-size: 45px;
-        color: gray;
-        height: 50px;
-        width: 50px;
-        padding-top: 10px;
-        padding-left: 10px;
-        padding-right: 10px;
-    }
+    font-size: 45px;
+    color: gray;
+    height: 50px;
+    width: 50px;
+    padding-top: 8px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+#homeText{
+    position: relative;
+    color: #1890FF;
+    right: 50px;
+}
+#medText{
+    position: relative;
+    color: gray;
+    right: 35px;
+}
+#rewardsText{
+    position: relative;
+    color:gray;
+    left: 35px;
+}
+#profileText{
+    position: relative;
+    color: gray;
+    left: 48px;
+}
     #addMed{
         color: #1890FF;
     }
@@ -257,11 +286,10 @@
     /* -------------------------------- Header -----------------------------------------------------*/
     .userbtn{
         position: absolute;
-        left: 20px;
-        top: 10px;
+        left:5%;
+        top:1.5%;
         font-size: 30px;
-        font-weight: bold;
-        color: #ffffff;
+        color: white;
     }
     .username{
         position: relative;

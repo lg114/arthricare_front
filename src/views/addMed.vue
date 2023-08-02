@@ -9,13 +9,12 @@
 
 <template>
    <el-container class = "container">
-   
-    <div class = "container-flex">
-      <router-link to = "/">
+    <el-header class="header">
+      <router-link to = "/MyMeds">
          <el-icon class = "backBtn"><ArrowLeftBold/></el-icon>
       </router-link>
-      <p id = "title">My Meds</p>
-    </div>  
+      <b id = "title">My Meds</b>
+    </el-header>  
       <div id = container2>
         <p id = "label" style = "font-size : 35px ; font-weight:500;" >Add Medication</p>
         <p id = "label">Medication Name *</p>
@@ -152,9 +151,12 @@
           margin-top:3%;
         }
 
-        .container-flex{
-          display:flex;
-        }
+        .header{
+    display: flex;
+    align-items: center;
+    color: white;
+    width: 100%;
+}
 
         .BellBtn{
           font-size: 30px;
@@ -320,12 +322,10 @@
     }
 
     #title{
-      font-size: 130%;
-      position: relative;
-      color:#FFFFFF;
-      margin:5px;
-      right:9%;
-      top:80%;
+      position:relative;
+    left: 40%;
+    font-size: 20px;
+    white-space: nowrap;
     }
 
     #label{   
@@ -371,11 +371,11 @@
     }
 
     .backBtn{
-        font-size: 25px;
-        color:#FFFFFF;
-        position:relative;
-        margin-top:80%;
-        right:350%;
+      position: absolute;
+    left:5%;
+    top:1.5%;
+    font-size: 30px;
+    color: white;
     }
 
     .menu {

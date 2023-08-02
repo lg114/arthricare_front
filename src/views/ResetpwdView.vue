@@ -81,8 +81,6 @@
                     <input id="input" type="email" placeholder="Please enter your email" v-model="resetpwdForm.email"/><br>
                     <b><label>New Password</label></b>
                     <input id="input" type="password" placeholder="Please enter new password" v-model="resetpwdForm.newPassword"/><br>
-                    <b><label>Confirm New Password</label></b>
-                    <input id="input" type="password" placeholder="Please enter new password" v-model="resetpwdForm.confirmPassword"/>
                 </div>
             </el-main>
             <el-footer>

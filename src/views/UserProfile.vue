@@ -100,7 +100,11 @@
                 <router-link to = "/Rewards">
                 <Icon class="footerBtn" id="rewards"><CardGiftcardOutlined /></Icon>
                 </router-link>
-                <Icon class="footerBtn" id="profile"><AccountCircleOutlined /></Icon>
+                <Icon class="footerBtn" id="profile"><AccountCircleOutlined /></Icon><br>
+                <span id="homeText">Home</span>
+                <span id="medText">My Meds</span>
+                <span id="rewardsText">Rewards</span>
+                <span id="profileText">Profile</span>
         </el-footer>
         <el-drawer style="background-color: #1890FF;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
                 <div class = "sidebar">
@@ -159,12 +163,14 @@
     align-items: center;
     color: white;
     width: 100%;
+    
 }
 .more{
     position: absolute;
-    left:20px;
-    top:10px;
+    left:5%;
+    top:1.5%;
     font-size: 30px;
+    color: white;
 }
 .user{
     position:relative;
@@ -249,7 +255,7 @@ p{
     background-color: white;
     position:fixed;
     bottom:0;
-    height: 60px;
+    height: 80px;
     width:100%;
     text-align: center;
     white-space: nowrap;
@@ -272,9 +278,29 @@ p{
     color: gray;
     height: 50px;
     width: 50px;
-    padding-top: 10px;
+    padding-top: 8px;
     padding-left: 10px;
     padding-right: 10px;
+}
+#homeText{
+    position: relative;
+    color: gray;
+    right: 50px;
+}
+#medText{
+    position: relative;
+    color: gray;
+    right: 35px;
+}
+#rewardsText{
+    position: relative;
+    color:gray;
+    left: 35px;
+}
+#profileText{
+    position: relative;
+    color: #1890FF;
+    left: 48px;
 }
 .uploaded-avatar {
         width: 100%;
