@@ -570,6 +570,11 @@ export default {
         console.error('error updating', error);
       }
     }
-  }
+  },
+
+  mounted(){
+        const medicationId = sessionStorage.getItem('medicationId');
+        console.log(medicationId);
+    }
 }
 </script>
