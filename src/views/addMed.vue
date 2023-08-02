@@ -10,7 +10,7 @@
    <el-container class = "container">
    
     <div class = "container-flex">
-      <router-link to = "/">
+      <router-link to = "/MyMeds">
          <el-icon class = "backBtn"><ArrowLeftBold/></el-icon>
       </router-link>
       <p id = "title">My Meds</p>
@@ -331,11 +331,11 @@
     }
 
     .backBtn{
-        font-size: 25px;
+        font-size: 30px;
         color:#FFFFFF;
-        position:relative;
-        margin-top:80%;
-        right:350%;
+        position: absolute;
+        left:20px;
+      top:10px;
     }
 
     .menu {

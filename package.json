@@ -16,10 +16,11 @@
     "@vuepic/vue-datepicker": "^5.2.0",
     "axios": "^1.4.0",
     "core-js": "^3.8.3",
+    "dayjs": "^1.11.9",
     "element-plus": "^2.3.5",
     "gh-pages": "^5.0.0",
-    "vue": "^3.2.13",
-    "vue-router": "^4.2.2",
+    "vue": "^3.2.36",
+    "vue-router": "^4.0.13",
     "vuex": "^4.1.0"
   },
   "devDependencies": {

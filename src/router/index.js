@@ -11,6 +11,7 @@ import EditMedPage from '@/views/editMed.vue';
 import MyMedsPage from '@/views/MyMedsView.vue';
 import RewardsPage from '@/views/RewardsView.vue';
 
+
 const router  = createRouter({
     history : createWebHashHistory(),
     routes: [

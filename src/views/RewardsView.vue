@@ -1,9 +1,10 @@
 <!--Rewards Page -->
 <script>
     import { ref, reactive, computed } from 'vue';
-    import {  Avatar, CaretRight, Message, MessageBox, Reading, WarningFilled, SwitchButton  } from '@element-plus/icons';
+    import { UserFilled } from '@element-plus/icons-vue';
     import { MoreHorizFilled, MedicationOutlined, CardGiftcardFilled, CardGiftcardOutlined, HomeRound, AccountCircleOutlined, AddCircleFilled, AddCircleOutlineFilled } from '@vicons/material';
-    import { Icon } from '@vicons/utils'
+    import { Icon } from '@vicons/utils';
+    import SideBarContent from '@/component/Sidebar.vue';
 
     export default{
         mounted(){
@@ -93,9 +94,7 @@
             },
         },
         methods:{
-            openDrawer() {
-            this.drawer = true;
-            },
+            //Drawer
             beforeDrawerClose(done) {
                 done();
             },
@@ -106,13 +105,7 @@
         },
         components: {
             Icon,
-            Avatar, 
-            CaretRight, 
-            Message, 
-            MessageBox, 
-            Reading, 
-            WarningFilled, 
-            SwitchButton, 
+            UserFilled,
             MoreHorizFilled,
             MedicationOutlined, 
             CardGiftcardFilled, 
@@ -121,6 +114,7 @@
             AccountCircleOutlined,
             AddCircleFilled,
             AddCircleOutlineFilled,
+            SideBarContent
         }
     };
 </script>
@@ -131,7 +125,7 @@
             <el-header class="header">
                 <Icon class="more" @click="drawer = true"><MoreHorizFilled /></Icon>
                 <Icon class="present"><CardGiftcardFilled /></Icon>
-                <b class="pageTitle">Rewards</b>
+                <b class="pageTitle"> Rewards</b>
             </el-header>
         </el-container>
         <el-main class="main">
@@ -219,51 +213,18 @@
                 </router-link>
         </el-footer>
         <el-drawer style="background-color: #1890FF;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
-                <div class = "sidebar">
-                    <div>
-                        <div class = "menu-item">
-                                <el-upload action="" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                                    <el-avatar :size="65">
-                                    <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
-                                    <template v-else>
-                                        <UserFilled class="defalut-avatar" />
-                                    </template>
-                                    </el-avatar>
-                                </el-upload>                                
-                                <div class = "menu-item">
-                                    <div class = "menu-button" @click = "goToUserProfile">
-                                        <el-icon class="menu-icon"><Avatar/></el-icon>
-                                        <p>My Profile</p>
-                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
-                                    </div>
-                                    <div class = "menu-button">
-                                        <el-icon class="menu-icon1"><Message /></el-icon>
-                                        <p>Message</p>
-                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
-                                    </div>
-                                    <div class = "menu-button">
-                                        <el-icon class="menu-icon2"><MessageBox /></el-icon>
-                                        <p>Community</p>
-                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
-                                    </div>
-                                    <div class = "menu-button">
-                                        <el-icon class="menu-icon1"><Reading /></el-icon>
-                                        <p>Education</p>
-                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
-                                    </div>
-                                    <div class = "menu-button3">
-                                        <el-icon class="menu-icon3"><WarningFilled /></el-icon>
-                                        <p>About</p>
-                                    </div>
-                                    <div class = "menu-button">
-                                        <el-icon class="menu-icon3"><SwitchButton /></el-icon>
-                                        <p>Log Out</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                </div>
-            </el-drawer>
+            <div class = "sidebar">
+                    <el-upload action="" :show-file-list="false">
+                            <el-avatar :size="65">
+                                <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
+                                <template v-else>
+                                    <UserFilled class="defalut-avatar" />
+                                </template>
+                            </el-avatar>   
+                    </el-upload> 
+            </div>
+            <SideBarContent :imgUrl="imgUrl" />  
+        </el-drawer>
     </div>
 </template>
 
@@ -435,12 +396,23 @@ p{
     margin-left: 0;
     margin-right: 0;
     white-space: nowrap;
+    box-shadow: inset 0 0 5px grey;
 }
 .sidebar{
+        margin-top: 30px;
         display: flex;
-        align-items: center;
         flex-direction: column;
-        padding: 20px;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+    }
+    .uploaded-avatar {
+        width: 100%;
+        height: 100%;
+    }
+    .defalut-avatar{
+        width: 70%;
+        height: 80%;
     }
 #addMed{
     color: #1890FF;
@@ -453,7 +425,7 @@ p{
     color: gray;
     height: 50px;
     width: 50px;
-    padding-top: 5px;
+    padding-top: 10px;
     padding-left: 10px;
     padding-right: 10px;
 }
