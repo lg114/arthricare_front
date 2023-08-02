@@ -126,7 +126,7 @@
           color: #1890FF;
           background-color: #f4f4f4;
           border: 2px solid #f0dddd;
-          width: 45%;
+          width: 90%;
           height: 30px;
           border-radius: 5px;
           margin: 3.5px;
@@ -301,7 +301,7 @@
 
     input{
       align-items: center;
-      width:80%;    
+      width:88%;    
       height: 4%;    
       font-size:100%;    
       background-color: white;
@@ -311,7 +311,9 @@
       color: black;
       margin-left:5%;
       letter-spacing:1px;
+      margin-bottom: 5px;
     } 
+
     input[type="time"] {
       width:23%;
       padding:2%;
