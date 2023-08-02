@@ -18,8 +18,10 @@
                 password: '',
                 weight: '',
                 age: '',
+                weightUnit: true,//true for kg, false for lb
+                height: '',
+                heightUnit: true,//true for cm, false for ft
             });
-
             //submit register form
             const submitRegisterForm = () => {
                 try{
@@ -50,6 +52,9 @@
                                 registerForm.password = '';
                                 registerForm.weight = '';
                                 registerForm.age = '';
+                                registerForm.weightUnit = '';
+                                registerForm.height = '';
+                                registerForm.heightUnit = '';
                             //.catch(error => {
                                 //console.error('Sign up failed', error);
                                 //ElMessage.error("Invalid email or password");
@@ -60,29 +65,9 @@
                 }
             };
 
-            //age selection
-            const generateAgeOptions = (start, end) => {
-                const options = [];
-                for (let i = start; i <= end; i++) {
-                    options.push(i.toString());
-                }
-                return options;
-            };
-
-            //weight selection
-            const generateWeightOptions = (start, end) => {
-                const options = [];
-                for (let i = start; i <= end; i++) {
-                    options.push(i.toString());
-                }
-                return options;
-            };
-
             return {
             registerForm,
             submitRegisterForm,
-            ageOptions: generateAgeOptions(10, 100),
-            weightOptions: generateWeightOptions(35, 200),
             };
         },
 
@@ -108,29 +93,39 @@
                                 
                                 <div class = "input-row">
                                     <b><label for = "age">Age:</label></b>
-                                    <select name="age" id="age" class="row-input" v-model="registerForm.age">
-                                        <option value="" disabled selected>Select Age</option>
-                                        <option v-for="age in ageOptions" :value="age" :key="age">{{ age }}</option>
-                                    </select>
+                                    <input name="age" id="age" class="input" placeholder="Please enter your age" v-model="registerForm.age"/>
                                 </div>
                                 
                                 <div class = "input-row">
                                     <b><label for = "gender">Gender:</label></b>
-                                    <select name="gender" id="gender" class = "row-input" v-model="registerForm.gender">
-                                        <option value="" disabled selected>Select Gender</option>
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
+                                    <select name="gender" id="gender" class = "row-input"  v-model="registerForm.gender">
+                                        <option value="" disabled selected>Please enter your gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value=" Prefer not to tell "> Prefer not to tell </option>
+                                        <option value="Non-binary">Non-binary</option>
+                                        <option value="Transgender"> Transgender</option>
                                     </select>
                                 </div>
                                 
-                                <div class = "input-row">
+                                <div style=" align-items: center; display: flex; flex-direction: column;">
                                     <b><label for = "weight">Weight:</label></b>
-                                    <select name = "weight" id = "weight" class = "row-input" v-model = "registerForm.weight">
-                                        <option value="" disabled selected>Select Weight</option>
-                                        <option v-for="weight in weightOptions" :value="weight" :key="weight">{{ weight }} kg</option>
-                                    </select>   
+                                    <div style="display: flex; align-items: center; margin-left: 2px;">
+                                        <input type="number" name="weight" id="weight" class="input" min="0" step="any" v-model="registerForm.weight" placeholder="Please enter your weight" style="width: 232px;"/>
+                                        <el-switch v-model = "registerForm.weightUnit" inline-prompt active-text = "kg" size = "large" inactive-text="lb" width="60" class = "switchBtn"
+                                        style="--el-switch-on-color: #85cc13; --el-switch-off-color: #ff4949;"/>
+                                    </div>
                                 </div>
-                                
+
+                                <div style=" align-items: center; display: flex; flex-direction: column; margin-top: 10px;">
+                                    <b><label for = "height">Height:</label></b>
+                                    <div style="display: flex; align-items: center; margin-left: 2px;">
+                                        <input type="number" name="height" id="height" class="input" min="0" step="any" v-model="registerForm.height" placeholder="Please enter your height" style="width: 232px;"/>
+                                        <el-switch v-model = "registerForm.heightUnit" inline-prompt active-text = "cm" size = "large" inactive-text="feet" width="60" class = "switchBtn"
+                                        style="--el-switch-on-color: #85cc13; --el-switch-off-color: #ff4949;"/>
+                                    </div>
+                                </div>
+
                                 <div class = "input-row">
                                     <b><label for = "email">Email:</label></b>
                                     <input id = "email" type="email" class = "input" placeholder="Please enter your email" v-model="registerForm.email" required/>
@@ -182,6 +177,9 @@
         color:#ffffff;
         position: sticky;
         top: 30px;
+    }
+    .switchBtn{
+        margin-left: 10px;
     }
     /* -------------------------------- Back Button -----------------------------------------------*/
 

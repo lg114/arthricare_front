@@ -23,7 +23,7 @@
                     }),
                 drawer: false,
                 imgUrl: '',
-                //存放当天需要服用的药物列表
+                //初始化存放当天需要服用的药物列表
                 medicationList: [],
                 selectedDate: null,
                 dialogVisible: ref(false),
@@ -56,7 +56,38 @@
                 //testing
                 console.log("Medication List for selected date:", this.medicationList);
             },
+            
+            //后端
+            //async onDateSelected(selectedDate){
+                //try{
+                    //调用更新的 getMedicateListByDate 方法以获取所选日期的药物数据
+                    //const medicationList = await this.getMedicationListByDate(selectedDate);
 
+                    //使用获取的数据更新medicationList
+                    //this.medicationList = medicationList;
+                    //排序
+                    //this.medicationList.sort((a, b) => (a.time > b.time ? 1 : -1));
+                //}catch(error){
+                    //console.error('Error fetching medication data:', error);
+                    //this.medicationList = [];
+                //}
+            //},
+            //async getMedicationListByDate(selectedDate){
+                //try{
+                    //'YYYY-MM-DD'
+                    //const formattedDate = formatDate(selectedDate);
+
+                    //向后端发出 API 请求以获取所选日期的用药数据
+                    //const response = await fetch(`/api/medications/${formattedDate}`);
+                    //const data = await response.json();
+
+                    //返回用药数据
+                    //return data;
+                //}catch(error){
+                    //console.error('Error fetching medication data:', error);
+                    //return [];
+                //}
+            //},
             getMedicationListByDate(){
                 //这里是模拟数据，不知道怎么通过addmed获取添加的药物以及其时间
                 return [
@@ -118,9 +149,9 @@
                         <span style="color: #1890FF; font-weight: bold;">Medication Actions</span>
                     </template>
                     <div style = "text-align: center;">
-                        <el-button @click="onTime" round>On Time</el-button>
-                        <el-button @click="notOnTime" round>Now</el-button>
-                        <el-button @click="setReminder" round>Set Time</el-button>
+                        <el-button type="primary" @click="onTime" round>On Time</el-button>
+                        <el-button type="primary" @click="notOnTime" round>Now</el-button>
+                        <el-button type="primary" @click="setReminder" round>Set Time</el-button>
                     </div>
                 </el-dialog>
                 <!-------------------------------------------------MedicationDialog---------------------------------------------->

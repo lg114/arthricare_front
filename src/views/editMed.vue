@@ -1,31 +1,30 @@
+<!--Welcome Page -->
+<!--Welcome Page -->
 <script setup>
-  import {ArrowLeftBold} from '@element-plus/icons-vue';
   import store from "@/store";
+  import {Plus,Minus} from '@element-plus/icons-vue';
   
 </script>
 <template>
    <el-container class = "container">
     <div class = "container-flex">
-      <router-link to = "/MyMeds">
-         <el-icon class = "backBtn"><ArrowLeftBold/></el-icon>
-      </router-link>
       <p id = "title">My Meds</p>
     </div>  
       <div id = container2>
         <p id = "label" style = "font-size : 35px ; font-weight:500;" >Edit Medication</p>
-        <p id = "label">MEDICATION NAME</p>
+        <p id = "label">Medication Name *</p>
 
-        <input ref="MedName" id="MedName" type="text" placeholder="" @keyup="processInput" @focus="toggleOptions"/>
+        <input ref="MedName" id="MedName" type="text" placeholder="Mecication Name" @keyup="processInput" @focus="toggleOptions"/>
 
         <div  class="menu" v-if="this.Meds2!==null  && showMed">
           <div ref="MedOption"  class="selected-option" v-for="item in Meds2" :key="item" @click="handleItemClick(item)">{{ item }}</div>
         </div> 
 
-        <p id = "label">CHANGE CATEGORY</p>
+        <p id = "label">Change Category *</p>
         <div>
           <b><label for = "Category" ref = "Category"></label></b>
           <select name="Category" id="Category" class = "row-input" v-model="selectedCategory" >
-           <option value="" disabled selected>Select Category</option>
+           <option value="" disabled selected>Select Category *</option>
            <option value="Pill">Pill</option>
            <option value="Tablet">Tablet</option>
            <option value="Injection">Injection</option>
@@ -33,7 +32,7 @@
          </select>
         </div>
 
-        <p id = "label">HOW OFTEN ARE YOU TAKING THIS MEDICATION?</p>
+        <p id = "label">How often are you taking this medication ? *</p>
         <!-- <input ref = "Frequency" id="input" type="text" placeholder="  " /> -->
         <div>
           <select  ref="Frequency" name="Frequency" id="Frequency" class ="row-input" v-model="selectedFrequency" >
@@ -62,67 +61,82 @@
         </div>
 
         </div>
-        <p id = "label">HOW MANY UNITS DO YOU TAKE EACH TIME?</p>
-
-        <div class = "container-flex">
-          <div class="DecreaseButton" @click="decreaseCounter">-</div>
+        <p id = "label">How many units do you take each time ? *</p>
+      
+        <div class = "calculationPart">
+          <el-icon class = "decreaseButton" @click="decreaseCounter"><Minus/></el-icon>
           <div ref = "Unit" class = "number">{{ counter }}</div>
-          <div class="IncreaseButton" @click="increaseCounter">+</div>
+          <el-icon class = "increaseButton" @click="increaseCounter"><Plus /></el-icon>
         </div>
         
-        <p id = "label">WHEN DID YOU START TAKING THIS MEDICATION?</p>
+        <p id = "label">When did you start taking this medication ? *</p>
         <div id = "date" >
           <VueDatePicker1 ref = "StartDate"  id="selectedStartDate" v-model="selectedStartDate" :format="dateFormat"></VueDatePicker1>
         </div>
         
-        <p id = "label" style="margin-top: 50px;">WHEN DID YOU STOP TAKING THIS MEDICATION?</p>
+        <p id = "label" style="margin-top: 50px;">When did you stop taking this medication ? *</p>
         <div id = "date">
           <VueDatePicker2 ref = "EndDate" id="selectedEndDate" v-model="selectedEndDate" :format="dateFormat"></VueDatePicker2>
         </div>
 
-        <p id = "label" style = "margin-top:60px">ADD A NOTE ? (optional)</p>
+        <p id = "label" style = "margin-top:60px">Add a note ? (Optional)</p>
         <div >
           <textarea  ref="Note" id = "textarea1" name = "Note" column="20" row="20"></textarea>
         </div>
         <div class = "container-flex" style="margin-top:5%">   
 
         </div>  
-        <div class="Button" path="/MyMeds" @click="ReplaceObjectIntoArray" >
-           Save
-        </div>
-      </div>
-
+          <el-footer class >
+              <div class="buttons" >
+                  <el-button class = "login-button" @click = "ReplaceObjectIntoArray">SAVE</el-button> 
+              </div>
+          </el-footer>
+       </div>
+  
     </el-container>
 </template>
 
 <style scoped>
-    
+  
+  .calculationPart{
+          display:flex;
+          width:40%;
+          height:100%;
+          margin-left:20%;
+          border: 4px solid #1890FF;
+          border-radius:10px 10px 10px 10px;
+          margin:0;
+          padding:0;
+        }
+        .buttons{
+          height:30%;
+          width:100%;
+        }
+
         #textarea1{
-          background-image: linear-gradient(#F1F1F1 50%, #F9F9F9 50%);
           background-size: 100% 4rem;
-          border: 1px solid #CCC;
-          width: 85%;
+          border: 1px solid  #DDDDDD;
+          width: 86%;
           line-height: 2rem;
           padding: 2% 2%;
-          font-size:20px;
-          color:black;;
-          font-weight:bold;
+          font-size:99%;
+          color:black;
           margin-left:4%;
-          font-family:custom;
+          font-family: arial;
+          margin-top:3%;
         }
 
        .row-input{
-        color: #1890FF;
+          color: black;
           background-color: #f4f4f4;
           border: 2px solid #f0dddd;
-          width: 45%;
+          width: 90%;
           height: 30px;
           border-radius: 5px;
           margin: 3.5px;
           padding-left: 10px;
           outline: none;
           font-size:100%;
-          font-weight:bold;
           margin-left:4.5%;
           margin-top:3%;
         }
@@ -131,69 +145,97 @@
           display:flex;
         }
 
+        .BellBtn{
+          font-size: 30px;
+          color: #1890FF;
+          position:relative;
+          margin-left:60%;
+          size:40%;
+      }
+        
+        .note{
+          position:relative;
+          width:130px ; 
+          height:30px;
+          top:7%;
+          left:2%;
+          font-size:110%;
+          border-radius:10px 10px 10px 10px;
+          background-color: #1890FF;
+          text-align: center;
+          color:white;
+          cursor: pointer;
+        }
+        .note:hover{
+          background-color: grey;
+        }
+
         #date{
           margin-left: 3%;
           margin-top: 10px; 
-          width:90%; 
+          width:92%; 
           height:10px;
         }
         .number{
-          z-index: 9;
           display: block;
           float:center;
-          padding: 10px;
           background-color: rgb(253, 248, 248);
-          margin-bottom: 6%;
-          margin-top: 6%;
-          width:40px;
-          height:40px;
+          bottom: 13%;
+          width:1%;
           position:relative;
-          font-size:35px;
-          text-align: center;
-          border: 4px solid #1890FF;
-          border-radius:10px 10px 10px 10px;
+          font-size:200%;
           color:#1890FF;
           margin-left:12%;
           margin-right:5%;
           
         }
+        .increaseButton{
+          font-size:180%;
+          margin-left:30%;
+          color:#1890FF;
+          position:relative;
+          top:4px;
+          
+        }
 
-      .IncreaseButton {
+        .decreaseButton{
+          font-size:180%;
+          margin-right:10%;
+          color:#1890FF;
+          top:4px;
+          position:relative;
+        }
+
+        .calculationPart{
+          display:flex;
+          width:40%;
+          height:80%;
+          border: 2px solid #1890FF;
+          border-radius:10px;
+          justify-content: center;
+          padding-left:10%;
+          padding-right:10%;
+          margin-left:17%;
+          margin-top:5%;
+        }
+
+      .unitButton{
+        color: #a19191;
         text-align: center;
+        float:right;
         display: block;
         cursor: pointer;
-        padding: 1%;
+        padding: 10px;
         background-color: rgb(253, 248, 248);
-        margin-bottom: 10px;
-        width:40px;
-        height:40px;
+        width:45px;
         position:relative;
-        font-size:200%;
+        font-size: 15px;
         border-radius:10px 10px 10px 10px;
-        border: 2.5px solid #a39e9e;
-        color: #a19191;
-        margin-top:7%;
-        margin-left:8%;
-
-      }
-
-      .DecreaseButton {
-        text-align: center;
-        display: block;
-        cursor: pointer;
-        padding: 1%;
-        background-color: rgb(253, 248, 248);
-        margin-bottom: 10px;
-        width:40px;
-        height:40px;
-        position:relative;
-        font-size:200%;
-        border-radius:10px 10px 10px 10px;
-        border: 2.5px solid #a39e9e;
-        color: #a19191;
-        margin-top:7%;
-        margin-left:8%;
-
+        border: 2px solid #a39e9e;
+        height:8px;
+        bottom:3%;
+        right:49%;
+        
       }
 
       #counter {
@@ -207,13 +249,13 @@
             font-size:130%;
             color: #ffffff;
             padding: 0px;
-            width: 70%;
+            width: 50%;
             text-align: center;
             transition-duration: 0.6s;
             text-decoration: none;
             overflow: hidden;
             cursor: pointer;
-            left:15%;
+            left:20%;
             border-radius:10px 10px 10px 10px; 
             height: 4%;
             margin-top:40px;
@@ -240,9 +282,10 @@
         }
 
     .container{
+      overflow-y: auto;
         display: flex;
         align-items: center;
-        height: 100vh;
+        height: 100%;
         width:100%;
         background-color: #1890FF;
         overflow: auto;
@@ -251,6 +294,7 @@
     }
 
     #container2{
+      overflow-y: auto;
         padding-left:auto;
         padding-right:auto;
         align-items: center;
@@ -270,42 +314,35 @@
       color:#FFFFFF;
       margin:5px;
       right:9%;
-      top:30%;
+      top:80%;
     }
 
     #label{   
       width:95%;
       font-weight:600;
-      font-size: 20%;
+      font-size: 85%;
       color:  #1890FF;
       margin-left:4%;
-      margin-bottom:2%;
-      margin-top:2%;
       text-align: left;
       letter-spacing:1px;
+      margin-bottom:0%;
+      margin-top:5%;
     }
 
     input{
       align-items: center;
-      width:80%;    
-      height: 4%;    
-      font-size:100%;    
+      width:89%;    
+      font-size:100%;   
       background-color: white;
-      margin:auto;
       border:none; 
       border-bottom: 3px solid #DDDDDD;
-      color: #008866;
-      margin-left:5%;
+      color: black;
+      margin-left:4%;
       letter-spacing:1px;
-      
+      margin-bottom:2%;
+      margin-top:2%;
     } 
-
-    input:focus
-    { 
-      outline-style: none;
-      border-bottom: 3px solid #c2b5b5;
-    }
-
+    
     input[type="time"] {
       width:23%;
       padding:2%;
@@ -316,13 +353,18 @@
       margin-top:2%;
       margin-bottom:4%;
     }
+    input:focus
+    { 
+      outline-style: none;
+      border-bottom: 3px solid #c2b5b5;
+    }
 
-      .backBtn{
-        font-size: 30px;
+    .backBtn{
+        font-size: 25px;
         color:#FFFFFF;
-        position: absolute;
-        left:20px;
-      top:10px;
+        position:relative;
+        margin-top:80%;
+        right:350%;
     }
 
     .menu {
@@ -344,9 +386,29 @@
       letter-spacing:1px;
     }
 
+    .login-button{
+        margin-top:5%;
+        margin-left:4%;
+        width: 95%;
+        height: 350%;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        font-weight: 700;
+        background-color:black;
+        font-size:17px;
+    }
 
-    
-        
+    .login-button{
+      color:white;
+      position: relative;
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: transparent;
+      background-color:#1890FF;
+      border: 2px solid white;
+      transition: background-color 0.5s, color 0.5s;
+    }
+ 
 </style>
 
 <script>
@@ -381,60 +443,60 @@ export default {
       timeInput2: '',
       timeInput3: '',
       Meds : ["Abatacept",
-    "Adalimumab",
-    "Allopurinol",
-    "Ambrisentan",
-    "Anakinra",
-    "Anifrolumab",
-    "Apremilast",
-    "Azathioprine",
-    "Baricitinib",
-    "Biosimilars",
-    "Bisphosphonates (Oral)",
-    "Bisphosphonates (Intravenous/IV)",
-    "Bosentan",
-    "Cannabinoids - Medicinal Cannabis",
-    "Certolizumab",
-    "Colchicine",
-    "Ciclosporin",
-    "Cyclophosphamide",
-    "Denosumab",
-    "Duloxetine",
-    "Etanercept",
-    "Febuxostat",
-    "Glucosamine",
-    "Golimumab",
-    "Goserelin",
-    "Guselkumab",
-    "Hyaluronic Acid",
-    "Hydroxychloroquine",
-    "Iloprost",
-    "Infliximab",
-    "Ixekizumab",
-    "IV Immunuglobulin",
-    "Leflunomide",
-    "Methotrexate",
-    "Self-Injecting Methotrexate for the Treatment of Arthritis",
-    "Mycophenolate",
-    "NSAIDs",
-    "Opioids",
-    "Paracetamol",
-    "Prednisolone",
-    "Pregabalin",
-    "Probenecid",
-    "Raloxifene",
-    "Rituximab",
-    "Romosozumab",
-    "Secukinumab",
-    "Sulfasalazine",
-    "Tacrolimus",
-    "Teriparatide",
-    "Tocilizumab",
-    "Tofacitinib",
-    "Ustekinumab",
-    "Upadacitinib"],
-      Meds2:[],
-      Meds3:[],
+      "Adalimumab",
+      "Allopurinol",
+      "Ambrisentan",
+      "Anakinra",
+      "Anifrolumab",
+      "Apremilast",
+      "Azathioprine",
+      "Baricitinib",
+      "Biosimilars",
+      "Bisphosphonates (Oral)",
+      "Bisphosphonates (Intravenous/IV)",
+      "Bosentan",
+      "Cannabinoids - Medicinal Cannabis",
+      "Certolizumab",
+      "Colchicine",
+      "Ciclosporin",
+      "Cyclophosphamide",
+      "Denosumab",
+      "Duloxetine",
+      "Etanercept",
+      "Febuxostat",
+      "Glucosamine",
+      "Golimumab",
+      "Goserelin",
+      "Guselkumab",
+      "Hyaluronic Acid",
+      "Hydroxychloroquine",
+      "Iloprost",
+      "Infliximab",
+      "Ixekizumab",
+      "IV Immunuglobulin",
+      "Leflunomide",
+      "Methotrexate",
+      "Self-Injecting Methotrexate for the Treatment of Arthritis",
+      "Mycophenolate",
+      "NSAIDs",
+      "Opioids",
+      "Paracetamol",
+      "Prednisolone",
+      "Pregabalin",
+      "Probenecid",
+      "Raloxifene",
+      "Rituximab",
+      "Romosozumab",
+      "Secukinumab",
+      "Sulfasalazine",
+      "Tacrolimus",
+      "Teriparatide",
+      "Tocilizumab",
+      "Tofacitinib",
+      "Ustekinumab",
+      "Upadacitinib"],
+        Meds2:[],
+        Meds3:[],
     
 
       category: [
@@ -555,7 +617,7 @@ export default {
   },
  
   mounted(){
-            document.title = 'Edit Med | ArthriCare',
+            document.title = 'Sign Up | ArthriCare',
             this.EditInputValue();
         },
         
