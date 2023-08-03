@@ -63,26 +63,30 @@
                 <Icon class="edit"><ModeEditOutlineOutlined /></Icon>
             </el-header>
             <el-main class="main">
-                <el-avatar class="avatar" icon="el-icon-user-solid"></el-avatar> 
+                <el-avatar class="avatar">
+                    <img src="@/assets/user_avatar.png"/>
+                </el-avatar> 
                 <h2>{{ user.name }}</h2>
                 <p>Level {{ user.level }} | {{ user.points }} points</p>
                 <div class="box">
                     <text class="boxTitle">My Puzzles</text><br><br>
-                    <el-image class="collectionImage" :fit="cover"></el-image>
-                    <el-image class="collectionImage" :fit="cover"></el-image>
-                    <el-image class="collectionImage" :fit="cover"></el-image><br>
+                    <img src="@/assets/pic_1.jpg" class="collectionImage" :fit="cover"/>
+                    <img src="@/assets/pic_2.jpg" class="collectionImage" :fit="cover"/>
+                    <img src="@/assets/pic_3.png" class="collectionImage" :fit="cover"/><br>
                     <Icon class="add"><AddCircleOutlineFilled /></Icon>
                 </div>
                 <div class="box">
                     <text class="boxTitle">My Friends</text><br><br>
+                    <img src="@/assets/friend_1.png" class="friend_avatar"/>
+                    <img src="@/assets/friend_2.png" class="friend_avatar"/>
+                    <img src="@/assets/friend_3.png" class="friend_avatar"/>
+                    <img src="@/assets/friend_4.png" class="friend_avatar"/>
+                    <img src="@/assets/friend_5.png" class="friend_avatar"/>
                     <Icon class="add"><AddCircleOutlineFilled /></Icon>
                 </div>
                 <div class="box">
                     <text class="boxTitle">My Posts</text><br><br>
-                    <Icon class="add"><AddCircleOutlineFilled /></Icon>
-                </div>
-                <div class="box">
-                    <text class="boxTitle">My Meds</text><br><br>
+                    <text class="postText">You don't have any post yet...</text>
                     <Icon class="add"><AddCircleOutlineFilled /></Icon>
                 </div>
             </el-main> 
@@ -167,27 +171,27 @@
 }
 .more{
     position: absolute;
-    left:5%;
-    top:1.5%;
+    left: 20px;
+    top:2.5%;
     font-size: 30px;
     color: white;
 }
 .user{
-    position:relative;
+    position:absolute;
     left: 30%;
     font-size: 30px;
+}
+.pageTitle{
+    position:absolute;
+    left: 40%;
+    font-size: 20px;
+    white-space: nowrap;
 }
 .edit{
     position: absolute;
     right:20px;
-    top:10px;
+    top:20px;
     font-size: 30px;
-}
-.pageTitle{
-    position:relative;
-    left: 32%;
-    font-size: 20px;
-    white-space: nowrap;
 }
 .container{
     display: grid;
@@ -200,7 +204,7 @@
 .main{
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 90vh;
     padding-bottom: 80px;
 }
 h2{
@@ -237,6 +241,16 @@ p{
     height: 60px;
     margin-left: 10px;
     float: left;
+    border-radius: 10px;
+}
+.friend_avatar{
+    width: 50px;
+    height: 50px;
+    margin-left: 10px;
+    float:left;
+}
+.postText{
+    margin-left: 20px;
 }
 .add{
     font-size: 40px;
