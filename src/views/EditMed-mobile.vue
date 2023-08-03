@@ -16,7 +16,7 @@
     </div>  
       <div id = container2>
         <p id = "label" style = "font-size : 35px ; font-weight:500;" >Edit Medication</p>
-        <input id="Add" type="text" placeholder="Required Field*" ref = "Field" style = "width:50%"/><br>
+       <input id="Add" type="text" placeholder="Required Field*" ref = "Field" style = "width:50%"/><br>  
         <p id = "label">MEDICATION NAME</p>
 
         <input ref="MedName" id="MedName" type="text" placeholder=""/>
@@ -62,6 +62,7 @@
           <input type="time" v-model="timeInput2" />
           <input type="time" v-model="timeInput3" />
         </div>
+        <div id="timePickersContainer"></div>
 
         <p id = "label">HOW MANY UNITS DO YOU TAKE EACH TIME?</p>
 
@@ -416,6 +417,10 @@ export default {
       selectedFrequency: null,
       selectedStartDate: null,
       selectedEndDate: null,
+      timeInput1: '',
+      timeInput2: '',
+      timeInput3: '',
+
       Meds : ["Abatacept",
     "Adalimumab",
     "Allopurinol",
@@ -548,25 +553,29 @@ export default {
 
 
     /// test code
+    parseTimestampToDateString(timestamp) {
+    return new Date(timestamp).toISOString().split("T")[0];
+  },
+
     populateFormWithMedicationDetails(medicationDetails) {
       var dosageUnit = parseFloat(medicationDetails.dosageUnit);
       if (!(dosageUnit % 1 !== 0)) {
         dosageUnit = dosageUnit.toFixed(1);
       }
-
+      console.log("Medication Details:", medicationDetails);
       this.medicationName = medicationDetails.medicationName;
       this.selectedCategory = medicationDetails.medicationCategory;
       this.selectedFrequency = medicationDetails.frequency;
       this.counter = dosageUnit;
-      this.selectedStartDate = medicationDetails.startDate;
-      this.selectedEndDate = medicationDetails.endDate;
+      this.selectedStartDate = this.parseTimestampToDateString(medicationDetails.startDate);
+      this.selectedEndDate = this.parseTimestampToDateString(medicationDetails.endDate);
       this.note = medicationDetails.note;
 
       this.generateTimePickers(this.getFrequencyPickerCount(medicationDetails.frequency));
     },
     generateTimePickers(numTimes) {
-    var container = document.getElementById("timePickersContainer");
-    container.innerHTML = ''; // Clear existing time pickers (if any)
+     var container = document.getElementById("timePickersContainer");
+     container.innerHTML = ''; // Clear existing time pickers (if any)
 
     // Update the time picker count based on the selected frequency
     switch (this.selectedFrequency) {
@@ -598,10 +607,10 @@ export default {
     }
   },
     getReminderTime(timePicker, index) {
-      axios.get(`http://localhost:8181/reminders/findUniqueReminderTimeByMedicationId/{{medicationId}}`) 
+      axios.get(`http://localhost:8181/reminders/findUniqueReminderTimeByMedicationId/${this.medicationId}`) 
         .then(response => {
           if (response.status === 200) {
-            return response.json();
+            return response.data;
           } else {
             throw new Error("Failed to fetch medication details.");
           }
@@ -629,16 +638,17 @@ export default {
       }
     },
     fetchMedicationDetailsAndPopulateForm() {
-      axios.get (`http://localhost:8181/medications/${this.medicationId}`) // change url check again 0000000000000000000000
+      axios.get (`http://localhost:8181/medications/${this.medicationId}`) 
         .then(response => {
-          if (response.ok) {
-            return response.json();
+          if (response.status === 200 ){
+            return response.data;
           } else {
             throw new Error("Failed to fetch medication details.");
           }
         })
         .then(data => {
           this.populateFormWithMedicationDetails(data);
+          console.log("Medication details fetched:", data);          
         })
         .catch(error => {
           console.error(error);
