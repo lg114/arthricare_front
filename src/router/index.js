@@ -8,6 +8,7 @@ import EditMedPageMobile from '@/views/EditMed-mobile.vue';
 import MyMeds2 from '@/views/MyMeds2.vue';
 import MyMeds1 from '@/views/MyMedsView.vue';
 import HomePage from '@/views/HomepageView.vue';
+import RewardsPage from '@/views/RewardsView.vue';
 
 
 
@@ -63,6 +64,11 @@ const router  = createRouter({
             path: '/Home',
             name: 'Home',
             component: HomePage,
+        },
+        {
+            path: '/Rewards',
+            name: 'Rewards',
+            component: RewardsPage,
         },
       ]
   })
