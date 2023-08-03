@@ -1,81 +1,93 @@
-<!--Signup Page -->
 <script>
-    import { reactive} from 'vue';
-    import { ArrowLeftBold } from '@element-plus/icons-vue';
-    import { ElMessage } from 'element-plus';
+import { reactive,  } from 'vue';
+import { ArrowLeftBold } from '@element-plus/icons-vue';
+import { ElMessage } from 'element-plus';
+import axios from 'axios';
+import router from '@/router';
 
-    export default{
-        //title
-        mounted(){
-            document.title = 'Sign Up | ArthriCare';
-        },
-        setup(){
-            //set up register data
-            const registerForm = reactive({
-                name: '',
-                gender: '',
-                email: '',
-                password: '',
-                weight: '',
-                age: '',
-                weightUnit: true,//true for kg, false for lb
-                height: '',
-                heightUnit: true,//true for cm, false for ft
-            });
-            //submit register form
-            const submitRegisterForm = () => {
-                try{
-                    //validate the form
-                    if(registerForm.email === '' || registerForm.password === ''){
-                        //if the validation failed
-                        ElMessage.error('Please enter a valid email address or password');
-                    }else{
-                        //data need to send
-                        //const dataToSend = {
-                            //name: registerForm.name,
-                            //gender: registerForm.gender,
-                            //email: registerForm.email,
-                            //password: registerForm.password,
-                            //weight: registerForm.weight,
-                            //age: registerForm.age,
-                        //};
+export default {
+  // Title
+  mounted() {
+    document.title = 'Sign Up | ArthriCare';
+  },
+  setup() {
+    // Set up register data
+    const registerForm = reactive({
+      name: '',
+      gender: '',
+      email: '',
+      password: '',
+      weight: '',
+      age: '', // corrected spelling
+      weightUnit: true, // true for kg, false for lb
+      height: '',
+      heightUnit: true, // true for cm, false for ft
+    });
 
-                        //send requeset
-                        //axios.post('api/signup', dataToSend)
-                            //.then(response => {
-                                console.log('Sign up successful');
-                                //register successful, leave all blank
-                                ElMessage.success('Registration success');
-                                registerForm.email = '';
-                                registerForm.gender = '';
-                                registerForm.name = '';
-                                registerForm.password = '';
-                                registerForm.weight = '';
-                                registerForm.age = '';
-                                registerForm.weightUnit = '';
-                                registerForm.height = '';
-                                registerForm.heightUnit = '';
-                            //.catch(error => {
-                                //console.error('Sign up failed', error);
-                                //ElMessage.error("Invalid email or password");
-                            //});
-                    }
-                }catch(error){
-                    console.error("Registration failed!", error);
-                }
-            };
+    //const showError = ref(false);
 
-            return {
-            registerForm,
-            submitRegisterForm,
-            };
-        },
+    // Submit register form
+    const submitRegisterForm = async () => {
+      try {
+        // Validate the form
+        if (
+          registerForm.email === '' ||
+          registerForm.password === '' ||
+          registerForm.gender === '' ||
+          registerForm.name === '' ||
+          registerForm.weight === '' ||
+          registerForm.height === '' ||
+          registerForm.age === ''
+        ) {
+          // If the validation failed
+          ElMessage.error('Please fill up all the fields');
+        } else {
+          const response = await axios.post('http://localhost:8181/api/register', {
+            name: registerForm.name,
+            gender: registerForm.gender,
+            email: registerForm.email,
+            password: registerForm.password,
+            weight: registerForm.weight,
+            age: registerForm.age,
+            height: registerForm.height,
+          });
 
-        components:{
-            ArrowLeftBold,
+          if (response.status === 200) {
+            console.log('Sign up successful');
+            // Register successful, leave all blank
+            ElMessage.success('Registration success');
+            registerForm.email = '';
+            registerForm.gender = '';
+            registerForm.name = '';
+            registerForm.password = '';
+            registerForm.weight = '';
+            registerForm.age = '';
+            registerForm.weightUnit = '';
+            registerForm.height = '';
+            registerForm.heightUnit = '';
+            router.push('/Login');
+          } else {
+            console.error('Registration failed!', response);
+          }
         }
+      } catch (error) {
+        console.error('Registration failed!', error);
+      }
     };
+
+    return {
+      registerForm,
+      submitRegisterForm,
+      axios,
+    };
+  },
+
+  components: {
+    ArrowLeftBold,
+  },
+};
 </script>
+
 <template>
     <div class = "container">
         <el-container class = "content-container">
