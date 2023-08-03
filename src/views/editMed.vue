@@ -88,7 +88,7 @@
         </div>  
           <el-footer class >
               <div class="buttons" >
-                  <el-button class = "login-button" @click = "ReplaceObjectIntoArray">SAVE</el-button> 
+                  <el-button class = "login-button" @click = "updateMedication">SAVE</el-button> 
               </div>
           </el-footer>
        </div>
@@ -643,6 +643,18 @@ export default {
         });
     },
 
+    getReminderTimes() {
+      this.reminderTimes = []; // Clear the timeInputs array
+    if (this.selectedFrequency === 'Once a Day') {
+      this.reminderTimes.push(this.timeInput1);
+    } else if (this.selectedFrequency === 'Twice a Day') {
+      this.reminderTimes.push(this.timeInput1, this.timeInput2);
+    } else if (this.selectedFrequency === 'Three times a Day') {
+      this.reminderTimes.push(this.timeInput1, this.timeInput2, this.timeInput3);
+    }
+      console.log(this.timeInputs);
+    },
+
     getFrequencyPickerCount(frequency) {
       switch (frequency) {
         case "Once a Day":
@@ -672,6 +684,7 @@ export default {
           console.error(error);
         });
     },
+
     updateMedication() {
       var loggedInUser = sessionStorage.getItem('loggedInUser');
       if (loggedInUser) {
@@ -682,22 +695,24 @@ export default {
 
       }
 
+      this.getReminderTimes();
       // Get updated values from the form fields
-      var updatedMedication = {
+      var data = {
         userId: loggedInUser.id,
         medicationId: this.medicationId,
-        medicationName: this.medicationName,
+        medicationName: this.$refs.MedName.value,
         medicationCategory: this.selectedCategory,
         frequency: this.selectedFrequency,
         dosageUnit: this.counter,
         startDate: this.selectedStartDate,
         endDate: this.selectedEndDate,
-        note: this.note,
+        note: this.$refs.Note.value,
         reminderTimes: JSON.stringify(this.reminderTimes),
       };
-
+      console.log(data);
       // Make a PUT request to update the medication
-      axios.put(`http://localhost:8181/medications/updateMedication`, updatedMedication, {
+      
+      axios.put(`http://localhost:8181/medications/updateMedication`, data, {
         headers: {
           "Content-Type": "application/json",
         }

@@ -49,13 +49,11 @@
 
             //Calendar (父组件中的处理选定日期的方法)
             async onDateSelected(selectedDate){
-                console.log(selectedDate);
 
                 //存储选定的日期
                 this.selectedDate = selectedDate; 
                 //假设medicationList是从后端获取的当天药物数据的数组
                 this.medicationList = await this.getMedFromBackend(selectedDate);
-                console.log(this.medicationList.length>0);
                 //然后从早到晚排序 sorting
                 this.medicationList.sort((a, b) => (a.time > b.time ? 1 : -1));
 
@@ -132,7 +130,12 @@
                 console.log("Medication Object:", this.selectedMedication);
                 
                 // TODO: 在这里执行不按时服药的逻辑，例如更新药物的状态和时间
-                this.selectedMedication.takenMedTime = new Date();
+                const currentTime = new Date();
+                const currentHour = currentTime.getHours();
+                const currentMinute = currentTime.getMinutes();
+                const formattedTime = `${currentHour}:${currentMinute}`;
+
+                this.selectedMedication.takenMedTime = formattedTime;
                 console.log("Medication has been taken in ", this.selectedMedication.takenMedTime);
                 this.dialogVisible = false;
             },
@@ -153,8 +156,13 @@
             //选择timepicker
             onTimePickerConfirm() {
                 console.log("Selected time:", this.medicationTime);
+
+                const currentHour = this.medicationTime.getHours();
+                const currentMinute = this.medicationTime.getMinutes();
+                const formattedTime = `${currentHour}:${currentMinute}`;
+
                 //将时间保存到药物对象中
-                this.selectedMedication.takenMedTime = this.medicationTime;
+                this.selectedMedication.takenMedTime = formattedTime;
                 console.log("Medication has been taken in ", this.selectedMedication.takenMedTime);
                 this.showTimePicker = false;
                 this.dialogVisible = false;
