@@ -393,6 +393,7 @@
 
 <style scoped>
 .header{
+    
     display: flex;
     align-items: center;
     color: white;
@@ -402,19 +403,19 @@
 }
 .more{
     position: absolute;
-    left:5%;
-    top:1.5%;
+    left: 20px;
+    top:2.5%;
     font-size: 30px;
     color: white;
 }
 .present{
-    position:relative;
+    position:absolute;
     left: 30%;
     font-size: 30px;
 }
 .pageTitle{
-    position:relative;
-    left: 33%;
+    position:absolute;
+    left: 40%;
     font-size: 20px;
     white-space: nowrap;
 }
@@ -430,7 +431,7 @@
     justify-content: center;
     align-items: center;
     overflow-y: auto;
-    height: 100vh;
+    height: 90vh;
     background-color:#1890FF;
     width: 100%;
     padding-top: 0%;
@@ -512,7 +513,8 @@ p{
     border-radius: 10px;
     margin: auto;
     background-color: #D3EAFF;
-    text-align: center;overflow-y: auto;
+    text-align: center;
+    overflow-y: auto;
     padding: 0 2% 0 2%;
 }
 .puzzleTitle{
