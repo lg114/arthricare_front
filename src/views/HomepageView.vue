@@ -12,6 +12,9 @@
         //title
         mounted(){
             document.title = "Home | ArthriCare";
+            //默认当天日期
+            const today = new Date(); 
+            this.onDateSelected(today);
         },
         data(){
             return{
@@ -27,6 +30,7 @@
                 medicationList: [],
                 selectedDate: null,
                 dialogVisible: ref(false),
+                dialogTitle:''
             };
         },
         methods:{
@@ -89,11 +93,13 @@
                 //}
             //},
             getMedicationListByDate(){
-                //这里是模拟数据，不知道怎么通过addmed获取添加的药物以及其时间
+                const today = new Date("2023-08-03");
+                const formattedDate = today.toISOString().slice(0, 10);
+
                 return [
-                    { id: 1, name: "Medicine A", time: "09:00", date : ''},
-                    { id: 2, name: "Medicine B", time: "12:00", date : '' },
-                    { id: 3, name: "Medicine C", time: "14:30", date : '' },
+                    { reminderId: 1, name: "Medicine A", time: "09:00", dosageUnit: "mg", category: "Pain Relief", date: formattedDate },
+                    { reminderId: 2, name: "Medicine B", time: "12:00", dosageUnit: "pill", category: "Allergy Relief", date: formattedDate },
+                    { reminderId: 3, name: "Medicine C", time: "14:30", dosageUnit: "ml", category: "Cough Syrup", date: formattedDate },
                 ];
             },
             //Dialog
@@ -145,7 +151,7 @@
                 <MedicationDialog :medicationList="medicationList"  v-if="medicationList && medicationList.length > 0" @show-medication-popup="onShowMedicationPopup"/>
                 <!-- Dialog -->
                 <el-dialog  v-model = "dialogVisible" :title="dialogTitle" center align-center width="90%">
-                    <template #title>
+                    <template #header>
                         <span style="color: #1890FF; font-weight: bold;">Medication Actions</span>
                     </template>
                     <div style = "text-align: center;">
@@ -156,6 +162,7 @@
                 </el-dialog>
                 <!-------------------------------------------------MedicationDialog---------------------------------------------->
             </el-main>
+
         </el-container>
         <el-footer class="footer">
                 <Icon class="footerBtn" id="home"><HomeRound /></Icon>                  

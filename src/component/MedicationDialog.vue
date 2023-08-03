@@ -21,7 +21,7 @@
     <div class = "medi-info">
         <div v-if="medicationList.length > 0">
             <!-- 当药物列表不为空时，显示药物信息 -->
-            <div @click="showMedicationPopup(medication)" v-for="medication in medicationList" :key="medication.id" class = "medicationList">
+            <div @click="showMedicationPopup(medication)" v-for="medication in medicationList" :key="medication.reminderId" class = "medicationList">
                 <div class="medication-time">{{ medication.time }}</div>
                 <div class="medication-name">{{ medication.name }}</div>
                 <el-divider></el-divider>
