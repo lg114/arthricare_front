@@ -7,6 +7,7 @@ import AddMedPageMobile from '@/views/AddMed-mobile.vue';
 import EditMedPageMobile from '@/views/EditMed-mobile.vue';
 import MyMeds2 from '@/views/MyMeds2.vue';
 import MyMeds1 from '@/views/MyMedsView.vue';
+import HomePage from '@/views/HomepageView.vue';
 
 
 
@@ -45,19 +46,24 @@ const router  = createRouter({
           name: 'EditMed-mobile',
           component: EditMedPageMobile,
           meta: { keepAlive: true }
-      },
-      {
-        path: '/MyMeds2',
-        name: 'MyMeds2',
-        component: MyMeds2,
+        },
+        {
+            path: '/MyMeds2',
+            name: 'MyMeds2',
+            component: MyMeds2,
+            meta: { keepAlive: true }
+        },
+        {
+        path: '/MyMeds1',
+        name: 'MyMeds1',
+        component: MyMeds1,
         meta: { keepAlive: true }
-    },
-    {
-      path: '/MyMeds1',
-      name: 'MyMeds1',
-      component: MyMeds1,
-      meta: { keepAlive: true }
-  }
+        },
+        {
+            path: '/Home',
+            name: 'Home',
+            component: HomePage,
+        },
       ]
   })
  

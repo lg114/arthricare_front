@@ -175,7 +175,7 @@
 
   .my-footer {
     height: 78px;
-    width: 100%;
+    width: 430px;
     background-color: #FFFFFF;
     box-shadow: 0px 4px 4px 0px #0000000D inset;
     display: flex;
