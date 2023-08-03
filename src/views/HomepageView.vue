@@ -7,6 +7,7 @@
     import HorizontalCalendar from '@/component/calendar.vue';
     import SideBarContent from '@/component/Sidebar.vue';
     import MedicationDialog from '@/component/MedicationDialog.vue';
+    import axios from 'axios';
 
     export default{
         //title
@@ -47,14 +48,14 @@
             },
 
             //Calendar (父组件中的处理选定日期的方法)
-            onDateSelected(selectedDate){
-                console.log("Selected Date: ", selectedDate);
+            async onDateSelected(selectedDate){
+                console.log(selectedDate);
 
                 //存储选定的日期
                 this.selectedDate = selectedDate; 
                 //假设medicationList是从后端获取的当天药物数据的数组
-                this.medicationList = this.getMedicationListByDate(selectedDate);
-
+                this.medicationList = await this.getMedFromBackend(selectedDate);
+                console.log(this.medicationList.length>0);
                 //然后从早到晚排序 sorting
                 this.medicationList.sort((a, b) => (a.time > b.time ? 1 : -1));
 
@@ -62,15 +63,41 @@
                 console.log("Medication List for selected date:", this.medicationList);
             },
             
-            getMedicationListByDate(){
-                const today = new Date("2023-08-03");
-                const formattedDate = today.toISOString().slice(0, 10);
+            async getMedFromBackend(selectedDate) {
+                try {
+                    const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
+                    if (loggedInUser) {
+                        const userId = loggedInUser.id;
+                        const data = {
+                            userId: userId,
+                            chooseDate: selectedDate
+                        };
 
-                return [
-                    { reminderId: 1, name: "Medicine A", time: "09:00", dosageUnit: "mg", category: "Pain Relief", date: formattedDate },
-                    { reminderId: 2, name: "Medicine B", time: "12:00", dosageUnit: "pill", category: "Allergy Relief", date: formattedDate },
-                    { reminderId: 3, name: "Medicine C", time: "14:30", dosageUnit: "ml", category: "Cough Syrup", date: formattedDate },
-                ];
+                        const response = await axios.post('http://localhost:8181/medications/findMedicationByUserIdAndDate', data);
+                        //const reminderList = JSON.parse(response.data);
+
+                        let reminders = [];
+                        let idCounter = 1;
+
+                        response.data.forEach(reminder => {
+                            const timeWithoutSeconds = reminder.reminderTime.slice(0, -3);
+                            reminders.push({
+                                id: idCounter++,
+                                name: reminder.medicationName,
+                                time: timeWithoutSeconds,
+                                date: ""
+                                // Add any other properties you want to include from the reminder
+                            });
+                        });
+
+                        return reminders;
+                    } else {
+                        throw new Error('User is not logged in.'); // Handle the case when the user is not logged in
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    throw error; // Rethrow the error so the caller of this method can handle it if needed
+                }
             },
             //Dialog
             onShowMedicationPopup(medication) {

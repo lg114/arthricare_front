@@ -4,10 +4,13 @@
     import {  Avatar, CaretRight, Message, MessageBox, Reading, WarningFilled, SwitchButton  } from '@element-plus/icons';
     import { MoreHorizFilled, MedicationOutlined, CardGiftcardFilled, CardGiftcardOutlined, HomeRound, AccountCircleOutlined, AddCircleFilled, AddCircleOutlineFilled } from '@vicons/material';
     import { Icon } from '@vicons/utils'
+    import axios from 'axios';
 
     export default{
         mounted(){
             document.title = "Rewards | ArthriCare";
+            this.findPointFromBackend();
+            this.checkRewardsStatue();
         },
         setup(){
             //Tasks Handle
@@ -15,19 +18,16 @@
             //task list, rewrite into "const tasks = ref([]);" if it needs to connect to the backend, however
             //"completed:" is a value that need to be deal with backend, "false" is the default value
             const tasks = reactive([
-                { id: 1, description: 'Take Medications', completed: false },
-                { id: 2, description: 'Create Medication Schedules (Reminder)', completed: false },
-                { id: 3, description: 'Upload Information for Your Medication', completed: false },
-                { id: 4, description: 'Daily Login', completed: false },
-                { id: 5, description: 'Completed Profile', completed: false },
+                { id: 1, description: 'Take Medications', completed: true },
+                { id: 2, description: 'Create Medication Schedules (Reminder)', completed: true },
+                { id: 3, description: 'Upload Information for Your Medication', completed: true },
+                { id: 4, description: 'Daily Login', completed: true },
+                { id: 5, description: 'Completed Profile', completed: true },
             ]);
             //Store search status
             const selectedStatus = ref('');
 
             //complete status handler,this step need to fetch backend data, for now just for frontend displaying
-            const toggleCompletion = (task) =>{
-                task.completed = !task.completed;
-            }
                                     
             
             // Assuming you're connecting to the backend
@@ -68,16 +68,17 @@
                 selectedStatus,
                 filteredTasks,
                 tasks,
-                toggleCompletion
             }
         },
         data(){
             return{
+
                 user:{
                     name: 'Username',
                     level: '10',
                     points: '50',
                     pointsTotal: '100',
+                    pointsNoLevel: "10"
                 },
                 puzzle:{
                     title: 'The Starry Night',
@@ -88,11 +89,15 @@
             };
         },
         computed:{
-            calculatedPercentage(){
-                return (this.user.points / this.user.pointsTotal) * 100; 
+            calculatedPercentage(){  
+                const number =  (this.user.pointsNoLevel/ this.user.pointsTotal) * 100;    
+                const roundedNumber = Math.floor(number);
+                console.log(roundedNumber);
+                return roundedNumber;
             },
         },
         methods:{
+            
             openDrawer() {
             this.drawer = true;
             },
@@ -102,8 +107,122 @@
             //Router
             goToRewards(){
                 this.$router.push('/Rewards');
+            },
+
+            findPointFromBackend()
+            {
+                var loggedInUser = sessionStorage.getItem('loggedInUser');
+                if (loggedInUser) {
+                    loggedInUser = JSON.parse(loggedInUser);
+                    if (loggedInUser) {
+                    axios.get('http://localhost:8181/rewards/findPointByUserId/' + loggedInUser.id)
+                        .then(response => {
+                        var userScore = response.data;
+                        this.user.points = userScore;
+                        // 计算用户等级
+                        var userLevel = Math.floor(userScore / 100);
+                        this.user.level = userLevel;
+                        this.user.pointsNoLevel = userScore - userLevel*100;
+                        })
+                        .catch(error => {
+                        console.log('Error fetching user information:', error);
+                        });
+                    } else {
+                    // 如果用户未登录，可以根据需求进行逻辑处理，如跳转到登录页面
+                    window.location.href = 'index.html';
+                    }
+                }else
+                {
+                    console.log("login first");
+                }
+            },
+
+            
+            checkRewardsStatue()
+            {   var loggedInUser = sessionStorage.getItem('loggedInUser');
+                if (loggedInUser) {
+                    loggedInUser = JSON.parse(loggedInUser);
+                    if (loggedInUser) {
+                        axios.get('http://localhost:8181/rewards/checkLoginRewardStatue/' + loggedInUser.id)
+                        .then(response => {
+                        const alreadyClaimedLoginReward = response.data;
+                        console.log(alreadyClaimedLoginReward);
+                        if (alreadyClaimedLoginReward) {
+                                const loginTask = this.tasks.find(task => task.id === 4);
+                                if (loginTask) {
+                                    loginTask.completed = false;
+                                }
+                            }
+                        })
+                        .catch(error => {
+                        console.log('Error fetching user information:', error);
+                        });
+
+                        axios.get('http://localhost:8181/rewards/checkProfileRewardStatue/' + loggedInUser.id)
+                        .then(response => {
+                        const ProfileRewardCanBeClaimed = response.data;
+
+                        if (ProfileRewardCanBeClaimed) {
+                            const ProfileTask = this.tasks.find(task => task.id === 5);
+                                if (ProfileTask) {
+                                    ProfileTask.completed = false;
+                                }
+                        }
+                        })
+                        .catch(error => {
+                        console.log('Error fetching user information:', error);
+                        });
+                        }
+                }else
+                {
+                    console.log("login first");
+                }
+            
+
+            },
+
+            completeProfileTask() {
+                var loggedInUser = sessionStorage.getItem('loggedInUser');
+                loggedInUser = JSON.parse(loggedInUser);
+                axios.put('http://localhost:8181/rewards/claimProfileReward/' + loggedInUser.id)
+                    .then(response => {
+                    if (response.status === 200) {
+                        console.log('Reward claimed successfully');
+                    } else {
+                        throw new Error('Failed to claim reward.');
+                    }
+                    })
+                    .catch(error => {
+                    console.log('Error claiming reward:', error);
+                    });
+                },
+
+                completeLoginTask() {
+                    var loggedInUser = sessionStorage.getItem('loggedInUser');
+                    loggedInUser = JSON.parse(loggedInUser);
+                    // Claim login reward by making a PUT request to the backend using axios
+                    axios.put('http://localhost:8181/rewards/claimLoginReward/' + loggedInUser.id)
+                        .then(response => {
+                        if (response.status === 200) {
+                            // The reward was successfully claimed
+                            // You can perform additional actions here if needed
+                            console.log('Reward claimed successfully');
+                        } else {
+                            throw new Error('Failed to claim reward.');
+                        }
+                        })
+                        .catch(error => {
+                        console.log('Error claiming reward:', error);
+                        });
+                    },
+
+            toggleCompletion(task){
+                if(task.id==4){this.completeLoginTask();}
+                if(task.id==5){this.completeProfileTask();}
+                task.completed = !task.completed;
             }
         },
+
         components: {
             Icon,
             Avatar, 
@@ -149,10 +268,10 @@
                         :text-inside="true"
                         :stroke-width="20"
                         >
-                        <span>{{ user.points }}/{{ user.pointsTotal }}</span>
+                        <span>{{ user.pointsNoLevel }}/{{ user.pointsTotal }}</span>
                         </el-progress>
                         <div class="percentageProgress">
-                            <text class="progressText">{{ calculatedPercentage }}%</text>
+                            <text class="progressText">{{ calculatedPercentage}}%</text>
                         </div>
                     </div>
                 </div>
