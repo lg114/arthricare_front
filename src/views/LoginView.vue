@@ -26,7 +26,7 @@ export default {
         showError.value = true;
       } else {
         showError.value = false;
-        router.push('/Home');
+        router.push('/MyMeds2');
       }
     };
 
@@ -46,7 +46,7 @@ export default {
           sessionStorage.setItem('loggedInUser', JSON.stringify(response.data));
 
 
-        router.push('/Home'); //jump to home page
+        router.push('/MyMeds2'); //jump to home page
       } catch (error) {
         console.error('Login failed!', error);
       }

@@ -37,17 +37,32 @@
          </select>
         </div>
 
-        <p id = "label">HOW OFTEN ARE YOU TAKING THIS MEDICATION?</p>
-        <!-- <input ref = "Frequency" id="input" type="text" placeholder="  " /> -->
+        <p id = "label" >HOW OFTEN ARE YOU TAKING THIS MEDICATION?</p>
+        <!-- <input ref="Frequency" id="input" type="text" placeholder="  " /> -->
         <div>
-          <select  ref="Frequency" name="Frequency" id="Frequency" class ="row-input" v-model="selectedFrequency" >
+          <select  ref="Frequency" name="Frequency" id="Frequency" class ="row-input" v-model="selectedFrequency">
            <option value="" disabled selected>Select Category</option>
-           <option value="Every Day">EveryDay</option>
-           <option value="everyTwoDays">EveryTwoDays</option>
-           <option value="Once a week">Once a week</option>
-           <option value="Twice a week">Twice a week</option>
-           <option value="Few times a week">Few times a week</option>
+           <option value="Once a Day">Once a Day</option>
+           <option value="Twice a Day">Twice a Day</option>
+           <option value="Three times a Day">Three times a Day</option>
          </select>
+        </div>
+
+        <div v-if="selectedFrequency === 'Once a Day'">
+          <input type="time" v-model="timeInput1" />
+        </div>
+
+        <div v-else-if="selectedFrequency === 'Twice a Day'">
+      
+          <input type="time" v-model="timeInput1" />
+          <input type="time" v-model="timeInput2" />
+        </div>
+
+        <div v-else-if="selectedFrequency === 'Three times a Day'">
+
+          <input type="time" v-model="timeInput1" />
+          <input type="time" v-model="timeInput2" />
+          <input type="time" v-model="timeInput3" />
         </div>
         <p id = "label">HOW MANY UNITS DO YOU TAKE EACH TIME?</p>
 
@@ -376,17 +391,22 @@ import axios from 'axios';
 
 export default {
   components: { VueDatePicker1 , VueDatePicker2},
+
+
   computed: {
     changeToTrue() {
       return this.$store.state.changeToTrue;
     },
   },
   created(){
-    console.log(this.$route.query.Index)
+    console.log(this.$route.query.Index);
+   // this.medicationId = sessionStorage.getItem('medicationId'); // Fetch and set the medicationId here
+  //  this.fetchMedicationDetailsAndPopulateForm(); // Call the method to fetch the medication details
+   // console.log('this medid', this.medicationId)
   },
   data() {
     return {
-      medicationId: sessionStorage.getItem('medicationId'), // don
+      //medicationId: sessionStorage.getItem('medicationId'), // don
       medicationName: '', // don
       note: '', //don
       reminderTimes: [], //don
@@ -473,6 +493,11 @@ export default {
 
   // don's code
   mounted() {
+    // Fetch the medicationId from sessionStorage
+    this.medicationId = sessionStorage.getItem('medicationId');
+    console.log('medicationId from sessionStorage:', this.medicationId);
+
+    // Fetch medication details and populate the form
     this.fetchMedicationDetailsAndPopulateForm();
   },
   
@@ -542,7 +567,7 @@ export default {
     },
     generateTimePickers(numTimes) {
       var container = document.getElementById("timePickersContainer");
-      container.innerHTML = ''; // Clear existing time pickers (if any)
+      container.innerHTML = ''; // Clear existing time pickers (if ny)
 
       for (var i = 1; i <= numTimes; i++) {
         var timePicker = document.createElement('input');
@@ -556,7 +581,7 @@ export default {
       }
     },
     getReminderTime(timePicker, index) {
-      axios.get(`http://localhost:8181/reminders/findUniqueReminderTimeByMedicationId/{{medicationId}}`) // change url
+      axios.get(`http://localhost:8181/reminders/findUniqueReminderTimeByMedicationId/{{medicationId}}`) 
         .then(response => {
           if (response.status === 200) {
             return response.json();
@@ -575,11 +600,11 @@ export default {
 
     getFrequencyPickerCount(frequency) {
       switch (frequency) {
-        case "once":
+        case "Once a Day":
           return 1;
-        case "twice":
+        case "Twice a Day":
           return 2;
-        case "thrice":
+        case "Three times a Day":
           return 3;
         // Add more cases as needed for other frequency options
         default:
