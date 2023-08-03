@@ -477,6 +477,7 @@ export default {
         })
         .then(nextReminder => {
           const dataObject = {
+            medicationId:medication.medicationId,
             MedName:medication.medicationName,
             date:nextReminder,
           };
