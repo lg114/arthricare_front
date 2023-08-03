@@ -41,11 +41,13 @@
       goBackOneWeek() {
         this.currentDate = this.currentDate.subtract(1, 'week');
         this.selectedDateIndex = this.getIndexOfCurrentDate();
+        this.selectedDateIndex = -1;
         this.emitSelectedDate();
       },
       goForwardOneWeek() {
         this.currentDate = this.currentDate.add(1, 'week');
         this.selectedDateIndex = this.getIndexOfCurrentDate();
+        this.selectedDateIndex = -1;
         this.emitSelectedDate();
       },
       selectDate(index) {
