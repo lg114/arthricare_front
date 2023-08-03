@@ -11,7 +11,7 @@
    <el-container class = "container">
       
     <div class = "container-flex" style="height:100% ; width:50% ;">
-        <router-link to = "/">
+        <router-link to = "/home">
           <el-icon class = "backBtn"><ArrowLeftBold/></el-icon>
         </router-link>
         <p id= "title">My Meds</p>
