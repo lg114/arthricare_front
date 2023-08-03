@@ -1,6 +1,6 @@
 <!--Home Page-->
 <script>
-    import { ref, reactive} from 'vue';
+    import { ref,reactive} from 'vue';
     import { UserFilled } from '@element-plus/icons-vue';
     import { HomeRound, MedicationOutlined, AddCircleFilled, CardGiftcardOutlined, AccountCircleOutlined, MoreHorizFilled} from '@vicons/material';
     import { Icon } from '@vicons/utils';
@@ -24,13 +24,20 @@
                         email: "",
                         AvatarUrl: "",
                     }),
+                //sidebar
                 drawer: false,
-                imgUrl: '',
                 //初始化存放当天需要服用的药物列表
                 medicationList: [],
+                //初始化选中日期
                 selectedDate: null,
+                //药物弹窗
                 dialogVisible: ref(false),
-                dialogTitle:''
+                dialogTitle:'',
+                //popup dialog
+                takenMedTime: null,
+                medicationTime: null, //Timepicker中用户设置的将会吃药的时间
+                selectedMedication: {}, //存储用户当前选择的药物
+                showTimePicker: false, //timepicker
             };
         },
         methods:{
@@ -38,12 +45,6 @@
             beforeDrawerClose(done){
                 done();
             },
-
-            //实现homepage选中日期显示药物功能
-            //首先，在日历组件中，创建一个事件@date-selected来在选定日期时通知父组件
-            //在homepage中，接收@date-selected事件，并在处理函数onDateSelected中获取当天需要服用的药物列表，并按照时间排序
-            //将药物列表传递给一个弹窗组件，并在弹窗中展示药物信息和三个按钮
-            //弹窗组件中，对每个按钮绑定相应的点击事件，分别处理按时吃药、现在吃药但不按时、和设置什么时候吃了药
 
             //Calendar (父组件中的处理选定日期的方法)
             onDateSelected(selectedDate){
@@ -61,37 +62,6 @@
                 console.log("Medication List for selected date:", this.medicationList);
             },
             
-            //后端
-            //async onDateSelected(selectedDate){
-                //try{
-                    //调用更新的 getMedicateListByDate 方法以获取所选日期的药物数据
-                    //const medicationList = await this.getMedicationListByDate(selectedDate);
-
-                    //使用获取的数据更新medicationList
-                    //this.medicationList = medicationList;
-                    //排序
-                    //this.medicationList.sort((a, b) => (a.time > b.time ? 1 : -1));
-                //}catch(error){
-                    //console.error('Error fetching medication data:', error);
-                    //this.medicationList = [];
-                //}
-            //},
-            //async getMedicationListByDate(selectedDate){
-                //try{
-                    //'YYYY-MM-DD'
-                    //const formattedDate = formatDate(selectedDate);
-
-                    //向后端发出 API 请求以获取所选日期的用药数据
-                    //const response = await fetch(`/api/medications/${formattedDate}`);
-                    //const data = await response.json();
-
-                    //返回用药数据
-                    //return data;
-                //}catch(error){
-                    //console.error('Error fetching medication data:', error);
-                    //return [];
-                //}
-            //},
             getMedicationListByDate(){
                 const today = new Date("2023-08-03");
                 const formattedDate = today.toISOString().slice(0, 10);
@@ -104,21 +74,75 @@
             },
             //Dialog
             onShowMedicationPopup(medication) {
-                console.log("Show medication popup:", medication);
+                //构建弹窗标题，显示药物的名称和时间
+                this.dialogTitle = `${medication.name} - ${medication.time}`;
+                //将药物信息传递给弹窗组件
+                this.selectedMedication = medication ;
                 this.dialogVisible = true;
             },
+
+            //on time button
             onTime(){
+                if (!this.selectedMedication){
+                    // 如果没有选定药物对象，则无法执行按时服药的操作
+                    return;
+                }
                 console.log("On Time button clicked");
+                console.log("Medication Object:", this.selectedMedication);
+                
+                // TODO: 在这里执行按时服药的逻辑，例如更新药物的状态和时间
+                this.selectedMedication.takenMedTime = this.selectedMedication.time;
+                console.log("Medication has been taken in ", this.selectedMedication.takenMedTime);
                 this.dialogVisible = false;
             },
-
-            notOnTime(){
-                console.log("Not On Time button clicked");
+            //Now button
+            nowTime(){
+                if (!this.selectedMedication){
+                    // 如果没有选定药物对象，则无法执行按时服药的操作
+                    return;
+                }
+                console.log("Now Time button clicked");
+                console.log("Medication Object:", this.selectedMedication);
+                
+                // TODO: 在这里执行不按时服药的逻辑，例如更新药物的状态和时间
+                this.selectedMedication.takenMedTime = new Date();
+                console.log("Medication has been taken in ", this.selectedMedication.takenMedTime);
                 this.dialogVisible = false;
             },
-
-            setReminder(){
+            //set time button
+            setTime(medication){
+                if (!this.selectedMedication){
+                    // 如果没有选定药物对象，则无法执行按时服药的操作
+                    return;
+                }
                 console.log("Set Reminder button clicked");
+                console.log("Medication:", medication);
+                // 设置弹窗标题，显示药物的名称
+                this.dialogTitle = this.selectedMedication.name;
+                // 打开弹窗，显示时间选择器
+                this.showTimePicker = true;
+            },
+
+            //选择timepicker
+            onTimePickerConfirm() {
+                console.log("Selected time:", this.medicationTime);
+                //将时间保存到药物对象中
+                this.selectedMedication.takenMedTime = this.medicationTime;
+                console.log("Medication has been taken in ", this.selectedMedication.takenMedTime);
+                this.showTimePicker = false;
+                this.dialogVisible = false;
+            },
+            //取消选择timepicker
+            onTimePickerCancel() {
+                // 用户取消选择时间，关闭MessageBox
+                this.showTimePicker = false;
+                this.dialogVisible = false;
+            },
+            //关闭timePicker
+            onTimePickerClose() {
+                // MessageBox关闭时，重置时间选择器并关闭MessageBox
+                this.medicationTime = null;
+                this.showTimePicker = false;
                 this.dialogVisible = false;
             },
         },
@@ -148,18 +172,32 @@
             <el-main class = "main">
                 <HorizontalCalendar @date-selected="onDateSelected" />
                 <!-------------------------------------------------MedicationDialog---------------------------------------------->
-                <MedicationDialog :medicationList="medicationList"  v-if="medicationList && medicationList.length > 0" @show-medication-popup="onShowMedicationPopup"/>
-                <!-- Dialog -->
+                <MedicationDialog :medicationList="medicationList" :selectedMedication="selectedMedication" :takenMedTime="selectedMedication.takenMedTime"  v-if="medicationList && medicationList.length > 0" @show-medication-popup="onShowMedicationPopup"/>
+                <!-------------------------------- Dialog -------------------------------->
                 <el-dialog  v-model = "dialogVisible" :title="dialogTitle" center align-center width="90%">
                     <template #header>
-                        <span style="color: #1890FF; font-weight: bold;">Medication Actions</span>
+                        <span style="color: #1890FF; font-weight: bold;">{{ dialogTitle }}</span>
                     </template>
                     <div style = "text-align: center;">
-                        <el-button type="primary" @click="onTime" round>On Time</el-button>
-                        <el-button type="primary" @click="notOnTime" round>Now</el-button>
-                        <el-button type="primary" @click="setReminder" round>Set Time</el-button>
+                        <el-button type="primary" @click="onTime(medication)" round>On Time</el-button>
+                        <el-button type="primary" @click="nowTime(medication)" round>Now</el-button>
+                        <el-button type="primary" @click="setTime(selectedMedication)" round>Set Time</el-button>
                     </div>
                 </el-dialog>
+                <!------------------------ Dialog for medication time picker ----------------->
+                <el-dialog v-model="showTimePicker" title="Set Time" @close="onTimePickerClose" center align-center width="90%">
+                    <template #header>
+                        <span style="color: #1890FF; font-weight: bold;">{{ dialogTitle }}</span>
+                    </template>
+                    <div style = "text-align: center;">
+                        <el-time-picker  v-if="showTimePicker" v-model="medicationTime" placeholder="Select time" format="HH:mm"></el-time-picker>                        
+                    </div>
+                    <template v-slot:footer>
+                        <el-button @click="onTimePickerCancel" round>Cancel</el-button>
+                        <el-button type="primary" @click="onTimePickerConfirm" round>Confirm</el-button>
+                    </template>
+                </el-dialog>
+
                 <!-------------------------------------------------MedicationDialog---------------------------------------------->
             </el-main>
 
@@ -177,7 +215,11 @@
                 </router-link>
                 <router-link to = "/UserProfile">
                 <Icon class="footerBtn" id="profile"><AccountCircleOutlined /></Icon>
-                </router-link>
+                </router-link><br>
+                <span id="homeText">Home</span>
+                <span id="medText">My Meds</span>
+                <span id="rewardsText">Rewards</span>
+                <span id="profileText">Profile</span>
         </el-footer> 
         <el-drawer style="background-color: #1890FF;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
             <!--Action是模拟接口，与后端连接时更换-->
@@ -231,7 +273,7 @@
         background-color: white;
         position:fixed;
         bottom:0;
-        height: 60px;
+        height: 80px;
         width:100%;
         text-align: center;
         margin-left: 0;
@@ -243,15 +285,40 @@
     /* -------------------------------- Component Layout -------------------------------------------*/
 
     /* -------------------------------- Footer -----------------------------------------------------*/
+    br {
+            display: block; /* makes it have a width */
+            content: ""; /* clears default height */
+            margin-top: 1px; /* change this to whatever height you want it */
+}
     .footerBtn{
-        font-size: 45px;
-        color: gray;
-        height: 50px;
-        width: 50px;
-        padding-top: 10px;
-        padding-left: 10px;
-        padding-right: 10px;
-    }
+    font-size: 45px;
+    color: gray;
+    height: 50px;
+    width: 50px;
+    padding-top: 8px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+#homeText{
+    position: relative;
+    color: #1890FF;
+    right: 50px;
+}
+#medText{
+    position: relative;
+    color: gray;
+    right: 35px;
+}
+#rewardsText{
+    position: relative;
+    color:gray;
+    left: 35px;
+}
+#profileText{
+    position: relative;
+    color: gray;
+    left: 48px;
+}
     #addMed{
         color: #1890FF;
     }
@@ -264,11 +331,10 @@
     /* -------------------------------- Header -----------------------------------------------------*/
     .userbtn{
         position: absolute;
-        left: 20px;
-        top: 10px;
+        left:5%;
+        top:1.5%;
         font-size: 30px;
-        font-weight: bold;
-        color: #ffffff;
+        color: white;
     }
     .username{
         position: relative;

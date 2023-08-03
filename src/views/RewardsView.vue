@@ -1,10 +1,9 @@
 <!--Rewards Page -->
 <script>
     import { ref, reactive, computed } from 'vue';
-    import { UserFilled } from '@element-plus/icons-vue';
+    import {  Avatar, CaretRight, Message, MessageBox, Reading, WarningFilled, SwitchButton  } from '@element-plus/icons';
     import { MoreHorizFilled, MedicationOutlined, CardGiftcardFilled, CardGiftcardOutlined, HomeRound, AccountCircleOutlined, AddCircleFilled, AddCircleOutlineFilled } from '@vicons/material';
-    import { Icon } from '@vicons/utils';
-    import SideBarContent from '@/component/Sidebar.vue';
+    import { Icon } from '@vicons/utils'
 
     export default{
         mounted(){
@@ -90,22 +89,30 @@
         },
         computed:{
             calculatedPercentage(){
-                return (this.user.points / this.user.pointsTotal) * 100;
+                return (this.user.points / this.user.pointsTotal) * 100; 
             },
         },
         methods:{
-            //Drawer
+            openDrawer() {
+            this.drawer = true;
+            },
             beforeDrawerClose(done) {
                 done();
             },
             //Router
-            goToUserProfile(){
+            goToRewards(){
                 this.$router.push('/Rewards');
             }
         },
         components: {
             Icon,
-            UserFilled,
+            Avatar, 
+            CaretRight, 
+            Message, 
+            MessageBox, 
+            Reading, 
+            WarningFilled, 
+            SwitchButton, 
             MoreHorizFilled,
             MedicationOutlined, 
             CardGiftcardFilled, 
@@ -114,7 +121,6 @@
             AccountCircleOutlined,
             AddCircleFilled,
             AddCircleOutlineFilled,
-            SideBarContent
         }
     };
 </script>
@@ -150,7 +156,8 @@
                         </div>
                     </div>
                 </div>
-                <el-tabs type="card" class="tabs">
+
+                <el-tabs class="tabs">
                         <el-tab-pane label="Puzzles">
                             <text class="puzzleTitle">{{ puzzle.title }} ({{ puzzle.completed }}/{{ puzzle.total }})</text><br><br>
                             <el-image class="puzzleImage" :fit="contain"></el-image><br><br>
@@ -162,7 +169,7 @@
                                 <Icon class="add"><AddCircleOutlineFilled /></Icon>
                             </div>
                         </el-tab-pane>
-                        <el-tab-pane label="Tasks">
+                        <el-tab-pane label="Tasks" class="taskPanel">
                             <el-row class="main-row" justify="center">
                 <el-col class="main-col">
                     <el-select v-model="selectedStatus" placeholder="Select Status">
@@ -210,21 +217,58 @@
                 <Icon class="footerBtn" id="rewards"><CardGiftcardOutlined /></Icon>
                 <router-link to = "/UserProfile">
                 <Icon class="footerBtn" id="profile"><AccountCircleOutlined /></Icon>
-                </router-link>
+                </router-link><br>
+                <span id="homeText">Home</span>
+                <span id="medText">My Meds</span>
+                <span id="rewardsText">Rewards</span>
+                <span id="profileText">Profile</span>
         </el-footer>
         <el-drawer style="background-color: #1890FF;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
-            <div class = "sidebar">
-                    <el-upload action="" :show-file-list="false">
-                            <el-avatar :size="65">
-                                <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
-                                <template v-else>
-                                    <UserFilled class="defalut-avatar" />
-                                </template>
-                            </el-avatar>   
-                    </el-upload> 
-            </div>
-            <SideBarContent :imgUrl="imgUrl" />  
-        </el-drawer>
+                <div class = "sidebar">
+                    <div>
+                        <div class = "menu-item">
+                                <el-upload action="" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                                    <el-avatar :size="65">
+                                    <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
+                                    <template v-else>
+                                        <UserFilled class="defalut-avatar" />
+                                    </template>
+                                    </el-avatar>
+                                </el-upload>                                
+                                <div class = "menu-item">
+                                    <div class = "menu-button" @click = "goToUserProfile">
+                                        <el-icon class="menu-icon"><Avatar/></el-icon>
+                                        <p>My Profile</p>
+                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
+                                    </div>
+                                    <div class = "menu-button">
+                                        <el-icon class="menu-icon1"><Message /></el-icon>
+                                        <p>Message</p>
+                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
+                                    </div>
+                                    <div class = "menu-button">
+                                        <el-icon class="menu-icon2"><MessageBox /></el-icon>
+                                        <p>Community</p>
+                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
+                                    </div>
+                                    <div class = "menu-button">
+                                        <el-icon class="menu-icon1"><Reading /></el-icon>
+                                        <p>Education</p>
+                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
+                                    </div>
+                                    <div class = "menu-button3">
+                                        <el-icon class="menu-icon3"><WarningFilled /></el-icon>
+                                        <p>About</p>
+                                    </div>
+                                    <div class = "menu-button">
+                                        <el-icon class="menu-icon3"><SwitchButton /></el-icon>
+                                        <p>Log Out</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </el-drawer>
     </div>
 </template>
 
@@ -235,12 +279,14 @@
     color: white;
     text-align: center;
     margin-right: 100px;
+    
 }
 .more{
     position: absolute;
-    left:20px;
-    top:10px;
+    left:5%;
+    top:1.5%;
     font-size: 30px;
+    color: white;
 }
 .present{
     position:relative;
@@ -266,7 +312,7 @@
     align-items: center;
     overflow-y: auto;
     height: 100vh;
-    background-color:white;
+    background-color:#1890FF;
     width: 100%;
     padding-top: 0%;
     padding-left: 0%;
@@ -342,12 +388,13 @@ p{
     vertical-align:text-top;
 }
 .tabs{
-    width: 90%;
-    height: 600px;
-    border-radius: 5px;
+    width: 95%;
+    height: 80%;
+    border-radius: 10px;
     margin: auto;
     background-color: #D3EAFF;
     text-align: center;overflow-y: auto;
+    padding: 0 2% 0 2%;
 }
 .puzzleTitle{
     font-size: x-large;
@@ -365,7 +412,7 @@ p{
     width: 350px;
     height: 110px;
     background-color: white;
-    border-radius: 20px;
+    border-radius: 10px;
     box-shadow: 2px 2px 2px rgb(83, 83, 83);
     margin:auto;
 
@@ -390,7 +437,7 @@ p{
     background-color: white;
     position:fixed;
     bottom:0;
-    height: 60px;
+    height: 80px;
     width:100%;
     text-align: center;
     margin-left: 0;
@@ -399,20 +446,10 @@ p{
     box-shadow: inset 0 0 5px grey;
 }
 .sidebar{
-        margin-top: 30px;
         display: flex;
-        flex-direction: column;
         align-items: center;
-        justify-content: center;
-        color: #ffffff;
-    }
-    .uploaded-avatar {
-        width: 100%;
-        height: 100%;
-    }
-    .defalut-avatar{
-        width: 70%;
-        height: 80%;
+        flex-direction: column;
+        padding: 20px;
     }
 #addMed{
     color: #1890FF;
@@ -425,9 +462,29 @@ p{
     color: gray;
     height: 50px;
     width: 50px;
-    padding-top: 10px;
+    padding-top: 8px;
     padding-left: 10px;
     padding-right: 10px;
+}
+#homeText{
+    position: relative;
+    color: gray;
+    right: 50px;
+}
+#medText{
+    position: relative;
+    color: gray;
+    right: 35px;
+}
+#rewardsText{
+    position: relative;
+    color:#1890FF;
+    left: 35px;
+}
+#profileText{
+    position: relative;
+    color: gray;
+    left: 48px;
 }
 .uploaded-avatar {
         width: 100%;
@@ -506,13 +563,17 @@ p{
         margin-top: 5px;
         margin-bottom: 5px;
     }
+    .el-select{
+        border: 3px solid #1890FF;
+        border-radius: 5px;
+    }
     .task{
-        width: 280px;
+        width: 350px;
         height: 100px;
         padding: 0px;
-        border-radius: 20px;
+        border-radius: 10px;
         border: 3px solid #066CCA;
-        background-color: #FFFFFF;
+        background: linear-gradient(to bottom right, rgb(0,124,242), rgb(136,83,249));;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -520,8 +581,7 @@ p{
         transition: box-shadow 0.2s ease;
     }
     .task-container{
-        background: linear-gradient(to bottom right, rgb(0,124,242), rgb(136,83,249));
-        border-radius: 20px;
+        border-radius: 10px;
     }
     .task:hover{
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -540,18 +600,18 @@ p{
         margin-bottom: 10px;
     }
     .task-content span{
-        color:#066CCA;
+        color:white;
         font-weight: 800;
         font-size: 14px;
     }
     .missionBtn{
         margin-top: 15px;
-        background-color: #066CCA;
+        background-color: #0487ff;
         color: #FFFFFF;
         font-weight: 800;
         border: none;
         width: 125px;
-        border: 3px solid #066CCA;
+        border: 3px solid white;
     }
     .completed-btn::before {
         content: '\2714'; 
