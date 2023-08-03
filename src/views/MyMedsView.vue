@@ -10,6 +10,12 @@
    import {ArrowRightBold} from '@element-plus/icons-vue'
    import store from "@/store";
    import axios from 'axios';
+   import red from "@/assets/capsulesred.png";
+   import yellow from "@/assets/capsulesyellow.png";
+   import green from "@/assets/capsulesgreen.png";
+   import blue from "@/assets/capsulesblue.png";
+   import purple from "@/assets/capsulespurple.png";
+   import orange from "@/assets/capsulesorange.png";
 </script>
 
 <template>
@@ -32,7 +38,7 @@
         <div class="unExperiedmed" v-for="(item, index) in store.state.unExperiedMedArray" :key="index">
           <div class="container-flex">
             <div class="Drug_picture">
-              <img src="@/assets/capsules_blue.png" alt="Icon" class="capsules_blue-img" />
+              <img :src= imgArray[index] alt="Icon" class="capsules_blue-img" /> 
             </div>
             <div class="container-block">
               <div class="Drug_name">
@@ -60,7 +66,7 @@
         <div class="Experiedmed" v-for="(item, index) in store.state.ExperiedMedArray" :key="index">
           <div class="container-flex">
             <div class="Drug_picture">
-              <img src="@/assets/capsules_blue.png" alt="Icon" class="capsules_blue-img" />
+              <img :src= imgArray[index] alt="Icon" class="capsules_blue-img" /> 
             </div>
             <div class="container-block">
               <div class="Drug_name">
@@ -484,7 +490,7 @@
       height:25px;
       position: relative;
       top:18px;
-      left: 10px;
+      left: 20px;
       display:flex;
       align-items: center;
      
@@ -507,7 +513,7 @@
       height: 12px;
       position: relative;
       top:25px;
-      left: 10px;
+      left: 20px;
       display:flex;
       align-items: center;
      
@@ -525,6 +531,8 @@
     .arrow_button{
       height: 100%;
       width: 30px;
+      position: relative;
+      right: 20px;
       display:flex;
       align-items: center;
     }
@@ -570,6 +578,8 @@ export default {
     return{
       MedicineArray: [],
       drawer: ref(false),
+      imgArray:[blue ,yellow,red
+      ,green,purple,orange]
       // MedName : this.$route.params.MedName,
       // Field : this.$route.params.Field,
       // Category : this.$route.params.Category
