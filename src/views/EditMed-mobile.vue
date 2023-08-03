@@ -553,60 +553,38 @@ export default {
 
 
     /// test code
-    parseTimestampToDateString(timestamp) {
-    return new Date(timestamp).toISOString().split("T")[0];
-  },
+     parseTimestampToDateString(timestamp) {
+        
+        const date = new Date(timestamp);
+        
+        // 将日期加一天
+        date.setDate(date.getDate() + 1);
+
+        // 将日期对象转换为字符串
+        return date.toISOString().slice(0, 10);
+      },
+
 
     populateFormWithMedicationDetails(medicationDetails) {
-      var dosageUnit = parseFloat(medicationDetails.dosageUnit);
+      /*var dosageUnit = parseFloat(medicationDetails.dosageUnit);
       if (!(dosageUnit % 1 !== 0)) {
         dosageUnit = dosageUnit.toFixed(1);
-      }
+      }*/
       console.log("Medication Details:", medicationDetails);
-      this.medicationName = medicationDetails.medicationName;
+      this.$refs.MedName.value = medicationDetails.medicationName;
       this.selectedCategory = medicationDetails.medicationCategory;
       this.selectedFrequency = medicationDetails.frequency;
-      this.counter = dosageUnit;
+      this.counter = medicationDetails.dosageUnit;
       this.selectedStartDate = this.parseTimestampToDateString(medicationDetails.startDate);
       this.selectedEndDate = this.parseTimestampToDateString(medicationDetails.endDate);
+      console.log(this.parseTimestampToDateString(medicationDetails.startDate))
       this.note = medicationDetails.note;
 
-      this.generateTimePickers(this.getFrequencyPickerCount(medicationDetails.frequency));
+      this.getReminderTime()
     },
-    generateTimePickers(numTimes) {
-     var container = document.getElementById("timePickersContainer");
-     container.innerHTML = ''; // Clear existing time pickers (if any)
 
-    // Update the time picker count based on the selected frequency
-    switch (this.selectedFrequency) {
-      case "Once a Day":
-        numTimes = 1;
-        break;
-      case "Twice a Day":
-        numTimes = 2;
-        break;
-      case "Three times a Day":
-        numTimes = 3;
-        break;
-      // Add more cases as needed for other frequency options
-      default:
-        numTimes = 1; // Default to 1 time picker if frequency is not recognized
-        break;
-    }
 
-    for (var i = 1; i <= numTimes; i++) {
-      var timePicker = document.createElement('input');
-      timePicker.type = "time";
-      timePicker.name = "reminderTime" + i;
-      timePicker.required = true;
-
-      // Initialize the time picker with data if available
-      this.getReminderTime(timePicker, i - 1);
-
-      container.appendChild(timePicker);
-    }
-  },
-    getReminderTime(timePicker, index) {
+    getReminderTime() {
       axios.get(`http://localhost:8181/reminders/findUniqueReminderTimeByMedicationId/${this.medicationId}`) 
         .then(response => {
           if (response.status === 200) {
@@ -616,8 +594,10 @@ export default {
           }
         })
         .then(timeList => {
-          console.log(timeList[index]);
-          timePicker.value = timeList[index];
+            console.log(timeList);
+            for (let i = 0; i < timeList.length; i++) {
+            this[`timeInput${i + 1}`] = timeList[i];
+          }
         })
         .catch(error => {
           console.error(error);
@@ -647,8 +627,7 @@ export default {
           }
         })
         .then(data => {
-          this.populateFormWithMedicationDetails(data);
-          console.log("Medication details fetched:", data);          
+          this.populateFormWithMedicationDetails(data);   
         })
         .catch(error => {
           console.error(error);
