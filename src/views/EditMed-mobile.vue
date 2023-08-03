@@ -2,7 +2,7 @@
 <!--Welcome Page -->
 <script setup>
   import {ArrowLeftBold} from '@element-plus/icons-vue';
-  import store from "@/store";
+
   
 </script>
 <template>
@@ -386,12 +386,15 @@ export default {
   },
   data() {
     return {
+      medicationId: sessionStorage.getItem('medicationId'), // don
+      medicationName: '', // don
+      note: '', //don
+      reminderTimes: [], //don
       date1: null,
       date2: null,
       counter: 0,
       selectedCategory: null,
       selectedFrequency: null,
-
       selectedStartDate: null,
       selectedEndDate: null,
       Meds : ["Abatacept",
@@ -467,6 +470,11 @@ export default {
     };
     
   },
+
+  // don's code
+  mounted() {
+    this.fetchMedicationDetailsAndPopulateForm();
+  },
   
   methods: {
     increaseCounter() {
@@ -513,68 +521,132 @@ export default {
       this.showMed = !this.showMed;
       this.$refs.MedName.focus();
     },
-    EditInputValue() {
-      store.commit('changeToTrue');
-      const arrayIndex = parseInt(this.$route.query.Index, 10);
 
-      if (store.state.MedArray[arrayIndex] !== undefined) {
-        console.log(arrayIndex);
-        this.$refs.Field.value = store.state.MedArray[arrayIndex].Field;
-        this.$refs.MedName.value = store.state.MedArray[arrayIndex].MedName;
-        this.selectedCategory = store.state.MedArray[arrayIndex].Category;
-        this.selectedFrequency = store.state.MedArray[arrayIndex].Frequency;
-        this.counter = store.state.MedArray[arrayIndex].Unit;
-        this.selectedStartDate = store.state.MedArray[arrayIndex].StartDate;
-        this.selectedEndDate = store.state.MedArray[arrayIndex].EndDate;
-        this.$refs.Note.value = store.state.MedArray[arrayIndex].Note;
 
-        console.log("good");
-      } else {
-        console.log('Do not have this object in array');
+    /// test code
+    populateFormWithMedicationDetails(medicationDetails) {
+      var dosageUnit = parseFloat(medicationDetails.dosageUnit);
+      if (!(dosageUnit % 1 !== 0)) {
+        dosageUnit = dosageUnit.toFixed(1);
+      }
+
+      this.medicationName = medicationDetails.medicationName;
+      this.selectedCategory = medicationDetails.medicationCategory;
+      this.selectedFrequency = medicationDetails.frequency;
+      this.counter = dosageUnit;
+      this.selectedStartDate = medicationDetails.startDate;
+      this.selectedEndDate = medicationDetails.endDate;
+      this.note = medicationDetails.note;
+
+      this.generateTimePickers(this.getFrequencyPickerCount(medicationDetails.frequency));
+    },
+    generateTimePickers(numTimes) {
+      var container = document.getElementById("timePickersContainer");
+      container.innerHTML = ''; // Clear existing time pickers (if any)
+
+      for (var i = 1; i <= numTimes; i++) {
+        var timePicker = document.createElement('input');
+        timePicker.type = "time";
+        timePicker.name = "reminderTime" + i;
+        timePicker.required = true;
+
+        this.getReminderTime(timePicker, i - 1);
+
+        container.appendChild(timePicker);
       }
     },
-    async updateMedication() {
+    getReminderTime(timePicker, index) {
+      axios.get(`http://localhost:8181/reminders/findUniqueReminderTimeByMedicationId/{{medicationId}}`) // change url
+        .then(response => {
+          if (response.status === 200) {
+            return response.json();
+          } else {
+            throw new Error("Failed to fetch medication details.");
+          }
+        })
+        .then(timeList => {
+          console.log(timeList[index]);
+          timePicker.value = timeList[index];
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+
+    getFrequencyPickerCount(frequency) {
+      switch (frequency) {
+        case "once":
+          return 1;
+        case "twice":
+          return 2;
+        case "thrice":
+          return 3;
+        // Add more cases as needed for other frequency options
+        default:
+          return 1; // Default to 1 time picker if frequency is not recognized
+      }
+    },
+    fetchMedicationDetailsAndPopulateForm() {
+      axios.get (`http://localhost:8181/medications/${this.medicationId}`) // change url check again 0000000000000000000000
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error("Failed to fetch medication details.");
+          }
+        })
+        .then(data => {
+          this.populateFormWithMedicationDetails(data);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+    updateMedication() {
       var loggedInUser = sessionStorage.getItem('loggedInUser');
       if (loggedInUser) {
         loggedInUser = JSON.parse(loggedInUser);
       } else {
-        console.log('error, user not loggedin');
+
+        console.log ('error. user not logged in')
+
       }
 
-      const arrayIndex = parseInt(this.$route.query.Index, 10);
-      const dataObject = {
-        //medication Id not user Id
+      // Get updated values from the form fields
+      var updatedMedication = {
         userId: loggedInUser.id,
-        medicationName: this.$refs.MedName.value,
+        medicationId: this.medicationId,
+        medicationName: this.medicationName,
         medicationCategory: this.selectedCategory,
         frequency: this.selectedFrequency,
         dosageUnit: this.counter,
         startDate: this.selectedStartDate,
         endDate: this.selectedEndDate,
-        note: this.$refs.Note.value,
-        //reminderTimes: JSON.stringify(this.timeInputs),
+        note: this.note,
+        reminderTimes: JSON.stringify(this.reminderTimes),
       };
 
-      try {
-        // Send the updated dataObject to the backend using axios PUT request
-        const response = await axios.put(`http://localhost:8181/medications/updateMedication`, dataObject);
-        console.log(response.data);
+      // Make a PUT request to update the medication
+      axios.put(`http://localhost:8181/medications/updateMedication`, updatedMedication, {
+        headers: {
+          "Content-Type": "application/json",
+        }
+      })
+        .then(response => {
+          if (response.status === 200) {
+            sessionStorage.removeItem('medicationId');
+            // Redirect to home page after successful update
+            this.$router.push('/MyMeds2');
+          } else {
+            
+            console.log ('error making put request')
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
 
-        // Update the store with updated dataobject
-        /////////////////////store.state.MedArray!!!!!!!!!!!!!!!
-        store.state.MedArray[arrayIndex] = dataObject;
-
-        // Redirect to mymeds
-        this.$router.push({ path: '/MyMeds2' });
-      } catch (error) {
-        console.error('error updating', error);
-      }
-    }
   },
-
-  mounted(){
-        const medicationId = sessionStorage.getItem('medicationId');
-        console.log(medicationId);
-    }
 }
 </script>
