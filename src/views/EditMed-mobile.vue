@@ -37,33 +37,32 @@
          </select>
         </div>
 
-        <p id = "label" >HOW OFTEN ARE YOU TAKING THIS MEDICATION?</p>
-        <!-- <input ref="Frequency" id="input" type="text" placeholder="  " /> -->
-        <div>
-          <select  ref="Frequency" name="Frequency" id="Frequency" class ="row-input" v-model="selectedFrequency">
-           <option value="" disabled selected>Select Category</option>
-           <option value="Once a Day">Once a Day</option>
-           <option value="Twice a Day">Twice a Day</option>
-           <option value="Three times a Day">Three times a Day</option>
-         </select>
-        </div>
+        <p id="label">HOW OFTEN ARE YOU TAKING THIS MEDICATION?</p>
+<div>
+  <select ref="Frequency" name="Frequency" id="Frequency" class="row-input" v-model="selectedFrequency">
+    <option value="" disabled selected>Select Category</option>
+    <option value="Once a Day">Once a Day</option>
+    <option value="Twice a Day">Twice a Day</option>
+    <option value="Three times a Day">Three times a Day</option>
+  </select>
+</div>
 
+        <!-- Conditionally render time pickers based on selectedFrequency -->
         <div v-if="selectedFrequency === 'Once a Day'">
           <input type="time" v-model="timeInput1" />
         </div>
 
         <div v-else-if="selectedFrequency === 'Twice a Day'">
-      
           <input type="time" v-model="timeInput1" />
           <input type="time" v-model="timeInput2" />
         </div>
 
         <div v-else-if="selectedFrequency === 'Three times a Day'">
-
           <input type="time" v-model="timeInput1" />
           <input type="time" v-model="timeInput2" />
           <input type="time" v-model="timeInput3" />
         </div>
+
         <p id = "label">HOW MANY UNITS DO YOU TAKE EACH TIME?</p>
 
         <div class = "container-flex">
@@ -566,20 +565,38 @@ export default {
       this.generateTimePickers(this.getFrequencyPickerCount(medicationDetails.frequency));
     },
     generateTimePickers(numTimes) {
-      var container = document.getElementById("timePickersContainer");
-      container.innerHTML = ''; // Clear existing time pickers (if ny)
+    var container = document.getElementById("timePickersContainer");
+    container.innerHTML = ''; // Clear existing time pickers (if any)
 
-      for (var i = 1; i <= numTimes; i++) {
-        var timePicker = document.createElement('input');
-        timePicker.type = "time";
-        timePicker.name = "reminderTime" + i;
-        timePicker.required = true;
+    // Update the time picker count based on the selected frequency
+    switch (this.selectedFrequency) {
+      case "Once a Day":
+        numTimes = 1;
+        break;
+      case "Twice a Day":
+        numTimes = 2;
+        break;
+      case "Three times a Day":
+        numTimes = 3;
+        break;
+      // Add more cases as needed for other frequency options
+      default:
+        numTimes = 1; // Default to 1 time picker if frequency is not recognized
+        break;
+    }
 
-        this.getReminderTime(timePicker, i - 1);
+    for (var i = 1; i <= numTimes; i++) {
+      var timePicker = document.createElement('input');
+      timePicker.type = "time";
+      timePicker.name = "reminderTime" + i;
+      timePicker.required = true;
 
-        container.appendChild(timePicker);
-      }
-    },
+      // Initialize the time picker with data if available
+      this.getReminderTime(timePicker, i - 1);
+
+      container.appendChild(timePicker);
+    }
+  },
     getReminderTime(timePicker, index) {
       axios.get(`http://localhost:8181/reminders/findUniqueReminderTimeByMedicationId/{{medicationId}}`) 
         .then(response => {
