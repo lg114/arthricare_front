@@ -7,9 +7,28 @@
                 type: Array,
                 default: () => [],
             },
+            selectedMedication:{
+                //接收选定的药物信息
+                type: Object,
+                default: null,
+            },
+            selectedMedicationIndex: {
+                type: Number,
+                default: null,
+            },
+            //用户选择保存的吃药时间
+            takenMedTime:{
+                type: Date,
+                default: null,
+            },
+        },
+        data() {
+            return {
+            SelectedMedication: null,
+            };
         },
         methods:{
-            showMedicationPopup(medication) {
+            showMedicationPopup(medication){
                 this.$emit("show-medication-popup", medication);
             },
         }
@@ -21,9 +40,12 @@
     <div class = "medi-info">
         <div v-if="medicationList.length > 0">
             <!-- 当药物列表不为空时，显示药物信息 -->
-            <div @click="showMedicationPopup(medication)" v-for="medication in medicationList" :key="medication.id" class = "medicationList">
+            <div @click="showMedicationPopup(medication)" v-for="medication in medicationList" :key="medication.reminderId" class = "medicationList">
                 <div class="medication-time">{{ medication.time }}</div>
                 <div class="medication-name">{{ medication.name }}</div>
+                <div v-if="medication.takenMedTime">
+                    <p>Taken at {{ medication.takenMedTime }}</p>
+                </div>
                 <el-divider></el-divider>
             </div>
         </div>
