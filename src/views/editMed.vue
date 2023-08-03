@@ -1,7 +1,7 @@
 <!--Welcome Page -->
 <!--Welcome Page -->
 <script setup>
-  import store from "@/store";
+  //import store from "@/store";
   import {Plus,Minus} from '@element-plus/icons-vue';
   
 </script>
@@ -88,7 +88,7 @@
         </div>  
           <el-footer class >
               <div class="buttons" >
-                  <el-button class = "login-button" @click = "ReplaceObjectIntoArray">SAVE</el-button> 
+                  <el-button class = "login-button" @click = "updateMedication">SAVE</el-button> 
               </div>
           </el-footer>
        </div>
@@ -416,89 +416,98 @@
 <script>
 import VueDatePicker1 from '@vuepic/vue-datepicker';
 import VueDatePicker2 from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
-import {ref} from 'vue';
+import '@vuepic/vue-datepicker/dist/main.css';
+import axios from 'axios';
+//import {ref} from 'vue';
 
 export default {
   components: { VueDatePicker1 , VueDatePicker2},
+
+
   computed: {
     changeToTrue() {
       return this.$store.state.changeToTrue;
     },
   },
   created(){
-    console.log(this.$route.query.Index)
+    console.log(this.$route.query.Index);
+   // this.medicationId = sessionStorage.getItem('medicationId'); // Fetch and set the medicationId here
+  //  this.fetchMedicationDetailsAndPopulateForm(); // Call the method to fetch the medication details
+   // console.log('this medid', this.medicationId)
   },
   data() {
     return {
+      //medicationId: sessionStorage.getItem('medicationId'), // don
+      medicationName: '', // don
+      note: '', //don
+      reminderTimes: [], //don
       date1: null,
       date2: null,
       counter: 0,
       selectedCategory: null,
       selectedFrequency: null,
-      dateFormat: 'yyyy-MM-dd',
-
       selectedStartDate: null,
       selectedEndDate: null,
+      timeInput1: '',
+      timeInput2: '',
+      timeInput3: '',
 
-      timeInput1: this.getCurrentTime(),
-      timeInput2: this.getCurrentTime(),
-      timeInput3: this.getCurrentTime(),
+      dateFormat: 'yyyy-MM-dd',
       Meds : ["Abatacept",
-      "Adalimumab",
-      "Allopurinol",
-      "Ambrisentan",
-      "Anakinra",
-      "Anifrolumab",
-      "Apremilast",
-      "Azathioprine",
-      "Baricitinib",
-      "Biosimilars",
-      "Bisphosphonates (Oral)",
-      "Bisphosphonates (Intravenous/IV)",
-      "Bosentan",
-      "Cannabinoids - Medicinal Cannabis",
-      "Certolizumab",
-      "Colchicine",
-      "Ciclosporin",
-      "Cyclophosphamide",
-      "Denosumab",
-      "Duloxetine",
-      "Etanercept",
-      "Febuxostat",
-      "Glucosamine",
-      "Golimumab",
-      "Goserelin",
-      "Guselkumab",
-      "Hyaluronic Acid",
-      "Hydroxychloroquine",
-      "Iloprost",
-      "Infliximab",
-      "Ixekizumab",
-      "IV Immunuglobulin",
-      "Leflunomide",
-      "Methotrexate",
-      "Self-Injecting Methotrexate for the Treatment of Arthritis",
-      "Mycophenolate",
-      "NSAIDs",
-      "Opioids",
-      "Paracetamol",
-      "Prednisolone",
-      "Pregabalin",
-      "Probenecid",
-      "Raloxifene",
-      "Rituximab",
-      "Romosozumab",
-      "Secukinumab",
-      "Sulfasalazine",
-      "Tacrolimus",
-      "Teriparatide",
-      "Tocilizumab",
-      "Tofacitinib",
-      "Ustekinumab",
-      "Upadacitinib"],
-        Meds2:[],
-        Meds3:[],
+    "Adalimumab",
+    "Allopurinol",
+    "Ambrisentan",
+    "Anakinra",
+    "Anifrolumab",
+    "Apremilast",
+    "Azathioprine",
+    "Baricitinib",
+    "Biosimilars",
+    "Bisphosphonates (Oral)",
+    "Bisphosphonates (Intravenous/IV)",
+    "Bosentan",
+    "Cannabinoids - Medicinal Cannabis",
+    "Certolizumab",
+    "Colchicine",
+    "Ciclosporin",
+    "Cyclophosphamide",
+    "Denosumab",
+    "Duloxetine",
+    "Etanercept",
+    "Febuxostat",
+    "Glucosamine",
+    "Golimumab",
+    "Goserelin",
+    "Guselkumab",
+    "Hyaluronic Acid",
+    "Hydroxychloroquine",
+    "Iloprost",
+    "Infliximab",
+    "Ixekizumab",
+    "IV Immunuglobulin",
+    "Leflunomide",
+    "Methotrexate",
+    "Self-Injecting Methotrexate for the Treatment of Arthritis",
+    "Mycophenolate",
+    "NSAIDs",
+    "Opioids",
+    "Paracetamol",
+    "Prednisolone",
+    "Pregabalin",
+    "Probenecid",
+    "Raloxifene",
+    "Rituximab",
+    "Romosozumab",
+    "Secukinumab",
+    "Sulfasalazine",
+    "Tacrolimus",
+    "Teriparatide",
+    "Tocilizumab",
+    "Tofacitinib",
+    "Ustekinumab",
+    "Upadacitinib"],
+      Meds2:[],
+      Meds3:[],
     
 
       category: [
@@ -517,25 +526,26 @@ export default {
     };
     
   },
+
+  // don's code
+  mounted() {
+    // Fetch the medicationId from sessionStorage
+    this.medicationId = sessionStorage.getItem('medicationId');
+    console.log('medicationId from sessionStorage:', this.medicationId);
+
+    // Fetch medication details and populate the form
+    this.fetchMedicationDetailsAndPopulateForm();
+  },
   
   methods: {
-    getCurrentTime() {
-      const now = new Date();
-      const formattedTime = now.toISOString().slice(11, 16);
-      console.log(formattedTime);
-      return formattedTime;
-    },
     increaseCounter() {
-        this.counter++;
+      this.counter++;
     },
     decreaseCounter() {
-      if(this.counter == 0){
-        this.counter += 0
-      }else{
+      if (this.counter > 0) {
         this.counter--;
       }
     },
-   
     filterWordsByLetter(wordsArray, letter) {
       const lowercaseLetter = letter.toLowerCase();
       const filteredWords = wordsArray.filter(word => word.toLowerCase().startsWith(lowercaseLetter));
@@ -562,6 +572,9 @@ export default {
 
          }
       },
+      
+
+      //show Med in list
     handleItemClick(Med) {
       this.selectedMed = Med;
       this.showMed = false;
@@ -577,93 +590,148 @@ export default {
       this.$refs.MedName.focus();
     },
 
-    EditInputValue(){
-      store.commit('changeToTrue');
-      const arrayIndex = parseInt(this.$route.query.Index, 10);
-      if (store.state.MedArray[arrayIndex]!== null) {
-          console.log(arrayIndex);
-          this.$refs.MedName.value = store.state.MedArray[arrayIndex].MedName,
-          this.selectedCategory = store.state.MedArray[arrayIndex].Category,
-          this.selectedFrequency = store.state.MedArray[arrayIndex].Frequency,
-          this.$refs.Unit.innerHTML = store.state.MedArray[arrayIndex].Unit,
-          this.selectedStartDate = store.state.MedArray[arrayIndex].StartDate,
-          this.selectedEndDate = store.state.MedArray[arrayIndex].EndDate,
-          this.$refs.Note.value = store.state.MedArray[arrayIndex].Note,
-          this.timeInput1 = store.state.MedArray[arrayIndex].timeInput1,
-          this.timeInput2 = store.state.MedArray[arrayIndex].timeInput2,
-          this.timeInput3 = store.state.MedArray[arrayIndex].timeInput3;
-          console.log(store.state.MedArray[arrayIndex].timeInput1);
-        }else{
-          console.log('Do not have this object in array')
-        }
+
+    /// test code
+     parseTimestampToDateString(timestamp) {
+        
+        const date = new Date(timestamp);
+        
+        // 将日期加一天
+        date.setDate(date.getDate() + 1);
+
+        // 将日期对象转换为字符串
+        return date.toISOString().slice(0, 10);
+      },
+
+
+    populateFormWithMedicationDetails(medicationDetails) {
+      /*var dosageUnit = parseFloat(medicationDetails.dosageUnit);
+      if (!(dosageUnit % 1 !== 0)) {
+        dosageUnit = dosageUnit.toFixed(1);
+      }*/
+      console.log("Medication Details:", medicationDetails);
+      this.$refs.MedName.value = medicationDetails.medicationName;
+      this.selectedCategory = medicationDetails.medicationCategory;
+      this.selectedFrequency = medicationDetails.frequency;
+      this.counter = medicationDetails.dosageUnit;
+      this.selectedStartDate = this.parseTimestampToDateString(medicationDetails.startDate);
+      this.selectedEndDate = this.parseTimestampToDateString(medicationDetails.endDate);
+      console.log(this.parseTimestampToDateString(medicationDetails.startDate))
+      this.note = medicationDetails.note;
+
+      this.getReminderTime()
     },
 
-    ReplaceObjectIntoArray(){
-      
-      const arrayIndex = parseInt(this.$route.query.Index, 10);
-      const dataObject = {
-            MedName: this.$refs.MedName.value,
-            Category:  this.selectedCategory,
-            Frequency: this.selectedFrequency,
-            Unit: this.$refs.Unit.innerHTML,
-            StartDate:   this.selectedStartDate ,
-            EndDate:  this.selectedEndDate ,
-            Note:  this.$refs.Note.value ,
-            timeInput1 : this.timeInput1,
-            timeInput2 : this.timeInput2,
-            timeInput3 : this.timeInput3,
+
+    getReminderTime() {
+      axios.get(`http://localhost:8181/reminders/findUniqueReminderTimeByMedicationId/${this.medicationId}`) 
+        .then(response => {
+          if (response.status === 200) {
+            return response.data;
+          } else {
+            throw new Error("Failed to fetch medication details.");
           }
-            store.state.MedArray[arrayIndex] = dataObject;
-            console.log(store.state.MedArray[0].MedName)
-            console.log(store.state.MedArray[arrayIndex].MedName)
-            this.$router.push({
-              path: '/MyMeds',
-          
-           })
-          
+        })
+        .then(timeList => {
+            console.log(timeList);
+            for (let i = 0; i < timeList.length; i++) {
+            this[`timeInput${i + 1}`] = timeList[i];
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+
+    getReminderTimes() {
+      this.reminderTimes = []; // Clear the timeInputs array
+    if (this.selectedFrequency === 'Once a Day') {
+      this.reminderTimes.push(this.timeInput1);
+    } else if (this.selectedFrequency === 'Twice a Day') {
+      this.reminderTimes.push(this.timeInput1, this.timeInput2);
+    } else if (this.selectedFrequency === 'Three times a Day') {
+      this.reminderTimes.push(this.timeInput1, this.timeInput2, this.timeInput3);
     }
-  },
- 
-  mounted(){
-            document.title = 'Sign Up | ArthriCare',
-            this.EditInputValue();
-        },
-        
-        setup(){
-            const name = ref('');
-            const selectedAge = ref('');
-            const gender = ref('');
-            const selectedWeight = ref('');
-            const email = ref('');
-            const password = ref('');
+      console.log(this.timeInputs);
+    },
 
-            const generateAgeOptions = (start, end) => {
-            const options = [];
-            for (let i = start; i <= end; i++) {
-                options.push(i.toString());
-            }
-            return options;
-            };
+    getFrequencyPickerCount(frequency) {
+      switch (frequency) {
+        case "Once a Day":
+          return 1;
+        case "Twice a Day":
+          return 2;
+        case "Three times a Day":
+          return 3;
+        // Add more cases as needed for other frequency options
+        default:
+          return 1; // Default to 1 time picker if frequency is not recognized
+      }
+    },
+    fetchMedicationDetailsAndPopulateForm() {
+      axios.get (`http://localhost:8181/medications/${this.medicationId}`) 
+        .then(response => {
+          if (response.status === 200 ){
+            return response.data;
+          } else {
+            throw new Error("Failed to fetch medication details.");
+          }
+        })
+        .then(data => {
+          this.populateFormWithMedicationDetails(data);   
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
 
-            const generateWeightOptions = (start, end) => {
-            const options = [];
-            for (let i = start; i <= end; i++) {
-                options.push(i.toString());
-            }
-            return options;
-            };
+    updateMedication() {
+      var loggedInUser = sessionStorage.getItem('loggedInUser');
+      if (loggedInUser) {
+        loggedInUser = JSON.parse(loggedInUser);
+      } else {
 
-            return {
-              name,
-              selectedAge,
-              gender,
-              selectedWeight,
-              email,
-              password,
-              ageOptions: generateAgeOptions(10, 100),
-              weightOptions: generateWeightOptions(35, 200),
-            };
+        console.log ('error. user not logged in')
+
+      }
+
+      this.getReminderTimes();
+      // Get updated values from the form fields
+      var data = {
+        userId: loggedInUser.id,
+        medicationId: this.medicationId,
+        medicationName: this.$refs.MedName.value,
+        medicationCategory: this.selectedCategory,
+        frequency: this.selectedFrequency,
+        dosageUnit: this.counter,
+        startDate: this.selectedStartDate,
+        endDate: this.selectedEndDate,
+        note: this.$refs.Note.value,
+        reminderTimes: JSON.stringify(this.reminderTimes),
+      };
+      console.log(data);
+      // Make a PUT request to update the medication
+      
+      axios.put(`http://localhost:8181/medications/updateMedication`, data, {
+        headers: {
+          "Content-Type": "application/json",
         }
-        
+      })
+        .then(response => {
+          if (response.status === 200) {
+            sessionStorage.removeItem('medicationId');
+            // Redirect to home page after successful update
+            this.$router.push('/MyMeds');
+          } else {
+            
+            console.log ('error making put request')
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+
+  },
 }
 </script>

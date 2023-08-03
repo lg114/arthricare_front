@@ -430,6 +430,7 @@
 <script>
 import VueDatePicker1 from '@vuepic/vue-datepicker';
 import VueDatePicker2 from '@vuepic/vue-datepicker';
+import axios from 'axios';
 // import DatePicker from 'vue-datepicker-next';
 // import 'vue-datepicker-next/index.css';
 // import 'vue-datepicker-next/locale/es';
@@ -444,16 +445,19 @@ export default {
   },
   data() {
     return {
-      timeInput1: this.getCurrentTime(),
-      timeInput2: this.getCurrentTime(),
-      timeInput3: this.getCurrentTime(),
+      timeInput1: '',
+      timeInput2: '',
+      timeInput3: '',
+
+      /// don's Edit
+      timeInputs:[],
 
       selectedDate: null, 
       counter: 0,
-      selectedCategory: "Pill",
-      selectedFrequency:  "Once a Day",
-      selectedStartDate: this.getCurrentDate(),
-      selectedEndDate: this.getCurrentDate(),
+      selectedCategory: null,
+      selectedFrequency: null,
+      selectedStartDate: null,
+      selectedEndDate: null,
 
       dateFormat: 'yyyy-MM-dd',
       Meds : ["Abatacept",
@@ -514,7 +518,6 @@ export default {
 
       // pass data to MyMed
 
-    
 
       category: [
         { id: 1, title: 'Pill' },
@@ -582,6 +585,7 @@ export default {
       this.$refs.MedName.value = Med;
       this.$refs.MedName.blur();
       this.Meds2=this.getResult;
+      this.getReminderTimes(); // don's code. 
       console.log(Med);
 
     },
@@ -591,44 +595,89 @@ export default {
       this.$refs.MedName.focus();
     },
 
-    getCurrentTime() {
-      const now = new Date();
-      const formattedTime = now.toISOString().slice(11, 16);
-      console.log(formattedTime);
-      return formattedTime;
+saveDataAndmedicineData() {
+      this.saveData();
+      this.medicineData();
     },
 
-    getCurrentDate() {
-      const now = new Date();
-      const formattedTime = now.toISOString().slice(0, 10);
-      console.log(formattedTime);
-      return formattedTime;
+    getReminderTimes() {
+      this.timeInputs = []; // Clear the timeInputs array
+    if (this.selectedFrequency === 'Once a Day') {
+      this.timeInputs.push(this.timeInput1);
+    } else if (this.selectedFrequency === 'Twice a Day') {
+      this.timeInputs.push(this.timeInput1, this.timeInput2);
+    } else if (this.selectedFrequency === 'Three times a Day') {
+      this.timeInputs.push(this.timeInput1, this.timeInput2, this.timeInput3);
+    }
+      console.log(this.timeInputs);
     },
+
+    // New function for medicineData
+  medicineData() {
+  this.getReminderTimes();
+  const reminderTimes = [];
+
+    // Now call this.$nextTick() after updating the array
+  this.$nextTick(() => {
+    if (this.$refs.timePicker1) {
+      reminderTimes.push(this.$refs.timePicker1.value);
+    }
+    if (this.$refs.timePicker2) {
+      reminderTimes.push(this.$refs.timePicker2.value);
+    }
+    if (this.$refs.timePicker3) {
+      reminderTimes.push(this.$refs.timePicker3.value);
+    }
+
+
+  var loggedInUser = sessionStorage.getItem('loggedInUser');
+    if (loggedInUser) {
+      loggedInUser = JSON.parse(loggedInUser);
+    } else {
+      console.log ('error, user not loggedin');
+    }
+
+    
+    console.log ('TING TING IS HERE',loggedInUser.id);
+   
+
+/////////////////////////////////////////////////////////////
+    const dataObject = {
+      userId: loggedInUser.id,
+      medicationName: this.$refs.MedName.value,
+      medicationCategory: this.selectedCategory,
+      frequency: this.selectedFrequency,
+      dosageUnit: this.$refs.Unit.innerHTML,
+      startDate: this.selectedStartDate,
+      endDate: this.selectedEndDate,
+      note: this.$refs.Note.value,
+      reminderTimes: JSON.stringify(this.timeInputs),
+    };
+
+    console.log('timereminder test', JSON.stringify(this.timeInputs))
+
+    const backendurl = 'http://localhost:8181/medications/create';
+
+    axios
+      .post(backendurl, dataObject)
+      .then((response) => {
+        console.log('Data sent successfully', response);
+      })
+      .catch((error) => {
+        console.log('Data sending failed', error);
+      });
+  }); // Here
+}, //
+
+ watch: {
+    selectedFrequency: 'getReminderTimes',
+  },
 
     // pass value to MyMed
-    saveData() {
-      // const dataObject = {
-      //   Field: this.$refs.Field.value,
-      //   MedName: this.$refs.MedName.value,
-      //   Category: this.$refs.Category.value,
-      //   Frequency:this.$refs.Frequency.value,
-      //   StartDate: this.$refs.StartDate.value ,
-      //   EndDate: this.$refs.EndDate.value,
-      //   Note: this.$refs.Note.value,
-
-      //  };
-
-        //  this.$router.push({
-        //       path: '/MyMeds2',
-        //       query: {
-        //         Field: this.$refs.Field.value,
-        //         MedName: this.$refs.MedName.value,
-        //         Category: this.$refs.Category.value,
-        //     }
-        //   });
+     saveData() {
         store.commit('changeToTrue');
         this.$router.push({
-              path: '/MyMeds',
+              path: '/MyMeds2',
               query: {
                 MedName: this.$refs.MedName.value,
                 Category: this.selectedCategory,
@@ -646,16 +695,7 @@ export default {
            console.log(this.selectedEndDate)
 
     }},
-  mounted(){
-            document.title = 'Add Medication';
-           // this.selectValue();
 
-  
-        },
-        setup(){
-          
-            
-        }
 }
 
 

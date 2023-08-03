@@ -1,62 +1,70 @@
 <!--Login Page -->
+<!--Login Page -->
 <script>
-    import { ArrowLeftBold } from '@element-plus/icons-vue';
-    import { reactive } from 'vue';
-    import router from '@/router';
-    import { ElMessage } from 'element-plus';
-    
-    export default{
+import { ArrowLeftBold } from '@element-plus/icons-vue';
+import { ref, reactive } from 'vue';
+import router from '@/router';
+import axios from 'axios';
 
-        //title
-        mounted() {
-            document.title = "Login | ArthriCare";
-        },
-        setup(){
-            //setup login data
-            const loginForm = reactive({
-                email: '',
-                password: '',
-            });
+export default {
+  //title
+  mounted() {
+    document.title = 'Login | ArthriCare';
+  },
+  setup() {
+    //setup login data
+    const loginForm = reactive({
+      email: '',
+      password: '',
+    });
 
-            //submit login form
-            const submitLoginForm = () => {
-                try{
-                    //Use regular expressions to verify email and password
-                    if(loginForm.email === '' || loginForm.password === ''){
-                        //if the validation failed
-                        ElMessage.error('Please enter a valid email address or password');
-                    }else{
-                        //data need to send
-                        //const dataToSend = {
-                            //email: loginForm.email,
-                            //password: loginForm.password,
-                        //};
+    //default show error message
+    const showError = ref(false);
 
-                        //send request
-                        //axios.post('api/login', dataToSend)
-                            //.then(response => {
-                            console.log('Login successful');
-                            router.push('/home');
-                            //.catch(error => {
-                                //console.error('Login failed', error);
-                                //error
-                                //ElMessage.error("Invalid email or password");
-                        //});
-                    }
-                }catch(error){
-                    console.error("Login failed!", error);
-                }
-            };
+    //handle login process
+    const handlelogin = () => {
+      if (loginForm.email === '' || loginForm.password === '') {
+        showError.value = true;
+      } else {
+        showError.value = false;
+        router.push('/Home');
+      }
+    };
 
-            return{
-                loginForm,
-                submitLoginForm,
-            };
-        },
-        components: {
-            ArrowLeftBold
-        },
-    }
+    //submit login form
+    const submitLoginForm = async () => {
+      const email = loginForm.email;
+      const password = loginForm.password;
+      //const staySignedIn = loginForm.staySignedIn;
+
+      try {
+        const response = await axios.post('http://localhost:8181/api/login', {
+          email: email,
+          password: password,
+        });
+        console.log(response.data); // Login successful message
+
+          sessionStorage.setItem('loggedInUser', JSON.stringify(response.data));
+
+
+        router.push('/Home'); //jump to home page
+      } catch (error) {
+        console.error('Login failed!', error);
+      }
+    };
+
+    return {
+      loginForm,
+      handlelogin,
+      submitLoginForm,
+      showError,
+      axios,
+    };
+  },
+  components: {
+    ArrowLeftBold,
+  },
+};
 </script>
 <template>
     <div class="container" >
