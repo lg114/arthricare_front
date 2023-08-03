@@ -9,12 +9,14 @@
 
 <template>
    <el-container class = "container">
-    <el-header class="header">
-      <router-link to = "/MyMeds">
-         <el-icon class = "backBtn"><ArrowLeftBold/></el-icon>
-      </router-link>
-      <b id = "title">My Meds</b>
-    </el-header>  
+      
+    <div class = "container-flex" style="height:100% ; width:50% ;">
+        <router-link to = "/">
+          <el-icon class = "backBtn"><ArrowLeftBold/></el-icon>
+        </router-link>
+        <p id= "title">My Meds</p>
+      </div>
+      
       <div id = container2>
         <p id = "label" style = "font-size : 35px ; font-weight:500;" >Add Medication</p>
         <p id = "label">Medication Name *</p>
@@ -30,7 +32,7 @@
           <b><label for = "Category"></label></b>
           <select  ref = "Category" name="Category" id="Category" class = "row-input" v-model="selectedCategory">
            <option value="" disabled selected>Select Category *</option>
-           <option value="Pill">Pill</option>
+           <option value="Pill" selected>Pill</option>
            <option value="Tablet">Tablet</option>
            <option value="Injection">Injection</option>
            <option value="Drop">Drop</option>
@@ -44,8 +46,8 @@
            <option value="" disabled selected>Select Category</option>
            <option value="Once a Day">Once a Day</option>
            <option value="Twice a Day">Twice a Day</option>
-           <option value="Three times a Day">Three times a Day ?</option>
-         </select>
+           <option value="Three times a Day">Three times a Day</option>
+          </select>
         </div>
 
         <div v-if="selectedFrequency === 'Once a Day'">
@@ -151,12 +153,9 @@
           margin-top:3%;
         }
 
-        .header{
-    display: flex;
-    align-items: center;
-    color: white;
-    width: 100%;
-}
+        .container-flex{
+          display:flex;
+        }
 
         .BellBtn{
           font-size: 30px;
@@ -322,10 +321,14 @@
     }
 
     #title{
+      font-size: 130%;
       position:relative;
-    left: 40%;
-    font-size: 20px;
-    white-space: nowrap;
+      color:#FFFFFF;
+      margin:5px;
+      left:15%;
+      top:13%;
+      width:100%;
+      padding-top:6.5%;
     }
 
     #label{   
@@ -371,11 +374,11 @@
     }
 
     .backBtn{
-      position: absolute;
-    left:5%;
-    top:1.5%;
-    font-size: 30px;
-    color: white;
+        font-size: 25px;
+        color:#FFFFFF;
+        position:relative;
+        margin-top:80%;
+        right:200%;
     }
 
     .menu {
@@ -399,7 +402,7 @@
 
     .login-button{
         margin-top:5%;
-        margin-left:4%;
+        margin-left:2.5%;
         width: 95%;
         height: 350%;
         margin-bottom: 10px;
@@ -419,7 +422,6 @@
       border: 2px solid white;
       transition: background-color 0.5s, color 0.5s;
     }
-
 
     
         
@@ -442,16 +444,16 @@ export default {
   },
   data() {
     return {
-      timeInput1: '',
-      timeInput2: '',
-      timeInput3: '',
+      timeInput1: this.getCurrentTime(),
+      timeInput2: this.getCurrentTime(),
+      timeInput3: this.getCurrentTime(),
 
       selectedDate: null, 
       counter: 0,
-      selectedCategory: null,
-      selectedFrequency: null,
-      selectedStartDate: null,
-      selectedEndDate: null,
+      selectedCategory: "Pill",
+      selectedFrequency:  "Once a Day",
+      selectedStartDate: this.getCurrentDate(),
+      selectedEndDate: this.getCurrentDate(),
 
       dateFormat: 'yyyy-MM-dd',
       Meds : ["Abatacept",
@@ -589,6 +591,20 @@ export default {
       this.$refs.MedName.focus();
     },
 
+    getCurrentTime() {
+      const now = new Date();
+      const formattedTime = now.toISOString().slice(11, 16);
+      console.log(formattedTime);
+      return formattedTime;
+    },
+
+    getCurrentDate() {
+      const now = new Date();
+      const formattedTime = now.toISOString().slice(0, 10);
+      console.log(formattedTime);
+      return formattedTime;
+    },
+
     // pass value to MyMed
     saveData() {
       // const dataObject = {
@@ -632,6 +648,9 @@ export default {
     }},
   mounted(){
             document.title = 'Add Medication';
+           // this.selectValue();
+
+  
         },
         setup(){
           
