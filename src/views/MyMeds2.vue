@@ -3,7 +3,7 @@
 <script setup>
    //import {ArrowLeftBold} from '@element-plus/icons-vue';
    import {Operation} from '@element-plus/icons-vue';
-   import {CirclePlus} from '@element-plus/icons-vue';
+   //import {CirclePlus} from '@element-plus/icons-vue';
    import {ArrowRightBold} from '@element-plus/icons-vue'
    import store from "@/store";
    import { HomeFilled, Calendar, CirclePlusFilled, Sugar, Present} from '@element-plus/icons-vue';
@@ -11,113 +11,259 @@
 </script>
 
 <template>
-   <el-container class = "container">
-   
-    <div class = "container-flex">
-      <router-link to = "/">
-         <el-icon class = "OperaBtn"><Operation/></el-icon>
-      </router-link>
-      <p id = "title">My Meds</p>
-    </div>  
+  <el-container style="height: 844px;width: 100%;">
+    <el-header class="my-header">
+      <div class="statue-bar"></div>
 
-    <div id = container2>
-       <!-- <button @click="addObjectToArray">Generate Object and Add to Array</button>
-      <p id = "p1">Current Medicine</p> -->
-     
-     <div class = "container-block" style = "height:100% ;width:100%"> 
-
-      <!-- <div class="medObject" >
-        <div class = "container-flex" style = "height:100% ;width:100%">
-          <el-icon to = "/AddMed-mobile" class="PlusBtn"><CirclePlus/></el-icon>
-          <div class = "container-block" style = "height:100% ;width:100%"> 
-            <p class="medName"> {{ $route.query.MedName}}</p>
-            <p class="date" >Category: {{ $route.query.Category}}</p>
-           <p>Input 1: {{ $route.query.Field}}</p> 
-          </div>  
-          <router-link to = "/EditMed-mobile" >
-            <el-icon class="arrowBtn"><ArrowRightBold/></el-icon>
+      <div class="TopBar">
+        <div class="leading-icon">
+          <router-link to = "/">
+            <el-icon class = "OperaBtn"><Operation/></el-icon>
           </router-link>
-      </div>  
-      {{ store.state.test}}</p>
-    </div> -->
-      <div class = "zeroObjAlert" v-if="store.state.unExperiedMedArray.length === 0 && store.state.ExperiedMedArray.length === 0">
-        <p class="zeroObjAlertP">You haven't add any Medication</p>
-      </div >
-      <div class="unExperiedmed" v-for="(item, index) in store.state.unExperiedMedArray" :key="index" >
-        <div class = "container-flex" style = "height:100% ;width:100%">
-          <el-icon class="PlusBtn"><CirclePlus/></el-icon>
-          <div class = "container-block" style = "height:100% ;width:100%"> 
-           <!--<  <p class="medName"> {{ index + 1}}</p> -->       
-            <p class="medName"> {{ item.MedName}}</p>
-            <p class="date" > {{ item.date}}</p>
-            
-           <!--<p>Input 1: {{ $route.query.Field}}</p> -->
-          </div>  
-          <!-- <p>{{ store.state.navigation}}</p> -->
-          <router-link :to="{ path: '/EditMed-mobile', query: { Index: index } }">
-            <el-icon class="arrowBtn"><ArrowRightBold/></el-icon>
+        </div>
+        <div class="headline">
+          <p class="headline-text">My Meds</p>
+        </div>
+        <div class="leading-icon">
+          <el-icon class = "OperaBtn"><Operation/></el-icon>
+        </div>
+      </div>
+    </el-header>
+
+    <el-main class="my-main">
+      <div class="ExperiedContainer">
+        <div class="ExperiedMedication">
+          <p class="medication-word">Current Medication</p>
+        </div>
+        <div class = "zeroObjAlert" v-if="store.state.unExperiedMedArray.length === 0">
+          <p class="zeroObjAlertP">You haven't add any Medication</p>
+        </div >
+        <div class="unExperiedmed" v-for="(item, index) in store.state.unExperiedMedArray" :key="index">
+          <div class="container-flex">
+            <div class="Drug_picture">
+              <img src="@/assets/capsules_blue.png" alt="Icon" class="capsules_blue-img" />
+            </div>
+            <div class="container-block">
+              <div class="Drug_name">
+                <p class="medName-font">{{ item.MedName }}</p>
+              </div>
+              <div class="Drug_data">
+                <p class="medData-font">{{ item.date }}</p>
+              </div>
+            </div>
+            <div class="arrow_button">
+              <router-link :to="{ path: '/EditMed-mobile', query: { Index: index } }" @click="handleArrowButtonClick('unExperiedMedArray', index)">
+            <el-icon class="arrowBtn_icon"><ArrowRightBold/></el-icon>
           </router-link>
-        </div>  
+        </div>
+          </div>
+        </div>
       </div>
-
-      <div class="Experiedmed" v-for="(item, index) in store.state.ExperiedMedArray" :key="index" >
-        <div class = "container-flex" style = "height:100% ;width:100%">
-          <el-icon class="PlusBtn"><CirclePlus/></el-icon>
-          <div class = "container-block" style = "height:100% ;width:100%"> 
-           <!--<  <p class="medName"> {{ index + 1}}</p> -->       
-            <p class="medName"> {{ item.MedName}}</p>
-            <p class="date" > {{ item.date}}</p>
-            
-           <!--<p>Input 1: {{ $route.query.Field}}</p> -->
-          </div>  
-        </div>  
+      <div class="ExperiedContainer">
+        <div class="ExperiedMedication">
+          <p class="medication-word">Past Medication</p>
+        </div>
+        <div class = "zeroObjAlert" v-if="store.state.ExperiedMedArray.length === 0">
+          <p class="zeroObjAlertP">You haven't have any Medication Experied</p>
+        </div >
+        <div class="Experiedmed" v-for="(item, index) in store.state.ExperiedMedArray" :key="index">
+          <div class="container-flex">
+            <div class="Drug_picture">
+              <img src="@/assets/capsules_blue.png" alt="Icon" class="capsules_blue-img" />
+            </div>
+            <div class="container-block">
+              <div class="Drug_name">
+                <p class="medName-font">{{ item.MedName }}</p>
+              </div>
+              <div class="Drug_data">
+                <p class="medData-font">{{ item.date }}</p>
+              </div>
+            </div>
+            <div>
+              <div class="arrow_button">
+                <router-link :to="{ path: '/EditMed-mobile', query: { Index: index } }" @click="handleArrowButtonClick('ExperiedMedArray', index)">
+                  <el-icon class="arrowBtn_icon"><ArrowRightBold/></el-icon>
+                </router-link>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+    </el-main>
 
-      <el-footer class = "footer">
-         <router-link to = "/Home">
-           <el-icon class="footerBtn" id="home"><HomeFilled></HomeFilled></el-icon>                    
-         </router-link>
-           <el-icon class="footerBtn" id="calendar"><Calendar></Calendar></el-icon>
-         <router-link to = "/AddMed-mobile">
-           <el-icon class="footerBtn" id="addMed"><CirclePlusFilled></CirclePlusFilled></el-icon>
-         </router-link>
-      
-           <el-icon class="footerBtn" id="medication"><Sugar></Sugar></el-icon>
-           <el-icon class="footerBtn" id="rewards"><Present></Present></el-icon>
-      </el-footer>
 
+    <el-footer class="my-footer">
+    <div class="bar-menu-container">
+      <div class="BarMenu_Home">
+        <router-link to="/Home">
+          <el-icon><HomeFilled></HomeFilled></el-icon>
+        </router-link>
       </div>
-  </div>
-  
-
-  </el-container> 
+      <div class="BarMenu_Calender">
+        <el-icon><Calendar></Calendar></el-icon>
+      </div>
+      <div class="BarMenu_Plus">
+        <router-link to="/AddMed-mobile">
+          <el-icon><CirclePlusFilled></CirclePlusFilled></el-icon>
+        </router-link>
+      </div>
+      <div class="BarMenu_MyMeds">
+        <el-icon><Sugar></Sugar></el-icon>
+      </div>
+      <div class="BarMenu_Rewards">
+        <el-icon><Present></Present></el-icon>
+      </div>
+    </div>
+  </el-footer>
+  </el-container>
 </template>
 
 
 <style scoped>
-    .footerBtn{
-        font-size: 45px;
-        color: #ffffff;
-        height: 50px;
-        width: 50px;
-        padding-top: 5px;
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-   .footer{
-        background-color: #1890FF;
-        position:fixed;
-        bottom:0;
-        height: 60px;
-        width:100%;
-        text-align: center;
-    }
-        .sidebar{
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        padding: 20px;
-    }
+  .my-header {
+    height: 125px;
+    width: 430px;
+    background-color: #1890FF;
+  }
+
+  .TopBar{
+    width: 366px;
+    height: 55px;
+    top: 50px;
+    left: 40px;
+    padding: 8px 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .statue-bar {
+    width: 375px;
+    height: 40px;
+    left: 28px;
+  }
+
+  .leading-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    gap: 10px;
+    font-size: 48px;
+  }
+
+  .headline {
+    width: 100%;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .headline-text {
+    font-family: "Myanmar Khyay", sans-serif;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 28px;
+    letter-spacing: 0em;
+    text-align: center;
+    width: 100%;
+    color: #FFFFFF;
+  }
+
+  .my-footer {
+    height: 78px;
+    width: 100%;
+    background-color: #FFFFFF;
+    box-shadow: 0px 4px 4px 0px #0000000D inset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bar-menu-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .BarMenu_Home,
+  .BarMenu_Calender,
+  .BarMenu_Plus,
+  .BarMenu_MyMeds,
+  .BarMenu_Rewards {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #0f0f0f;
+  }
+
+  .BarMenu_Home,
+  .BarMenu_Calender,
+  .BarMenu_MyMeds,
+  .BarMenu_Rewards {
+    width: 80px;
+    height: 54px;
+    font-size: 54px;
+  }
+
+  .BarMenu_Plus {
+    width: 54px;
+    height: 54px;
+    font-size: 50px;
+  }
+
+  .BarMenu_Plus el-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .capsules_blue-img {
+    width:50px;
+    height:50px;
+    font-size: 50px;
+    position: relative;
+  }
+
+  .my-main{ 
+    width: 430px;
+    height: 100%;
+    border: 2px solid #1b1919;
+  }
+  .ExperiedContainer{
+    width: 100%;
+  }
+
+  .ExperiedMedication {
+    width: 100%;
+    height: 25px;
+    top: 135px;
+    left: 53px;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    border-bottom: 2px solid #ccc;
+  }
+
+  .medication-word {
+    font-family: "Myanmar Khyay", sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 20px;
+    letter-spacing: 0em;
+    text-align: center;
+  }
+
+  .sidebar{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+  }
     
     .zeroObjAlert{
       width:90%;
@@ -136,105 +282,90 @@
       top:20%;
       font-size:200%;
     }
-    .container{
-      overflow-y: auto;
-        display: flex;
-        align-items: center;
-        height: 100vh;
-        width:100%;
-        background-color: #1890FF;
-        overflow: auto;
-        flex-direction: column;
-        margin: 0 ;
-    }
-
-    #container2{
-      overflow-y: auto;
-        padding-left:auto;
-        padding-right:auto;
-        align-items: center;
-        margin-top:6%;
-        background-color: rgb(253, 253, 253);
-        height:200%;
-        width:100%;
-        padding-bottom:100px;
-        justify-content: center;
-        align-items: center;
-        display:inline-block;
-    }
-
-    #title{
-      font-size: 130%;
-      position: relative;
-      color:#FFFFFF;
-      margin:5px;
-      right:9%;
-      top:30%;
-    }
 
     .container-flex{
-       display:flex;
+      height: 70px;
+      display:flex;
+      align-items: center;
+      border-bottom: 2px solid #ccc;
     }
 
     .container-block{
        width:100%;
        height:100%;
+       position: relative;
+       left: 20px;
+       
     }
 
-    .OperaBtn{
-        font-size: 20px;
-        color:#FFFFFF;
-        position:relative;
-        margin-top:110%;
-        right:440%;
+    .Drug_picture{
+      width:50px;
+      height:50px;
+      font-size: 50px;
+      position: relative;
+      left: 20px;
     }
 
-    .PlusBtn{
-        font-size: 45px;
-        color: red;
-        display:relative;
-        margin-top:7%;
-        margin-left:10%;
-      }
-
-      .arrowBtn{
-        font-size: 180%;
-        color: grey;
-        display:relative;
-        margin-top:120%;
-        right:90%;
+    .Drug_name
+    {
+      width:220px;
+      height:25px;
+      position: relative;
+      top:18px;
+      left: 10px;
+      display:flex;
+      align-items: center;
      
-      }
+    }
 
-     #p1{
-        font-size:101%;
-        margin-top:0;
-        margin-bottom:0;
-        display:relative;
-        border-bottom: 1px solid #a39e9e;
-        padding:3%;
-        padding-left:9%;
-        font-weight:bold;
-        font-family: custom;
-     } 
+    .medName-font{
+      font-family: Myanmar Khyay;
+      font-size: 15px;
+      font-weight: bold;  
+      line-height: 28px;
+      letter-spacing: 0em;
+      text-align: left;
+      display: flex;
+      align-items: flex-end;
+      
+    }
+    
+    .Drug_data{
+      width: 230px;
+      height: 12px;
+      position: relative;
+      top:25px;
+      left: 10px;
+      display:flex;
+      align-items: center;
+     
+    }
 
+    .medData-font{
+      font-family: Myanmar Khyay;
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 28px;
+      letter-spacing: 0em;
+      text-align: left;
+    }
+    
+    .arrow_button{
+      height: 100%;
+      width: 30px;
+      display:flex;
+      align-items: center;
+    }
+
+    .arrowBtn_icon{
+      font-size: 30px;
+    }
      .medObject{
         border-bottom: 2px solid #DDDDDD;
         width:100%;
         height:14%;
      }
 
-     .medName{
-        color : Black;
-        margin-left:6%;      
-        margin-right:6%;   
-        display:relative;
-        margin-top:10%;
-        letter-spacing:1px;
-        font-size:15px;
-        width:90%;
-     
-     }
 
      .date{
         color : #a39e9e;
@@ -321,6 +452,7 @@ export default {
         })
         .then(test => {
           const dataObject = {
+            medicationId:medication.medicationId,
             MedName:medication.medicationName,
             date:test,
           };
@@ -359,14 +491,27 @@ export default {
     {
       store.state.ExperiedMedArray = []
       store.state.unExperiedMedArray = []
-    }
+    },
+
+    handleArrowButtonClick(arrayName, index) {
+      // arrayName表示点击的是哪个数组，index表示点击的是数组中的第几个药物项
+      var medicationId;
+      if (arrayName === 'unExperiedMedArray') {
+        medicationId = store.state.unExperiedMedArray[index].medicationId;
+        console.log('点击了未过期药物数组中的第' + (index + 1) + '项');
+      } else if (arrayName === 'ExperiedMedArray') {
+        medicationId = store.state.ExperiedMedArray[index].medicationId;
+        console.log('国企药物'+medicationId);
+      }
+      sessionStorage.setItem('medicationId', medicationId);
+    },
   },
       
   mounted(){
           this.clearMedArray();
           this.fetchData();
     }
-       ,
+      ,
         setup(){
           
         },
