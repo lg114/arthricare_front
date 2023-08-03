@@ -48,7 +48,7 @@
 
             //Calendar (父组件中的处理选定日期的方法)
             onDateSelected(selectedDate){
-                console.log("Selected Date: ", selectedDate);
+                console.log("Selected Date is: ", selectedDate);
 
                 //存储选定的日期
                 this.selectedDate = selectedDate; 
