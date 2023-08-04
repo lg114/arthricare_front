@@ -9,7 +9,7 @@
     export default{
         //title
         mounted() {
-            document.title = "Mission | ArthriCare";
+            document.title = "Tasks | ArthriCare";
         },
         setup(){
             //Tasks Handle

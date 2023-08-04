@@ -73,7 +73,10 @@
 
                         const response = await axios.post('http://localhost:8181/medications/findMedicationByUserIdAndDate', data);
                         //const reminderList = JSON.parse(response.data);
-
+////////////////////////////////////////////////////////////////////////////////
+                        this.user.name = response.name;
+                        console.log (this.user.name);
+///////////////////////////////////////////////////////////////////////////////////
                         let reminders = [];
                         let idCounter = 1;
 
@@ -202,7 +205,8 @@
         <el-container class = "content-container">
             <el-header class = "header">
                 <Icon class="more" @click="drawer = true"><MoreHorizFilled /></Icon>
-                <span class = "username">Hello, {{ name }}</span>
+                <span class = "username">Welcome to ArthiCare {{ this.user.name }}</span>
+                
             </el-header>
             <el-main class = "main">
                 <HorizontalCalendar @date-selected="onDateSelected" />

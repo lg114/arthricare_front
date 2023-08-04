@@ -40,11 +40,12 @@
                             //newPassword: resetpwdForm.newPassword,
                         //};
                             // send to backend
-                            const response = await axios.put('http://localhost:8181/api/updatePassword', {
+                            const response = await axios.put('http://localhost:8181/api/updatePasswordbyemail', {
                             email: email,
                             password: newPassword,
                             });
-                            alert(response.data); // Show the response from the API (e.g., "Password updated successfully")
+                            //alert(response.data); // Show the response from the API (e.g., "Password updated successfully")
+                            console.log (response.data);
 
                             //.then(response => {
                                 console.log('Password reset successful');

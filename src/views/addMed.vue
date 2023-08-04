@@ -99,7 +99,7 @@
         </div>  
         <el-footer class >
             <div class="buttons" >
-                 <el-button class = "login-button" @click = "saveData">ADD</el-button> 
+                 <el-button class = "login-button" @click = "saveDataAndmedicineData">ADD</el-button> 
             </div>
          </el-footer>
         <!-- <date-picker v-model:value = "selectedDate"></date-picker> -->
@@ -674,7 +674,7 @@ saveDataAndmedicineData() {
      saveData() {
         store.commit('changeToTrue');
         this.$router.push({
-              path: '/MyMeds2',
+              path: '/MyMeds',
               query: {
                 MedName: this.$refs.MedName.value,
                 Category: this.selectedCategory,
