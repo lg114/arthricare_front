@@ -15,6 +15,13 @@
             goToUserProfile(){
                 this.$router.push('/UserProfile');
             },
+            logout()
+            
+            {
+                this.$router.push('/')
+
+            }
+
         },
         components: {
             Avatar,
@@ -57,7 +64,7 @@
                                         <el-icon class="menu-icon3"><WarningFilled /></el-icon>
                                         <p>About</p>
                                     </div>
-                                    <div class = "menu-button">
+                                    <div class = "menu-button" @click = "logout">
                                         <el-icon class="menu-icon3"><SwitchButton /></el-icon>
                                         <p>Log Out</p>
                                     </div>
