@@ -3,6 +3,8 @@
     import { ArrowLeftBold } from '@element-plus/icons';
     import { reactive } from 'vue';
     import { ElMessage } from 'element-plus';
+    import axios from 'axios';
+    import router from '@/router';
 
     export default{
         //title
@@ -15,26 +17,35 @@
             const resetpwdForm = reactive({
                 email: '',
                 newPassword: '',
-                confirmPassword: ''
+     //           confirmPassword: '' both pages in sign up and reset must either have confirm or just one
             });
 
+
             //submit reset password form
-            const submitResetpwdForm = () => {
+            const submitResetpwdForm = async () => {
+                const email = resetpwdForm.email;
+                const newPassword = resetpwdForm.newPassword;
+              //  const confirmPassword = resetpwd.confirmPassword;
+
                 try{
                     //validate the form
                     if(resetpwdForm.email === ''){
                         ElMessage.error('Email is not valid');
-                    }else if(resetpwdForm.newPassword !== resetpwdForm.confirmPassword){
-                        ElMessage.error('New password and confirm new password do not match');
+     //               }else if(resetpwdForm.newPassword !== resetpwdForm.confirmPassword){
+    //                   ElMessage.error('New password and confirm new password do not match');
                     }else{
                         //data need to send
                         //const dataToSend = {
                             //email: resetpwdForm.email,
                             //newPassword: resetpwdForm.newPassword,
                         //};
+                            // send to backend
+                            const response = await axios.put('http://localhost:8181/api/updatePassword', {
+                            email: email,
+                            password: newPassword,
+                            });
+                            alert(response.data); // Show the response from the API (e.g., "Password updated successfully")
 
-                        //send request
-                        //axios.post('/api/reset-password', dataToSend)
                             //.then(response => {
                                 console.log('Password reset successful');
                                 //After successfully resetting the password, leave it all blank
@@ -42,6 +53,7 @@
                                 resetpwdForm.email = '';
                                 resetpwdForm.newPassword = '';
                                 resetpwdForm.confirmPassword = '';
+                                router.push('/Login');
                             //})
                             //.catch(error => {
                                 //console.error('Password reset failed', error);

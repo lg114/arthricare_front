@@ -431,9 +431,6 @@
 import VueDatePicker1 from '@vuepic/vue-datepicker';
 import VueDatePicker2 from '@vuepic/vue-datepicker';
 import axios from 'axios';
-// import DatePicker from 'vue-datepicker-next';
-// import 'vue-datepicker-next/index.css';
-// import 'vue-datepicker-next/locale/es';
 
 export default {
   components: { VueDatePicker1 , VueDatePicker2 },
