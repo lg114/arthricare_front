@@ -99,7 +99,7 @@
                 <el-col class = "main-col">
                     <div class = "task">
                         <div class = "task-content">
-                            <span>More Missions Coming Soon</span>
+                            <span>More Tasks Coming Soon</span>
                         </div>
                     </div>
                 </el-col>
