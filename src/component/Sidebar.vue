@@ -15,11 +15,10 @@
             goToUserProfile(){
                 this.$router.push('/UserProfile');
             },
-            logout()
-            
-            {
+            logout(){
+                // 清除 sessionStorage 中的用户信息
+                sessionStorage.removeItem('loggedInUser');
                 this.$router.push('/')
-
             }
 
         },

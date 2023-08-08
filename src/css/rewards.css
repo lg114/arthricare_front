@@ -1,0 +1,352 @@
+/* Reward Page Css */
+.header{
+    display: flex;
+    align-items: center;
+    color: white;
+    text-align: center;
+    margin-right: 100px;
+}
+.more{
+    position: absolute;
+    left: 20px;
+    top:2.5%;
+    font-size: 30px;
+    color: white;
+}
+.present{
+    position:absolute;
+    left: 30%;
+    font-size: 30px;
+}
+.pageTitle{
+    position:absolute;
+    left: 40%;
+    font-size: 20px;
+    white-space: nowrap;
+}
+.container{
+    display: grid;
+    flex-direction: column;
+    place-items: center;
+    height: 100vh;
+    background-color: #1890FF;
+    overflow-y: auto;
+}
+.main{
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    height: 90vh;
+    background-color:#1890FF;
+    width: 100%;
+    padding-top: 0%;
+    padding-left: 0%;
+    padding-right: 0%;
+    padding-bottom: 80px;
+}
+h2{
+    text-align: center;
+    color: white;
+}
+p{
+    text-align: center;
+    color: white;
+}
+.topBox{
+    width: 100%;
+    height: 150px;
+    background-color: #185B8B;
+    box-shadow: 2px 2px 2px rgb(83, 83, 83);
+    text-align: center;
+    margin-bottom: 15px;
+    padding-top: 8px;
+}
+.boxTitle{
+    padding-top:5px;
+    color: white; 
+    font-size: large;
+    text-align: center;
+}
+.collectionTitle{
+    padding-top:5px;
+    color: #1890FF; 
+    font-size: large;
+}
+.pointBox{
+    width: 120px;
+    height: 25px;
+    background-color: white;
+    margin:auto;
+    margin-top: 5px;
+    border-radius: 10px;
+}
+.points{
+    color: #1890FF;
+    font-size: large;
+}
+.levelBox{
+    width:80px;
+    height:25px;
+    background-color: #4BA9FF;
+    margin:auto;
+    border-radius: 0px 0px 10px 10px;
+}
+.level{
+    color: white;
+}
+.progressBar{
+    margin: auto;
+    width: 95%;
+}
+.percentageProgress{
+    width: 40px;
+    height: 18px;
+    border-radius: 5px;
+    background-color: #ffffff;
+    float: right;
+    margin-right: 10px;
+    margin-top: 2px;
+}
+.progressText{
+    font-size: small;
+    color: #1890FF;
+    vertical-align:text-top;
+}
+.tabs{
+    width: 95%;
+    height: 80%;
+    border-radius: 10px;
+    margin: auto;
+    background-color: #D3EAFF;
+    text-align: center;
+    overflow-y: auto;
+    padding: 0 2% 0 2%;
+}
+.puzzleTitle{
+    font-size: x-large;
+    color: #1890FF;
+    font-weight: bold;
+}
+.puzzleImage{
+    width: 300px;
+    height: 250px;
+    border-radius: 10px;
+    border: 5px solid #1890FF;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+.box{
+    width: 350px;
+    height: 110px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px rgb(83, 83, 83);
+    margin:auto;
+}
+.boxTitle{
+    padding-left: 15px;
+}
+.collectionImage{
+    width: 80px;
+    height: 60px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    float: left;
+}
+.add{
+    font-size: 40px;
+    color: #1890FF;
+}
+.footer{
+    background-color: white;
+    position:fixed;
+    bottom:0;
+    height: 80px;
+    width:100%;
+    text-align: center;
+    margin-left: 0;
+    margin-right: 0;
+    white-space: nowrap;
+    box-shadow: inset 0 0 5px grey;
+}
+.sidebar{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+}
+#addMed{
+color: #1890FF;
+}
+#rewards{
+color: #1890FF;
+}
+.footerBtn{
+font-size: 45px;
+color: gray;
+height: 50px;
+width: 50px;
+padding-top: 8px;
+padding-left: 10px;
+padding-right: 10px;
+}
+#homeText{
+position: relative;
+color: gray;
+right: 50px;
+}
+#medText{
+position: relative;
+color: gray;
+right: 35px;
+}
+#rewardsText{
+position: relative;
+color:#1890FF;
+left: 35px;
+}
+#profileText{
+position: relative;
+color: gray;
+left: 48px;
+}
+.uploaded-avatar {
+    width: 100%;
+    height: 100%;
+}
+.defalut-avatar{
+    width: 70%;
+    height: 80%;
+}
+.menu-item{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+}
+.menu-icon{
+    color: #ffffff;
+    font-size: 20px;
+}
+.menu-icon1{
+    color: #ffffff;
+    font-size: 25px;
+    margin-right: 15px;
+}
+.menu-icon2{
+    color: #ffffff;
+    font-size: 25px;
+    margin-right: 5px;
+}
+.menu-icon3{
+    color: #ffffff;
+    font-size: 25px;
+    margin-right: 1px;
+}
+.menu-button{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    cursor: pointer;
+}
+.menu-button3{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 130px;
+    cursor: pointer;
+}
+.menu-button3 p{
+    font-size: 20px;
+    font-weight: 550;
+    margin: 20px 35px;
+}
+.menu-button p{
+    font-size: 20px;
+    font-weight: 550;
+    margin: 30px 30px;
+    text-decoration: none;
+}
+/* Task tab panel */
+.main-row{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 10px;
+}
+.main-col{
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.el-select{
+    border: 3px solid #1890FF;
+    border-radius: 5px;
+}
+.task{
+    width: 350px;
+    height: 100px;
+    padding: 0px;
+    border-radius: 10px;
+    border: 3px solid #066CCA;
+    background: linear-gradient(to bottom right, rgb(0,124,242), rgb(136,83,249));;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s ease;
+}
+.task-container{
+    border-radius: 10px;
+}
+.task:hover{
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.task-content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.task-container .main-col {
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.task-content span{
+    color:white;
+    font-weight: 800;
+    font-size: 14px;
+}
+.missionBtn{
+    margin-top: 15px;
+    background-color: #0487ff;
+    color: #FFFFFF;
+    font-weight: 800;
+    border: none;
+    width: 125px;
+    border: 3px solid white;
+}
+.completed-btn::before {
+    content: '\2714'; 
+    font-size: 18px;
+    color: #FFFFFF;
+    margin-right: 5px;
+    border: 3px solid #f0f0f0;
+}
+.disabled-btn {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+    border: 3px solid #f0f0f0;
+    pointer-events: none; 
+}
