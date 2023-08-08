@@ -12,6 +12,7 @@
   "dependencies": {
     "@element-plus/icons": "^0.0.11",
     "@mdi/font": "^7.2.96",
+    "@popperjs/core": "^2.11.8",
     "@vicons/utils": "^0.1.4",
     "@vuepic/vue-datepicker": "^5.2.0",
     "axios": "^1.4.0",

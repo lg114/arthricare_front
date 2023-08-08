@@ -1,19 +1,26 @@
 <template>
-    <div class="horizontal-calendar">
+  <div class="horizontal-calendar">
+    <div class = "buttons">
       <button @click="goBackOneWeek">&#8249;</button>
-      <div v-for="(date, index) in weekDates" :key="index" @click="selectDate(index)">
-        <div class="weekday" :class="{ 'selected-date': index === selectedDateIndex }">
-          {{ date.format('ddd') }}<br>
-          {{ date.format('M/D') }}
-        </div>
+      <div class="button-space">
+        {{ getMonthDisplay }}
       </div>
       <button @click="goForwardOneWeek">&#8250;</button>
     </div>
+    <div class = "dates">
+      <div v-for="(date, index) in weekDates" :key="index" @click="selectDate(index)">
+          <div class="weekday" :class="{ 'selected-date': index === selectedDateIndex }">
+            {{ date.format('ddd') }}<br>
+            {{ date.format('D') }}
+          </div>
+      </div>
+    </div>
+  </div>
 </template>
   
 <script>
   import dayjs from 'dayjs';
-  
+
   export default {
     name: "HorizontalCalendar",
     data() {
@@ -35,6 +42,17 @@
           dates.push(startOfWeek.add(i, 'day'));
         }
         return dates;
+      },
+      // 获取两个月份的交界处的显示信息
+      getMonthDisplay() {
+        const startOfWeek = this.currentDate.startOf('week');
+        const endOfWeek = this.currentDate.endOf('week');
+
+        if (startOfWeek.month() === endOfWeek.month()) {
+          return startOfWeek.format('MMMM YYYY');
+        } else {
+          return `${startOfWeek.format('MMMM')} - ${endOfWeek.format('MMMM YYYY')}`;
+        }
       },
     },
     methods: {
@@ -73,7 +91,6 @@
             return i;
           }
         }
-  
         // 如果没有找到当前日期，返回默认值-1
         return -1;
       },
@@ -81,13 +98,33 @@
   };
 </script>
     
-<style>
+<style scoped>
     .horizontal-calendar{
         display: flex;
-        justify-content: center;
+        flex-direction: column;
         align-items: center;
+        gap: 5px;
     }
-        
+    .buttons{
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+    .button-space {
+      width: 225px;
+      text-align: center;
+      color: #1890FF;
+      font-weight: bold;
+      padding-top: 15px;
+    }
+    .dates {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 5px;
+    }
     .horizontal-calendar button{
         cursor: pointer;
         width: 30px;
@@ -102,10 +139,6 @@
     .horizontal-calendar button:hover{
         background-color: lightgray;
     }
-    .horizontal-calendar div{
-        margin-top: 5px;
-        display: block;
-    }
     .weekday{
         width: 40px;
         height: 40px;
@@ -117,7 +150,10 @@
         font-size: 14px;
         font-weight: bold;
         padding: -1px;
-        display: block;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
     .selected-date{
         background-color: #1890FF;

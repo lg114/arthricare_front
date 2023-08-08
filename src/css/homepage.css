@@ -98,10 +98,10 @@ left: 48px;
 .username{
     position: relative;
     top: 15px;
-    left: 55px;
+    left: 45px;
     color: #ffffff;
     font-weight: 550;
-    font-size: 20px;
+    font-size: 14px;
 }
 .more{
 position: absolute;
