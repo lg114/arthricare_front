@@ -12,6 +12,10 @@
   "dependencies": {
     "@element-plus/icons": "^0.0.11",
     "@mdi/font": "^7.2.96",
+<<<<<<< Updated upstream
+=======
+    "@popperjs/core": "^2.11.8",
+>>>>>>> Stashed changes
     "@vuepic/vue-datepicker": "^5.2.0",
     "axios": "^1.4.0",
     "core-js": "^3.8.3",
@@ -23,6 +27,17 @@
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
+<<<<<<< Updated upstream
+=======
+    "@vicons/antd": "^0.12.0",
+    "@vicons/carbon": "^0.12.0",
+    "@vicons/fluent": "^0.12.0",
+    "@vicons/ionicons4": "^0.12.0",
+    "@vicons/ionicons5": "^0.12.0",
+    "@vicons/material": "^0.12.0",
+    "@vicons/tabler": "^0.12.0",
+    "@vicons/utils": "^0.1.4",
+>>>>>>> Stashed changes
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
