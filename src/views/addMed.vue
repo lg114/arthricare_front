@@ -3,6 +3,7 @@
   import {ArrowLeftBold} from '@element-plus/icons-vue';
   import store from "@/store";
   import {Plus,Minus} from '@element-plus/icons-vue';
+  import { mapGetters } from 'vuex';
   
 </script>
 
@@ -120,6 +121,8 @@ export default {
     changeToTrue() {
       return this.$store.state.changeToTrue;
     },
+    //get user information from store
+    ...mapGetters('user', ['isLoggedIn', 'loggedInUser']),
     
   },
   data() {
@@ -274,10 +277,10 @@ export default {
       this.$refs.MedName.focus();
     },
 
-saveDataAndmedicineData() {
-      this.saveData();
-      this.medicineData();
-    },
+    saveDataAndmedicineData() {
+          this.saveData();
+          this.medicineData();
+        },
 
     getReminderTimes() {
       this.timeInputs = []; // Clear the timeInputs array
@@ -308,17 +311,13 @@ saveDataAndmedicineData() {
       reminderTimes.push(this.$refs.timePicker3.value);
     }
 
-
-  var loggedInUser = sessionStorage.getItem('loggedInUser');
+  
+  var loggedInUser = this.loggedInUser;
     if (loggedInUser) {
-      loggedInUser = JSON.parse(loggedInUser);
+      console.log (loggedInUser.id);
     } else {
       console.log ('error, user not loggedin');
     }
-
-    
-    console.log ('TING TING IS HERE',loggedInUser.id);
-   
 
 /////////////////////////////////////////////////////////////
     const dataObject = {

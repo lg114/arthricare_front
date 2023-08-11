@@ -2,6 +2,7 @@
 <script setup>
   //import store from "@/store";
   import {Plus,Minus} from '@element-plus/icons-vue';
+  import { mapGetters } from 'vuex';
   
 </script>
 <template>
@@ -112,6 +113,8 @@ export default {
     changeToTrue() {
       return this.$store.state.changeToTrue;
     },
+    //get user information from store
+    ...mapGetters('user', ['isLoggedIn', 'loggedInUser']),
   },
   created(){
     console.log(this.$route.query.Index);
@@ -372,13 +375,11 @@ export default {
     },
 
     updateMedication() {
-      var loggedInUser = sessionStorage.getItem('loggedInUser');
+      var loggedInUser = this.loggedInUser;
       if (loggedInUser) {
-        loggedInUser = JSON.parse(loggedInUser);
+        console.log (loggedInUser.id);
       } else {
-
-        console.log ('error. user not logged in')
-
+        console.log ('error, user not loggedin');
       }
 
       this.getReminderTimes();

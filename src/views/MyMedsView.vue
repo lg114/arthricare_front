@@ -8,7 +8,8 @@
   import SideBarContent from '@/component/Sidebar.vue';
   //import {ArrowLeftBold} from '@element-plus/icons-vue';
   //import {CirclePlus} from '@element-plus/icons-vue';
-  import {ArrowRightBold} from '@element-plus/icons-vue'
+  import {ArrowRightBold} from '@element-plus/icons-vue';
+  import { mapGetters } from 'vuex';
   import store from "@/store";
   import axios from 'axios';
   import red from "@/assets/capsulesred.png";
@@ -140,7 +141,9 @@ export default {
   computed:{
     name(){
       return store.state.navigation
-    }
+    },
+    //get user information from store
+    ...mapGetters('user', ['isLoggedIn', 'loggedInUser']),
   },
 
   data() {
@@ -158,11 +161,11 @@ export default {
   methods: {
   
     fetchData() {
-      var loggedInUser = sessionStorage.getItem('loggedInUser');
+      var loggedInUser = this.loggedInUser;
       if (loggedInUser) {
-        loggedInUser = JSON.parse(loggedInUser);
+        console.log (loggedInUser.id);
       } else {
-        console.log("does not login in");
+        console.log ('error, user not loggedin');
       }
 
       axios.get(`${baseURL}/medications/findMedicationByUserId/${loggedInUser.id}`)
