@@ -1,51 +1,34 @@
 <!--Login Page -->
 <script>
   import { ArrowLeftBold } from '@element-plus/icons-vue';
-  import { reactive } from 'vue';
-  import router from '@/router';
-  import axios from 'axios';
-  import { ElMessage } from 'element-plus';
+  import { ref } from 'vue';
+  import store from '@/store';
 
   export default {
+    setup(){
+      const email = ref('');
+      const password = ref('');
+
+      const handleLogin = async () => {
+        try{
+          await store.dispatch('user/loginUser', {
+            email: email.value,
+            password: password.value,
+          });
+        }catch(error){
+          console.log('Login failed', error);
+        }
+      };
+
+      return{
+        email,
+        password,
+        handleLogin,
+      }
+    },
     //title
     mounted() {
       document.title = 'Login | ArthriCare';
-    },
-    setup() {
-      //setup login data
-      const loginForm = reactive({
-        email: '',
-        password: '',
-      });
-
-      //default show error message
-      
-      //submit login form
-      const submitLoginForm = async () => {
-        const email = loginForm.email;
-        const password = loginForm.password;
-        try {
-          //validate the form
-          if (loginForm.email === '' || loginForm.password === '') {
-            ElMessage.error('Email or Password is not valid');
-          }else{
-            const response = await axios.post('http://localhost:8181/api/login', {
-            email: email,
-            password: password,
-            });
-            console.log(response.data); // Login successful message
-            sessionStorage.setItem('loggedInUser', JSON.stringify(response.data));
-            router.push('/Home'); //jump to home page
-          }
-        } catch (error) {
-          console.error('Login failed!', error);
-        }
-      };
-      return {
-        loginForm,
-        submitLoginForm,
-        axios,
-      };
     },
     components: {
       ArrowLeftBold,
@@ -66,9 +49,9 @@
             <h2>Welcome Back</h2>
             <p>Login to your account</p>
             <b><label>Email Address</label></b>
-            <input class="input" id = "email" type="email" placeholder="Please enter your email" v-model="loginForm.email"/><br>
+            <input class="input" id = "email" type="email" placeholder="Please enter your email" v-model="email"/><br>
             <b><label>Password</label></b>
-            <input class="input" id = "password" type="password" placeholder="Please enter your passowrd" v-model="loginForm.password"/>
+            <input class="input" id = "password" type="password" placeholder="Please enter your passoword" v-model="password"/>
           </form>
         </div>
         <div id="mid">
@@ -81,7 +64,7 @@
       </el-main>
       <el-footer>
         <div class="buttons">
-          <el-button class = "login-button" @click = "submitLoginForm">LOG IN</el-button>
+          <el-button class = "login-button" @click = "handleLogin">LOG IN</el-button>
         </div>
       </el-footer>
     </el-container>

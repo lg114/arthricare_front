@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import { ElMessage } from 'element-plus';
-
+import store from '@/store';
 import WelcomePage from '@/views/WelcomeView.vue';
 import LoginPage from '@/views/LoginView.vue';
 import SignUpPage from '@/views/SignupView.vue';
@@ -101,21 +101,18 @@ const router  = createRouter({
 //Router Guard 导航守卫
 
 router.beforeEach((to, from, next) => {
-    const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
-    if (loggedInUser) {
-        if (to.meta.requiresAuth) {
-            next(); // 已登录且可以访问需要登录的页面
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        if (store.getters['user/isLoggedIn']) {
+          next(); // 已登录，继续访问
         } else {
-            next(); // 已登录，但可以访问不需要登录的页面
+            ElMessage.warning("You haven't logged in.");
+            next({ name: 'Welcome' }); // 重定向到欢迎页面
         }
-    } else {
-      if (to.meta.requiresAuth) {
-        ElMessage.warning("You haven't log in.");
-        next({ name: 'Welcome' }); //重定向 redirected
       } else {
-        next(); // 未登录，可以访问不需要登录的页面
-      }
+        next(); // 不需要身份验证的路由，直接继续访问
     }
-  });
+});
+
+
 
 export default router;

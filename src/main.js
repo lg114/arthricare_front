@@ -5,7 +5,8 @@ import App from './App.vue';
 import 'element-plus/dist/index.css';
 import router from './router';
 import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
+import '@vuepic/vue-datepicker/dist/main.css';
+import store from './store';
 
 const app = createApp(App);
 
@@ -13,5 +14,6 @@ app.component('VueDatePicker', VueDatePicker);
 
 app.use(ElementPlus);
 app.use(router);
+app.use(store); 
 
 app.mount('#app');

@@ -7,7 +7,8 @@
     import HorizontalCalendar from '@/component/calendar.vue';
     import SideBarContent from '@/component/Sidebar.vue';
     import MedicationDialog from '@/component/MedicationDialog.vue';
-    import axios from 'axios';
+    import { mapGetters, mapActions } from 'vuex';
+
 
     export default{
         //title
@@ -41,65 +42,37 @@
                 showTimePicker: false, //timepicker
             };
         },
+        //get user information from store
+        computed: {
+            ...mapGetters('user', ['loggedInUser'])
+        },
+        
         methods:{
             //Drawer
             beforeDrawerClose(done){
                 done();
             },
 
+            ...mapActions('reminder', ['fetchRemindersFromBackend']),
+
             //Calendar (父组件中的处理选定日期的方法)
             async onDateSelected(selectedDate){
-
                 //存储选定的日期
                 this.selectedDate = selectedDate; 
                 //假设medicationList是从后端获取的当天药物数据的数组
-                this.medicationList = await this.getMedFromBackend(selectedDate);
+                this.medicationList = await this.fetchRemindersFromBackend(selectedDate);
                 //然后从早到晚排序 sorting
-                this.medicationList.sort((a, b) => (a.time > b.time ? 1 : -1));
-
+                if (this.medicationList) {
+                    this.medicationList.sort((a, b) => {
+                        const timeA = new Date(a.time);
+                        const timeB = new Date(b.time);
+                        return timeA > timeB ? 1 : -1;
+                    });
+                }
                 //testing
                 console.log("Medication List for selected date:", this.medicationList);
             },
             
-            async getMedFromBackend(selectedDate) {
-                try {
-                    const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
-                    if (loggedInUser) {
-                        const userId = loggedInUser.id;
-                        const data = {
-                            userId: userId,
-                            chooseDate: selectedDate
-                        };
-
-                        const response = await axios.post('http://localhost:8181/medications/findMedicationByUserIdAndDate', data);
-                        //const reminderList = JSON.parse(response.data);
-////////////////////////////////////////////////////////////////////////////////
-                        this.user.name = response.name;
-                        console.log (this.user.name);
-///////////////////////////////////////////////////////////////////////////////////
-                        let reminders = [];
-                        let idCounter = 1;
-
-                        response.data.forEach(reminder => {
-                            const timeWithoutSeconds = reminder.reminderTime.slice(0, -3);
-                            reminders.push({
-                                id: idCounter++,
-                                name: reminder.medicationName,
-                                time: timeWithoutSeconds,
-                                date: ""
-                                // Add any other properties you want to include from the reminder
-                            });
-                        });
-
-                        return reminders;
-                    } else {
-                        throw new Error('User is not logged in.'); // Handle the case when the user is not logged in
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    throw error; // Rethrow the error so the caller of this method can handle it if needed
-                }
-            },
             //Dialog
             onShowMedicationPopup(medication) {
                 //构建弹窗标题，显示药物的名称和时间
@@ -186,7 +159,7 @@
         },
         components:{
             UserFilled,
-            HomeRound, 
+            HomeRound,  
             MedicationOutlined, 
             AddCircleFilled, 
             CardGiftcardOutlined, 
@@ -205,7 +178,7 @@
         <el-container class = "content-container">
             <el-header class = "header">
                 <Icon class="more" @click="drawer = true"><MoreHorizFilled /></Icon>
-                <span class = "username">Welcome to ArthiCare {{ this.user.name }}</span>
+                <span class = "username">Welcome to ArthiCare, {{ loggedInUser ? loggedInUser.name : 'Guest' }}</span>
                 
             </el-header>
             <el-main class = "main">
@@ -215,7 +188,7 @@
                 <!-------------------------------- Dialog -------------------------------->
                 <el-dialog  v-model = "dialogVisible" :title="dialogTitle" center align-center width="90%">
                     <template #header>
-                        <span style="color: #1890FF; font-weight: bold;">{{ dialogTitle }}</span>
+                        <span v-if = "userLoggedIn" style="color: #1890FF; font-weight: bold;">{{ dialogTitle }}</span>
                     </template>
                     <div style = "text-align: center;">
                         <el-button type="primary" @click="onTime(medication)" round>On Time</el-button>

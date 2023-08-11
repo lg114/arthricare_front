@@ -1,10 +1,8 @@
 <!--Resetpassword Page -->
 <script>
     import { ArrowLeftBold } from '@element-plus/icons';
-    import { reactive } from 'vue';
-    import { ElMessage } from 'element-plus';
-    import axios from 'axios';
-    import router from '@/router';
+    import { ref } from 'vue';
+    import store from '@/store';
 
     export default{
         //title
@@ -14,43 +12,24 @@
 
         setup(){
             //reset pwd data
-            const resetpwdForm = reactive({
-                email: '',
-                newPassword: '',
-            });
-
+            const email = ref('');
+            const newPassword = ref('');
 
             //submit reset password form
-            const submitResetpwdForm = async () => {
-                const email = resetpwdForm.email;
-                const newPassword = resetpwdForm.newPassword;
+            const handleReset = async () => {
                 try{
-                    //validate the form
-                    if(resetpwdForm.email === ''){
-                        ElMessage.error('Email is not valid');
-                    }else{
-                        // send to backend
-                        const response = await axios.put('http://localhost:8181/api/updatePasswordbyemail', 
-                        {
-                            email: email,
-                            password: newPassword,
-                        });
-                        console.log (response.data);
-                        console.log('Password reset successful');
-                        //After successfully resetting the password, leave it all blank
-                        ElMessage.success('Password reset successfully');
-                        resetpwdForm.email = '';
-                        resetpwdForm.newPassword = '';
-                        resetpwdForm.confirmPassword = '';
-                        router.push('/Login');
-                    }
+                    await store.dispatch('user/resetPassword', {
+                        email: email.value,
+                        newPassword: newPassword.value,
+                    });
                 }catch(error){
                     console.error("Reset failed!", error);
                 }
             }
             return{
-                resetpwdForm,
-                submitResetpwdForm,
+                email,
+                newPassword,
+                handleReset,
             };
         },
 
@@ -72,14 +51,14 @@
                 <div class = "input-container">
                     <h2>Reset Your Password</h2>
                     <b><label>Email Address</label></b>
-                    <input id="input" type="email" placeholder="Please enter your email" v-model="resetpwdForm.email"/><br>
+                    <input id="input" type="email" placeholder="Please enter your email" v-model="email"/><br>
                     <b><label>New Password</label></b>
-                    <input id="input" type="password" placeholder="Please enter new password" v-model="resetpwdForm.newPassword"/><br>
+                    <input id="input" type="password" placeholder="Please enter new password" v-model="newPassword"/><br>
                 </div>
             </el-main>
             <el-footer>
                 <div class="buttons">
-                    <el-button class = "login-button" @click = "submitResetpwdForm">CONTINUE</el-button>
+                    <el-button class = "login-button" @click = "handleReset">CONTINUE</el-button>
                 </div>
             </el-footer>
         </el-container>

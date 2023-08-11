@@ -15,12 +15,9 @@
             goToUserProfile(){
                 this.$router.push('/UserProfile');
             },
-            logout(){
-                // 清除 sessionStorage 中的用户信息
-                sessionStorage.removeItem('loggedInUser');
-                this.$router.push('/')
+            async logout(){
+                this.$store.dispatch('user/logout');
             }
-
         },
         components: {
             Avatar,
@@ -39,34 +36,34 @@
                 <div class = "menu-item">
                              
                     <div class = "menu-item">
-                                    <div class = "menu-button" @click = "goToUserProfile">
-                                        <el-icon class="menu-icon"><Avatar/></el-icon>
-                                        <p>My Profile</p>
-                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
-                                    </div>
-                                    <div class = "menu-button">
-                                        <el-icon class="menu-icon1"><Message /></el-icon>
-                                        <p>Message</p>
-                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
-                                    </div>
-                                    <div class = "menu-button">
-                                        <el-icon class="menu-icon2"><MessageBox /></el-icon>
-                                        <p>Community</p>
-                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
-                                    </div>
-                                    <div class = "menu-button">
-                                        <el-icon class="menu-icon1"><Reading /></el-icon>
-                                        <p>Education</p>
-                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
-                                    </div>
-                                    <div class = "menu-button3">
-                                        <el-icon class="menu-icon3"><WarningFilled /></el-icon>
-                                        <p>About</p>
-                                    </div>
-                                    <div class = "menu-button" @click = "logout">
-                                        <el-icon class="menu-icon3"><SwitchButton /></el-icon>
-                                        <p>Log Out</p>
-                                    </div>
+                        <div class = "menu-button" @click = "goToUserProfile">
+                            <el-icon class="menu-icon"><Avatar/></el-icon>
+                            <p>My Profile</p>
+                            <el-icon class="menu-icon"><CaretRight /></el-icon>
+                        </div>
+                        <div class = "menu-button">
+                            <el-icon class="menu-icon1"><Message /></el-icon>
+                            <p>Message</p>
+                            <el-icon class="menu-icon"><CaretRight /></el-icon>
+                        </div>
+                        <div class = "menu-button">
+                            <el-icon class="menu-icon2"><MessageBox /></el-icon>
+                            <p>Community</p>
+                            <el-icon class="menu-icon"><CaretRight /></el-icon>
+                        </div>
+                        <div class = "menu-button">
+                            <el-icon class="menu-icon1"><Reading /></el-icon>
+                            <p>Education</p>
+                            <el-icon class="menu-icon"><CaretRight /></el-icon>
+                        </div>
+                        <div class = "menu-button3">
+                            <el-icon class="menu-icon3"><WarningFilled /></el-icon>
+                            <p>About</p>
+                        </div>
+                        <div class = "menu-button" @click = "logout">
+                            <el-icon class="menu-icon3"><SwitchButton /></el-icon>
+                            <p>Log Out</p>
+                        </div>
                     </div>
                 </div>
             </div>
