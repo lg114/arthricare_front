@@ -1,5 +1,6 @@
 <script>
     import { Avatar, CaretRight, Message, MessageBox, Reading, WarningFilled, SwitchButton } from '@element-plus/icons-vue';
+   // import router from '@/router';
 
     export default {
         name: "SidebarContent",
@@ -13,12 +14,14 @@
         },
         methods: {
             goToUserProfile(){
+                console.log("Logout button clicked");
                 this.$router.push('/UserProfile');
             },
             logout()
             
             {
-                this.$router.push('/')
+                console.log("Logout button clicked");
+                this.$router.push('/');
 
             }
 
