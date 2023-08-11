@@ -9,6 +9,8 @@ import MenuPage from '@/views/MenuView.vue';
 import UserProfilePage from '@/views/UserProfile.vue';
 import EditMedPage from '@/views/editMed.vue';
 import MyMedsPage from '@/views/MyMedsView.vue';
+import RewardsPage from '@/views/RewardsView.vue';
+
 
 const router  = createRouter({
     history : createWebHashHistory(),
@@ -62,6 +64,11 @@ const router  = createRouter({
             path: '/MyMeds',
             name: 'MyMeds',
             component: MyMedsPage,
+        },
+        {
+            path: '/Rewards',
+            name: 'Rewards',
+            component: RewardsPage,
         }
     ]
 })

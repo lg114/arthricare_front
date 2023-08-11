@@ -1,62 +1,82 @@
 <!--Login Page -->
+<!--Login Page -->
 <script>
-    import { ArrowLeftBold } from '@element-plus/icons-vue';
-    import { reactive } from 'vue';
-    import router from '@/router';
-    import { ElMessage } from 'element-plus';
-    
-    export default{
+import { ArrowLeftBold } from '@element-plus/icons-vue';
+import { ref, reactive } from 'vue';
+import router from '@/router';
+import axios from 'axios';
+import { ElMessage } from 'element-plus';
 
-        //title
-        mounted() {
-            document.title = "Login | ArthriCare";
-        },
-        setup(){
-            //setup login data
-            const loginForm = reactive({
-                email: '',
-                password: '',
+export default {
+  //title
+  mounted() {
+    document.title = 'Login | ArthriCare';
+  },
+  setup() {
+    //setup login data
+    const loginForm = reactive({
+      email: '',
+      password: '',
+    });
+
+    //default show error message
+    const showError = ref(false);
+
+    //handle login process
+    const handlelogin = () => {
+      if (loginForm.email === '' || loginForm.password === '') {
+        showError.value = true;
+      } else {
+        showError.value = false;
+        router.push('/Home');
+      }
+    };
+
+    //submit login form
+    const submitLoginForm = async () => {
+      const email = loginForm.email;
+      const password = loginForm.password;
+      //const staySignedIn = loginForm.staySignedIn;
+
+      try {
+        const response = await axios.post('http://localhost:8181/api/login', {
+          email: email,
+          password: password,
+        });
+        console.log(response.data); // Login successful message
+
+          sessionStorage.setItem('loggedInUser', JSON.stringify(response.data));
+          //
+            // Get all keys from session storage
+            const keys = Object.keys(sessionStorage);
+
+            // Iterate through each key and log its value
+            keys.forEach(key => {
+                const value = sessionStorage.getItem(key);
+                console.log(`${key}: ${value}`);
             });
 
-            //submit login form
-            const submitLoginForm = () => {
-                try{
-                    //Use regular expressions to verify email and password
-                    if(loginForm.email === '' || loginForm.password === ''){
-                        //if the validation failed
-                        ElMessage.error('Please enter a valid email address or password');
-                    }else{
-                        //data need to send
-                        //const dataToSend = {
-                            //email: loginForm.email,
-                            //password: loginForm.password,
-                        //};
 
-                        //send request
-                        //axios.post('api/login', dataToSend)
-                            //.then(response => {
-                            console.log('Login successful');
-                            router.push('/home');
-                            //.catch(error => {
-                                //console.error('Login failed', error);
-                                //error
-                                //ElMessage.error("Invalid email or password");
-                        //});
-                    }
-                }catch(error){
-                    console.error("Login failed!", error);
-                }
-            };
+        //
+        router.push('/Home'); //jump to home page
+      } catch (error) {
+        console.error('Login failed!', error);
+        ElMessage.error('Incorrect email or password. Please try again.');
+      }
+    };
 
-            return{
-                loginForm,
-                submitLoginForm,
-            };
-        },
-        components: {
-            ArrowLeftBold
-        },
-    }
+    return {
+      loginForm,
+      handlelogin,
+      submitLoginForm,
+      showError,
+      axios,
+    };
+  },
+  components: {
+    ArrowLeftBold,
+  },
+};
 </script>
 <template>
     <div class="container" >
@@ -74,8 +94,10 @@
                                 <b><label>Email Address</label></b>
                                 <input class="input" id = "email" type="email" placeholder="Please enter your email" v-model="loginForm.email"/><br>
                                 <b><label>Password</label></b>
-                                <input class="input" id = "password" type="password" placeholder="Please enter your passowrd" v-model="loginForm.password"/>
+                                <input class="input" id = "password" type="password" placeholder="Please enter your password" v-model="loginForm.password"/>
+                                
                             </form>
+
                         </div>
                         <div id="mid">
                             Don't have an account?
@@ -84,11 +106,13 @@
                             Forget your password? 
                             <router-link to = "/Resetpassword">Click Here</router-link>
                         </div>
+                        
                 </el-main>
                 <el-footer>
                     <div class="buttons">
                         <el-button class = "login-button" @click = "submitLoginForm">LOG IN</el-button>
                     </div>
+                    
                 </el-footer>
             </el-container>
     </div>
@@ -260,6 +284,9 @@
         .login-button{
             height: 63px;
         }
+
+
+
     }
     /* -------------------------------- Small Screen -------------------------------------------*/
 </style>

@@ -1,79 +1,201 @@
 <!--Home Page-->
 <script>
-    import { ref} from 'vue';
-    import { User, UserFilled, Avatar, CaretRight, Message, MessageBox, Reading, WarningFilled, SwitchButton, HomeFilled, Calendar, CirclePlusFilled, Sugar, Present} from '@element-plus/icons-vue';
-    
+    import { ref,reactive} from 'vue';
+    import { UserFilled } from '@element-plus/icons-vue';
+    import { HomeRound, MedicationOutlined, AddCircleFilled, CardGiftcardOutlined, AccountCircleOutlined, MoreHorizFilled} from '@vicons/material';
+    import { Icon } from '@vicons/utils';
+    import HorizontalCalendar from '@/component/calendar.vue';
+    import SideBarContent from '@/component/Sidebar.vue';
+    import MedicationDialog from '@/component/MedicationDialog.vue';
+    import axios from 'axios';
+
     export default{
         //title
-        mounted() {
+        mounted(){
             document.title = "Home | ArthriCare";
+            //默认当天日期
+            const today = new Date(); 
+            this.onDateSelected(today);
         },
         data(){
             return{
-                username: '',
-                drawer: ref(false),
-                imgUrl: '',
-                dates: [],
-                currentDate: new Date(),
-                weekdays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                //用户数据
+                user: reactive({
+                        name: "",
+                        email: "",
+                        AvatarUrl: "",
+                    }),
+                //sidebar
+                drawer: false,
+                //初始化存放当天需要服用的药物列表
+                medicationList: [],
+                //初始化选中日期
+                selectedDate: null,
+                //药物弹窗
+                dialogVisible: ref(false),
+                dialogTitle:'',
+                //popup dialog
+                takenMedTime: null,
+                medicationTime: null, //Timepicker中用户设置的将会吃药的时间
+                selectedMedication: {}, //存储用户当前选择的药物
+                showTimePicker: false, //timepicker
             };
-        },
-        created(){
-            this.updateCalendar();
         },
         methods:{
             //Drawer
-            openDrawer(){
-            this.drawer = true;
-            },
             beforeDrawerClose(done){
                 done();
             },
-            //Avatar
 
-            //Calendar
-            updateCalendar(){
-                const firstDayOfWeek = new Date(this.currentDate);
-                    firstDayOfWeek.setDate(firstDayOfWeek.getDate() - firstDayOfWeek.getDay());
+            //Calendar (父组件中的处理选定日期的方法)
+            async onDateSelected(selectedDate){
 
-                    this.dates = [];
-                    const options = { month: 'short', day: 'numeric'};
-                    for (let i = 0; i < 7; i++) {
-                        const day = new Date(firstDayOfWeek);
-                        day.setDate(day.getDate() + i);
-                        this.dates.push(day.toLocaleDateString('en-US',options));
+                //存储选定的日期
+                this.selectedDate = selectedDate; 
+                //假设medicationList是从后端获取的当天药物数据的数组
+                this.medicationList = await this.getMedFromBackend(selectedDate);
+                //然后从早到晚排序 sorting
+                this.medicationList.sort((a, b) => (a.time > b.time ? 1 : -1));
+
+                //testing
+                console.log("Medication List for selected date:", this.medicationList);
+            },
+            
+            async getMedFromBackend(selectedDate) {
+                try {
+                    const loggedInUser = JSON.parse(sessionStorage.getItem('loggedInUser'));
+                    if (loggedInUser) {
+                        const userId = loggedInUser.id;
+                        const data = {
+                            userId: userId,
+                            chooseDate: selectedDate
+                        };
+
+                        const response = await axios.post('http://localhost:8181/medications/findMedicationByUserIdAndDate', data);
+                        //const reminderList = JSON.parse(response.data);
+////////////////////////////////////////////////////////////////////////////////
+                        this.user.name = response.name;
+                        console.log (this.user.name);
+///////////////////////////////////////////////////////////////////////////////////
+                        let reminders = [];
+                        let idCounter = 1;
+
+                        response.data.forEach(reminder => {
+                            const timeWithoutSeconds = reminder.reminderTime.slice(0, -3);
+                            reminders.push({
+                                id: idCounter++,
+                                name: reminder.medicationName,
+                                time: timeWithoutSeconds,
+                                date: ""
+                                // Add any other properties you want to include from the reminder
+                            });
+                        });
+
+                        return reminders;
+                    } else {
+                        throw new Error('User is not logged in.'); // Handle the case when the user is not logged in
                     }
+                } catch (error) {
+                    console.error('Error:', error);
+                    throw error; // Rethrow the error so the caller of this method can handle it if needed
+                }
             },
-            //Calendar
-            prevWeek(){
-                    this.currentDate.setDate(this.currentDate.getDate() - 7);
-                    this.updateCalendar();
+            //Dialog
+            onShowMedicationPopup(medication) {
+                //构建弹窗标题，显示药物的名称和时间
+                this.dialogTitle = `${medication.name} - ${medication.time}`;
+                //将药物信息传递给弹窗组件
+                this.selectedMedication = medication ;
+                this.dialogVisible = true;
             },
-            //Calendar
-            nextWeek(){
-                this.currentDate.setDate(this.currentDate.getDate() + 7);
-                this.updateCalendar();
+
+            //on time button
+            onTime(){
+                if (!this.selectedMedication){
+                    // 如果没有选定药物对象，则无法执行按时服药的操作
+                    return;
+                }
+                console.log("On Time button clicked");
+                console.log("Medication Object:", this.selectedMedication);
+                
+                // TODO: 在这里执行按时服药的逻辑，例如更新药物的状态和时间
+                this.selectedMedication.takenMedTime = this.selectedMedication.time;
+                console.log("Medication has been taken in ", this.selectedMedication.takenMedTime);
+                this.dialogVisible = false;
             },
-            //Router
-            goToUserProfile(){
-                this.$router.push('/UserProfile');
-            }
+            //Now button
+            nowTime(){
+                if (!this.selectedMedication){
+                    // 如果没有选定药物对象，则无法执行按时服药的操作
+                    return;
+                }
+                console.log("Now Time button clicked");
+                console.log("Medication Object:", this.selectedMedication);
+                
+                // TODO: 在这里执行不按时服药的逻辑，例如更新药物的状态和时间
+                const currentTime = new Date();
+                const currentHour = currentTime.getHours();
+                const currentMinute = currentTime.getMinutes();
+                const formattedTime = `${currentHour}:${currentMinute}`;
+
+                this.selectedMedication.takenMedTime = formattedTime;
+                console.log("Medication has been taken in ", this.selectedMedication.takenMedTime);
+                this.dialogVisible = false;
+            },
+            //set time button
+            setTime(medication){
+                if (!this.selectedMedication){
+                    // 如果没有选定药物对象，则无法执行按时服药的操作
+                    return;
+                }
+                console.log("Set Reminder button clicked");
+                console.log("Medication:", medication);
+                // 设置弹窗标题，显示药物的名称
+                this.dialogTitle = this.selectedMedication.name;
+                // 打开弹窗，显示时间选择器
+                this.showTimePicker = true;
+            },
+
+            //选择timepicker
+            onTimePickerConfirm() {
+                console.log("Selected time:", this.medicationTime);
+
+                const currentHour = this.medicationTime.getHours();
+                const currentMinute = this.medicationTime.getMinutes();
+                const formattedTime = `${currentHour}:${currentMinute}`;
+
+                //将时间保存到药物对象中
+                this.selectedMedication.takenMedTime = formattedTime;
+                console.log("Medication has been taken in ", this.selectedMedication.takenMedTime);
+                this.showTimePicker = false;
+                this.dialogVisible = false;
+            },
+            //取消选择timepicker
+            onTimePickerCancel() {
+                // 用户取消选择时间，关闭MessageBox
+                this.showTimePicker = false;
+                this.dialogVisible = false;
+            },
+            //关闭timePicker
+            onTimePickerClose() {
+                // MessageBox关闭时，重置时间选择器并关闭MessageBox
+                this.medicationTime = null;
+                this.showTimePicker = false;
+                this.dialogVisible = false;
+            },
         },
         components:{
-        User,
-        UserFilled,
-        Avatar,
-        CaretRight,
-        Message,
-        MessageBox,
-        Reading,
-        WarningFilled,
-        SwitchButton,
-        HomeFilled,
-        Calendar,
-        CirclePlusFilled,
-        Sugar,
-        Present
+            UserFilled,
+            HomeRound, 
+            MedicationOutlined, 
+            AddCircleFilled, 
+            CardGiftcardOutlined, 
+            AccountCircleOutlined,
+            MoreHorizFilled,
+            Icon,
+            HorizontalCalendar,
+            SideBarContent,
+            MedicationDialog
     }
 };
 </script>
@@ -82,104 +204,85 @@
     <div class = "container">
         <el-container class = "content-container">
             <el-header class = "header">
-                <el-icon class="userbtn" @click="drawer = true"><User /></el-icon>
-                <span class = "username">Hello, {{ username }}</span>
+                <Icon class="more" @click="drawer = true"><MoreHorizFilled /></Icon>
+                <span class = "username">Welcome to ArthiCare {{ this.user.name }}</span>
                 
             </el-header>
             <el-main class = "main">
-                <div class = "calendar">
-                    <button class = "arrow" @click="prevWeek">&#8249;</button>
-                    <div class = "dates-contaniner">
-                        <div class = "weekdays">
-                            <!-- Weekday headers -->
-                            <div v-for="day in weekdays" :key="day" class="day">{{ day }}</div>
-                        </div>
-                        <div class = "dates">
-                            <!-- Dates -->
-                            <div v-for="(date, index) in dates" :key="index" class="date">{{ date }}</div>
-                        </div>
+                <HorizontalCalendar @date-selected="onDateSelected" />
+                <!-------------------------------------------------MedicationDialog---------------------------------------------->
+                <MedicationDialog :medicationList="medicationList" :selectedMedication="selectedMedication" :takenMedTime="selectedMedication.takenMedTime"  v-if="medicationList && medicationList.length > 0" @show-medication-popup="onShowMedicationPopup"/>
+                <!-------------------------------- Dialog -------------------------------->
+                <el-dialog  v-model = "dialogVisible" :title="dialogTitle" center align-center width="90%">
+                    <template #header>
+                        <span style="color: #1890FF; font-weight: bold;">{{ dialogTitle }}</span>
+                    </template>
+                    <div style = "text-align: center;">
+                        <el-button type="primary" @click="onTime(medication)" round>On Time</el-button>
+                        <el-button type="primary" @click="nowTime(medication)" round>Now</el-button>
+                        <el-button type="primary" @click="setTime(selectedMedication)" round>Set Time</el-button>
                     </div>
-                    <button class = "arrow" @click = "nextWeek">&#8250;</button>
-                </div>
-                <div class = "medi-info-container">
-                        <div class = "medi-info">
-                            <router-link to="/AddMed">
-                                <el-button class = "addmedbtn" round>Add a med</el-button>
-                            </router-link>
-                        </div>
-                        
-                </div>
+                </el-dialog>
+                <!------------------------ Dialog for medication time picker ----------------->
+                <el-dialog v-model="showTimePicker" title="Set Time" @close="onTimePickerClose" center align-center width="90%">
+                    <template #header>
+                        <span style="color: #1890FF; font-weight: bold;">{{ dialogTitle }}</span>
+                    </template>
+                    <div style = "text-align: center;">
+                        <el-time-picker  v-if="showTimePicker" v-model="medicationTime" placeholder="Select time" format="HH:mm"></el-time-picker>                        
+                    </div>
+                    <template v-slot:footer>
+                        <el-button @click="onTimePickerCancel" round>Cancel</el-button>
+                        <el-button type="primary" @click="onTimePickerConfirm" round>Confirm</el-button>
+                    </template>
+                </el-dialog>
+
+                <!-------------------------------------------------MedicationDialog---------------------------------------------->
             </el-main>
-            <el-footer class = "footer">
-                <router-link to = "/Home">
-                <el-icon class="footerBtn" id="home"><HomeFilled></HomeFilled></el-icon>                    
-                </router-link>
-                <el-icon class="footerBtn" id="calendar"><Calendar></Calendar></el-icon>
-                <router-link to = "/AddMed">
-                    <el-icon class="footerBtn" id="addMed"><CirclePlusFilled></CirclePlusFilled></el-icon>
-                </router-link>
-                <el-icon class="footerBtn" id="medication"><Sugar></Sugar></el-icon>
-                <el-icon class="footerBtn" id="rewards"><Present></Present></el-icon>
-            </el-footer>
-            <el-drawer style="background-color: #1890FF;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
-                <div class = "sidebar">
-                    <div>
-                        <div class = "menu-item">
-                                <!--Action是模拟接口，与后端连接时更换-->
-                                <!--加"no meds on today""-->
-                                <el-upload action="" :show-file-list="false">
-                                    <el-avatar :size="65">
-                                        <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
-                                        <template v-else>
-                                            <UserFilled class="defalut-avatar" />
-                                        </template>
-                                    </el-avatar>
-                                </el-upload>                                
-                                <div class = "menu-item">
-                                    <div class = "menu-button" @click = "goToUserProfile">
-                                        <el-icon class="menu-icon"><Avatar/></el-icon>
-                                        <p>My Profile</p>
-                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
-                                    </div>
-                                    <div class = "menu-button">
-                                        <el-icon class="menu-icon1"><Message /></el-icon>
-                                        <p>Message</p>
-                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
-                                    </div>
-                                    <div class = "menu-button">
-                                        <el-icon class="menu-icon2"><MessageBox /></el-icon>
-                                        <p>Community</p>
-                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
-                                    </div>
-                                    <div class = "menu-button">
-                                        <el-icon class="menu-icon1"><Reading /></el-icon>
-                                        <p>Education</p>
-                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
-                                    </div>
-                                    <div class = "menu-button3">
-                                        <el-icon class="menu-icon3"><WarningFilled /></el-icon>
-                                        <p>About</p>
-                                    </div>
-                                    <div class = "menu-button">
-                                        <el-icon class="menu-icon3"><SwitchButton /></el-icon>
-                                        <p>Log Out</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                </div>
-            </el-drawer>
+
         </el-container>
+        <el-footer class="footer">
+                <Icon class="footerBtn" id="home"><HomeRound /></Icon>                  
+                <router-link to = "/MyMeds">
+                <Icon class="footerBtn" id="medication"><MedicationOutlined /></Icon>
+                </router-link>
+                <router-link to = "/AddMed">
+                    <Icon class="footerBtn" id="addMed"><AddCircleFilled /></Icon>
+                </router-link>
+                <router-link to = "/Rewards">
+                <Icon class="footerBtn" id="rewards"><CardGiftcardOutlined /></Icon>
+                </router-link>
+                <router-link to = "/UserProfile">
+                <Icon class="footerBtn" id="profile"><AccountCircleOutlined /></Icon>
+                </router-link><br>
+                <span id="homeText">Home</span>
+                <span id="medText">My Meds</span>
+                <span id="rewardsText">Rewards</span>
+                <span id="profileText">Profile</span>
+        </el-footer> 
+        <el-drawer style="background-color: #1890FF;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
+            <!--Action是模拟接口，与后端连接时更换-->
+                <div class = "sidebar">
+                    <el-upload action="" :show-file-list="false">
+                        <el-avatar :size="65">
+                            <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
+                                <template v-else>
+                                    <UserFilled class="defalut-avatar" />
+                                </template>
+                        </el-avatar>   
+                    </el-upload> 
+                </div>
+            <SideBarContent :imgUrl="imgUrl" />    
+        </el-drawer>
     </div>
 </template>
-
-
 
 <!-- the following is all css-->
 <style scoped>
     /* -------------------------------- Base Layout -----------------------------------------------*/
     .container{
-        display: flex;
+        display: grid;
+        flex-direction: column;
         justify-content: center;
         height: 100vh;
         background-color: #1890FF;
@@ -203,40 +306,74 @@
         align-items: center;
         flex: 1;
         padding-bottom: 50px;
+        width: 100vw;
     }
     .footer{
-        background-color: #1890FF;
+        background-color: white;
         position:fixed;
         bottom:0;
-        height: 60px;
+        height: 80px;
         width:100%;
         text-align: center;
+        margin-left: 0;
+        margin-right: 0;
+        white-space: nowrap;
+        box-shadow: inset 0 0  5px grey;
+        align-items: center;
     }
     /* -------------------------------- Component Layout -------------------------------------------*/
 
     /* -------------------------------- Footer -----------------------------------------------------*/
+    br {
+            display: block; /* makes it have a width */
+            content: ""; /* clears default height */
+            margin-top: 1px; /* change this to whatever height you want it */
+}
     .footerBtn{
-        font-size: 45px;
-        color: #ffffff;
-        height: 50px;
-        width: 50px;
-        padding-top: 5px;
-        padding-left: 10px;
-        padding-right: 10px;
-    }
+    font-size: 45px;
+    color: gray;
+    height: 50px;
+    width: 50px;
+    padding-top: 8px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+#homeText{
+    position: relative;
+    color: #1890FF;
+    right: 50px;
+}
+#medText{
+    position: relative;
+    color: gray;
+    right: 35px;
+}
+#rewardsText{
+    position: relative;
+    color:gray;
+    left: 35px;
+}
+#profileText{
+    position: relative;
+    color: gray;
+    left: 48px;
+}
     #addMed{
-        color: #ffffff;
+        color: #1890FF;
+    }
+    
+    #home{
+        color: #1890FF;
     }
     /* -------------------------------- Footer -----------------------------------------------------*/
 
     /* -------------------------------- Header -----------------------------------------------------*/
     .userbtn{
         position: absolute;
-        left: 20px;
-        top: 10px;
+        left:5%;
+        top:1.5%;
         font-size: 30px;
-        font-weight: bold;
-        color: #ffffff;
+        color: white;
     }
     .username{
         position: relative;
@@ -246,14 +383,21 @@
         font-weight: 550;
         font-size: 20px;
     }
+    .more{
+    position: absolute;
+    left:20px;
+    top:10px;
+    font-size: 30px;
+    color: white;
+}
     /* -------------------------------- Header ------------------------------------------------------*/
-
-    /* -------------------------------- Side Bar ----------------------------------------------------*/
     .sidebar{
+        margin-top: 30px;
         display: flex;
-        align-items: center;
         flex-direction: column;
-        padding: 20px;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
     }
     .uploaded-avatar {
         width: 100%;
@@ -263,167 +407,12 @@
         width: 70%;
         height: 80%;
     }
-    .menu-item{
-        margin-top: 30px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        color: #ffffff;
-    }
-    .menu-icon{
-        color: #ffffff;
-        font-size: 20px;
-    }
-    .menu-icon1{
-        color: #ffffff;
-        font-size: 25px;
-        margin-right: 15px;
-    }
-    .menu-icon2{
-        color: #ffffff;
-        font-size: 25px;
-        margin-right: 5px;
-    }
-    .menu-icon3{
-        color: #ffffff;
-        font-size: 25px;
-        margin-right: 1px;
-    }
-    .menu-button{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        cursor: pointer;
-    }
-    .menu-button3{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        margin-top: 130px;
-        cursor: pointer;
-    }
-    .menu-button3 p{
-        font-size: 20px;
-        font-weight: 550;
-        margin: 20px 35px;
-    }
-    .menu-button p{
-        font-size: 20px;
-        font-weight: 550;
-        margin: 30px 30px;
-    }
-    /* -------------------------------- Side Bar ----------------------------------------------------*/
-
-    /* -------------------------------- Top Calendar ------------------------------------------------*/
-    .calendar{
-        display: flex;
-        align-items: center;
-    }
-    .arrow{
-        width: 30px;
-        height: 30px;
-        font-size: 20px;
-        color: #ffffff;
-        background-color: #1890FF;
-        border: 0ch;
-        border-radius: 10px;
-    }
-    .arrow:hover{
-        background-color: lightgray;
-    }
-    
-    .dates-contaniner{
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-        align-items: center;
-    }
-    .date{
-        padding: 3px;
-        margin-right: 10px;
-        font-weight: bold;
-        color: #1890FF;
-    }
-    .day{
-        padding: 3px;
-        margin-right: 10px;
-        font-weight: bold;
-        color: #1890FF;
-    }
-    .weekdays{
-        display: flex;
-    }
-    .dates{
-        display: flex;
-    }
-    .weekdays .date{
-        margin-right: 8px;
-    }
-    .dates .date{
-        margin-right: -1px;
-        margin-left: 6px;
-    }
-    .date.selected{
-        background-color: #f0f0f0;
-    }
-    .date:hover {
-        background-color: lightgray;
-        border-radius: 5px;
-    }
-    /* -------------------------------- Top Calendar ------------------------------------------------*/
-
-    /* -------------------------------- Medication Display Container --------------------------------*/
-    .medi-info-container{
-        display: flex;
-        align-items: center;
-    }
-    .medi-info {
-        margin-top: 20px;
-        width: 320px;
-        padding: 20px;
-        background-color: #ffffff;
-        border-radius: 10px;
-        text-align: center;
-        margin-top: 500px;
-    }
-    /* -------------------------------- Medication Display Container --------------------------------*/
-
-    /* -------------------------------- Add Med Button ----------------------------------------------*/
-    .addmedbtn{
-        background-color: #1890FF;
-        color: #ffffff;
-        font-size: 20px;
-        font-weight: 800;
-        width: 300px;
-        height: 40px;
-    }
-    /* -------------------------------- Add Med Button ----------------------------------------------*/
 
     /* -------------------------------- Small Screen -----------------------------------------------*/
     @media screen and (max-width: 400px) {
         .content-container{
             overflow-y: auto;
             overflow-x: auto;
-        }
-        .arrow{
-            width: 25px;
-            height: 25px;
-        }
-        .dates .date{
-            margin-right: -2px;
-            margin-left: 2px;
-            padding: 10px;
-        }
-        .footerBtn{
-            font-size: 25px;
-            height: 50px;
-            width: 50px;
-            padding-top: 5px;
-            padding-left: 2px;
-            padding-right: 2px;
         }
     }
     /* -------------------------------- Small Screen ------------------------------------------------*/
