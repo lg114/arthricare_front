@@ -5,6 +5,7 @@ import { ArrowLeftBold } from '@element-plus/icons-vue';
 import { ref, reactive } from 'vue';
 import router from '@/router';
 import axios from 'axios';
+import { ElMessage } from 'element-plus';
 
 export default {
   //title
@@ -45,11 +46,22 @@ export default {
         console.log(response.data); // Login successful message
 
           sessionStorage.setItem('loggedInUser', JSON.stringify(response.data));
+          //
+            // Get all keys from session storage
+            const keys = Object.keys(sessionStorage);
+
+            // Iterate through each key and log its value
+            keys.forEach(key => {
+                const value = sessionStorage.getItem(key);
+                console.log(`${key}: ${value}`);
+            });
 
 
+        //
         router.push('/Home'); //jump to home page
       } catch (error) {
         console.error('Login failed!', error);
+        ElMessage.error('Incorrect email or password. Please try again.');
       }
     };
 
@@ -82,8 +94,10 @@ export default {
                                 <b><label>Email Address</label></b>
                                 <input class="input" id = "email" type="email" placeholder="Please enter your email" v-model="loginForm.email"/><br>
                                 <b><label>Password</label></b>
-                                <input class="input" id = "password" type="password" placeholder="Please enter your passowrd" v-model="loginForm.password"/>
+                                <input class="input" id = "password" type="password" placeholder="Please enter your password" v-model="loginForm.password"/>
+                                
                             </form>
+
                         </div>
                         <div id="mid">
                             Don't have an account?
@@ -92,11 +106,13 @@ export default {
                             Forget your password? 
                             <router-link to = "/Resetpassword">Click Here</router-link>
                         </div>
+                        
                 </el-main>
                 <el-footer>
                     <div class="buttons">
                         <el-button class = "login-button" @click = "submitLoginForm">LOG IN</el-button>
                     </div>
+                    
                 </el-footer>
             </el-container>
     </div>
@@ -268,6 +284,9 @@ export default {
         .login-button{
             height: 63px;
         }
+
+
+
     }
     /* -------------------------------- Small Screen -------------------------------------------*/
 </style>

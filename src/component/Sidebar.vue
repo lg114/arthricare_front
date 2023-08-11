@@ -21,6 +21,13 @@
             
             {
                 console.log("Logout button clicked");
+                
+
+
+
+                // Clear session storage
+                sessionStorage.removeItem('loggedInUser');
+                console.log(sessionStorage);
                 this.$router.push('/');
 
             }
@@ -118,7 +125,7 @@
         align-items: center;
         justify-content: space-between;
         width: 100%;
-        cursor: pointer;
+        cursor: pointer; 
     }
     .menu-button3{
         display: flex;
