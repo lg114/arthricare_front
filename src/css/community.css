@@ -43,6 +43,7 @@
     align-items: center;
     height: 90vh;
     padding-bottom: 80px;
+<<<<<<< Updated upstream
 }
 h2{
     text-align: center;
@@ -60,6 +61,27 @@ p{
     margin-left: 115px;
     border: 3px solid white;
     box-shadow: 2px 2px 2px rgb(83, 83, 83);
+=======
+    background-color: white;
+}
+h2{
+    text-align: center;
+    /*color: white;*/
+    color:black;
+}
+p{
+    text-align: center;
+    /*color: white;*/
+    color:black;
+}
+.avatar{
+    display: flex;
+    margin-top: 4%;
+    height: 50px;
+    width: 50px;
+    background-color: #55C2B9;
+    border-radius: 50%;
+>>>>>>> Stashed changes
 }
 .box{
     width: 350px;
@@ -70,9 +92,12 @@ p{
     margin-left: 5px;
     margin-bottom: 15px;
 }
+<<<<<<< Updated upstream
 .boxTitle{
     padding-left: 15px;
 }
+=======
+>>>>>>> Stashed changes
 .collectionImage{
     width: 80px;
     height: 60px;
@@ -86,9 +111,12 @@ p{
     margin-left: 10px;
     float:left;
 }
+<<<<<<< Updated upstream
 .postText{
     margin-left: 20px;
 }
+=======
+>>>>>>> Stashed changes
 .add{
     font-size: 40px;
     color: #1890FF;
@@ -213,4 +241,64 @@ p{
     font-weight: 550;
     margin: 30px 30px;
     text-decoration: none;
+<<<<<<< Updated upstream
 }
+=======
+}
+
+/* START: Unique CSS for Community Page */
+.topic{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /*space-around: 23px, 28px;*/
+    margin-top: -10px;
+    margin-left: 3%;
+    margin-right: 3%;
+}
+.topic label{
+    display: block;
+    font-size: 16px;
+    color: #949596;
+    cursor: pointer;
+}
+.topic input:checked+label{
+    font-weight: bold;
+    color: #1890FF;
+    font-size: 20px;
+    margin-top: -1%;
+}
+.topic input{
+    display: none;
+}
+.sortingBy{
+    margin-left: 3%;
+    margin-top: 3%;
+}
+.postCard{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-left: 3%;
+    margin-right: 3%;
+}
+.username{
+    font-size: 16px;
+    margin-top: 8%;
+    margin-left: 5%;
+    font-weight: bold;
+}
+.content{
+    font-size: 16px;
+    margin-top: 3%;
+    width: 380px;
+    display: block;
+}
+.time-ago{
+    color: #949596;
+    font-size: 16px;
+    margin-top: 8%;
+    margin-left: 5%;
+}
+/* END: Unique CSS for Community Page */
+>>>>>>> Stashed changes
