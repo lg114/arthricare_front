@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-import { ElMessage } from 'element-plus';
-import store from '@/store';
+//import { ElMessage } from 'element-plus';
+//import store from '@/store';
 import WelcomePage from '@/views/WelcomeView.vue';
 import LoginPage from '@/views/LoginView.vue';
 import SignUpPage from '@/views/SignupView.vue';
@@ -12,6 +12,7 @@ import UserProfilePage from '@/views/UserProfile.vue';
 import EditMedPage from '@/views/editMed.vue';
 import MyMedsPage from '@/views/MyMedsView.vue';
 import RewardsPage from '@/views/RewardsView.vue';
+import CommunityPage from '@/views/CommunityView.vue';
 
 
 
@@ -95,11 +96,20 @@ const router  = createRouter({
                 requiresAuth: true
             }
         }
+        ,
+        {
+            path: '/Community',
+            name: 'Community',
+            component: CommunityPage,
+            meta: {
+                requiresAuth: true
+            }
+        }
     ]
 });
 
 //Router Guard 导航守卫
-
+/*
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
         if (store.getters['user/isLoggedIn']) {
@@ -112,7 +122,7 @@ router.beforeEach((to, from, next) => {
         next(); // 不需要身份验证的路由，直接继续访问
     }
 });
-
+*/
 
 
 export default router;

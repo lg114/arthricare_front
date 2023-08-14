@@ -88,24 +88,7 @@
             viewPost() {
                 // Navigate to a new page to view the whole post content
                 this.$router.push('/PostDetail');
-            },
-            // NOTE: START - the code below is ugly 
-            getShortenedContent(text) {
-                const maxWords = 33;
-                const words = text.split(' ');
-                if (this.expanded || words.length <= maxWords) {
-                    return text;
-                }
-                return words.slice(0, maxWords).join(' ') + '...';
-            },
-            shouldShowSeeMoreButton() {
-                const words = this.content.split(' ');
-                return words.length > this.maxWords;
-            },
-            toggleExpansion() {
-                this.expanded = !this.expanded;
             }
-            // NOTE: END
         },
 //========= END: Unique methods for Community Page
         components: {
@@ -152,13 +135,7 @@
     <span class="username">{{ post.username }}</span>
     <span class="time-ago">{{ getTimeAgo(post.timestamp) }}</span>
     <div class="content">
-        <!-- NOTE: the code below is ugly -->
-        <div>
-            {{ post.expanded ? post.content : getShortenedContent(post.content) }}
-        </div>
-        <button v-if="shouldShowSeeMoreButton(post)" @click="toggleExpansion(post)">
-            {{ post.expanded ? 'See less' : 'See more' }}
-        </button>
+        {{post.content}}
     </div>
 </div>
 

@@ -43,25 +43,6 @@
     align-items: center;
     height: 90vh;
     padding-bottom: 80px;
-<<<<<<< Updated upstream
-}
-h2{
-    text-align: center;
-    color: white;
-}
-p{
-    text-align: center;
-    color: white;
-}
-.avatar{
-    display: flex;
-    align-items: center;
-    width: 130px;
-    height: 130px;
-    margin-left: 115px;
-    border: 3px solid white;
-    box-shadow: 2px 2px 2px rgb(83, 83, 83);
-=======
     background-color: white;
 }
 h2{
@@ -81,7 +62,6 @@ p{
     width: 50px;
     background-color: #55C2B9;
     border-radius: 50%;
->>>>>>> Stashed changes
 }
 .box{
     width: 350px;
@@ -92,12 +72,6 @@ p{
     margin-left: 5px;
     margin-bottom: 15px;
 }
-<<<<<<< Updated upstream
-.boxTitle{
-    padding-left: 15px;
-}
-=======
->>>>>>> Stashed changes
 .collectionImage{
     width: 80px;
     height: 60px;
@@ -111,12 +85,6 @@ p{
     margin-left: 10px;
     float:left;
 }
-<<<<<<< Updated upstream
-.postText{
-    margin-left: 20px;
-}
-=======
->>>>>>> Stashed changes
 .add{
     font-size: 40px;
     color: #1890FF;
@@ -241,9 +209,6 @@ p{
     font-weight: 550;
     margin: 30px 30px;
     text-decoration: none;
-<<<<<<< Updated upstream
-}
-=======
 }
 
 /* START: Unique CSS for Community Page */
@@ -301,4 +266,3 @@ p{
     margin-left: 5%;
 }
 /* END: Unique CSS for Community Page */
->>>>>>> Stashed changes
