@@ -1,5 +1,6 @@
 <script>
     import { Avatar, CaretRight, Message, MessageBox, Reading, WarningFilled, SwitchButton } from '@element-plus/icons-vue';
+   // import router from '@/router';
 
     export default {
         name: "SidebarContent",
@@ -13,11 +14,20 @@
         },
         methods: {
             goToUserProfile(){
+                console.log("Logout button clicked");
                 this.$router.push('/UserProfile');
             },
-            async logout(){
-                this.$store.dispatch('user/logout');
+            logout()
+            
+            {
+                console.log("Logout button clicked");
+                // Clear session storage
+                sessionStorage.removeItem('loggedInUser');
+                console.log(sessionStorage);
+                this.$router.push('/');
+
             }
+
         },
         components: {
             Avatar,
@@ -36,34 +46,34 @@
                 <div class = "menu-item">
                              
                     <div class = "menu-item">
-                        <div class = "menu-button" @click = "goToUserProfile">
-                            <el-icon class="menu-icon"><Avatar/></el-icon>
-                            <p>My Profile</p>
-                            <el-icon class="menu-icon"><CaretRight /></el-icon>
-                        </div>
-                        <div class = "menu-button">
-                            <el-icon class="menu-icon1"><Message /></el-icon>
-                            <p>Message</p>
-                            <el-icon class="menu-icon"><CaretRight /></el-icon>
-                        </div>
-                        <div class = "menu-button">
-                            <el-icon class="menu-icon2"><MessageBox /></el-icon>
-                            <p>Community</p>
-                            <el-icon class="menu-icon"><CaretRight /></el-icon>
-                        </div>
-                        <div class = "menu-button">
-                            <el-icon class="menu-icon1"><Reading /></el-icon>
-                            <p>Education</p>
-                            <el-icon class="menu-icon"><CaretRight /></el-icon>
-                        </div>
-                        <div class = "menu-button3">
-                            <el-icon class="menu-icon3"><WarningFilled /></el-icon>
-                            <p>About</p>
-                        </div>
-                        <div class = "menu-button" @click = "logout">
-                            <el-icon class="menu-icon3"><SwitchButton /></el-icon>
-                            <p>Log Out</p>
-                        </div>
+                                    <div class = "menu-button" @click = "goToUserProfile">
+                                        <el-icon class="menu-icon"><Avatar/></el-icon>
+                                        <p>My Profile</p>
+                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
+                                    </div>
+                                    <div class = "menu-button">
+                                        <el-icon class="menu-icon1"><Message /></el-icon>
+                                        <p>Message</p>
+                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
+                                    </div>
+                                    <div class = "menu-button">
+                                        <el-icon class="menu-icon2"><MessageBox /></el-icon>
+                                        <p>Community</p>
+                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
+                                    </div>
+                                    <div class = "menu-button">
+                                        <el-icon class="menu-icon1"><Reading /></el-icon>
+                                        <p>Education</p>
+                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
+                                    </div>
+                                    <div class = "menu-button3">
+                                        <el-icon class="menu-icon3"><WarningFilled /></el-icon>
+                                        <p>About</p>
+                                    </div>
+                                    <div class = "menu-button" @click = "logout">
+                                        <el-icon class="menu-icon3"><SwitchButton /></el-icon>
+                                        <p>Log Out</p>
+                                    </div>
                     </div>
                 </div>
             </div>
@@ -111,7 +121,7 @@
         align-items: center;
         justify-content: space-between;
         width: 100%;
-        cursor: pointer;
+        cursor: pointer; 
     }
     .menu-button3{
         display: flex;
