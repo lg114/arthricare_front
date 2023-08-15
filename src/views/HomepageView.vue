@@ -66,7 +66,7 @@
                     this.medicationList.sort((a, b) => {
                         const timeA = new Date(a.time);
                         const timeB = new Date(b.time);
-                        return timeA > timeB ? 1 : -1;
+                        return timeA > timeB;
                     });
                 }
                 //testing
@@ -105,7 +105,6 @@
                 console.log("Now Time button clicked");
                 console.log("Medication Object:", this.selectedMedication);
                 
-                // TODO: 在这里执行不按时服药的逻辑，例如更新药物的状态和时间
                 const currentTime = new Date();
                 const currentHour = currentTime.getHours();
                 const currentMinute = currentTime.getMinutes();
@@ -179,16 +178,22 @@
             <el-header class = "header">
                 <Icon class="more" @click="drawer = true"><MoreHorizFilled /></Icon>
                 <span class = "username">Welcome to ArthiCare, {{ loggedInUser ? loggedInUser.name : 'Guest' }}</span>
-                
             </el-header>
             <el-main class = "main">
                 <HorizontalCalendar @date-selected="onDateSelected" />
                 <!-------------------------------------------------MedicationDialog---------------------------------------------->
-                <MedicationDialog :medicationList="medicationList" :selectedMedication="selectedMedication" :takenMedTime="selectedMedication.takenMedTime"  v-if="medicationList && medicationList.length > 0" @show-medication-popup="onShowMedicationPopup"/>
+                <template v-if = "medicationList && medicationList.length > 0">
+                    <MedicationDialog :medicationList="medicationList" :selectedMedication="selectedMedication" :takenMedTime="selectedMedication.takenMedTime"  v-if="medicationList && medicationList.length > 0" @show-medication-popup="onShowMedicationPopup"/>
+                </template>
+                <template v-else>
+                    <div style = "text-align: center; padding: 20px; color:#1890FF; font-size: larger;">
+                        <p><b>No meds on today...</b></p>
+                    </div>
+                </template>
                 <!-------------------------------- Dialog -------------------------------->
-                <el-dialog  v-model = "dialogVisible" :title="dialogTitle" center align-center width="90%">
+                <el-dialog  v-model = "dialogVisible" :title="dialogTitle" center align-center width="90%" round>
                     <template #header>
-                        <span v-if = "userLoggedIn" style="color: #1890FF; font-weight: bold;">{{ dialogTitle }}</span>
+                        <span style="color: #1890FF; font-weight: bold; font-size: larger;">{{ dialogTitle }}</span>
                     </template>
                     <div style = "text-align: center;">
                         <el-button type="primary" @click="onTime(medication)" round>On Time</el-button>
@@ -199,7 +204,7 @@
                 <!------------------------ Dialog for medication time picker ----------------->
                 <el-dialog v-model="showTimePicker" title="Set Time" @close="onTimePickerClose" center align-center width="90%">
                     <template #header>
-                        <span style="color: #1890FF; font-weight: bold;">{{ dialogTitle }}</span>
+                        <span style="color: #1890FF; font-weight: bold; font-size: larger;">{{ dialogTitle }}</span>
                     </template>
                     <div style = "text-align: center;">
                         <el-time-picker  v-if="showTimePicker" v-model="medicationTime" placeholder="Select time" format="HH:mm"></el-time-picker>                        

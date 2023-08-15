@@ -17,7 +17,7 @@
 
 /* -------------------------------- Component Layout ------------------------------------------*/
 .header{
-    height: 50px;
+    height: 60px;
 }
 .main{
     background-color: #ffffff;
@@ -25,8 +25,9 @@
     flex-direction: column;
     align-items: center;
     flex: 1;
-    padding-bottom: 50px;
+    padding-bottom: 80px;
     width: 100vw;
+    overflow-y: auto;
 }
 .footer{
     background-color: white;
@@ -45,9 +46,9 @@
 
 /* -------------------------------- Footer -----------------------------------------------------*/
 br {
-        display: block; /* makes it have a width */
-        content: ""; /* clears default height */
-        margin-top: 1px; /* change this to whatever height you want it */
+    display: block; /* makes it have a width */
+    content: ""; /* clears default height */
+    margin-top: 1px; /* change this to whatever height you want it */
 }
 .footerBtn{
 font-size: 45px;
@@ -104,11 +105,11 @@ left: 48px;
     font-size: 14px;
 }
 .more{
-position: absolute;
-left:20px;
-top:10px;
-font-size: 30px;
-color: white;
+    position: absolute;
+    left:20px;
+    top:10px;
+    font-size: 30px;
+    color: white;
 }
 /* -------------------------------- Header ------------------------------------------------------*/
 .sidebar{

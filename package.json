@@ -12,7 +12,7 @@
   "dependencies": {
     "@element-plus/icons": "^0.0.11",
     "@mdi/font": "^7.2.96",
-    "@popperjs/core": "^2.11.8",
+    "@varlet/ui": "^2.14.1",
     "@vicons/utils": "^0.1.4",
     "@vuepic/vue-datepicker": "^5.2.0",
     "axios": "^1.4.0",
@@ -20,6 +20,7 @@
     "dayjs": "^1.11.9",
     "element-plus": "^2.3.5",
     "gh-pages": "^5.0.0",
+    "v-calendar": "^3.0.3",
     "vue": "^3.2.36",
     "vue-router": "^4.0.13",
     "vuex": "^4.1.0"

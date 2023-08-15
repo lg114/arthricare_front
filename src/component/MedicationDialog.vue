@@ -38,20 +38,19 @@
 <template>
   <div class = "medi-info-container">
     <div class = "medi-info">
-        <div v-if="medicationList.length > 0">
+        <div>
             <!-- 当药物列表不为空时，显示药物信息 -->
             <div @click="showMedicationPopup(medication)" v-for="medication in medicationList" :key="medication.reminderId" class = "medicationList">
-                <div class="medication-time">{{ medication.time }}</div>
-                <div class="medication-name">{{ medication.name }}</div>
-                <div v-if="medication.takenMedTime">
-                    <p>Taken at {{ medication.takenMedTime }}</p>
-                </div>
-                <el-divider></el-divider>
+                <var-card style = "height: 108px;" ripple outline :elevation="2">
+                    <template #description>
+                        <div class="medication-time">{{ medication.time }}</div>
+                        <div class="medication-name">{{ medication.name }}</div>
+                        <div v-if="medication.takenMedTime">
+                            <p>Taken at {{ medication.takenMedTime }}</p>
+                        </div>
+                    </template>
+                </var-card>
             </div>
-        </div>
-        <div v-else>
-            <!-- 当药物列表为空时，显示一条消息 -->
-            No Meds on Today
         </div>
     </div>
   </div>
@@ -66,7 +65,7 @@
     .medi-info{
         margin-top: 10px;
         width: 320px;
-        padding: 20px;
+        padding: 5px;
         text-align: center;
         color:#1890FF;
         font-weight: 800;
@@ -82,11 +81,14 @@
     .medication-time{
         font-size: 20px;
         text-align: left;
+        margin-left: 10px;
+        margin-top: 10px;
     }
     .medication-name{
         margin-top: 5px;
         font-size: 18px;
         text-align: center;
     }
+    
     /* -------------------------------- Medication Display Container --------------------------------*/
 </style>

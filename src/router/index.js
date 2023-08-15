@@ -14,8 +14,6 @@ import MyMedsPage from '@/views/MyMedsView.vue';
 import RewardsPage from '@/views/RewardsView.vue';
 
 
-
-
 const router  = createRouter({
     history : createWebHashHistory(),
     routes: [
@@ -94,7 +92,7 @@ const router  = createRouter({
             meta: {
                 requiresAuth: true
             }
-        }
+        },
     ]
 });
 
