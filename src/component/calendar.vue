@@ -15,11 +15,11 @@
               </div>
           </div>
       </div>
-      <el-divider></el-divider>
+      <el-divider><div v-if = "isDateBeforeToday" @click="goToToday" style ="color: #1890ff; font-weight: bold;">Today&gt;&gt;</div></el-divider>
       <div class="selected-date-display">
           {{ selectedDateDisplay }}
       </div>
-      <el-divider></el-divider>
+      <el-divider><div v-if = "isDateAfterToday" @click="goToToday" style ="color: #1890ff; font-weight: bold;">&lt;&lt;Today</div></el-divider>
   </div>
 </template>
 
@@ -62,11 +62,39 @@
               }
           },
           selectedDateDisplay() {
+            if (this.selectedDateIndex !== -1) {
+                const selectedDate = this.weekDates[this.selectedDateIndex];
+                const today = dayjs().startOf('day');
+                const yesterday = dayjs().subtract(1, 'day').startOf('day');
+                const tomorrow = dayjs().add(1, 'day').startOf('day');
+
+                if (selectedDate.isSame(today, 'day')) {
+                    return 'Today, ' + selectedDate.format('MMM D');
+                } else if (selectedDate.isSame(tomorrow, 'day')) {
+                    return 'Tomorrow, ' + selectedDate.format('MMM D');
+                } else if (selectedDate.isSame(yesterday, 'day')) {
+                    return 'Yesterday, ' + selectedDate.format('MMM D');
+                } else {
+                    return selectedDate.format('ddd, MMM D');
+                }
+            }
+            return '';
+          },
+          isDateBeforeToday() {
+          if (this.selectedDateIndex !== -1) {
+              const selectedDate = this.weekDates[this.selectedDateIndex].startOf('day');
+              const today = dayjs().startOf('day');
+              return selectedDate.isBefore(today);
+          }
+          return false;
+          },
+          isDateAfterToday() {
               if (this.selectedDateIndex !== -1) {
-                  const selectedDate = this.weekDates[this.selectedDateIndex];
-                  return selectedDate.format('ddd, MMM D');
+                  const selectedDate = this.weekDates[this.selectedDateIndex].startOf('day');
+                  const today = dayjs().startOf('day');
+                  return selectedDate.isAfter(today);
               }
-              return '';
+              return false;
           },
       },
       methods: {
@@ -113,6 +141,10 @@
               }
               // 如果没有找到当前日期，返回默认值-1
               return -1;
+          },
+          goToToday() {
+            this.selectedDateIndex = this.getIndexOfCurrentDate();
+            this.emitSelectedDate();
           },
       },
   };
