@@ -2,7 +2,8 @@
 <script>
     import { ref,reactive} from 'vue';
     import { UserFilled } from '@element-plus/icons-vue';
-    import { HomeRound, MedicationOutlined, AddCircleFilled, CardGiftcardOutlined, AccountCircleOutlined, MoreHorizFilled} from '@vicons/material';
+    import { HomeRound, MedicationOutlined, AddCircleFilled, CardGiftcardOutlined, AccountCircleOutlined} from '@vicons/material';
+    import { AlignLeft } from '@vicons/tabler'
     import { Icon } from '@vicons/utils';
     import HorizontalCalendar from '@/component/calendar.vue';
     import SideBarContent from '@/component/Sidebar.vue';
@@ -163,7 +164,7 @@
             AddCircleFilled, 
             CardGiftcardOutlined, 
             AccountCircleOutlined,
-            MoreHorizFilled,
+            AlignLeft,
             Icon,
             HorizontalCalendar,
             SideBarContent,
@@ -176,7 +177,7 @@
     <div class = "container">
         <el-container class = "content-container">
             <el-header class = "header">
-                <Icon class="more" @click="drawer = true"><MoreHorizFilled /></Icon>
+                <Icon class="more" @click="drawer = true"><AlignLeft /></Icon>
                 <span class = "username">Welcome to ArthiCare, {{ loggedInUser ? loggedInUser.name : 'Guest' }}</span>
             </el-header>
             <el-main class = "main">
