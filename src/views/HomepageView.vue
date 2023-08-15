@@ -12,8 +12,8 @@
 
 
     export default{
-        //title
         mounted(){
+            //title
             document.title = "Home | ArthriCare";
             //默认当天日期
             const today = new Date(); 

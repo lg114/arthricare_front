@@ -98,16 +98,16 @@ left: 48px;
 }
 .username{
     position: relative;
-    top: 15px;
+    top: 20px;
     left: 45px;
     color: #ffffff;
-    font-weight: 550;
-    font-size: 14px;
+    font-weight: 600;
+    font-size: 16px;
 }
 .more{
     position: absolute;
     left:20px;
-    top:10px;
+    top:15px;
     font-size: 30px;
     color: white;
 }
