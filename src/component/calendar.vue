@@ -143,6 +143,7 @@
               return -1;
           },
           goToToday() {
+            this.currentDate = dayjs();
             this.selectedDateIndex = this.getIndexOfCurrentDate();
             this.emitSelectedDate();
           },
