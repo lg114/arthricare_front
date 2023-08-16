@@ -85,10 +85,32 @@
                     return seconds + 's';
                 }
             },
+// here
+            truncateContent(content) {
+                const sentences = content.split(".");
+                const truncated = sentences.slice(0, 3).join(".") + ".";
+                return truncated;
+                },
+
+            expandPost (post){
+                post.expanded = true;
+            
+            },
+
+            togglePostExpansion(post) {
+                console.log('Toggling post expansion', post);
+                post.expanded = !post.expanded;
+                
+                },
+
+//here end
+
+
             viewPost() {
                 // Navigate to a new page to view the whole post content
                 this.$router.push('/PostDetail');
-            }
+            },
+
         },
 //========= END: Unique methods for Community Page
         components: {
@@ -135,9 +157,14 @@
     <span class="username">{{ post.username }}</span>
     <span class="time-ago">{{ getTimeAgo(post.timestamp) }}</span>
     <div class="content">
-        {{post.content}}
+        <p v-if="!post.expanded">{{ truncateContent(post.content) }}</p>
+        <p v-else>{{ post.content }}</p>
+        <button @click.stop="togglePostExpansion(post)">
+            {{ post.expanded ? "Show less" : "See more" }}
+        </button>
     </div>
 </div>
+
 
             </el-main> 
         </el-container>
@@ -178,7 +205,6 @@
         </el-drawer>
     </div>
 </template>
-
 
 
 <style src = "@/css/community.css" scoped></style>
