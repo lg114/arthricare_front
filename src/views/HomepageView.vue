@@ -60,6 +60,7 @@
             async onDateSelected(selectedDate){
                 //存储选定的日期
                 this.selectedDate = selectedDate; 
+                console.log('Selected date:', selectedDate);
                 //假设medicationList是从后端获取的当天药物数据的数组
                 this.medicationList = await this.fetchRemindersFromBackend(selectedDate);
                 //然后从早到晚排序 sorting

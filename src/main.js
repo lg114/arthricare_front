@@ -9,6 +9,8 @@ import '@vuepic/vue-datepicker/dist/main.css';
 import Varlet from '@varlet/ui';
 import '@varlet/ui/es/style';
 import store from './store';
+import VueHashCalendar from 'vue3-hash-calendar';
+import 'vue3-hash-calendar/es/index.css';
 
 const app = createApp(App);
 
@@ -18,5 +20,6 @@ app.use(ElementPlus);
 app.use(router);
 app.use(store); 
 app.use(Varlet);
+app.use(VueHashCalendar);
 
 app.mount('#app');

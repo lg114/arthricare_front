@@ -13,7 +13,7 @@ import EditMedPage from '@/views/editMed.vue';
 import MyMedsPage from '@/views/MyMedsView.vue';
 import RewardsPage from '@/views/RewardsView.vue';
 
-import SecondCalendar from '@/views/secondCalendar.vue';
+
 
 
 const router  = createRouter({
@@ -94,11 +94,6 @@ const router  = createRouter({
             meta: {
                 requiresAuth: true
             }
-        },
-        {
-            path:'/calendar',
-            name: 'calendar',
-            component: SecondCalendar
         },
     ]
 });
