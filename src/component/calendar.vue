@@ -175,7 +175,7 @@
       text-align: center;
       color: #1890ff;
       font-weight: bold;
-      padding-top: 15px;
+      padding-top: 10px;
       width: 255px;
   }
 
@@ -196,8 +196,7 @@
       background-color: #1890ff;
       border: 0ch;
       border-radius: 10px;
-      margin-top: 10px;
-      box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.2);
+      margin-top: 5px;
       transition: background-color 0.5s, transform 0.5s;
   }
 
@@ -222,7 +221,6 @@
       background-color: #1890ff;
       color: white;
       border-radius: 10px;
-      box-shadow: 0px 5px 6px rgba(0, 0, 0, 0.2);
       transition: background-color 0.5s, transform 0.5s;
   }
   .selected-date-display {
@@ -230,5 +228,10 @@
       font-weight: bold;
       text-align: center;
       color: #1890ff;
+      margin-top: -15px ;
+  }
+  .el-divider {
+    margin-top: 10px;
+    border-top: 1.5px solid lightgrey;
   }
 </style>
