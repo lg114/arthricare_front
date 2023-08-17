@@ -36,48 +36,38 @@
 </script>
 
 <template>
-  <div class = "medi-info-container">
-    <div class = "medi-info">
-        <div>
-            <!-- 当药物列表不为空时，显示药物信息 -->
-            <div @click="showMedicationPopup(medication)" v-for="medication in medicationList" :key="medication.reminderId" class = "medicationList">
-                <var-card style = "height: 108px;" ripple outline :elevation="2">
-                    <template #description>
-                        <div class="medication-time">{{ medication.time }}</div>
-                        <div class="medication-name">{{ medication.name }}</div>
-                        <div v-if="medication.takenMedTime">
-                            <p>Taken at {{ medication.takenMedTime }}</p>
-                        </div>
-                    </template>
-                </var-card>
-            </div>
+    <!-- 当药物列表不为空时，显示药物信息 -->
+    <el-scrollbar style="max-height: 600px;">
+        <div @click="showMedicationPopup(medication)" v-for="medication in medicationList" :key="medication.reminderId" class = "medicationList">
+            <var-card style = "height: 108px;" ripple outline :elevation="2">
+                <template #description>
+                    <div class="medication-time">{{ medication.time }}</div>
+                    <div class="medication-name">{{ medication.name }}</div>
+                    <div v-if="medication.takenMedTime">
+                        <p>Taken at {{ medication.takenMedTime }}</p>
+                    </div>
+                </template>
+            </var-card>
         </div>
-    </div>
-  </div>
+    </el-scrollbar>
 </template>
 
 <style scoped>
     /* -------------------------------- Medication Display Container --------------------------------*/
-    .medi-info-container{
+    .medicationList{
+        color:#1890FF;
+        font-weight: bold;
+        font-size: larger;
+        margin-top: 10px;
+        width: 320px;
+        text-align: center;
         display: flex;
         align-items: center;
-    }
-    .medi-info{
-        margin-top: 10px;
-        width: 320px;
-        padding: 5px;
+        justify-content: center;
+        margin: 10px;
         text-align: center;
-        color:#1890FF;
-        font-weight: 800;
+        border-radius: 4px;
     }
-    .medicationList{
-        margin-top: 10px;
-        width: 320px;
-        display: flex;
-        flex-direction: column;
-        text-align: center;
-    }
-
     .medication-time{
         font-size: 20px;
         text-align: left;

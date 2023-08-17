@@ -25,9 +25,9 @@
     flex-direction: column;
     align-items: center;
     flex: 1;
-    padding-bottom: 80px;
+    padding-bottom: 0px;
     width: 100vw;
-    overflow-y: auto;
+    overflow: auto;
     --el-main-padding: 0px;
 }
 .footer{

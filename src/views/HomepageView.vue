@@ -179,7 +179,7 @@
         <el-container class = "content-container">
             <el-header class = "header">
                 <Icon class="more" @click="drawer = true"><AlignLeft /></Icon>
-                <span class = "username">Welcome to ArthiCare, {{ loggedInUser ? loggedInUser.name : 'Guest' }}</span>
+                <span class = "username">Welcome to ArthriCare, {{ loggedInUser ? loggedInUser.name : 'Guest' }}</span>
             </el-header>
             <el-main class = "main">
                 <HorizontalCalendar @date-selected="onDateSelected" />
