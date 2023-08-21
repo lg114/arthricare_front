@@ -35,7 +35,7 @@
     flex-direction: column;
     place-items: center;
     height: 100vh;
-    background-color: #1890FF;
+    background-color: #006973;
     overflow-y: auto;
 }
 .main{
@@ -60,7 +60,7 @@ p{
     margin-top: 4%;
     height: 50px;
     width: 50px;
-    background-color: #55C2B9;
+    background-color: #7c8383;
     border-radius: 50%;
 }
 .box{
@@ -87,7 +87,7 @@ p{
 }
 .add{
     font-size: 40px;
-    color: #1890FF;
+    color: #006973;
     float:right;
     margin-right:5px;
 }
@@ -115,10 +115,10 @@ p{
         padding: 20px;
     }
 #addMed{
-    color: #1890FF;
+    color: #006973;
 }
 #profile{
-    color: #1890FF;
+    color: #006973;
 }
 .footerBtn{
     font-size: 45px;
@@ -146,7 +146,7 @@ p{
 }
 #profileText{
     position: relative;
-    color: #1890FF;
+    color: #006973;
     left: 48px;
 }
 .uploaded-avatar {
@@ -212,40 +212,35 @@ p{
 }
 
 /* START: Unique CSS for Community Page */
-.topic{
+.topicFilter{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     /*space-around: 23px, 28px;*/
     margin-top: -10px;
-    margin-left: 3%;
-    margin-right: 3%;
 }
-.topic label{
+.topicFilter label{
     display: block;
     font-size: 16px;
     color: #949596;
     cursor: pointer;
 }
-.topic input:checked+label{
+.topicFilter input:checked+label{
     font-weight: bold;
-    color: #1890FF;
+    color: #006973;
     font-size: 20px;
     margin-top: -1%;
 }
-.topic input{
+.topicFilter input{
     display: none;
 }
 .sortingBy{
-    margin-left: 3%;
     margin-top: 3%;
 }
 .postCard{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    margin-left: 3%;
-    margin-right: 3%;
 }
 .username{
     font-size: 16px;
@@ -255,14 +250,47 @@ p{
 }
 .content{
     font-size: 16px;
-    margin-top: 3%;
-    width: 380px;
+    width: 100%;
     display: block;
+    text-align: left;
+    margin-top: 0%;
+    margin-bottom: 0%;
 }
 .time-ago{
     color: #949596;
     font-size: 16px;
     margin-top: 8%;
     margin-left: 5%;
+}
+.seeMoreLessButton{
+    color: #949596;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 16px;
+    padding-left: 0%;
+}
+.postTitle{
+    font-weight: bold;
+    font-size: 16px;
+    text-align: left;
+    margin-top: 2%;
+    margin-bottom: 1.5%;
+    line-height: 19px;
+}
+.imagesContainer{
+
+}
+.postedFourImage{
+    height: 95px;
+    width: 192px;
+}
+.postedTwoImage{
+    height: 110;
+    width: 192;
+}
+.postedThreeImage{
+    height: 110;
+    width: 192;
 }
 /* END: Unique CSS for Community Page */

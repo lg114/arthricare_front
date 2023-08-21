@@ -12,11 +12,17 @@
         setup(){
             const avatar1 = ref()
             const avatar2 = ref()
+            const avatar3 = ref()
+            const avatar4 = ref()
             avatar1.value = require('@/assets/user_avatar.png')
             avatar2.value = require('@/assets/friend_1.png')
+            avatar3.value = require('@/assets/friend_2.png')
+            avatar4.value = require('@/assets/friend_3.png')
             return {
                 avatar1,
-                avatar2
+                avatar2,
+                avatar3,
+                avatar4
             }
         },
         data(){
@@ -32,20 +38,81 @@
                         avator: '@/assets/user_avatar.png',
                         username: 'Adam',
                         timestamp: new Date(),
+                        title: '21M diagnosed with Rheumatoid Arthritis',
                         content: "I'm a 21M who was recently diagnosed with Rheumatoid Arthritis by a GP. It was first assumed I had some form of vasculitis, but I failed to ask what exactly my blood test results had shown that had her determine RA. It's a long wait for a specialist, if I can get one, and I can't find much on this disease in people my age. It is also to my understanding that blood test don't always point to a definitive diagnosis. I've had problem beginning as early as 12 and they never went away. I finally ignored my fear of being regarded as another \"self diagnosing patient\"; by taking the years of documented evidence and my research that never stopped pointing to some form of arthritis, it was so relieving to hear I wasn't crazy after all, although it's almost created more questions like the likelihood of misdiagnosis. Unfortunately, my current answers anytime soon. Is anyone familiar with rheumatoid vasculitis of similar autoimmune disorder within my age group?",
                         expanded: false,
                         numberOfLikes: '17',
-                        numberOfComments: '8'
+                        numberOfComments: '8',
+                        topic: 'Symptoms',
+                        images: [
+                            { url: '@/assets/postImage1.png', alt: 'postImage1 for postID 1' },
+                            { url: '@/assets/postImage2.png', alt: 'postImage2 for postID 1' }, 
+                            { url: '@/assets/postImage3.png', alt: 'postImage3 for postID 1' },
+                            { url: '@/assets/postImage4.png', alt: 'postImage4 for postID 1' }
+                        ],
                     },
                     {
                         id: 2,
                         avator: '@/assets/friend_2.png',
                         username: 'Timothy',
                         timestamp: new Date(),
+                        title: 'This is a title',
                         content: "ABC gfvgh frews fr fr f frfrw aafe afe fr dwe ffff wgrwf gr g ytgfd cvkuytg fvghytgf dcvkuy tgfv g h ytgf dcvk uytgfvg hytgf dcvku ytgf vghy tgfd cvkuytg fvg hyt gfdcvk uy tgf vghytg fdc v.",
                         expanded: false,
                         numberOfLikes: '6',
-                        numberOfComments: '4'
+                        numberOfComments: '4',
+                        topic: 'General',
+                        images: [
+                            { url: '@/assets/postImage5.png', alt: 'postImage5 for postID 2' }, 
+                            { url: '@/assets/postImage6.png', alt: 'postImage6 for postID 2' },
+                            { url: '@/assets/postImage7.png', alt: 'postImage7 for postID 2' }
+                        ],
+                    }, 
+                    {
+                        id: 3,
+                        avator: '@/assets/user_avatar.png',
+                        username: 'Sarah',
+                        timestamp: new Date(),
+                        title: 'This is a title',
+                        content: "ghju fgufj fgrfd dfgv ed fgf f f gea wre poik ijh jh fr.",
+                        expanded: false,
+                        numberOfLikes: '3',
+                        numberOfComments: '2',
+                        topic: 'Symptoms',
+                        images: [
+                            { url: '@/assets/postImage8.png', alt: 'postImage6 for postID 3' },
+                            { url: '@/assets/postImage9.png', alt: 'postImage7 for postID 3' }
+                        ],
+                    },
+                    {
+                        id: 4,
+                        avator: '@/assets/user_avatar.png',
+                        username: 'Anthony',
+                        timestamp: new Date(),
+                        title: 'This is a title',
+                        content: "ghju fgufj fgrfd dfgv ed fgf f f gea.",
+                        expanded: false,
+                        numberOfLikes: '8',
+                        numberOfComments: '6',
+                        topic: 'News',
+                        images: [
+                            { url: '@/assets/postImage1.png', alt: 'postImage1 for postID 4' }
+                        ],
+                    },
+                    {
+                        id: 5,
+                        avator: '@/assets/user_avatar.png',
+                        username: 'Anthony',
+                        timestamp: new Date(),
+                        title: 'This is a title',
+                        content: "ghju fgufj fgrfd dfgv ed fgf f f gea.",
+                        expanded: false,
+                        numberOfLikes: '8',
+                        numberOfComments: '6',
+                        topic: 'News',
+                        images: [
+                            { url: '', alt: 'none for postID 5' }
+                        ],
                     }
                     // Add more posts here
                 ],   
@@ -85,33 +152,35 @@
                     return seconds + 's';
                 }
             },
-// here
+            // START: 3 methods for SeeMore/SeeLess buttons
             truncateContent(content) {
-                const sentences = content.split(".");
-                const truncated = sentences.slice(0, 3).join(".") + ".";
+                const sentences = content.split(" ");
+                const truncated = sentences.slice(0, 22).join(" ");
                 return truncated;
-                },
-
+            },
             expandPost (post){
                 post.expanded = true;
             
             },
-
             togglePostExpansion(post) {
                 console.log('Toggling post expansion', post);
                 post.expanded = !post.expanded;
                 
                 },
-
-//here end
-
-
+            // END: 3 methods for SeeMore/SeeLess buttons
             viewPost() {
                 // Navigate to a new page to view the whole post content
                 this.$router.push('/PostDetail');
             },
+/*
+            // SATR: Filter the posts by a topic
+            filterByTopic(topic){
 
+            }
+            // END: Filter the posts by a topic
+*/
         },
+
 //========= END: Unique methods for Community Page
         components: {
             Icon,
@@ -136,7 +205,7 @@
             </el-header>
             <el-main class="main">
                 <div id="filterSection">
-                    <div class="topic">
+                    <div class="topicFilter">
                         <input type="radio" checked id="1" name="topic" class="topic"><label for="1">General</label>
                         <input type="radio" id="2" name="topic" class="topic"><label for="2">Symptoms</label>
                         <input type="radio" id="3" name="topic" class="topic"><label for="3">Lifestyle</label>
@@ -153,18 +222,24 @@
                 </div>
 
                 <div v-for="post in posts" :key="post.id" class="postCard" @click="viewPost(post)">
-    <img :src="avatar1" alt="avatar" class="avatar" />
-    <span class="username">{{ post.username }}</span>
-    <span class="time-ago">{{ getTimeAgo(post.timestamp) }}</span>
-    <div class="content">
-        <p v-if="!post.expanded">{{ truncateContent(post.content) }}</p>
-        <p v-else>{{ post.content }}</p>
-        <button @click.stop="togglePostExpansion(post)">
-            {{ post.expanded ? "Show less" : "See more" }}
-        </button>
-    </div>
-</div>
-
+                    <img :src="avatar1" alt="avatar" class="avatar" />
+                    <span class="username">{{ post.username }}</span>
+                    <span class="time-ago">{{ getTimeAgo(post.timestamp) }}</span>
+                    <div class="content">
+                        <p class="postTitle">{{ post.title }}</p>
+                        <p v-if="!post.expanded" class="content">{{ truncateContent(post.content) }}</p>
+                        <p v-else class="content">{{ post.content }}</p>
+                        <button @click.stop="togglePostExpansion(post)" class="seeMoreLessButton">
+                            {{ post.expanded ? "Show less" : "...See more" }}
+                        </button><br>
+                        
+                        <div v-for="(image, imageIndex) in post.images" :key="imageIndex" class="imagesContainer">
+                            <img :src="image.url" :alt="image.alt" class="postedFourImage"/>
+                            <img src="">
+                        </div>
+                    </div>
+                    <hr style="width: 200%">
+                </div>
 
             </el-main> 
         </el-container>
