@@ -1,6 +1,5 @@
 <script setup>
    //import {ArrowLeftBold} from '@element-plus/icons-vue';
-   import {Operation} from '@element-plus/icons-vue';
    import {ArrowRightBold} from '@element-plus/icons-vue';
    import red from "@/assets/capsulesred.png";
    import yellow from "@/assets/capsulesyellow.png";
@@ -9,20 +8,25 @@
    import purple from "@/assets/capsulespurple.png";
    import orange from "@/assets/capsulesorange.png";
    import store from "@/store";
-   import {   MedicationOutlined, CardGiftcardOutlined, HomeRound, AccountCircleOutlined, AddCircleFilled } from '@vicons/material';
+   import { ref } from 'vue';
+  import { LineHorizontal320Filled, Add20Filled, Home20Regular, BriefcaseMedical20Filled, Gift20Regular, Person20Regular } from '@vicons/fluent';
+  import SideBarContent from '@/component/Sidebar.vue';
     import { Icon } from '@vicons/utils'
+    const active= ref(1);
 </script>
 
 <template>
-   <el-container class = "container">
+   <div class="container">
    
     <div class = "container-flex">
       <router-link to = "/">
-         <el-icon class = "OperaBtn"><Operation/></el-icon>
+         <el-icon class = "OperaBtn"><LineHorizontal320Filled/></el-icon>
       </router-link>
       <!-- <Icon @click="drawer = true"><MoreHorizFilled /></Icon> -->
       <p id = "title">My Meds</p>
-    </div>  
+    </div> 
+    
+
 
     <div id = container2>
        <!-- <button @click="addObjectToArray">Generate Object and Add to Array</button>
@@ -67,27 +71,62 @@
         </div>  
       </div>
 
-      <el-footer class="footer">
-                <router-link to = "/Home">
-                <Icon class="footerBtn" id="home"><HomeRound /></Icon>                    
-                </router-link>
-                <Icon class="footerBtn" id="medication"><MedicationOutlined /></Icon>
-                <router-link to = "/AddMed">
-                    <Icon class="footerBtn" id="addMed"><AddCircleFilled /></Icon>
-                </router-link>
-                <router-link to = "/Rewards">
-                <Icon class="footerBtn" id="rewards"><CardGiftcardOutlined /></Icon>
-                </router-link>
-                <router-link to = "/UserProfile">
-                <Icon class="footerBtn" id="profile"><AccountCircleOutlined /></Icon>
-                </router-link><br>
-        </el-footer>
+      
 
       </div>
   </div>
-  
-
-  </el-container> 
+  <var-bottom-navigation
+            class="footer"
+            v-model:active="active"
+            border="true"
+            safe-area="true"
+            :fab-props="{color:'#55BDCA'}"
+        >
+            <var-link href="/#/Home" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="homeButton">
+                <Icon  style="font-size: 38px;"><Home20Regular /></Icon><br>
+                <span>Home</span>
+            </var-bottom-navigation-item>
+            </var-link>
+            <var-link href="/#/MyMeds" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="medsButton">
+                <Icon style="font-size: 38px;"><BriefcaseMedical20Filled /></Icon><br>
+                <span>My Meds</span>
+            </var-bottom-navigation-item>
+            </var-link>
+            <var-link href="/#/Rewards" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="rewardsButton">
+                <Icon style="font-size: 38px;"><Gift20Regular /></Icon><br>
+                <span>Rewards</span>
+            </var-bottom-navigation-item>
+            </var-link>
+            <var-link href="/#/UserProfile" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="profileButton">
+                <Icon style="font-size: 38px;"><Person20Regular /></Icon><br>
+                <span>Profile</span>
+            </var-bottom-navigation-item>    
+            </var-link>
+            <template #fab >
+                <var-link href="/#/AddMed" style="color: white;">
+                <Icon class="addButton"><Add20Filled /></Icon>
+                </var-link>
+            </template>
+        </var-bottom-navigation>
+<el-drawer style="background-color: #1890FF;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
+            <!--Action是模拟接口，与后端连接时更换-->
+                <div class = "sidebar">
+                    <el-upload action="" :show-file-list="false">
+                        <el-avatar :size="65">
+                            <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
+                                <template v-else>
+                                    <UserFilled class="defalut-avatar" />
+                                </template>
+                        </el-avatar>   
+                    </el-upload> 
+                </div>
+            <SideBarContent :imgUrl="imgUrl" />    
+        </el-drawer>
+</div> 
 </template>
 
 
@@ -99,29 +138,74 @@
       margin-right:15px;
 
     }
-    .footerBtn{
-        font-size: 45px;
-        color: #ffffff;
-        height: 50px;
-        width: 50px;
-        padding-top: 5px;
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-   .footer{
-        background-color: #55BBC9;
-        position:fixed;
-        bottom:0;
-        height: 60px;
-        width:100%;
-        text-align: center;
-    }
-        .sidebar{
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        padding: 20px;
-    }
+    .sidebar{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+  }
+
+.uploaded-avatar {
+        width: 100%;
+        height: 100%;
+}
+.defalut-avatar{
+    width: 70%;
+    height: 80%;
+}
+.menu-item{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+}
+.menu-icon{
+    color: #ffffff;
+    font-size: 20px;
+}
+.menu-icon1{
+    color: #ffffff;
+    font-size: 25px;
+    margin-right: 15px;
+}
+.menu-icon2{
+    color: #ffffff;
+    font-size: 25px;
+    margin-right: 5px;
+}
+.menu-icon3{
+    color: #ffffff;
+    font-size: 25px;
+    margin-right: 1px;
+}
+.menu-button{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    cursor: pointer;
+}
+.menu-button3{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 130px;
+    cursor: pointer;
+}
+.menu-button3 p{
+    font-size: 20px;
+    font-weight: 550;
+    margin: 20px 35px;
+}
+.menu-button p{
+    font-size: 20px;
+    font-weight: 550;
+    margin: 30px 30px;
+    text-decoration: none;
+}
     
     .zeroObjAlert{
       width:100%;
@@ -147,7 +231,7 @@
         align-items: center;
         height:100%;
         width:100%;
-        background-color:#55BBC9;
+        background-color:#006973;
         overflow: auto;
         flex-direction: column;
         margin: 0 ;
@@ -254,6 +338,23 @@
         padding:0;
         letter-spacing:0.5px;
      }
+     .bottomButton{
+    padding-left:20px;
+    padding-right: 20px;
+}
+.footer{
+    display: inline;
+    position: fixed;
+    text-align: center;
+    bottom: 0;
+    height:80px;
+    --bottom-navigation-item-font-size: 13px;
+    --bottom-navigation-item-active-color: #55BDCA;
+    white-space: nowrap;
+}  
+.addButton{
+    font-size: 35px;
+}
         
 </style>
 
@@ -261,7 +362,6 @@
 
 
 export default {
-
   computed:{
     name(){
       return store.state.navigation
@@ -342,6 +442,12 @@ beforeCreate(){
            this.MedicineArray = JSON.parse(savedArrayData);
           }
         },
+        openDrawer() {
+            this.drawer = true;
+            },
+            beforeDrawerClose(done) {
+                done();
+            },
   },
       
   mounted(){
@@ -356,11 +462,18 @@ beforeCreate(){
           console.log("error mounted")
           
       }
-    }
-       ,
-        setup(){
-          
-        },
+    },
+
+        components:{
+          Icon,
+          LineHorizontal320Filled, 
+          Add20Filled, 
+          Home20Regular, 
+          BriefcaseMedical20Filled, 
+          Gift20Regular, 
+          Person20Regular,
+          SideBarContent
+        }
       }
         
 </script>

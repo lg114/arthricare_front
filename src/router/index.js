@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-import { ElMessage } from 'element-plus';
-import store from '@/store';
+// import { ElMessage } from 'element-plus';
+// import store from '@/store';
 import WelcomePage from '@/views/WelcomeView.vue';
 import LoginPage from '@/views/LoginView.vue';
 import SignUpPage from '@/views/SignupView.vue';
@@ -12,8 +12,10 @@ import UserProfilePage from '@/views/UserProfile.vue';
 import EditMedPage from '@/views/editMed.vue';
 import MyMedsPage from '@/views/MyMedsView.vue';
 import RewardsPage from '@/views/RewardsView.vue';
-//import EducationPage from '@/views/educationView.vue';
-//import SearchPage from '@/views/searchView.vue';
+import EducationPage from '@/views/educationView.vue';
+import SearchPage from '@/views/searchView.vue';
+import EditProfilePage from '@/views/EditProfile.vue';
+import EducationArticlePage from '@/views/EducationArticle.vue';
 
 const router  = createRouter({
     history : createWebHashHistory(),
@@ -94,23 +96,56 @@ const router  = createRouter({
                 requiresAuth: true
             }
         },
+        {
+            path: '/Education',
+            name: 'Education',
+            component: EducationPage,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/SearchArticle',
+            name: 'SearchArticle',
+            component: SearchPage,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/EducationArticle',
+            name: 'EducationArticle',
+            component: EducationArticlePage,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/EditProfile',
+            name: 'EditProfile',
+            component: EditProfilePage,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        
     ]
 });
 
 //Router Guard 导航守卫
 
-router.beforeEach((to, from, next) => {
-    if (to.matched.some(record => record.meta.requiresAuth)) {
-        if (store.getters['user/isLoggedIn']) {
-          next(); // 已登录，继续访问
-        } else {
-            ElMessage.warning("You haven't logged in.");
-            next({ name: 'Welcome' }); // 重定向到欢迎页面
-        }
-      } else {
-        next(); // 不需要身份验证的路由，直接继续访问
-    }
-});
+// router.beforeEach((to, from, next) => {
+//     if (to.matched.some(record => record.meta.requiresAuth)) {
+//         if (store.getters['user/isLoggedIn']) {
+//           next(); // 已登录，继续访问
+//         } else {
+//             ElMessage.warning("You haven't logged in.");
+//             next({ name: 'Welcome' }); // 重定向到欢迎页面
+//         }
+//       } else {
+//         next(); // 不需要身份验证的路由，直接继续访问
+//     }
+// });
 
 
 

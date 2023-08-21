@@ -5,7 +5,7 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #1890FF;
+    background-color: #CFEEF5;
     overflow: hidden;
   }
   .content-container {
@@ -21,7 +21,7 @@
     margin-left: -20px;
   }
   h1{
-    color: #FFFFFF;
+    color: #006973;
     font-weight: 600;
     font-size: 45px;
   }
@@ -51,16 +51,25 @@
     font-weight: 700;
 }
 
-.login-button,
-.signup-button{
+.login-button{
   background: #FFFFFF;
-  color: #1890FF;
+  color: #006973;
   position: relative;
   display: inline-block;
   padding: 10px 20px;
-  background-color: transparent;
-  color: white;
+  color: #006973;
   border: 2px solid white;
+  transition: background-color 0.5s, color 0.5s;
+}
+
+.signup-button{
+  background: #006973;
+  color: white;
+  position: relative;
+  display: inline-block;
+  padding: 10px 20px;
+  color: white;
+  border: 2px solid 006973;
   transition: background-color 0.5s, color 0.5s;
 }
 

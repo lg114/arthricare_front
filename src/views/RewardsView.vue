@@ -1,7 +1,7 @@
 <!--Rewards Page -->
 <script>
     import { ref, reactive, computed } from 'vue';
-    import { MoreHorizFilled, MedicationOutlined, CardGiftcardFilled, CardGiftcardOutlined, HomeRound, AccountCircleOutlined, AddCircleFilled, AddCircleOutlineFilled } from '@vicons/material';
+    import { LineHorizontal320Filled, Add20Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Filled, Person20Regular, AddCircle20Regular } from '@vicons/fluent'
     import { Icon } from '@vicons/utils';
     import SideBarContent from '@/component/Sidebar.vue';
     import { UserFilled } from '@element-plus/icons-vue';
@@ -14,6 +14,8 @@
             this.checkRewardsStatue();
         },
         setup(){
+            const activeBottom = ref(2);
+            const active = ref(0);
             //Tasks Handle
 
             //task list, rewrite into "const tasks = ref([]);" if it needs to connect to the backend, however
@@ -51,6 +53,8 @@
                 selectedStatus,
                 filteredTasks,
                 tasks,
+                activeBottom,
+                active
             }
         },
         data(){
@@ -208,16 +212,15 @@
 
         components: {
             Icon,
-            MoreHorizFilled,
-            MedicationOutlined, 
-            CardGiftcardFilled, 
-            CardGiftcardOutlined, 
-            HomeRound, 
-            AccountCircleOutlined,
-            AddCircleFilled,
-            AddCircleOutlineFilled,
-            SideBarContent,
-            UserFilled
+            LineHorizontal320Filled, 
+            Add20Filled, 
+            Home20Regular, 
+            BriefcaseMedical20Regular, 
+            Gift20Filled, 
+            Person20Regular,
+            UserFilled,
+            AddCircle20Regular,
+            SideBarContent
         }
     };
 </script>
@@ -226,8 +229,8 @@
     <div class="container">
         <el-container>
             <el-header class="header">
-                <Icon class="more" @click="drawer = true"><MoreHorizFilled /></Icon>
-                <Icon class="present"><CardGiftcardFilled /></Icon>
+                <Icon class="more" @click="drawer = true"><LineHorizontal320Filled /></Icon>
+                <Icon class="present"><Gift20Filled /></Icon>
                 <b class="pageTitle"> Rewards</b>
             </el-header>
         </el-container>
@@ -241,86 +244,121 @@
                         <text class="level">Level {{ user.level }}</text>
                     </div><br>
                     <div class="progressBar" id="progressBar">
-                        <el-progress 
-                        :percentage="calculatedPercentage"
-                        :text-inside="true"
-                        :stroke-width="20"
+                        <var-progress
+                        :value="calculatedPercentage"
+                        line-width="15"
+                        color="linear-gradient(135deg, #FFA174 0%, #D04300 100%)"
+                        track-color="#CFEEF5"
+                        label  
                         >
                         <span>{{ user.pointsNoLevel }}/{{ user.pointsTotal }}</span>
-                        </el-progress>
+                        </var-progress>
                         <div class="percentageProgress">
                             <text class="progressText">{{ calculatedPercentage}}%</text>
                         </div>
                     </div>
                 </div>
 
-                <el-tabs class="tabs">
-                        <el-tab-pane label="Puzzles">
-                            <text class="puzzleTitle">{{ puzzle.title }} ({{ puzzle.completed }}/{{ puzzle.total }})</text><br><br>
-                            <el-image class="puzzleImage" :fit="contain"></el-image><br><br>
-                            <div class="box">
-                                <text class="collectionTitle">My Collection</text><br>
-                                <el-image class="collectionImage" :fit="cover"></el-image>
-                                <el-image class="collectionImage" :fit="cover"></el-image>
-                                <el-image class="collectionImage" :fit="cover"></el-image><br>
-                                <Icon class="add"><AddCircleOutlineFilled /></Icon>
+                <var-tabs
+                class="tabs"
+                elevation
+                sticky
+                color="#006973"
+                active-color="#fff"
+                inactive-color="hsla(0, 0%, 100%, .6)"
+                v-model:active="active"
+                >
+                <var-tab>Puzzles</var-tab>
+                <var-tab>Tasks</var-tab>
+                <var-tab>Vouchers</var-tab>
+                </var-tabs>
+                <var-tabs-items class="tabItems" v-model:active="active">
+                    <var-tab-item>
+                        <h2 class="puzzleTitle">{{ puzzle.title }} ({{ puzzle.completed }}/{{ puzzle.total }})</h2>
+                        <el-image class="puzzleImage" :fit="contain"></el-image><br><br>
+                        <div class="box">
+                            <text class="collectionTitle">My Collection</text><br>
+                            <img src="@/assets/pic_1.jpg" class="collectionImage" :fit="cover"/>
+                            <img src="@/assets/pic_2.jpg" class="collectionImage" :fit="cover"/>
+                            <img src="@/assets/pic_3.png" class="collectionImage" :fit="cover"/>
+                            <Icon class="add"><AddCircle20Regular /></Icon>
+                        </div>
+                    </var-tab-item>
+                    <var-tab-item>
+                        <el-row class="main-row" justify="center">
+                    <el-col class="main-col">
+                        <el-select v-model="selectedStatus" placeholder="Select Status">
+                            <el-option label="All" value="all"></el-option>
+                            <el-option label="Incomplete" value="incomplete"></el-option>
+                            <el-option label="Completed" value="completed"></el-option>
+                        </el-select>
+                    </el-col>
+                    </el-row>
+
+                    <!--Displaying Tasks-->
+                    <el-row class = "main-row task-container" justify = "center">
+                        <el-col class = "main-col" v-for="task in filteredTasks" :key="task.id">
+                            <div class = "task">
+                                <div class = "task-content">
+                                    <span>{{ task.description }}</span>
+                                    <el-button round class = "missionBtn " :class="{ 'completed-btn': task.completed, 'disabled-btn': task.completed }" 
+                                        @click="toggleCompletion(task)" :disabled="task.completed">{{ task.completed ? 'Completed' : 'Complete' }}</el-button>
+                                </div>
                             </div>
-                        </el-tab-pane>
-                        <el-tab-pane label="Tasks" class="taskPanel">
-                            <el-row class="main-row" justify="center">
-                <el-col class="main-col">
-                    <el-select v-model="selectedStatus" placeholder="Select Status">
-                        <el-option label="All" value="all"></el-option>
-                        <el-option label="Incomplete" value="incomplete"></el-option>
-                        <el-option label="Completed" value="completed"></el-option>
-                    </el-select>
-                </el-col>
-            </el-row>
+                        </el-col>
 
-            <!--Displaying Tasks-->
-            <el-row class = "main-row task-container" justify = "center">
-                <el-col class = "main-col" v-for="task in filteredTasks" :key="task.id">
-                    <div class = "task">
-                        <div class = "task-content">
-                            <span>{{ task.description }}</span>
-                            <el-button round class = "missionBtn " :class="{ 'completed-btn': task.completed, 'disabled-btn': task.completed }" 
-                                @click="toggleCompletion(task)" :disabled="task.completed">{{ task.completed ? 'Completed' : 'Complete' }}</el-button>
-                        </div>
-                    </div>
-                </el-col>
-
-                <el-col class = "main-col">
-                    <div class = "task">
-                        <div class = "task-content">
-                            <span>More Missions Coming Soon</span>
-                        </div>
-                    </div>
-                </el-col>
-            </el-row>
-                        </el-tab-pane>
-                        <el-tab-pane label="Vouchers">Vouchers</el-tab-pane>
-                </el-tabs>
+                        <el-col class = "main-col">
+                            <div class = "task">
+                                <div class = "task-content">
+                                    <span>More Missions Coming Soon</span>
+                                </div>
+                            </div>
+                        </el-col>
+                    </el-row>
+                    </var-tab-item>
+                    <var-tab-item>
+                        To Be Determined
+                    </var-tab-item>
+                </var-tabs-items>
             </el-main>
-        <el-footer class="footer">
-                <router-link to = "/Home">
-                <Icon class="footerBtn" id="home"><HomeRound /></Icon>                    
-                </router-link>
-                <router-link to = "/MyMeds">
-                <Icon class="footerBtn" id="medication"><MedicationOutlined /></Icon>
-                </router-link>
-                <router-link to = "/AddMed">
-                    <Icon class="footerBtn" id="addMed"><AddCircleFilled /></Icon>
-                </router-link>
-                <Icon class="footerBtn" id="rewards"><CardGiftcardOutlined /></Icon>
-                <router-link to = "/UserProfile">
-                <Icon class="footerBtn" id="profile"><AccountCircleOutlined /></Icon>
-                </router-link><br>
-                <span id="homeText">Home</span>
-                <span id="medText">My Meds</span>
-                <span id="rewardsText">Rewards</span>
-                <span id="profileText">Profile</span>
-        </el-footer>
-        <el-drawer style="background-color: #1890FF;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
+            <var-bottom-navigation
+            class="footer"
+            v-model:active="activeBottom"
+            border="true"
+            safe-area="true"
+            :fab-props="{color:'#55BDCA'}"
+        >
+            <var-link href="/#/Home" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="homeButton">
+                <Icon  style="font-size: 38px;"><Home20Regular /></Icon><br>
+                <span>Home</span>
+            </var-bottom-navigation-item>
+            </var-link>
+            <var-link href="/#/MyMeds" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="medsButton">
+                <Icon style="font-size: 38px;"><BriefcaseMedical20Regular /></Icon><br>
+                <span>My Meds</span>
+            </var-bottom-navigation-item>
+            </var-link>
+            <var-link href="/#/Rewards" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="rewardsButton">
+                <Icon style="font-size: 38px;"><Gift20Filled /></Icon><br>
+                <span>Rewards</span>
+            </var-bottom-navigation-item>
+            </var-link>
+            <var-link href="/#/UserProfile" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="profileButton">
+                <Icon style="font-size: 38px;"><Person20Regular /></Icon><br>
+                <span>Profile</span>
+            </var-bottom-navigation-item>    
+            </var-link>
+            <template #fab>
+                <var-link href="/#/AddMed" style="color: white;">
+            <Icon class="addButton"><Add20Filled /></Icon>
+            </var-link>
+            </template>
+        </var-bottom-navigation>
+        <el-drawer style="background-color: #006973;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
             <!--Action是模拟接口，与后端连接时更换-->
                 <div class = "sidebar">
                     <el-upload action="" :show-file-list="false">

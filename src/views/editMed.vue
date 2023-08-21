@@ -363,7 +363,7 @@ text-align: center;
   align-items: center;
   height: 100%;
   width:100%;
-  background-color:#55BBC9;
+  background-color:#006973;
   overflow: auto;
   flex-direction: column;
   margin: 0 ;
@@ -489,7 +489,7 @@ input[type="time"] {
   display: inline-block;
   padding: 10px 20px;
   background-color: transparent;
-  background-color:#55BBC9;
+  background-color:#006973;
   border: 2px solid white;
   transition: background-color 0.5s, color 0.5s;
   }

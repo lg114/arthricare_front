@@ -13,8 +13,8 @@
 
       mounted() {
           this.themeColor = ref({
-              'main-color': '#1890ff',
-              'main-font-color': '#1890ff',
+              'main-color': '#006973',
+              'main-font-color': '#01385C',
               'bg-color': 'white',
               // 'disabled-font-color': 'yellow'
           });
