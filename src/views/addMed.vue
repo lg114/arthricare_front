@@ -507,89 +507,91 @@ option {
 <script>
 import VueDatePicker1 from '@vuepic/vue-datepicker';
 import VueDatePicker2 from '@vuepic/vue-datepicker';
-
-// import DatePicker from 'vue-datepicker-next';
-// import 'vue-datepicker-next/index.css';
-// import 'vue-datepicker-next/locale/es';
+import axios from 'axios';
 
 export default {
-  components: { VueDatePicker1 , VueDatePicker2},
+  components: { VueDatePicker1 , VueDatePicker2 },
   computed: {
     changeToTrue() {
-      return this.$store.changeToTrue;
+      return this.$store.state.changeToTrue;
     },
     
   },
   data() {
     return {
-      timeInput1: this.getCurrentTime(),
-      timeInput2: this.getCurrentTime(),
-      timeInput3: this.getCurrentTime(),
+      timeInput1: '',
+      timeInput2: '',
+      timeInput3: '',
+
+      /// don's Edit
+      timeInputs:[],
 
       selectedDate: null, 
       counter: 0,
-      selectedCategory: "Pill",
-      selectedFrequency:  "Once a Day",
-      selectedStartDate: this.getCurrentDate(),
-      selectedEndDate: this.getCurrentDate(),
+      selectedCategory: null,
+      selectedFrequency: null,
+      selectedStartDate: null,
+      selectedEndDate: null,
 
       dateFormat: 'yyyy-MM-dd',
-      Meds : ["Abatacept","Adalimumab",
-      "Allopurinol",
-      "Ambrisentan",
-      "Anakinra",
-      "Anifrolumab",
-      "Apremilast",
-      "Azathioprine",
-      "Baricitinib",
-      "Biosimilars",
-      "Bisphosphonates (Oral)",
-      "Bisphosphonates (Intravenous/IV)",
-      "Bosentan",
-      "Cannabinoids - Medicinal Cannabis",
-      "Certolizumab",
-      "Colchicine",
-      "Ciclosporin",
-      "Cyclophosphamide",
-      "Denosumab",
-      "Duloxetine",
-      "Etanercept",
-      "Febuxostat",
-      "Glucosamine",
-      "Golimumab",
-      "Goserelin",
-      "Guselkumab",
-      "Hyaluronic Acid",
-      "Hydroxychloroquine",
-      "Iloprost",
-      "Infliximab",
-      "Ixekizumab",
-      "IV Immunuglobulin",
-      "Leflunomide",
-      "Methotrexate",
-      "Self-Injecting Methotrexate for the Treatment of Arthritis",
-      "Mycophenolate",
-      "NSAIDs",
-      "Opioids",
-      "Paracetamol",
-      "Prednisolone",
-      "Pregabalin",
-      "Probenecid",
-      "Raloxifene",
-      "Rituximab",
-      "Romosozumab",
-      "Secukinumab",
-      "Sulfasalazine",
-      "Tacrolimus",
-      "Teriparatide",
-      "Tocilizumab",
-      "Tofacitinib",
-      "Ustekinumab",
-      "Upadacitinib"],
+      Meds : ["Abatacept",
+    "Adalimumab",
+    "Allopurinol",
+    "Ambrisentan",
+    "Anakinra",
+    "Anifrolumab",
+    "Apremilast",
+    "Azathioprine",
+    "Baricitinib",
+    "Biosimilars",
+    "Bisphosphonates (Oral)",
+    "Bisphosphonates (Intravenous/IV)",
+    "Bosentan",
+    "Cannabinoids - Medicinal Cannabis",
+    "Certolizumab",
+    "Colchicine",
+    "Ciclosporin",
+    "Cyclophosphamide",
+    "Denosumab",
+    "Duloxetine",
+    "Etanercept",
+    "Febuxostat",
+    "Glucosamine",
+    "Golimumab",
+    "Goserelin",
+    "Guselkumab",
+    "Hyaluronic Acid",
+    "Hydroxychloroquine",
+    "Iloprost",
+    "Infliximab",
+    "Ixekizumab",
+    "IV Immunuglobulin",
+    "Leflunomide",
+    "Methotrexate",
+    "Self-Injecting Methotrexate for the Treatment of Arthritis",
+    "Mycophenolate",
+    "NSAIDs",
+    "Opioids",
+    "Paracetamol",
+    "Prednisolone",
+    "Pregabalin",
+    "Probenecid",
+    "Raloxifene",
+    "Rituximab",
+    "Romosozumab",
+    "Secukinumab",
+    "Sulfasalazine",
+    "Tacrolimus",
+    "Teriparatide",
+    "Tocilizumab",
+    "Tofacitinib",
+    "Ustekinumab",
+    "Upadacitinib"],
       Meds2:[],
-
-      //always empty
       Meds3:[],
+
+      // pass data to MyMed
+
 
       category: [
         { id: 1, title: 'Pill' },
@@ -649,6 +651,7 @@ export default {
          }
       },
       
+
       //show Med in list
     handleItemClick(Med) {
       this.selectedMed = Med;
@@ -656,51 +659,96 @@ export default {
       this.$refs.MedName.value = Med;
       this.$refs.MedName.blur();
       this.Meds2=this.getResult;
+      this.getReminderTimes(); // don's code. 
       console.log(Med);
+
     },
-
-
     
     toggleOptions() {
-      this.$refs.MedName.focus();
       this.showMed = !this.showMed;
+      this.$refs.MedName.focus();
     },
 
-    getCurrentTime() {
-      const now = new Date();
-      const formattedTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      console.log(formattedTime);
-      return formattedTime;
+saveDataAndmedicineData() {
+      this.saveData();
+      this.medicineData();
     },
 
-    getCurrentDate() {
-      const now = new Date();
-      const formattedTime = now.toISOString().slice(0, 10);
-      console.log(formattedTime);
-      return formattedTime;
+    getReminderTimes() {
+      this.timeInputs = []; // Clear the timeInputs array
+    if (this.selectedFrequency === 'Once a Day') {
+      this.timeInputs.push(this.timeInput1);
+    } else if (this.selectedFrequency === 'Twice a Day') {
+      this.timeInputs.push(this.timeInput1, this.timeInput2);
+    } else if (this.selectedFrequency === 'Three times a Day') {
+      this.timeInputs.push(this.timeInput1, this.timeInput2, this.timeInput3);
+    }
+      console.log(this.timeInputs);
     },
+
+    // New function for medicineData
+  medicineData() {
+  this.getReminderTimes();
+  const reminderTimes = [];
+
+    // Now call this.$nextTick() after updating the array
+  this.$nextTick(() => {
+    if (this.$refs.timePicker1) {
+      reminderTimes.push(this.$refs.timePicker1.value);
+    }
+    if (this.$refs.timePicker2) {
+      reminderTimes.push(this.$refs.timePicker2.value);
+    }
+    if (this.$refs.timePicker3) {
+      reminderTimes.push(this.$refs.timePicker3.value);
+    }
+
+
+  var loggedInUser = sessionStorage.getItem('loggedInUser');
+    if (loggedInUser) {
+      loggedInUser = JSON.parse(loggedInUser);
+    } else {
+      console.log ('error, user not loggedin');
+    }
+
+    
+    console.log ('TING TING IS HERE',loggedInUser.id);
+   
+
+/////////////////////////////////////////////////////////////
+    const dataObject = {
+      userId: loggedInUser.id,
+      medicationName: this.$refs.MedName.value,
+      medicationCategory: this.selectedCategory,
+      frequency: this.selectedFrequency,
+      dosageUnit: this.$refs.Unit.innerHTML,
+      startDate: this.selectedStartDate,
+      endDate: this.selectedEndDate,
+      note: this.$refs.Note.value,
+      reminderTimes: JSON.stringify(this.timeInputs),
+    };
+
+    console.log('timereminder test', JSON.stringify(this.timeInputs))
+
+    const backendurl = 'http://localhost:8181/medications/create';
+
+    axios
+      .post(backendurl, dataObject)
+      .then((response) => {
+        console.log('Data sent successfully', response);
+      })
+      .catch((error) => {
+        console.log('Data sending failed', error);
+      });
+  }); // Here
+}, //
+
+ watch: {
+    selectedFrequency: 'getReminderTimes',
+  },
 
     // pass value to MyMed
-    saveData() {
-      // const dataObject = {
-      //   Field: this.$refs.Field.value,
-      //   MedName: this.$refs.MedName.value,
-      //   Category: this.$refs.Category.value,
-      //   Frequency:this.$refs.Frequency.value,
-      //   StartDate: this.$refs.StartDate.value ,
-      //   EndDate: this.$refs.EndDate.value,
-      //   Note: this.$refs.Note.value,
-
-      //  };
-
-        //  this.$router.push({
-        //       path: '/MyMeds2',
-        //       query: {
-        //         Field: this.$refs.Field.value,
-        //         MedName: this.$refs.MedName.value,
-        //         Category: this.$refs.Category.value,
-        //     }
-        //   });
+     saveData() {
         store.commit('changeToTrue');
         this.$router.push({
               path: '/MyMeds',
@@ -708,7 +756,7 @@ export default {
                 MedName: this.$refs.MedName.value,
                 Category: this.selectedCategory,
                 Frequency:this.selectedFrequency,
-                Unit:this.$refs.Unit.value,
+                Unit:this.$refs.Unit.innerHTML,
                 StartDate: this.selectedStartDate ,
                 EndDate: this.selectedEndDate,
                 Note: this.$refs.Note.value,
@@ -721,15 +769,8 @@ export default {
            console.log(this.selectedEndDate)
 
     }},
-  mounted(){
-            document.title = 'Add Medication';
-           // this.selectValue();
 
-  
-        },
-        setup(){
-        
-        }
 }
+
 
 </script>
