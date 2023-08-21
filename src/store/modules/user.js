@@ -89,7 +89,7 @@ const actions = {
                     ElMessage.error('Invalid email format');
                     return;
                 }
-                const response = await axios.put('http://localhost:8181/api/updatePassword', {
+                const response = await axios.put('http://localhost:8181/api/updatePasswordbyemail', {
                     email: email,
                     password: newPassword,
                 });
