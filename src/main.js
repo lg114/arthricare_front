@@ -11,6 +11,7 @@ import '@varlet/ui/es/style';
 import store from './store';
 import VueHashCalendar from 'vue3-hash-calendar';
 import 'vue3-hash-calendar/es/index.css';
+import '@varlet/ui/es/button/style/index';
 
 const app = createApp(App);
 

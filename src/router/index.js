@@ -12,9 +12,8 @@ import UserProfilePage from '@/views/UserProfile.vue';
 import EditMedPage from '@/views/editMed.vue';
 import MyMedsPage from '@/views/MyMedsView.vue';
 import RewardsPage from '@/views/RewardsView.vue';
-
-
-
+import EducationPage from '@/views/educationView.vue';
+import SearchPage from '@/views/searchView.vue';
 
 const router  = createRouter({
     history : createWebHashHistory(),

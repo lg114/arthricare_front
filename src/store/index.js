@@ -1,20 +1,32 @@
 import {createStore} from "vuex";
 import user from '@/store/modules/user.js';
 import reminder from '@/store/modules/reminder.js'
+export default createStore({
+    state:{
+        navigation:false,
+        MedArray: []
+        
+    },
+    getters:{
 
-const store = createStore({
-  state: {
-    ExperiedMedArray: [],
-    unExperiedMedArray: [],
-    homePage_ReminderArray: []
-  },
-  mutations: {
-    // 这里可以定义 mutations 来修改这两个数组的值，例如添加、删除等操作
-  },
-  modules: {
-    user,
-    reminder,
-  }
-});
+    },
+    mutations:{
+      changeToFalse(state){
+      state.navigation = false;
+    },
+    changeToTrue(state){
+      state.navigation = true;
+    },
+    setArray(state, newArray) {
+      state.MedArray = newArray;
+    },
+    },
+    actions:{
 
-export default store;
+    },
+    modules:{
+      user,
+      reminder,
+
+    }
+})
