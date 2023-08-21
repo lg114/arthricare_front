@@ -14,9 +14,9 @@
       
     <div class = "container-flex" style="height:100% ; width:50% ;">
         <!-- <router-link to = "/">
-          <el-icon class = "backBtn"><ArrowLeftBold/></el-icon>
+          <el-icon class = "backBtn"><ArrowLeftBolkBd/></el-icon>
         </router-link> -->
-      <router-link to = "/">
+      <router-link to = "/MyMeds">
         <var-icon class="backBtn" name="chevron-left" :size="42" color="white"/>
       </router-link> 
 
