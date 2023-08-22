@@ -56,12 +56,12 @@
                         avator: '@/assets/friend_2.png',
                         username: 'Timothy',
                         timestamp: new Date(),
-                        title: 'This is a title',
-                        content: "ABC gfvgh frews fr fr f frfrw aafe afe fr dwe ffff wgrwf gr g ytgfd cvkuytg fvghytgf dcvkuy tgfv g h ytgf dcvk uytgfvg hytgf dcvku ytgf vghy tgfd cvkuytg fvg hyt gfdcvk uy tgf vghytg fdc v.",
+                        title: '“Morning” stiffness worse in the middle of the night?',
+                        content: "While I am stiff for an hour or two in the morning, the stiffness seems much worse in the middle of the night or if I get up really early. Last night I almost bit it when I got up to go to the washroom because my brain headed in the direction of the bathroom but my hips and knees were locked and didn't want to move. Sometimes I walk like a penguin in the middle of the night (but not the cute ones!) due to feet and ankle stiffness but in the morning it isn't quite so bad. Anyone else find this?",
                         expanded: false,
-                        numberOfLikes: '6',
-                        numberOfComments: '4',
-                        topic: 'General',
+                        numberOfLikes: '14',
+                        numberOfComments: '8',
+                        topic: 'Symptoms',
                         images: [
                             { url: '@/assets/postImage5.png', alt: 'postImage5 for postID 2' }, 
                             { url: '@/assets/postImage6.png', alt: 'postImage6 for postID 2' },
@@ -73,12 +73,12 @@
                         avator: '@/assets/user_avatar.png',
                         username: 'Sarah',
                         timestamp: new Date(),
-                        title: 'This is a title',
-                        content: "ghju fgufj fgrfd dfgv ed fgf f f gea wre poik ijh jh fr.",
+                        title: 'When to resume mtx',
+                        content: "I started mtx just over three weeks ago, took the first two weekly doses then got sick with Norovirus. Next dose was due on Saturday but pharmacist recommended not taking it until I'm 'feeling completely better.' Although the diarrhoea stopped by Thursday I still feel a bit washed out, shall I just take the next dose now I'm clear of the virus?",
                         expanded: false,
                         numberOfLikes: '3',
                         numberOfComments: '2',
-                        topic: 'Symptoms',
+                        topic: 'Treatment',
                         images: [
                             { url: '@/assets/postImage8.png', alt: 'postImage6 for postID 3' },
                             { url: '@/assets/postImage9.png', alt: 'postImage7 for postID 3' }
@@ -89,12 +89,12 @@
                         avator: '@/assets/user_avatar.png',
                         username: 'Anthony',
                         timestamp: new Date(),
-                        title: 'This is a title',
+                        title: 'This is a title for the General post',
                         content: "ghju fgufj fgrfd dfgv ed fgf f f gea.",
                         expanded: false,
                         numberOfLikes: '8',
                         numberOfComments: '6',
-                        topic: 'News',
+                        topic: 'General',
                         images: [
                             { url: '@/assets/postImage1.png', alt: 'postImage1 for postID 4' }
                         ],
@@ -104,15 +104,13 @@
                         avator: '@/assets/user_avatar.png',
                         username: 'Anthony',
                         timestamp: new Date(),
-                        title: 'This is a title',
+                        title: 'This is a title for the News post',
                         content: "ghju fgufj fgrfd dfgv ed fgf f f gea.",
                         expanded: false,
                         numberOfLikes: '8',
                         numberOfComments: '6',
                         topic: 'News',
-                        images: [
-                            { url: '', alt: 'none for postID 5' }
-                        ],
+                        images: [],
                     }
                     // Add more posts here
                 ],   
@@ -172,13 +170,21 @@
                 // Navigate to a new page to view the whole post content
                 this.$router.push('/PostDetail');
             },
-/*
             // SATR: Filter the posts by a topic
-            filterByTopic(topic){
-
+            filterByTopic(topicID){
+                if(topicID==="1"){
+                    // Only display the posts with General topic
+                }else if(topicID==="2"){
+                    // Only display the posts with Symptoms topic
+                }
+                else if(topicID==="3"){
+                    // Only display the posts with Lifestyle topic
+                }
+                else if(topicID==="4"){
+                    // Only display the posts with News topic
+                }
             }
             // END: Filter the posts by a topic
-*/
         },
 
 //========= END: Unique methods for Community Page
@@ -206,10 +212,10 @@
             <el-main class="main">
                 <div id="filterSection">
                     <div class="topicFilter">
-                        <input type="radio" checked id="1" name="topic" class="topic"><label for="1">General</label>
-                        <input type="radio" id="2" name="topic" class="topic"><label for="2">Symptoms</label>
-                        <input type="radio" id="3" name="topic" class="topic"><label for="3">Lifestyle</label>
-                        <input type="radio" id="4" name="topic" class="topic"><label for="4">News</label>
+                        <input type="radio" checked id="1" name="topic" class="topic" @click="filterByTopic(id)"><label for="1">General</label>
+                        <input type="radio" id="2" name="topic" class="topic" @click="filterByTopic(id)"><label for="2">Symptoms</label>
+                        <input type="radio" id="3" name="topic" class="topic" @click="filterByTopic(id)"><label for="3">Lifestyle</label>
+                        <input type="radio" id="4" name="topic" class="topic" @click="filterByTopic(id)"><label for="4">News</label>
                     </div>
 
                     <div>
@@ -232,11 +238,15 @@
                         <button @click.stop="togglePostExpansion(post)" class="seeMoreLessButton">
                             {{ post.expanded ? "Show less" : "...See more" }}
                         </button><br>
-                        
-                        <div v-for="(image, imageIndex) in post.images" :key="imageIndex" class="imagesContainer">
-                            <img :src="image.url" :alt="image.alt" class="postedFourImage"/>
-                            <img src="">
+
+                        <!-- NOTE: START: The css code for this section has troubles -->
+                        <div class="image-scroll-container">
+                            <span v-for="(image, imageIndex) in post.images" :key="imageIndex">
+                                <img src="@/assets/postImage3.png" :alt="image.alt" class="aImage"/> 
+                            </span>    
                         </div>
+                        <!-- NOTE: END: The css code for this section has troubles -->
+                        
                     </div>
                     <hr style="width: 200%">
                 </div>
