@@ -1,0 +1,102 @@
+/* Edit Profile Css */
+.header{
+    display: flex;
+    align-items: center;
+    color: white;
+    width: 100%;
+    
+}
+.back{
+    position: absolute;
+    left: 20px;
+    top:2.5%;
+    font-size: 30px;
+    color: white;
+}
+.titleIcon{
+    position:absolute;
+    left: 30%;
+    top:2.5%;
+    font-size: 30px;
+}
+.pageTitle{
+    position:absolute;
+    left: 40%;
+    top:3%;
+    font-size: 20px;
+    white-space: nowrap;
+}
+.container{
+    display: grid;
+    flex-direction: column;
+    place-items: center;
+    height: 100vh;
+    background-color: #006973;
+    overflow-y: auto;
+}
+.main{
+    display: grid;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    height: 92.5vh;
+    padding-bottom: 80px;
+    background-color: white;
+}
+/* input forms */
+.input-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color:white;
+    margin-bottom: 100px;
+    text-align: left;
+}
+.input{
+    color: #006973;
+    background-color: white;
+    border: 3px solid #006973;
+    width: 300px;
+    height: 40px;
+    border-radius: 10px;
+    margin-top: 10px;
+    padding-left: 10px;
+    outline: none;
+}
+.label-container{
+    margin-right: 10px;
+}
+.input-row{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    outline: none;
+    text-align: left;
+    justify-content: center;
+    margin: 8px;
+}
+.row-input{
+    color: #006973;
+    background-color: white;
+    border: 3px solid #006973;
+    width: 317px;
+    height: 45px;
+    border-radius: 10px;
+    margin: 3.5px;
+    padding-left: 10px;
+    outline: none;
+}
+label{
+    color: #006973;
+}
+::placeholder{
+    color: #006973;
+}
+.switchBtn{
+    padding-left: 10px;
+}
+.buttons{
+    height: 45px;
+    border-radius: 10px;
+}

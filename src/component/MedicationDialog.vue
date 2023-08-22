@@ -55,7 +55,7 @@
 <style scoped>
     /* -------------------------------- Medication Display Container --------------------------------*/
     .medicationList{
-        color:#1890FF;
+        color:#006973;
         font-weight: bold;
         font-size: larger;
         margin-top: 10px;

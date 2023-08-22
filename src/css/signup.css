@@ -5,7 +5,7 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #1890FF;
+    background-color: #CFEEF5;
     overflow: hidden;
 }
 .content-container{
@@ -22,7 +22,7 @@
 .backBtn{
     margin: -170px;
     font-size: 30px;
-    color:#ffffff;
+    color:#006973;
     position: sticky;
     top: 30px;
 }
@@ -37,14 +37,14 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color:#FFFFFF;
+    color:#006973;
     margin-bottom: 100px;
     text-align: left;
 }
 .input{
-    color: white;
-    background-color: #1890FF;
-    border: 2px solid white;
+    color: #006973;
+    background-color: white;
+    border: 2px solid #006973;
     width: 300px;
     height: 40px;
     border-radius: 10px;
@@ -65,15 +65,18 @@
     margin: 8px;
 }
 .row-input{
-    color: white;
-    background-color: #1890FF;
-    border: 2px solid white;
+    color: #006973;
+    background-color: white;
+    border: 2px solid #006973;
     width: 317px;
     height: 45px;
     border-radius: 10px;
     margin: 3.5px;
     padding-left: 10px;
     outline: none;
+}
+.switchBtn{
+    padding-left: 10px;
 }
 /* -------------------------------- Component -------------------------------------------------*/
 
@@ -99,7 +102,7 @@
         font-size: 30px;
         margin: -170px;
         margin-top: 150px;
-        color:#ffffff;
+        color:#006973;
     }
 
     .buttons{
@@ -119,7 +122,7 @@
 /* -------------------------------- Small Screen -------------------------------------------*/
 /* placeholder */
 ::placeholder{
-    color: #FFFFFF;
+    color: #006973;
 }
 /* -------------------------------- Buttons -------------------------------------------------*/
 .buttons{
@@ -135,20 +138,19 @@
     margin-bottom: 10px;
     border-radius: 10px;
     font-weight: 700;
-    background: #FFFFFF;
-    color: #1890FF;
+    background: #006973;
+    color: #006973;
     position: relative;
     display: inline-block;
     padding: 10px 20px;
-    background-color: transparent;
     color: white;
-    border: 2px solid white;
+    border: 2px solid #006973;
     transition: background-color 0.5s, color 0.5s;
 }
 
 .login-button:hover{
     background-color: #FFFFFF;
-    color: #1890FF;
+    color: #006973;
     transform: translateZ(10px);
 }
 
@@ -166,7 +168,7 @@
 
 .login-button:hover{
     background-color: #FFFFFF;
-    color: #1890FF;
+    color: #006973;
     border-radius: 10px;
 }
 

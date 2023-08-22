@@ -12,8 +12,10 @@ import UserProfilePage from '@/views/UserProfile.vue';
 import EditMedPage from '@/views/editMed.vue';
 import MyMedsPage from '@/views/MyMedsView.vue';
 import RewardsPage from '@/views/RewardsView.vue';
-//import EducationPage from '@/views/educationView.vue';
-//import SearchPage from '@/views/searchView.vue';
+import EducationPage from '@/views/educationView.vue';
+import SearchPage from '@/views/searchView.vue';
+import EditProfilePage from '@/views/EditProfile.vue';
+import EducationArticlePage from '@/views/EducationArticle.vue';
 
 const router  = createRouter({
     history : createWebHashHistory(),
@@ -94,6 +96,39 @@ const router  = createRouter({
                 requiresAuth: true
             }
         },
+        {
+            path: '/Education',
+            name: 'Education',
+            component: EducationPage,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/SearchArticle',
+            name: 'SearchArticle',
+            component: SearchPage,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/EducationArticle',
+            name: 'EducationArticle',
+            component: EducationArticlePage,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/EditProfile',
+            name: 'EditProfile',
+            component: EditProfilePage,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        
     ]
 });
 

@@ -95,7 +95,7 @@
                                     <div style="display: flex; align-items: center; margin-left: 15px;">
                                         <input type="number" name="weight" id="weight" class="input" min="0" step="any" v-model="weight" placeholder="Please enter your weight" style="width: 232px;"/>
                                         <el-switch v-model = "weightUnit" inline-prompt active-text = "kg" size = "large" inactive-text="lb" width="60" class = "switchBtn"
-                                        style="--el-switch-on-color: #85cc13; --el-switch-off-color: #ff4949;"/>
+                                        style="--el-switch-on-color: #55BDCA; --el-switch-off-color: #F27B42;"/>
                                     </div>
                                 </div>
 
@@ -104,7 +104,7 @@
                                     <div style="display: flex; align-items: center; margin-left: 15px;">
                                         <input type="number" name="height" id="height" class="input" min="0" step="any" v-model="height" placeholder="Please enter your height" style="width: 232px;"/>
                                         <el-switch v-model = "heightUnit" inline-prompt active-text = "cm" size = "large" inactive-text="feet" width="60" class = "switchBtn"
-                                        style="--el-switch-on-color: #85cc13; --el-switch-off-color: #ff4949;"/>
+                                        style="--el-switch-on-color: #55BDCA; --el-switch-off-color: #F27B42;"/>
                                     </div>
                                 </div>
 

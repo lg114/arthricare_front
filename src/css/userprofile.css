@@ -3,31 +3,34 @@
     display: flex;
     align-items: center;
     color: white;
-    width: 100%;
-    
+    text-align: center;
+    margin-right: 100px;
+    height: 60px;
 }
 .more{
     position: absolute;
-    left: 20px;
+    left: 5%;
     top:2.5%;
     font-size: 30px;
     color: white;
 }
 .user{
-    position:absolute;
-    left: 30%;
+    position: relative;
     font-size: 30px;
+    margin-right: 5px;
+    left: 45%;
 }
 .pageTitle{
-    position:absolute;
-    left: 40%;
+    position:relative;
     font-size: 20px;
+    left: 45%;
+    top: -5%;
     white-space: nowrap;
 }
 .edit{
     position: absolute;
-    right:20px;
-    top:20px;
+    right:5%;
+    top:2.5%;
     font-size: 30px;
 }
 .container{
@@ -35,7 +38,7 @@
     flex-direction: column;
     place-items: center;
     height: 100vh;
-    background-color: #1890FF;
+    background-color: #006973;
     overflow-y: auto;
 }
 .main{
@@ -43,38 +46,45 @@
     align-items: center;
     height: 90vh;
     padding-bottom: 80px;
+    background-color: white;
 }
 h2{
     text-align: center;
-    color: white;
+    color: #006973;
+    margin-bottom: 0px;
 }
 p{
     text-align: center;
-    color: white;
+    color: #006973;
+    margin-top: 0px;
+    margin-bottom: 50px;
 }
 .avatar{
     display: flex;
-    align-items: center;
     width: 130px;
     height: 130px;
-    margin-left: 115px;
-    border: 3px solid white;
+    margin: auto;
+    border: 3px solid #55BDCA;
     box-shadow: 2px 2px 2px rgb(83, 83, 83);
 }
 .box{
-    width: 350px;
+    width: 400px;
     height: 110px;
-    background-color: white;
-    border-radius: 20px;
+    background-color: #CFEEF5;
+    border-radius: 10px;
     box-shadow: 2px 2px 2px rgb(83, 83, 83);
     margin-left: 5px;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    padding-top: 10px;
+
 }
 .boxTitle{
     padding-left: 15px;
+    color: #006973;
+    font-weight: 800;
 }
 .collectionImage{
-    width: 80px;
+    width: 90px;
     height: 60px;
     margin-left: 10px;
     float: left;
@@ -87,13 +97,14 @@ p{
     float:left;
 }
 .postText{
-    margin-left: 20px;
+    padding-left: 15px;
+    color: #006973;
 }
 .add{
-    font-size: 40px;
-    color: #1890FF;
-    float:right;
-    margin-right:5px;
+    float: right;
+    padding-right: 15px;
+    font-size: 50px;
+    color: #F27B42;
 }
 .image{
     height: 20px;
@@ -102,57 +113,31 @@ p{
     padding-right: 5px;
     padding-left: 5px;
 }
-.footer{
-    background-color: white;
-    position:fixed;
-    bottom:0;
-    height: 80px;
-    width:100%;
-    text-align: center;
-    white-space: nowrap;
-    box-shadow: inset 0 0 5px grey;
-}
 .sidebar{
         display: flex;
         align-items: center;
         flex-direction: column;
         padding: 20px;
     }
-#addMed{
-    color: #1890FF;
-}
-#profile{
-    color: #1890FF;
-}
-.footerBtn{
-    font-size: 45px;
-    color: gray;
-    height: 50px;
-    width: 50px;
-    padding-top: 8px;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-#homeText{
-    position: relative;
-    color: gray;
-    right: 50px;
-}
-#medText{
-    position: relative;
-    color: gray;
-    right: 35px;
-}
-#rewardsText{
-    position: relative;
-    color:gray;
-    left: 35px;
-}
-#profileText{
-    position: relative;
-    color: #1890FF;
-    left: 48px;
-}
+    /* footer */
+    .bottomButton{
+        padding-left:20px;
+        padding-right: 20px;
+    }
+    .footer{
+        display: inline;
+        position: fixed;
+        text-align: center;
+        bottom: 0;
+        height:80px;
+        --bottom-navigation-item-font-size: 13px;
+        --bottom-navigation-item-active-color: #55BDCA;
+        white-space: nowrap;
+    }  
+    .addButton{
+        font-size: 35px;
+    }
+
 .uploaded-avatar {
         width: 100%;
         height: 100%;

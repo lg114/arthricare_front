@@ -2,8 +2,7 @@
 <script>
     import { ref,reactive} from 'vue';
     import { UserFilled } from '@element-plus/icons-vue';
-    import { HomeRound, MedicationOutlined, AddCircleFilled, CardGiftcardOutlined, AccountCircleOutlined} from '@vicons/material';
-    import { AlignLeft } from '@vicons/tabler'
+    import { LineHorizontal320Filled, Add20Filled, Home20Filled, BriefcaseMedical20Regular, Gift20Regular, Person20Regular } from '@vicons/fluent'
     import { Icon } from '@vicons/utils';
     import HorizontalCalendar from '@/component/calendar.vue';
     import SideBarContent from '@/component/Sidebar.vue';
@@ -18,6 +17,10 @@
             //默认当天日期
             const today = new Date(); 
             this.onDateSelected(today);
+        },
+        setup(){
+            const active = ref(0);
+            return {active};
         },
         data(){
             return{
@@ -160,12 +163,12 @@
         },
         components:{
             UserFilled,
-            HomeRound,  
-            MedicationOutlined, 
-            AddCircleFilled, 
-            CardGiftcardOutlined, 
-            AccountCircleOutlined,
-            AlignLeft,
+            LineHorizontal320Filled, 
+            Home20Filled, 
+            BriefcaseMedical20Regular, 
+            Gift20Regular, 
+            Person20Regular,
+            Add20Filled,
             Icon,
             HorizontalCalendar,
             SideBarContent,
@@ -178,7 +181,7 @@
     <div class = "container">
         <el-container class = "content-container">
             <el-header class = "header">
-                <Icon class="more" @click="drawer = true"><AlignLeft /></Icon>
+                <Icon class="more" @click="drawer = true"><LineHorizontal320Filled /></Icon>
                 <span class = "username">Welcome to ArthriCare, {{ loggedInUser ? loggedInUser.name : 'Guest' }}</span>
             </el-header>
             <el-main class = "main">
@@ -188,14 +191,14 @@
                     <MedicationDialog :medicationList="medicationList" :selectedMedication="selectedMedication" :takenMedTime="selectedMedication.takenMedTime"  v-if="medicationList && medicationList.length > 0" @show-medication-popup="onShowMedicationPopup"/>
                 </template>
                 <template v-else>
-                    <div style = "text-align: center; padding: 20px; color:#1890FF; font-size: larger;">
+                    <div style = "text-align: center; padding: 20px; color:#006973; font-size: larger;">
                         <p><b>No meds on today...</b></p>
                     </div>
                 </template>
                 <!-------------------------------- Dialog -------------------------------->
                 <el-dialog  v-model = "dialogVisible" :title="dialogTitle" center align-center width="90%" round>
                     <template #header>
-                        <span style="color: #1890FF; font-weight: bold; font-size: larger;">{{ dialogTitle }}</span>
+                        <span style="color: #006973; font-weight: bold; font-size: larger;">{{ dialogTitle }}</span>
                     </template>
                     <div style = "text-align: center;">
                         <el-button type="primary" @click="onTime(medication)" round>On Time</el-button>
@@ -206,7 +209,7 @@
                 <!------------------------ Dialog for medication time picker ----------------->
                 <el-dialog v-model="showTimePicker" title="Set Time" @close="onTimePickerClose" center align-center width="90%">
                     <template #header>
-                        <span style="color: #1890FF; font-weight: bold; font-size: larger;">{{ dialogTitle }}</span>
+                        <span style="color: #006973; font-weight: bold; font-size: larger;">{{ dialogTitle }}</span>
                     </template>
                     <div style = "text-align: center;">
                         <el-time-picker  v-if="showTimePicker" v-model="medicationTime" placeholder="Select time" format="HH:mm"></el-time-picker>                        
@@ -221,26 +224,44 @@
             </el-main>
 
         </el-container>
-        <el-footer class="footer">
-                <Icon class="footerBtn" id="home"><HomeRound /></Icon>                  
-                <router-link to = "/MyMeds">
-                <Icon class="footerBtn" id="medication"><MedicationOutlined /></Icon>
-                </router-link>
-                <router-link to = "/AddMed">
-                    <Icon class="footerBtn" id="addMed"><AddCircleFilled /></Icon>
-                </router-link>
-                <router-link to = "/Rewards">
-                <Icon class="footerBtn" id="rewards"><CardGiftcardOutlined /></Icon>
-                </router-link>
-                <router-link to = "/UserProfile">
-                <Icon class="footerBtn" id="profile"><AccountCircleOutlined /></Icon>
-                </router-link><br>
-                <span id="homeText">Home</span>
-                <span id="medText">My Meds</span>
-                <span id="rewardsText">Rewards</span>
-                <span id="profileText">Profile</span>
-        </el-footer> 
-        <el-drawer style="background-color: #1890FF;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
+        <var-bottom-navigation
+            class="footer"
+            v-model:active="active"
+            border="true"
+            safe-area="true"
+            :fab-props="{color:'#55BDCA'}"
+        >
+            <var-link href="/#/Home" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="homeButton">
+                <Icon  style="font-size: 38px;"><Home20Filled /></Icon><br>
+                <span>Home</span>
+            </var-bottom-navigation-item>
+            </var-link>
+            <var-link href="/#/MyMeds" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="medsButton">
+                <Icon style="font-size: 38px;"><BriefcaseMedical20Regular /></Icon><br>
+                <span>My Meds</span>
+            </var-bottom-navigation-item>
+            </var-link>
+            <var-link href="/#/Rewards" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="rewardsButton">
+                <Icon style="font-size: 38px;"><Gift20Regular /></Icon><br>
+                <span>Rewards</span>
+            </var-bottom-navigation-item>
+            </var-link>
+            <var-link href="/#/UserProfile" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="profileButton">
+                <Icon style="font-size: 38px;"><Person20Regular /></Icon><br>
+                <span>Profile</span>
+            </var-bottom-navigation-item>    
+            </var-link>
+            <template #fab >
+                <var-link href="/#/AddMed" style="color: white;">
+                <Icon class="addButton"><Add20Filled /></Icon>
+                </var-link>
+            </template>
+        </var-bottom-navigation>
+        <el-drawer style="background-color: #006973;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
             <!--Action是模拟接口，与后端连接时更换-->
                 <div class = "sidebar">
                     <el-upload action="" :show-file-list="false">
