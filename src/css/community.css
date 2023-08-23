@@ -109,11 +109,11 @@ p{
     box-shadow: inset 0 0 5px grey;
 }
 .sidebar{
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        padding: 20px;
-    }
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+}
 #addMed{
     color: #006973;
 }
@@ -218,6 +218,7 @@ p{
     justify-content: space-between;
     /*space-around: 23px, 28px;*/
     margin-top: -10px;
+    padding-bottom: 15px;
 }
 .topicFilter label{
     display: block;
@@ -233,9 +234,6 @@ p{
 }
 .topicFilter input{
     display: none;
-}
-.sortingBy{
-    margin-top: 3%;
 }
 .postCard{
     display: flex;
@@ -269,6 +267,8 @@ p{
     background: transparent;
     font-size: 16px;
     padding-left: 0%;
+    padding-bottom: 6px;
+    padding-top: 0px;
 }
 .postTitle{
     font-weight: bold;
@@ -278,18 +278,57 @@ p{
     margin-bottom: 1.5%;
     line-height: 19px;
 }
-.image-scroll-container {
-    background-color: #55BDCA;
+#image-scroll-container {
     overflow-x: auto;
+    overflow-y: hidden;
     white-space: nowrap;
     border-radius: 5px;
+    height: 125px;
 
-    width: 100%;
+    width: 350px;
     display: block;
 }
 .aImage {
     width: 192px;
     height: 125px;
-    padding: 10px;
+    padding-right: 4px;
+}
+.like_comment_section{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    padding-top: 5px;
+}
+.thumbUp_icon{
+    font-size: 20px; 
+    color: #F27B42;
+    padding-left: 10px;
+    padding-right: 5px;
+}
+.comment_icon{
+    font-size: 20px; 
+    color: #949596;
+    padding-left: 10px;
+    padding-right: 5px;
+    padding-top: 2px;
+}
+.numberOfLikes{
+    color: #949596;
+    margin: 0px;
+    padding-right: 5px;
+}
+.numberOfComments{
+    color: #949596;
+    margin: 0px;
+}
+.scrollToTopButton{
+    position: absolute;
+    font-size: 60px;
+    color: #006973;
+    float: right;
+    margin-right:5px;
+
+    right: 0px;
+    bottom: 10%;
 }
 /* END: Unique CSS for Community Page */

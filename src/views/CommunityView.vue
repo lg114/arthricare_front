@@ -1,7 +1,7 @@
 <!-- Community Page -->
 <script>
     import { ref } from 'vue';
-    import { MoreHorizFilled, MedicationOutlined, CardGiftcardOutlined, HomeRound, AccountCircleOutlined, AddCircleFilled } from '@vicons/material';
+    import { MoreHorizFilled, MedicationOutlined, CardGiftcardOutlined, HomeRound, AccountCircleOutlined, AddCircleFilled, ThumbUpAltOutlined, ChatOutlined, ArrowCircleUpTwotone } from '@vicons/material';
     import { Icon } from '@vicons/utils'
     import SideBarContent from '@/component/Sidebar.vue';
     import { UserFilled } from '@element-plus/icons-vue';
@@ -173,18 +173,24 @@
             // SATR: Filter the posts by a topic
             filterByTopic(topicID){
                 if(topicID==="1"){
-                    // Only display the posts with General topic
+                    // Only display the posts with Discussion topic
                 }else if(topicID==="2"){
-                    // Only display the posts with Symptoms topic
+                    // Only display the posts with Event topic
                 }
                 else if(topicID==="3"){
-                    // Only display the posts with Lifestyle topic
-                }
-                else if(topicID==="4"){
                     // Only display the posts with News topic
                 }
-            }
+                else if(topicID==="4"){
+                    // Only display the posts with Group topic
+                }
+            },
             // END: Filter the posts by a topic
+            scrollToTop() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            },
         },
 
 //========= END: Unique methods for Community Page
@@ -197,7 +203,10 @@
             AccountCircleOutlined,
             AddCircleFilled,
             SideBarContent,
-            UserFilled
+            UserFilled,
+            ThumbUpAltOutlined,
+            ChatOutlined,
+            ArrowCircleUpTwotone
         }
     };
 </script>
@@ -210,21 +219,11 @@
                 <b class="pageTitle">Community</b>
             </el-header>
             <el-main class="main">
-                <div id="filterSection">
-                    <div class="topicFilter">
-                        <input type="radio" checked id="1" name="topic" class="topic" @click="filterByTopic(id)"><label for="1">General</label>
-                        <input type="radio" id="2" name="topic" class="topic" @click="filterByTopic(id)"><label for="2">Symptoms</label>
-                        <input type="radio" id="3" name="topic" class="topic" @click="filterByTopic(id)"><label for="3">Lifestyle</label>
-                        <input type="radio" id="4" name="topic" class="topic" @click="filterByTopic(id)"><label for="4">News</label>
-                    </div>
-
-                    <div>
-                        <select name="sortingBy" class="sortingBy">
-                            <option value="Latest">Latest</option>
-                            <option value="Oldesr">Oldesr</option>
-                            <option value="Popular">Popular</option>
-                        </select>
-                    </div>
+                <div class="topicFilter">
+                    <input type="radio" checked id="1" name="topic" class="topic" @click="filterByTopic(id)"><label for="1">Discussion</label>
+                    <input type="radio" id="2" name="topic" class="topic" @click="filterByTopic(id)"><label for="2">Event</label>
+                    <input type="radio" id="3" name="topic" class="topic" @click="filterByTopic(id)"><label for="3">News</label>
+                    <input type="radio" id="4" name="topic" class="topic" @click="filterByTopic(id)"><label for="4">Group</label>
                 </div>
 
                 <div v-for="post in posts" :key="post.id" class="postCard" @click="viewPost(post)">
@@ -238,26 +237,30 @@
                         <button @click.stop="togglePostExpansion(post)" class="seeMoreLessButton">
                             {{ post.expanded ? "Show less" : "...See more" }}
                         </button><br>
-
-                        <!-- NOTE: START: The css code for this section has troubles -->
-                        <div class="image-scroll-container">
+                        <div id="image-scroll-container">
                             <span v-for="(image, imageIndex) in post.images" :key="imageIndex">
                                 <img src="@/assets/postImage3.png" :alt="image.alt" class="aImage"/> 
                             </span>    
                         </div>
-                        <!-- NOTE: END: The css code for this section has troubles -->
-                        
+                        <div class="like_comment_section">
+                            <Icon class="thumbUp_icon" @click="drawer = true"><ThumbUpAltOutlined /></Icon>
+                            <p class="numberOfLikes">{{ post.numberOfLikes }}</p>
+                            <Icon class="comment_icon" @click="drawer = true"><ChatOutlined /></Icon>
+                            <p class="numberOfComments">{{ post.numberOfComments }}</p>
+                        </div>
                     </div>
                     <hr style="width: 200%">
                 </div>
 
+                <!-- NOTE: Restart from here. This function is not working. -->
+                <Icon class="scrollToTopButton"  @click="scrollToTop()"><ArrowCircleUpTwotone /></Icon>
             </el-main> 
         </el-container>
 
 
         <el-footer class="footer">
                 <router-link to = "/Home">
-                        <Icon class="footerBtn" id="home"><HomeRound /></Icon>      
+                    <Icon class="footerBtn" id="home"><HomeRound /></Icon>      
                 </router-link>
                 <router-link to = "/MyMeds">
                     <Icon class="footerBtn" id="medication"><MedicationOutlined /></Icon>  
