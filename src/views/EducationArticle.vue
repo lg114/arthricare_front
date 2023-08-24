@@ -62,7 +62,9 @@
     <div class="container">
         <el-container>
             <el-header class="header">
+                <router-link to="/education">
                 <Icon class="back"><ChevronLeft20Filled /></Icon>
+                </router-link>
                 <Icon class="titleIcon"><BookOpen20Filled /></Icon>
                 <b class="pageTitle">Education</b>
             </el-header>

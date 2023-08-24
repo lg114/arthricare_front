@@ -136,6 +136,7 @@
         <el-footer class >
             <div class="buttons" >
                  <el-button class = "login-button" @click = "ReplaceObjectIntoArray">Save</el-button> 
+                 <el-button class = "delete-button" @click = "ReplaceObjectIntoArray">Delete</el-button> 
             </div>
          </el-footer> 
         <!-- <date-picker v-model:value = "selectedDate"></date-picker> -->
@@ -492,6 +493,21 @@ input[type="time"] {
   background-color:#006973;
   border: 2px solid white;
   transition: background-color 0.5s, color 0.5s;
+  }
+
+  .delete-button{
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+    margin-left:2.5%;
+    color: white;
+    background-color: #FF5449;
+    width: 95%;
+    height: 350%;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size:17px;
   }
 
 option {

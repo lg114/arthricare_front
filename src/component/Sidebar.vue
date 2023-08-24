@@ -15,6 +15,9 @@
             goToUserProfile(){
                 this.$router.push('/UserProfile');
             },
+            goToEducation(){
+                this.$router.push('/Education')
+            },
             async logout(){
                 this.$store.dispatch('user/logout');
             }
@@ -51,7 +54,7 @@
                             <p>Community</p>
                             <el-icon class="menu-icon"><CaretRight /></el-icon>
                         </div>
-                        <div class = "menu-button">
+                        <div class = "menu-button" @click = "goToEducation">
                             <el-icon class="menu-icon1"><Reading /></el-icon>
                             <p>Education</p>
                             <el-icon class="menu-icon"><CaretRight /></el-icon>

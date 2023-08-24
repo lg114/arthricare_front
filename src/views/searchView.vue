@@ -136,7 +136,7 @@
   align-items: center;
   height:100vh;
   width:100%;
-  background-color:#55BBC9;
+  background-color:#006973;
   flex-direction: column;
   }
 

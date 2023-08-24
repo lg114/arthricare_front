@@ -263,7 +263,7 @@
                 class="tabs"
                 elevation
                 sticky
-                color="#006973"
+                color="#55BDCA"
                 active-color="#fff"
                 inactive-color="hsla(0, 0%, 100%, .6)"
                 v-model:active="active"

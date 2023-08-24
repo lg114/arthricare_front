@@ -14,12 +14,12 @@
    <el-container class = "container">
       
     <div class = "container-flex" style="height:100% ; width:50% ;">
-        <router-link to = "/">
+        <router-link to = "/home">
           <var-icon class="backBtn" name="menu" :size="25" color="white"/>
         </router-link> 
         <p id= "title">Education</p>
 
-        <router-link to = "/Search">
+        <router-link to = "/SearchArticle">
           <var-icon name="magnify" class="searchBtn" size="30" color="white"/>
         </router-link> 
       </div>
@@ -66,12 +66,14 @@
       </div>
 
       <div v-if="ArticalVisible">
+        <router-link to="/educationArticle">
         <div class = "container3">
           <img src="@/assets/Med4.jpg" alt="Image" class="image">
           <div id = "label">
            Medication
           </div>
         </div>
+      </router-link>
 
         <div class = "container3">   
           <img src="@/assets/exe1.png" alt="Image" class="image">
@@ -90,6 +92,7 @@
     </div>
    
     </el-container>
+    
 </template>
 
 <style lang = "css" scoped> 
@@ -215,7 +218,7 @@
   align-items: center;
   height: 100%;
   width:100%;
-  background-color:#55BBC9;
+  background-color:#006973;
   overflow: auto;
   flex-direction: column;
   margin: 0 ;
@@ -361,7 +364,7 @@ export default {
 
 },
   mounted(){
-            document.title = 'Add Medication'
+            document.title = 'Education'
 
         },
         setup(){

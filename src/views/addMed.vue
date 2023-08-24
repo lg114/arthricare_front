@@ -50,7 +50,7 @@
         </div>
 
         <div class="container-block" style="margin-left:9% ;">
-          <p id = "label">Coases *</p>
+          <p id = "label">Doses *</p>
           <input ref="Unit" style = "width:128% ; height: 66.4%;padding-left:12% " type="number" placeholder="Dosage"  />
         </div>  
     
