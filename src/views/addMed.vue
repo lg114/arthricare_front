@@ -671,7 +671,7 @@ saveDataAndmedicineData() {
 
     
     console.log ('DON IS HERE',loggedInUser.id);
-   
+    const dosageValue = this.$refs.Unit.value;
 
 /////////////////////////////////////////////////////////////
     const dataObject = {
@@ -679,7 +679,7 @@ saveDataAndmedicineData() {
       medicationName: this.$refs.MedName.value,
       medicationCategory: this.selectedCategory,
       frequency: this.selectedFrequency,
-      dosageUnit: this.$refs.Unit.innerHTML,
+      dosageUnit: dosageValue,
       startDate: this.selectedStartDate,
       endDate: this.selectedEndDate,
       note: this.$refs.Note.value,
@@ -695,6 +695,14 @@ saveDataAndmedicineData() {
       .post(backendurl, dataObject)
       .then((response) => {
         console.log('Data sent successfully', response);
+        // Assuming the response from the backend contains the medicationId
+      const medicationId = response.data.medicationId;
+
+        // Save the medicationId in sessionStorage
+        sessionStorage.setItem('medicationId', medicationId);
+
+        // Log the medicationId
+        console.log('Medication ID:', medicationId);
       })
       .catch((error) => {
     console.log('Data sending failed', error);
@@ -725,6 +733,8 @@ getCurrentTime() {
 
     // pass value to MyMed
      saveData() {
+
+      const dosageValue = this.$refs.Unit.value;
         store.commit('changeToTrue');
         this.$router.push({
               path: '/MyMeds',
@@ -732,7 +742,7 @@ getCurrentTime() {
                 MedName: this.$refs.MedName.value,
                 Category: this.selectedCategory,
                 Frequency:this.selectedFrequency,
-                Unit:this.$refs.Unit.innerHTML,
+                dosageunit:dosageValue,
                 StartDate: this.selectedStartDate ,
                 EndDate: this.selectedEndDate,
                 Note: this.$refs.Note.value,
