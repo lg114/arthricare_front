@@ -31,20 +31,21 @@ const actions = {
     },
     async loginUser({ commit }, { email, password }) {
         try {
-            if( email === '' || password === ''){
+            if (email === '' || password === '') {
                 ElMessage.error('Email or Password is not valid');
-            }else{
-                if (!actions.isValidEmail(email)){
+            } else {
+                if (!actions.isValidEmail(email)) {
                     ElMessage.error('Invalid email format');
                     return;
                 }
-
+    
                 const response = await axios.post('http://localhost:8181/api/login', {
                     email: email,
                     password: password,
                 });
-                const user = response.data; //user information
-                commit('setLoggedInUser', user); //set user information
+                const user = response.data; // user information
+                commit('setLoggedInUser', user); // set user information
+                sessionStorage.setItem('loggedInUser', JSON.stringify(user)); // Store user information in sessionStorage
                 router.push('/Home');
                 ElMessage.success('Login successful!');
             }

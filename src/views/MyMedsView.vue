@@ -19,7 +19,7 @@
    <div class="container">
    
     <div class = "container-flex">
-      <router-link to = "/">
+      <router-link to = "/Home">
          <el-icon class = "OperaBtn"><LineHorizontal320Filled/></el-icon>
       </router-link>
       <!-- <Icon @click="drawer = true"><MoreHorizFilled /></Icon> -->
@@ -34,20 +34,6 @@
      
      <div class = "container-block" style = "height:100% ;width:100%"> 
 
-      <!-- <div class="medObject" >
-        <div class = "container-flex" style = "height:100% ;width:100%">
-          <el-icon to = "/AddMed-mobile" class="PlusBtn"><CirclePlus/></el-icon>
-          <div class = "container-block" style = "height:100% ;width:100%"> 
-            <p class="medName"> {{ $route.query.MedName}}</p>
-            <p class="date" >Category: {{ $route.query.Category}}</p>
-           <p>Input 1: {{ $route.query.Field}}</p> 
-          </div>  
-          <router-link to = "/EditMed-mobile" >
-            <el-icon class="arrowBtn"><ArrowRightBold/></el-icon>
-          </router-link>
-      </div>  
-      {{ store.state.test}}</p>
-    </div> -->
     <div class = "zeroObjAlert" v-if="store.state.MedArray.length === 0">
         <p class="zeroObjAlertP">You haven't add any Medication</p>
       </div >
@@ -70,9 +56,6 @@
           </router-link>
         </div>  
       </div>
-
-      
-
       </div>
   </div>
   <var-bottom-navigation
@@ -422,7 +405,7 @@ beforeCreate(){
             timeInput3: this.$route.query.timeInput3,
           };   
           if(dataObject.MedName!=="" && dataObject.MedName!== undefined){
-            console.log("FUnctino CALLED")
+            console.log("Function called")
             this.MedicineArray.push(dataObject);
             store.state.MedArray.push(dataObject);
             sessionStorage.setItem('MedArray', JSON.stringify(this.MedicineArray));
@@ -457,6 +440,7 @@ beforeCreate(){
           store.commit('changeToFalse');
           //store.commit("setArray", JSON.parse(sessionStorage.getItem('MedArray')));
          // console.log(store.state.MedArray[0].Field + "ffffffffffffff")
+         console.log("mounted success")
         }else{
           //store.commit("setArray", JSON.parse(sessionStorage.getItem('MedArray')));
           console.log("error mounted")

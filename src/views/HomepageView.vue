@@ -17,6 +17,13 @@
             //默认当天日期
             const today = new Date(); 
             this.onDateSelected(today);
+            for (let i = 0; i < sessionStorage.length; i++) {
+                const key = sessionStorage.key(i);
+                const value = sessionStorage.getItem(key);
+                console.log(`Key: ${key}, Value: ${value}`);
+                }
+                console.log("checked session here");
+
         },
         setup(){
             const active = ref(0);
@@ -52,6 +59,8 @@
         },
         
         methods:{
+
+
             //Drawer
             beforeDrawerClose(done){
                 done();

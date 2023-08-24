@@ -1,9 +1,6 @@
-<!--Welcome Page -->
-<!--Welcome Page -->
+<!--Add med page-->
 <script setup>
-  // import {ArrowLeftBold} from '@element-plus/icons-vue';
   import store from "@/store";
-  // import {Plus,Minus} from '@element-plus/icons-vue';
   import '@varlet/ui/es/button/style/index';
  
   
@@ -13,9 +10,6 @@
    <el-container class = "container">
       
     <div class = "container-flex" style="height:100% ; width:50% ;">
-        <!-- <router-link to = "/">
-          <el-icon class = "backBtn"><ArrowLeftBolkBd/></el-icon>
-        </router-link> -->
       <router-link to = "/MyMeds">
         <var-icon class="backBtn" name="chevron-left" :size="42" color="white"/>
       </router-link> 
@@ -50,7 +44,7 @@
         </div>
 
         <div class="container-block" style="margin-left:9% ;">
-          <p id = "label">Coases *</p>
+          <p id = "label">Dosage *</p>
           <input ref="Unit" style = "width:128% ; height: 66.4%;padding-left:12% " type="number" placeholder="Dosage"  />
         </div>  
     
@@ -58,25 +52,6 @@
 
         <p id = "label">Note (Optional)</p>
         <input id="Note" ref="Note" type="text" placeholder="Note"  />
-      
-
-
-        <!-- <p id = "label">Category *</p>
-        <div>
-          <b><label for = "Category"></label></b>
-          <select  ref = "Category" name="Category" id="Category" class = "row-input" v-model="selectedCategory">
-           <option value="" data-icon="@/assets/capsulesblue.png" alt="ArthriCare Logo" disabled selected>Select Category *</option>
-           <option value="Pill" selected>Pill</option>
-           <option value="Tablet">Tablet</option>
-           <option value="Injection">Injection</option>
-           <option value="Drop">Drop</option>
-         </select>
-        </div> -->
-        <!-- <div class = "calculationPart">
-          <el-icon class = "decreaseButton" @click="decreaseCounter"><Minus/></el-icon>
-          <div ref = "Unit" class = "number">{{ counter }}</div>
-          <el-icon class = "increaseButton" @click="increaseCounter"><Plus/></el-icon>
-        </div> -->
 
       </div>   
 
@@ -85,7 +60,6 @@
         <h1>SET REMINDER</h1>
 
         <p id = "label" >Frequency *</p>
-        <!-- <input ref="Frequency" id="input" type="text" placeholder="  " /> -->
         <div class="Frequency1">
           <select  ref="Frequency" name="Frequency" id="Frequency" class ="row-input" v-model="selectedFrequency" style = "padding-left:5% ">
            <option value="" disabled selected>Select Category</option>
@@ -118,31 +92,15 @@
         <p id = "label" style="margin-top: 7%;">End Time *</p>
        
           <VueDatePicker2 ref = "EndDate" id="endDate" v-model="selectedEndDate" :format="dateFormat"></VueDatePicker2>
-      
 
-        <!-- <div class="custom-dropdown">
-        <select>
-          <option value="option1">Option 1</option>
-          <option value="option2">Option 2</option>
-          <option value="option3">Option 3</option>
-        </select>
-      </div>
-       -->
-      
-
-        <!-- <p id = "label" style = "margin-top:15.5%">Add a note ? (0ptional)</p>
-        <div >
-          <textarea ref="Note" id = "textarea1" name = "Note" column="20" row="20"></textarea>
-        </div> -->
         <div class = "container-flex" style="margin-top:10%">   
       </div>   
         </div>  
         <el-footer class >
             <div class="buttons" >
-                 <el-button class = "login-button" @click = "saveData">ADD</el-button> 
+                 <el-button class = "login-button" @click = "saveDataAndmedicineData">ADD</el-button> 
             </div>
          </el-footer> 
-        <!-- <date-picker v-model:value = "selectedDate"></date-picker> -->
       </div>
 
     </el-container>
@@ -366,7 +324,7 @@ text-align: center;
   align-items: center;
   height: 100%;
   width:100%;
-  background-color:#006973;
+  background-color:#55BBC9;
   overflow: auto;
   flex-direction: column;
   margin: 0 ;
@@ -492,7 +450,7 @@ input[type="time"] {
   display: inline-block;
   padding: 10px 20px;
   background-color: transparent;
-  background-color:#006973;
+  background-color:#55BBC9;
   border: 2px solid white;
   transition: background-color 0.5s, color 0.5s;
   }
@@ -503,7 +461,7 @@ option {
   background-repeat: no-repeat;
   }
 </style>
-
+<!-- ----------------------------------------------------------------------------------->
 <script>
 import VueDatePicker1 from '@vuepic/vue-datepicker';
 import VueDatePicker2 from '@vuepic/vue-datepicker';
@@ -519,9 +477,9 @@ export default {
   },
   data() {
     return {
-      timeInput1: '',
-      timeInput2: '',
-      timeInput3: '',
+      timeInput1: this.getCurrentTime(),
+      timeInput2: this.getCurrentTime(),
+      timeInput3: this.getCurrentTime(),
 
       /// don's Edit
       timeInputs:[],
@@ -530,8 +488,8 @@ export default {
       counter: 0,
       selectedCategory: null,
       selectedFrequency: null,
-      selectedStartDate: null,
-      selectedEndDate: null,
+      selectedStartDate: this.getCurrentDate(),
+      selectedEndDate: this.getCurrentDate(),
 
       dateFormat: 'yyyy-MM-dd',
       Meds : ["Abatacept",
@@ -712,7 +670,7 @@ saveDataAndmedicineData() {
     }
 
     
-    console.log ('TING TING IS HERE',loggedInUser.id);
+    console.log ('DON IS HERE',loggedInUser.id);
    
 
 /////////////////////////////////////////////////////////////
@@ -729,6 +687,7 @@ saveDataAndmedicineData() {
     };
 
     console.log('timereminder test', JSON.stringify(this.timeInputs))
+    console.log("looking inside dataobject:", dataObject);
 
     const backendurl = 'http://localhost:8181/medications/create';
 
@@ -738,10 +697,27 @@ saveDataAndmedicineData() {
         console.log('Data sent successfully', response);
       })
       .catch((error) => {
-        console.log('Data sending failed', error);
-      });
+    console.log('Data sending failed', error);
+    console.log('Response data:', error.response.data);
+                    });
   }); // Here
 }, //
+
+// added from jihao 21/08/23
+getCurrentTime() {
+      const now = new Date();
+      const formattedTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      console.log(formattedTime);
+      return formattedTime;
+    },
+
+    getCurrentDate() {
+      const now = new Date();
+      const formattedTime = now.toISOString().slice(0, 10);
+      console.log(formattedTime);
+      return formattedTime;
+    },
+
 
  watch: {
     selectedFrequency: 'getReminderTimes',
@@ -770,7 +746,11 @@ saveDataAndmedicineData() {
 
     }},
 
+    mounted(){
+            document.title = 'Add Medication';
+        },
+        setup(){
+        
+        }
 }
-
-
 </script>

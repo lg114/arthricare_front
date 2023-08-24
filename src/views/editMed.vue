@@ -1,13 +1,4 @@
-<!--Welcome Page -->
-<!--Welcome Page -->
-<!--Welcome Page -->
-<!--Welcome Page -->
-<script setup>
-
-//  import store from "@/store";
-  // import {Plus,Minus} from '@element-plus/icons-vue';
-  
-</script>
+<!--edit med page -->
 
 <template>
    <el-container class = "container">
@@ -55,25 +46,6 @@
         <p id = "label">Note (Optional)</p>
         <input id="Note" ref="Note" type="text" placeholder="Note"  />
       
-
-
-        <!-- <p id = "label">Category *</p>
-        <div>
-          <b><label for = "Category"></label></b>
-          <select  ref = "Category" name="Category" id="Category" class = "row-input" v-model="selectedCategory">
-           <option value="" data-icon="@/assets/capsulesblue.png" alt="ArthriCare Logo" disabled selected>Select Category *</option>
-           <option value="Pill" selected>Pill</option>
-           <option value="Tablet">Tablet</option>
-           <option value="Injection">Injection</option>
-           <option value="Drop">Drop</option>
-         </select>
-        </div> -->
-        <!-- <div class = "calculationPart">
-          <el-icon class = "decreaseButton" @click="decreaseCounter"><Minus/></el-icon>
-          <div ref = "Unit" class = "number">{{ counter }}</div>
-          <el-icon class = "increaseButton" @click="increaseCounter"><Plus/></el-icon>
-        </div> -->
-
       </div>   
 
 
@@ -114,31 +86,15 @@
         <p id = "label" style="margin-top: 7%;">End Time *</p>
        
           <VueDatePicker2 ref = "EndDate" id="endDate" v-model="selectedEndDate" :format="dateFormat"></VueDatePicker2>
-      
 
-        <!-- <div class="custom-dropdown">
-        <select>
-          <option value="option1">Option 1</option>
-          <option value="option2">Option 2</option>
-          <option value="option3">Option 3</option>
-        </select>
-      </div>
-       -->
-      
-
-        <!-- <p id = "label" style = "margin-top:15.5%">Add a note ? (0ptional)</p>
-        <div >
-          <textarea ref="Note" id = "textarea1" name = "Note" column="20" row="20"></textarea>
-        </div> -->
         <div class = "container-flex" style="margin-top:10%">   
       </div>   
         </div>  
         <el-footer class >
             <div class="buttons" >
-                 <el-button class = "login-button" @click = "ReplaceObjectIntoArray">Save</el-button> 
+                 <el-button class = "login-button" @click = "updateMedication">Save</el-button> 
             </div>
          </el-footer> 
-        <!-- <date-picker v-model:value = "selectedDate"></date-picker> -->
       </div>
 
     </el-container>
@@ -500,6 +456,8 @@ option {
   background-repeat: no-repeat;
   }
 </style>
+
+
 <script>
 import VueDatePicker1 from '@vuepic/vue-datepicker';
 import VueDatePicker2 from '@vuepic/vue-datepicker';
@@ -518,9 +476,6 @@ export default {
   },
   created(){
     console.log(this.$route.query.Index);
-   // this.medicationId = sessionStorage.getItem('medicationId'); // Fetch and set the medicationId here
-  //  this.fetchMedicationDetailsAndPopulateForm(); // Call the method to fetch the medication details
-   // console.log('this medid', this.medicationId)
   },
   data() {
     return {
@@ -535,9 +490,9 @@ export default {
       selectedFrequency: null,
       selectedStartDate: null,
       selectedEndDate: null,
-      timeInput1: '',
-      timeInput2: '',
-      timeInput3: '',
+      timeInput1: this.getCurrentTime(),
+      timeInput2: this.getCurrentTime(),
+      timeInput3: this.getCurrentTime(),
 
       dateFormat: 'yyyy-MM-dd',
       Meds : ["Abatacept",
@@ -625,6 +580,14 @@ export default {
   },
   
   methods: {
+
+    getCurrentTime() {
+      const now = new Date();
+      const formattedTime = now.toISOString().slice(11, 16);
+      console.log(formattedTime);
+      return formattedTime;
+    },
+
     increaseCounter() {
       this.counter++;
     },
@@ -777,7 +740,6 @@ export default {
       if (loggedInUser) {
         loggedInUser = JSON.parse(loggedInUser);
       } else {
-
         console.log ('error. user not logged in')
 
       }
