@@ -86,25 +86,27 @@
                 </div>
             </el-main> 
         </el-container>
+        
         <el-footer class="footer">
-                <router-link to = "/Home">
-                        <Icon class="footerBtn" id="home"><HomeRound /></Icon>      
-                </router-link>
-                <router-link to = "/MyMeds">
-                    <Icon class="footerBtn" id="medication"><MedicationOutlined /></Icon>  
-                </router-link>
-                <router-link to = "/AddMed">
-                    <Icon class="footerBtn" id="addMed"><AddCircleFilled /></Icon>  
-                </router-link>
-                <router-link to = "/Rewards">
-                <Icon class="footerBtn" id="rewards"><CardGiftcardOutlined /></Icon>
-                </router-link>
-                <Icon class="footerBtn" id="profile"><AccountCircleOutlined /></Icon><br>
-                <span id="homeText">Home</span>
-                <span id="medText">My Meds</span>
-                <span id="rewardsText">Rewards</span>
-                <span id="profileText">Profile</span>
+            <router-link to = "/Home">
+                <Icon class="footerBtn" id="home"><HomeRound /></Icon>      
+            </router-link>
+            <router-link to = "/MyMeds">
+                <Icon class="footerBtn" id="medication"><MedicationOutlined /></Icon>  
+            </router-link>
+            <router-link to = "/AddMed">
+                <Icon class="footerBtn" id="addMed"><AddCircleFilled /></Icon>  
+            </router-link>
+            <router-link to = "/Rewards">
+            <Icon class="footerBtn" id="rewards"><CardGiftcardOutlined /></Icon>
+            </router-link>
+            <Icon class="footerBtn" id="profile"><AccountCircleOutlined /></Icon><br>
+            <span id="homeText">Home</span>
+            <span id="medText">My Meds</span>
+            <span id="rewardsText">Rewards</span>
+            <span id="profileText">Profile</span>
         </el-footer>
+
         <el-drawer style="background-color: #1890FF;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
             <!--Action是模拟接口，与后端连接时更换-->
                 <div class = "sidebar">

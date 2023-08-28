@@ -13,6 +13,9 @@ import EditMedPage from '@/views/editMed.vue';
 import MyMedsPage from '@/views/MyMedsView.vue';
 import RewardsPage from '@/views/RewardsView.vue';
 import CommunityPage from '@/views/CommunityView.vue';
+import MessagePage from '@/views/MessageView.vue';
+import ChatPage from '@/views/ChatView.vue';
+//import EventPage from '@/views/EventView.vue';
 
 
 
@@ -95,8 +98,7 @@ const router  = createRouter({
             meta: {
                 requiresAuth: true
             }
-        }
-        ,
+        },
         {
             path: '/Community',
             name: 'Community',
@@ -104,7 +106,33 @@ const router  = createRouter({
             meta: {
                 requiresAuth: true
             }
+        },
+        {
+            path: '/Message',
+            name: 'Message',
+            component: MessagePage,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/Chat',
+            name: 'Chat',
+            component: ChatPage,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        /*
+        {
+            path: '/Event',
+            name: 'Event',
+            component: EventPage,
+            meta: {
+                requiresAuth: true
+            }
         }
+        */
     ]
 });
 

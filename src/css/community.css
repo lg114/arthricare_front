@@ -331,4 +331,51 @@ p{
     right: 0px;
     bottom: 10%;
 }
+
+/* START: Event Section */
+table.event-table{
+    border: 1px solid #aaa;
+    border-collapse: separate;
+    overflow: hidden;
+    border-spacing: 0;
+    border-radius: 10px;
+    text-align:center;
+    margin-top: 15px;
+}
+th,td {
+    padding: .6em 3em;
+    vertical-align: middle;
+
+    +th,+td {
+        border-left: 1px solid #aaa;
+    }
+}
+th {
+    background: #CFEEF5;
+}
+td {
+    background: #fff;
+    border-top: 1px solid #aaa;
+    text-align: left;
+}
+tr+tr {
+    th,td{
+        border-top: 1px solid #aaa;
+    }
+}
+/* Responsive Styles */
+@media (max-width: 600px) {
+    .event-table th, .event-table td {
+      padding: 4px;
+    }
+}
+/* END: Event Section */
+
+/* START: News Section */
+    /*  NOTE: Code is coming here... */
+/* END: News Section */
+
+/* START: Group Section */
+/* END: Group Section */
+
 /* END: Unique CSS for Community Page */

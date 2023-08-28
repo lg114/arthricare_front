@@ -27,15 +27,17 @@
         },
         data(){
             return{
+                activeSection: 'discussion_section',
                 user:{
                     name: 'Username',
                     level: '10',
-                    points: '1000'
+                    points: '1000',
+                    avatar: '@/assets/useravatar.png' 
                 },
                 posts:[
                     {
                         id: 1,
-                        avator: '@/assets/user_avatar.png',
+                        avatar: '@/assets/user_avatar.png',
                         username: 'Adam',
                         timestamp: new Date(),
                         title: '21M diagnosed with Rheumatoid Arthritis',
@@ -53,7 +55,7 @@
                     },
                     {
                         id: 2,
-                        avator: '@/assets/friend_2.png',
+                        avatar: '@/assets/friend_2.png',
                         username: 'Timothy',
                         timestamp: new Date(),
                         title: '“Morning” stiffness worse in the middle of the night?',
@@ -70,7 +72,7 @@
                     }, 
                     {
                         id: 3,
-                        avator: '@/assets/user_avatar.png',
+                        avatar: '@/assets/user_avatar.png',
                         username: 'Sarah',
                         timestamp: new Date(),
                         title: 'When to resume mtx',
@@ -86,7 +88,7 @@
                     },
                     {
                         id: 4,
-                        avator: '@/assets/user_avatar.png',
+                        avatar: '@/assets/user_avatar.png',
                         username: 'Anthony',
                         timestamp: new Date(),
                         title: 'This is a title for the General post',
@@ -101,7 +103,7 @@
                     },
                     {
                         id: 5,
-                        avator: '@/assets/user_avatar.png',
+                        avatar: '@/assets/user_avatar.png',
                         username: 'Anthony',
                         timestamp: new Date(),
                         title: 'This is a title for the News post',
@@ -114,6 +116,11 @@
                     }
                     // Add more posts here
                 ],   
+                events: [
+                    { date: '04/15/2023' , name: '2023 Walk to CURE Arthritis - Savannah, GA', link: 'https://events.arthritis.org/index.cfm?fuseaction=donorDrive.event&eventID=1479' },
+                    { date: '04/22/2023' , name: '2023 Walk to CURE Juvenile Arthritis - Bloomington, MN', link: 'https://events.arthritis.org/index.cfm?fuseaction=donorDrive.event&eventID=1466' },
+                    { date: '04/22/2023' , name: '2023 Walk to CURE Arthritis - Jacksonville, FL', link: 'https://events.arthritis.org/index.cfm?fuseaction=donorDrive.event&eventID=1480' }
+                ],
                 drawer: ref(false),
             };
         },
@@ -191,6 +198,9 @@
                     behavior: 'smooth'
                 });
             },
+            changeSection(sectionName) {
+                this.activeSection = sectionName;
+            }
         },
 
 //========= END: Unique methods for Community Page
@@ -220,40 +230,84 @@
             </el-header>
             <el-main class="main">
                 <div class="topicFilter">
-                    <input type="radio" checked id="1" name="topic" class="topic" @click="filterByTopic(id)"><label for="1">Discussion</label>
-                    <input type="radio" id="2" name="topic" class="topic" @click="filterByTopic(id)"><label for="2">Event</label>
-                    <input type="radio" id="3" name="topic" class="topic" @click="filterByTopic(id)"><label for="3">News</label>
-                    <input type="radio" id="4" name="topic" class="topic" @click="filterByTopic(id)"><label for="4">Group</label>
+                    <input type="radio" checked id="1" name="topic" class="topic" @click="changeSection('discussion_section')"><label for="1">Discussion</label>
+                    <input type="radio" id="2" name="topic" class="topic" @click="changeSection('event_section')"><label for="2">Event</label>
+                    <input type="radio" id="3" name="topic" class="topic" @click="changeSection('news_section')"><label for="3">News</label>
+                    <input type="radio" id="4" name="topic" class="topic" @click="changeSection('group_section')"><label for="4">Group</label>
                 </div>
 
-                <div v-for="post in posts" :key="post.id" class="postCard" @click="viewPost(post)">
-                    <img :src="avatar1" alt="avatar" class="avatar" />
-                    <span class="username">{{ post.username }}</span>
-                    <span class="time-ago">{{ getTimeAgo(post.timestamp) }}</span>
-                    <div class="content">
-                        <p class="postTitle">{{ post.title }}</p>
-                        <p v-if="!post.expanded" class="content">{{ truncateContent(post.content) }}</p>
-                        <p v-else class="content">{{ post.content }}</p>
-                        <button @click.stop="togglePostExpansion(post)" class="seeMoreLessButton">
-                            {{ post.expanded ? "Show less" : "...See more" }}
-                        </button><br>
-                        <div id="image-scroll-container">
-                            <span v-for="(image, imageIndex) in post.images" :key="imageIndex">
-                                <img src="@/assets/postImage3.png" :alt="image.alt" class="aImage"/> 
-                            </span>    
+                <div v-if="activeSection === 'discussion_section'">
+                    <div v-for="post in posts" :key="post.id" class="postCard" @click="viewPost(post)">
+                        <!-- NOTE: the code below to display an image is a hardcode and shouldn'r be used. -->
+                        <img :src="avatar1" alt="avatar" class="avatar" />
+                        <!-- NOTE: This code should work, but, for some reason, it's not working. <img :src="post.avatar" :alt="post.alt" />  -->
+                        <span class="username">{{ post.username }}</span>
+                        <span class="time-ago">{{ getTimeAgo(post.timestamp) }}</span>
+                        <div class="content">
+                            <p class="postTitle">{{ post.title }}</p>
+                            <p v-if="!post.expanded" class="content">{{ truncateContent(post.content) }}</p>
+                            <p v-else class="content">{{ post.content }}</p>
+                            <button @click.stop="togglePostExpansion(post)" class="seeMoreLessButton">
+                                {{ post.expanded ? "Show less" : "...See more" }}
+                            </button><br>
+                            <div id="image-scroll-container">
+                                <span v-for="(image, imageIndex) in post.images" :key="imageIndex">
+                                    <img src="@/assets/postImage3.png" :alt="image.alt" class="aImage"/> 
+                                </span>    
+                            </div>
+                            <div class="like_comment_section">
+                                <Icon class="thumbUp_icon" @click="drawer = true"><ThumbUpAltOutlined /></Icon>
+                                <p class="numberOfLikes">{{ post.numberOfLikes }}</p>
+                                <Icon class="comment_icon" @click="drawer = true"><ChatOutlined /></Icon>
+                                <p class="numberOfComments">{{ post.numberOfComments }}</p>
+                            </div>
                         </div>
-                        <div class="like_comment_section">
-                            <Icon class="thumbUp_icon" @click="drawer = true"><ThumbUpAltOutlined /></Icon>
-                            <p class="numberOfLikes">{{ post.numberOfLikes }}</p>
-                            <Icon class="comment_icon" @click="drawer = true"><ChatOutlined /></Icon>
-                            <p class="numberOfComments">{{ post.numberOfComments }}</p>
-                        </div>
+                        <hr style="width: 200%">
                     </div>
-                    <hr style="width: 200%">
-                </div>
 
-                <!-- NOTE: Restart from here. This function is not working. -->
-                <Icon class="scrollToTopButton"  @click="scrollToTop()"><ArrowCircleUpTwotone /></Icon>
+                    <!-- NOTE: Restart from here. This function is not working. -->
+                    <Icon><ArrowCircleUpTwotone class="scrollToTopButton" /></Icon>
+
+                    <!-- NOTE: -->
+                    <p style="margin: 50px; margin-top: 100px; text-align: center; color: red;">NOTE: Add a function to jump to the top of the page by clicking the upper arrow on the right bottom. Add a function to reflect a new like. Add a function to reflect a new comment. Add a new page to display the details of a post and all the comments(discussion) toward the post.</p>
+                </div> 
+                <!-- END: Discussion Section -->
+
+                <!-- START: Event Section -->
+                <div v-if="activeSection === 'event_section'">
+                    <!-- NOTE: Adding a file name 'EventView.vue' here might be a better solution to make this file easy to read. -->
+                    <!-- <link href="EventView.html" />  -->
+
+                    <table class="event-table">
+                        <thead>
+                            <tr>
+                                <th>Dates</th>
+                                <th>Upcoming Events</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(event, index) in events" :key="index">
+                            <td>{{ event.date }}</td>
+                            <td><a :href="event.link" target="_blank">{{ event.name }}</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- END: Event Section -->
+
+                <!-- START: News Section -->
+                <div v-if="activeSection === 'news_section'">
+                    <p>Content for News</p>
+                    <!-- NOTE: Probably putting a file name is better -->
+                </div>
+                <!-- END: News Section -->
+
+                <!-- START: Group Section -->
+                <div v-if="activeSection === 'group_section'">
+                    <p>Content for Group</p>
+                    <!-- NOTE: Probably putting a file name is better -->
+                </div>
+                <!-- END: Group Section -->
             </el-main> 
         </el-container>
 
@@ -295,4 +349,4 @@
 </template>
 
 
-<style src = "@/css/community.css" scoped></style>
+<style src="@/css/community.css" scoped></style>
