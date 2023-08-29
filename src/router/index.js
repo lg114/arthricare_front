@@ -13,7 +13,7 @@ import EditMedPage from '@/views/editMed.vue';
 import MyMedsPage from '@/views/MyMedsView.vue';
 import RewardsPage from '@/views/RewardsView.vue';
 
-
+import newHome from '@/views/newHome.vue';
 
 
 const router  = createRouter({
@@ -95,6 +95,11 @@ const router  = createRouter({
                 requiresAuth: true
             }
         },
+        {
+            path: '/newhome',
+            name: 'newhome',
+            component: newHome,
+        }
     ]
 });
 

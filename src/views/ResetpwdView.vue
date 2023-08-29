@@ -1,6 +1,5 @@
 <!--Resetpassword Page -->
 <script>
-    import { ArrowLeftBold } from '@element-plus/icons';
     import { ref } from 'vue';
     import store from '@/store';
 
@@ -14,6 +13,7 @@
             //reset pwd data
             const email = ref('');
             const newPassword = ref('');
+            const showPassword = ref(false);
 
             //submit reset password form
             const handleReset = async () => {
@@ -30,40 +30,52 @@
                 email,
                 newPassword,
                 handleReset,
+                showPassword,
             };
         },
-
-        components:{
-            ArrowLeftBold
-        }
     };
 </script>
 
 <template>
-    <div class="container">
-        <el-container class = "content-container">
-            <el-header>
-                <router-link to = "/">
-                    <el-icon class="backBtn"><ArrowLeftBold /></el-icon>
-                </router-link>  
-            </el-header>
-            <el-main style = "height: 500px;">
-                <div class = "input-container">
-                    <h2>Reset Your Password</h2>
-                    <b><label>Email Address</label></b>
-                    <input id="input" type="email" placeholder="Please enter your email" v-model="email"/><br>
-                    <b><label>New Password</label></b>
-                    <input id="input" type="password" placeholder="Please enter new password" v-model="newPassword"/><br>
-                </div>
-            </el-main>
-            <el-footer>
-                <div class="buttons">
-                    <el-button class = "login-button" @click = "handleReset">CONTINUE</el-button>
-                </div>
-            </el-footer>
-        </el-container>
+    <div class="container" >
+      <el-container class = "content-container">
+        <el-main style = "height: 500px">
+          <div>
+            <form class="input-container">
+              <h2>Welcome back</h2>
+              <h4>Reset your password</h4>
+              <var-input class="input" variant="outlined" id = "email" type="email" placeholder="Email" v-model="email"
+              :rules="[
+                    (v) => !!v || 'Email is required',
+                    (v) => /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(v) || 'E-mail must be valid'
+                ]"
+              /><br>
+              <var-input class="input" variant="outlined" id = "password" :type="showPassword ? 'text' : 'password'" placeholder="New passoword" v-model="newPassword">
+                <template #append-icon>
+                  <span @click="showPassword = !showPassword" style="font-size: 15px;">{{ showPassword ? 'Hide' : 'Show' }}</span>
+                </template>
+              </var-input>
+            </form>
+          </div>
+          <div id="mid">
+            <b>Already have an account? </b>
+            <router-link to = "/login"><b style = "color:#006973; text-decoration: none;">Log in</b></router-link>
+            <var-divider description="Or" style="height: 2px; color:#006973"/>
+            <b>Don't have an account? </b>
+            <router-link to = "/Signup"><b style = "color:#006973;">Click here</b></router-link>
+          </div>
+        </el-main>
+        <el-footer class = "footer">
+          <div class="buttons">
+            <el-button class = "login-button" @click = "handleReset">Continue</el-button>
+          </div>
+          <div>
+            <span>© 2023 ArthriCare</span>
+          </div>
+        </el-footer>
+      </el-container>
     </div>
-</template>
+  </template>
 
 
 <!-- the following is all css-->

@@ -57,8 +57,6 @@
     .medicationList{
         color:#1890FF;
         font-weight: bold;
-        font-size: larger;
-        margin-top: 10px;
         width: 320px;
         text-align: center;
         display: flex;
@@ -66,7 +64,7 @@
         justify-content: center;
         margin: 10px;
         text-align: center;
-        border-radius: 4px;
+        border-radius: 5px;
     }
     .medication-time{
         font-size: 20px;
