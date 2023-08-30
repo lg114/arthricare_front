@@ -34,13 +34,13 @@
                     level: '10',
                     points: '1000'
                 },
-                chatPartners:[
-                    {
-                        icon: '@/assets/friend_4.png', // avatar5
-                        name: 'Timothy',
-                        latestMassege: 'Hey Kris, have you tried this exe...',
-                        newMessage: true
-                    },
+                    chatPartners:[
+                        {
+                            icon: '@/assets/friend_4.png', // avatar5
+                            name: 'Timothy',
+                            latestMassege: 'Hey Kris, have you tried this exe...',
+                            newMessage: true
+                        },
                     {
                         icon: '@/assets/friend_2.png', // avatar3
                         name: 'Adam',
@@ -48,15 +48,57 @@
                         newMessage: false
                     }
                 ],
+                messageInput: '', // Add this property to hold the message input value
+                chatHistory: [], // Add this property to store chat history
                 drawer: ref(false),
             };
         },
         methods:{
-            openDrawer() {
+            formatDateAndTime(timestamp) {
+        const options = {
+            day: '2-digit', // Display day in two digits (01, 02, etc.)
+            month: '2-digit', // Display month in two digits (01, 02, etc.)
+            year: 'numeric', // Display year in full format (2023)
+            hour: '2-digit', // Display hour in two digits (00, 01, etc.)
+            minute: '2-digit', // Display minute in two digits (00, 01, etc.)
+            hour12: false // Use 24-hour format
+            };
+
+                const [datePart, timePart] = new Date(timestamp).toLocaleString('en-US', options).split(', ');
+                const [month, day, year] = datePart.split('/');
+                const formattedDate = `${day}/${month}/${year}`;
+
+                return `${formattedDate} ${timePart}`;
+            },
+
+            openDrawer() {  
                 this.drawer = true;
             },
             beforeDrawerClose(done) {
                 done();
+            },
+            // New method to send a message and update chat history
+            sendMessage(){
+
+                console.log('sendMessage method called');
+                if (this.messageInput.trim() === '')
+                {return;}
+
+                // demonstration
+                const newMessage = {
+                    sender: 'me', // You can set the sender
+                    content: this.messageInput,
+                    timestamp: new Date().toISOString(),
+                };
+                console.log('New message:', newMessage);
+                // Push the new message to the chat history
+                    this.chatHistory.push(newMessage);
+                    console.log('Chat history:', this.chatHistory);
+
+
+                // Clear the message input
+                this.messageInput = '';
+
             },
             //Router
             goToUserProfile(){
@@ -101,12 +143,14 @@
                     
                     <!-- NOTE: This section needs to be updated by using for-loop to display the chat history in DB -->
                     <div id="messageMain">
-                        <p class="messageDate">JUL 13 AT 4:53 AM</p>
-                        <p class="text_from_me">Hi Timothy, this is Kris. Blah blah blah blah blah blah.</p>
-                        
-                        <div class="reply_from_chatPartner">
-                            <img :src="avatar5" alt="avatar" class="miniIcon_chatPartner" />
-                            <p class="text_from_partner">Hey Kris, have you tried this exercise?</p>
+                        <!-- Display existing messages from chat history using v-for -->
+                        <div v-for="message in chatHistory" :key="message.timestamp">
+                            <p class="messageDate">{{ formatDateAndTime(message.timestamp) }}</p>
+                            <p v-if="message.sender === 'me'" class="text_from_me">{{ message.content }}</p>
+                            <div v-else class="reply_from_chatPartner">
+                                <img :src="avatar5" alt="avatar" class="miniIcon_chatPartner" />
+                                <p class="text_from_partner">{{ message.content }}</p>
+                            </div>
                         </div>
                     </div>
 
@@ -124,18 +168,14 @@
                     </div>
                     <div class="message_input_textField">
                         <div class="enterMessageHere">
-                            <input type="text" placeholder="Message..." />
+                            <input type="text" placeholder="Message..." v-model="messageInput" @keyup.enter="sendMessage" />
                         </div>
-                        <div class="arrow_to_send_a_message">
+                        <div class="arrow_to_send_a_message" @click="sendMessage">
                             <!-- NOTE: How can I place the arrowUp icon inside the texFiled above? -->
                             <Icon><ArrowCircleUpTwotone /></Icon>
                         </div>
                     </div>
                 </div>
-
-
-
-
             </el-main> 
         </el-container>
     </div>
