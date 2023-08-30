@@ -125,6 +125,12 @@
             };
         },
         methods:{
+            
+            scrollToTop() {
+                console.log ("scrolling")
+                window.scrollTo(0, 0);
+            },
+
             openDrawer() {
             this.drawer = true;
             },
@@ -192,12 +198,6 @@
                 }
             },
             // END: Filter the posts by a topic
-            scrollToTop() {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            },
             changeSection(sectionName) {
                 this.activeSection = sectionName;
             }
@@ -265,8 +265,10 @@
                         <hr style="width: 200%">
                     </div>
 
-                    <!-- NOTE: Restart from here. This function is not working. -->
-                    <Icon><ArrowCircleUpTwotone class="scrollToTopButton" /></Icon>
+                            <!-- NOTE: Restart from here. This function is not working. -->
+                            <div class="scroll-to-top-container">
+                                <Icon @click="scrollToTop"><ArrowCircleUpTwotone class="scrollToTopButton" /></Icon>
+                            </div>
 
                     <!-- NOTE: -->
                     <p style="margin: 50px; margin-top: 100px; text-align: center; color: red;">NOTE: Add a function to jump to the top of the page by clicking the upper arrow on the right bottom. Add a function to reflect a new like. Add a function to reflect a new comment. Add a new page to display the details of a post and all the comments(discussion) toward the post.</p>

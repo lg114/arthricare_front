@@ -321,6 +321,8 @@ p{
     color: #949596;
     margin: 0px;
 }
+/*
+NOTE: sara's code here
 .scrollToTopButton{
     position: absolute;
     font-size: 60px;
@@ -331,6 +333,22 @@ p{
     right: 0px;
     bottom: 10%;
 }
+*/
+
+.scrollToTopButton {
+    position: fixed;
+    font-size: 60px;
+    color: #006973;
+    right: 10px;
+    bottom: 10%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.scrollToTopButton:hover {
+    background-color: #E6E6E6;
+}
+
 
 /* START: Event Section */
 table.event-table{
@@ -369,6 +387,14 @@ tr+tr {
       padding: 4px;
     }
 }
+
+.scroll-to-top-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+  }
+
 /* END: Event Section */
 
 /* START: News Section */
