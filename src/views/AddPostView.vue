@@ -75,10 +75,32 @@
                     console.error('Error accessing camera:', error);
                 }
             },
-            openImageSelector() {
-                // NOTE: Simulating image selection, replace this with actual logic
-                const imageURL = 'https://example.com/sample-image.jpg';
-                this.addImage(imageURL);
+            handleImageSelection(event) {
+                const selectedFiles = event.target.files;
+                for (let i = 0; i < 5; i++) {
+                    const selectedFile = selectedFiles[i];
+                    // Check if the selected file is an image
+                    if (selectedFile.type.startsWith('image/')) {
+                        this.addImage(selectedFile);
+                    }
+                }
+                // Clear the input value to allow selecting the same file again
+                this.$refs.imageInput.value = '';
+            },
+            clicked_postButton(){
+                // NOTE: add a function to save the newely created post. After saving the post, go back to the mainCommunity Page.
+                // NOTE: Have a look at the code inside the vue dataset such as newPost
+                /*
+                newPost:{
+                    postID: "",
+                    userID: "",
+                    title: "",
+                    content: "",
+                    time: "",
+                    images: [this.images]
+                }
+                */
+
             }
         },
         components: {
@@ -93,8 +115,7 @@
     <div class="container">
         <el-container>
             <el-header class="header">
-                <b id="postButton">Post</b>
-                <!-- <input type="submit" value="Submit"> -->
+                <input type="submit" value="Post" class="postButton" @click="clicked_postButton"> 
             </el-header>
             <el-main class="main">
 
@@ -109,12 +130,20 @@
 
                 <!-- Display selected images -->
                 <div class="selected-images">
-                        <img v-for="(image, index) in images" :src="image" :key="index" class="selected-image" />
+                    <img v-for="(image, index) in images" :src="image" :key="index" class="selected-image" />
                 </div>
 
                 <!-- NOTE: Should I wrap the icons below by <div></div> ? -->
                 <Icon class="camera_icon" @click="activateCamera"><CameraAltFilled /></Icon>
-                <Icon class="image_icon" @click="openImageSelector"><ImageRound /></Icon>
+                <Icon class="image_icon" @click="$refs.imageInput.click()"><ImageRound />
+                    <input
+                        type="file"
+                        accept="image/*"
+                        ref="imageInput"
+                        style="display: none"
+                        @change="handleImageSelection"
+                    />
+                </Icon>
             </el-main> 
         </el-container>
     </div>
