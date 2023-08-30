@@ -16,6 +16,7 @@ import CommunityPage from '@/views/CommunityView.vue';
 import MessagePage from '@/views/MessageView.vue';
 import ChatPage from '@/views/ChatView.vue';
 //import EventPage from '@/views/EventView.vue';
+import AddPostPage from '@/views/AddPostView.vue';
 
 
 
@@ -133,6 +134,14 @@ const router  = createRouter({
             }
         }
         */
+        {
+            path: '/AddPost',
+            name: 'AddPost',
+            component: AddPostPage,
+            meta: {
+                requiresAuth: true
+            }
+        },
     ]
 });
 

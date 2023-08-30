@@ -1,0 +1,114 @@
+/* User Profile Css */
+.header{
+    display: flex;
+    align-items: center;
+    color: white;
+    width: 100%;
+}
+.container{
+    display: grid;
+    flex-direction: column;
+    place-items: center;
+    height: 100vh;
+    background-color: #006973;
+    overflow-y: auto;
+}
+.main{
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    padding-bottom: 80px;
+    background-color: white;
+}
+
+/* START: Unique Code for Add Post Page */
+#postButton{
+    align-items: right;
+    text-align: right;
+
+    position:absolute;
+    left: 40%;
+    font-size: 20px;
+    white-space: nowrap;
+}
+.user_icon_name{
+    display: flex;
+    align-items: left;
+    flex-direction: row;
+}
+.user_icon{
+    display: flex;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #CFEEF5;
+}
+.userName{
+    font-size: 15px;
+    font-weight: bold;
+    margin-left: 15px;
+}
+.title_input{
+    outline: solid 1px #CAC4CD;
+    border: none;
+    border-radius: 10px;
+    width: 98%;
+    height: 34px;
+    padding-left: 10px;
+    font-size: 18px;
+    margin-top: 15px;
+}
+input[type="text"]:focus {
+    outline: solid 1px #55BDCA;
+}
+::placeholder{
+    font-size: 18px;
+    color: #949596;
+    padding-left: 5px;
+}
+textarea{
+    border: none; 
+    outline: none;
+    background-color: transparent;
+    caret-color: #55BDCA;
+    font-size: 18px;
+    width: 100%;
+    margin-top: 15px;
+}
+.selected-images{
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    border-radius: 5px;
+    height: 125px;
+
+    width: 350px;
+    display: block;
+}
+.selected-image{
+    width: 192px;
+    height: 125px;
+    padding-right: 4px;
+}
+.camera_icon{
+    font-size: 32px;
+    color: #006973;
+    padding: 5px;
+
+    position: absolute;
+    bottom: 0%;
+    left: 0%;
+    z-index: 1;
+}
+.image_icon{
+    font-size: 32px;
+    color: #006973;
+    padding: 5px;
+
+    position: absolute;
+    bottom: 0%;
+    left: 10%;
+    z-index: 1;
+}
+/* END: Unique Code for Add Post Page */
