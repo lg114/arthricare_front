@@ -1,9 +1,15 @@
-/* User Profile Css */
+/* START: Unique Code for Add Post Page */
 .header{
-    display: flex;
-    align-items: center;
     color: white;
     width: 100%;
+}
+input.postButton{
+    font-size: 22px;
+    background-color: transparent;
+    border: none;
+    color: white;
+    margin-top: 5%;
+    margin-left: 87%;
 }
 .container{
     display: grid;
@@ -11,25 +17,14 @@
     place-items: center;
     height: 100vh;
     background-color: #006973;
-    overflow-y: auto;
+    overflow-y: hidden;
 }
 .main{
     justify-content: center;
     align-items: center;
-    height: 90vh;
+    height: 100vh;
     padding-bottom: 80px;
     background-color: white;
-}
-
-/* START: Unique Code for Add Post Page */
-#postButton{
-    align-items: right;
-    text-align: right;
-
-    position:absolute;
-    left: 40%;
-    font-size: 20px;
-    white-space: nowrap;
 }
 .user_icon_name{
     display: flex;
@@ -75,9 +70,10 @@ textarea{
     font-size: 18px;
     width: 100%;
     margin-top: 15px;
+    overflow-y: auto;
 }
 .selected-images{
-    overflow-x: auto;
+    overflow-x: scroll;
     overflow-y: hidden;
     white-space: nowrap;
     border-radius: 5px;
@@ -100,6 +96,7 @@ textarea{
     bottom: 0%;
     left: 0%;
     z-index: 1;
+    margin-bottom: 10px;
 }
 .image_icon{
     font-size: 32px;
@@ -110,5 +107,6 @@ textarea{
     bottom: 0%;
     left: 10%;
     z-index: 1;
+    margin-bottom: 10px;
 }
 /* END: Unique Code for Add Post Page */
