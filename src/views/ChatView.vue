@@ -29,24 +29,25 @@
         },
         data(){
             return{
+                reply:"replygyujhj gtyuhnj bvhujhnmd",
                 user:{
                     name: 'Username',
                     level: '10',
                     points: '1000'
                 },
-                    chatPartners:[
-                        {
-                            icon: '@/assets/friend_4.png', // avatar5
-                            name: 'Timothy',
-                            latestMassege: 'Hey Kris, have you tried this exe...',
-                            newMessage: true
-                        },
-                    {
-                        icon: '@/assets/friend_2.png', // avatar3
-                        name: 'Adam',
-                        latestMassege: 'Hi Kris, blah blah blah.',
-                        newMessage: false
-                    }
+                chatPartners:[
+                {
+                    icon: '@/assets/friend_4.png', // avatar5
+                    name: 'Timothy',
+                    latestMassege: 'Hey Kris, have you tried this exe...',
+                    newMessage: true
+                },
+                {
+                    icon: '@/assets/friend_2.png', // avatar3
+                    name: 'Adam',
+                    latestMassege: 'Hi Kris, blah blah blah.',
+                    newMessage: false
+                }
                 ],
                 messageInput: '', // Add this property to hold the message input value
                 chatHistory: [], // Add this property to store chat history
@@ -156,7 +157,11 @@
 
                     <!-- NOTE: -->
                     <p style="margin: 50px; margin-top: 100px; text-align: center; color: red;"> 
-                        NOTE: The layout of the footer needs to be improved. Run the page on smartphone and see if a keyboard comes up when a user Add a funciton to enable a user to sent a new message. The backend for this page is ready, but it hasn't been marged yet.
+            
+                        Change text's background as relative to the length of the word
+                        NOTE: Run the page on smartphone and see if a keyboard comes up when a user. 
+                        The backend for this page is ready, but it hasn't been marged yet.
+
                     </p>
                 </div>
 

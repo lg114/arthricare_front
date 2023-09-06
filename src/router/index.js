@@ -17,7 +17,7 @@ import MessagePage from '@/views/MessageView.vue';
 import ChatPage from '@/views/ChatView.vue';
 //import EventPage from '@/views/EventView.vue';
 import AddPostPage from '@/views/AddPostView.vue';
-
+import PostDetailPage from '@/views/PostDetailView.vue';
 
 
 
@@ -138,6 +138,14 @@ const router  = createRouter({
             path: '/AddPost',
             name: 'AddPost',
             component: AddPostPage,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/PostDetail',
+            name: 'PostDetail',
+            component: PostDetailPage,
             meta: {
                 requiresAuth: true
             }
