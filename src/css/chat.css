@@ -93,7 +93,7 @@ p.text_from_me{
     font-weight: lighter;
     padding: 10px;
 }
-div.reply_from_chatPartner{
+.reply_from_chatPartner{
     display: flex;
     align-items: center;
     flex-direction: row;

@@ -3,12 +3,13 @@
     display: flex;
     align-items: center;
     color: white;
-    width: 100%;
-    
+    text-align: center;
+    margin-right: 100px;
+    height: 60px;
 }
 .more{
     position: absolute;
-    left: 20px;
+    left: 5%;
     top:2.5%;
     font-size: 30px;
     color: white;
@@ -45,23 +46,22 @@
     padding-bottom: 80px;
     background-color: white;
 }
-h2{
-    text-align: center;
-    /*color: white;*/
+h3{
+    text-align: left;
     color:black;
+    margin-bottom: 10px;
+}
+h4{
+    text-align: left;
+}
+h5{
+    color: #949596;
+    text-align: left;
 }
 p{
     text-align: center;
     /*color: white;*/
     color:black;
-}
-.avatar{
-    display: flex;
-    margin-top: 4%;
-    height: 50px;
-    width: 50px;
-    background-color: #7c8383;
-    border-radius: 50%;
 }
 .box{
     width: 350px;
@@ -97,16 +97,6 @@ p{
     margin-left: 10px;
     padding-right: 5px;
     padding-left: 5px;
-}
-.footer{
-    background-color: white;
-    position:fixed;
-    bottom:0;
-    height: 80px;
-    width:100%;
-    text-align: center;
-    white-space: nowrap;
-    box-shadow: inset 0 0 5px grey;
 }
 .sidebar{
     display: flex;
@@ -211,8 +201,28 @@ p{
     text-decoration: none;
 }
 
+/* START: Bottom Navigation Bar */
+.bottomButton{
+    padding-left:20px;
+    padding-right: 20px;
+}
+.footer{
+    display: inline;
+    position: fixed;
+    text-align: center;
+    bottom: 0;
+    height:80px;
+    --bottom-navigation-item-font-size: 13px;
+    --bottom-navigation-item-active-color: #55BDCA;
+    white-space: nowrap;
+}  
+.addButton{
+    font-size: 35px;
+}
+/* END: Bottom Navigation Bar */
+
 /* START: Unique CSS for Community Page */
-.topicFilter{
+.sectionFilter{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -220,31 +230,53 @@ p{
     margin-top: -10px;
     padding-bottom: 15px;
 }
-.topicFilter label{
+.sectionFilter label{
     display: block;
     font-size: 16px;
     color: #949596;
     cursor: pointer;
 }
-.topicFilter input:checked+label{
+.sectionFilter input:checked+label{
     font-weight: bold;
     color: #006973;
     font-size: 20px;
     margin-top: -1%;
 }
-.topicFilter input{
+.sectionFilter input{
     display: none;
 }
-.postCard{
+.icon_name_time{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    align-items: center;   
+}
+.avatar{
+    display: block;
+    height: 50px;
+    width: 50px;
+    background-color: #7c8383;
+    border-radius: 50%;
+}
+.postCard{
+    display: flex;
+    flex-wrap: wrap;
+
+    flex-direction: column;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 .username{
+    display: block;
     font-size: 16px;
-    margin-top: 8%;
-    margin-left: 5%;
+    margin-left: 15px;
     font-weight: bold;
+}
+.time-ago{
+    display: block;
+    color: #949596;
+    font-size: 16px;
+    margin-left: 15px;
 }
 .content{
     font-size: 16px;
@@ -254,13 +286,7 @@ p{
     margin-top: 0%;
     margin-bottom: 0%;
 }
-.time-ago{
-    color: #949596;
-    font-size: 16px;
-    margin-top: 8%;
-    margin-left: 5%;
-}
-.seeMoreLessButton{
+.seeMoreButton{
     color: #949596;
     border: none;
     outline: none;
@@ -299,7 +325,7 @@ p{
     flex-direction: row;
     padding-top: 5px;
 }
-.thumbUp_icon{
+.thumbLike_icon{
     font-size: 20px; 
     color: #F27B42;
     padding-left: 10px;
@@ -398,7 +424,31 @@ tr+tr {
 /* END: Event Section */
 
 /* START: News Section */
-    /*  NOTE: Code is coming here... */
+.news_section{
+    overflow-x: hidden;
+}
+img.trendingNews{
+    padding-left: auto;
+    padding-right: auto;
+    width: 326px;
+    height: 191px;
+}
+div.card_TrendingNews{
+    width: 100%;
+    background-color: #55BDCA;
+}
+div.card_TodaysNews{
+    width: 100%;
+    background-color: #acec09;
+}
+img.todaysNews{
+    width: 131px;
+    height: 99px;
+}
+hr.todaysNews{
+    color:#E5E5E5; 
+    width: 100%;
+}
 /* END: News Section */
 
 /* START: Group Section */

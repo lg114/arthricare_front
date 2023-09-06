@@ -1,0 +1,160 @@
+/* User Profile Css */
+.header{
+    display: flex;
+    align-items: center;
+    color: white;
+    text-align: center;
+    margin-right: 100px;
+    height: 60px;
+}
+.user{
+    position:absolute;
+    left: 30%;
+    font-size: 30px;
+}
+.pageTitle{
+    position:absolute;
+    left: 40%;
+    font-size: 20px;
+    white-space: nowrap;
+}
+.container{
+    display: grid;
+    flex-direction: column;
+    place-items: center;
+    height: 100vh;
+    background-color: #006973;
+    overflow-x: hidden;
+}
+.main{
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    padding-bottom: 80px;
+    background-color: white;
+}
+.box{
+    width: 350px;
+    height: 110px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 2px 2px 2px rgb(83, 83, 83);
+    margin-left: 5px;
+    margin-bottom: 15px;
+}
+.boxTitle{
+    padding-left: 15px;
+}
+.collectionImage{
+    width: 80px;
+    height: 60px;
+    margin-left: 10px;
+    float: left;
+    border-radius: 10px;
+}
+.friend_avatar{
+    width: 50px;
+    height: 50px;
+    margin-left: 10px;
+    float:left;
+}
+
+/* START: Unique CSS Code for Post Detail Page */
+.arrowBack{
+    position: absolute;
+    left: 5%;
+    top:2.5%;
+    font-size: 30px;
+    color: white;
+}
+.postDetail_section{
+    display: flex;
+    flex-direction: column;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.icon_name_time{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;   
+}
+.avatar{
+    display: block;
+    height: 50px;
+    width: 50px;
+    background-color: #7c8383;
+    border-radius: 50%;
+}
+.username{
+    display: block;
+    font-size: 16px;
+    margin-left: 15px;
+    font-weight: bold;
+}
+.time-ago{
+    display: block;
+    color: #949596;
+    font-size: 16px;
+    margin-left: 15px;
+}
+.content{
+    font-size: 16px;
+    width: 100%;
+    display: block;
+    text-align: left;
+    margin-top: 0%;
+    margin-bottom: 0%;
+}
+.postTitle{
+    font-weight: bold;
+    font-size: 16px;
+    text-align: left;
+    margin-top: 2%;
+    margin-bottom: 1.5%;
+    line-height: 19px;
+}
+#image-scroll-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    border-radius: 5px;
+    height: 125px;
+
+    width: 350px;
+    display: block;
+}
+.aImage {
+    width: 192px;
+    height: 125px;
+    padding-right: 4px;
+}
+.like_comment_section{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    padding-top: 5px;
+}
+.thumbLike_icon{
+    font-size: 20px; 
+    color: #F27B42;
+    padding-left: 10px;
+    padding-right: 5px;
+}
+.comment_icon{
+    font-size: 20px; 
+    color: #949596;
+    padding-left: 10px;
+    padding-right: 5px;
+    padding-top: 2px;
+}
+.numberOfLikes{
+    color: #949596;
+    margin: 0px;
+    padding-right: 5px;
+}
+.numberOfComments{
+    color: #949596;
+    margin: 0px;
+}
+/* END: Unique CSS Code for Post Detail Page */
