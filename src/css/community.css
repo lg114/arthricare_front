@@ -48,18 +48,6 @@
     background-color: white;
     overflow-x: hidden;
 }
-h3{
-    text-align: left;
-    color:black;
-    margin-bottom: 10px;
-}
-h4{
-    text-align: left;
-}
-h5{
-    color: #949596;
-    text-align: left;
-}
 p{
     text-align: center;
     /*color: white;*/
@@ -426,7 +414,9 @@ tr+tr {
 /* END: Event Section */
 
 /* START: News Section */
-.news_section{
+.card_TrendingNews{
+    display: block;
+    position: relative;
 }
 .trendingNews-scroll-container{
     position: relative;
@@ -435,23 +425,31 @@ tr+tr {
     white-space: nowrap;
     border-radius: 5px;
     width: 350px;
-    height: 200px;
-    display: block;
-}
-.img-trendingNews{
-    /* Image for a trending news */
-    width: 320px;
-    height: 200px;
-    padding-right: 10px;
-    border-radius: 5px;
+    height: 220px;
 
+    display: flex;
+    flex-direction: row;
+}
+.trendingNews-scroll-container img{
+    border-radius: 10px;
+    width: 315px;
+    height: 200px;
+    margin-right: 10px;
     position: relative;
 }
-img{
-    border-radius: 5px;
+
+h3{
+    text-align: left;
+    color:black;
+    margin-bottom: 10px;
 }
-
-
+h4{
+    text-align: left;
+}
+h5{
+    color: #949596;
+    text-align: left;
+}
 
 .top-left{
     /* Date for a trending news */

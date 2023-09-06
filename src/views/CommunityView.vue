@@ -309,12 +309,16 @@
                 <div v-if="activeSection === 'news_section'" class="news_section">
                     <h3>Trending News</h3>
                         <div class="trendingNews-scroll-container">
-                  
-                                <img src="@/assets/communityPage_NewsSection_1.png" alt="1st Treanding News" class="img-trendingNews" />
-                        
-
-                                <img src="@/assets/communityPage_NewsSection_5.png" alt="2nd Treanding News" class="img-trendingNews" />
-                    
+                            <div class="card_TrendingNews">
+                                <img src="@/assets/communityPage_NewsSection_1.png" alt="1st Treanding News" />
+                                <h5 class="top-left">05. Sep. 2023</h5>
+                                <h4 class="bottom-center">Australians 'in the dark' with arthritis: one of our most prevalent and costly diseases</h4>
+                            </div>
+                            <div class="card_TrendingNews">
+                                <img src="@/assets/communityPage_NewsSection_5.png" alt="2nd Treanding News" />
+                                <h5 class="top-left">05. Sep. 2023</h5>
+                                <h4 class="bottom-center">Australians 'in the dark' with arthritis: one of our most prevalent and costly diseases</h4>
+                            </div>
                         </div>    
 
                     <h3>Today's News</h3>
