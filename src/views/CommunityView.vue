@@ -194,7 +194,7 @@
                 this.activeSection = sectionName;
             },
             // Note for Don: Add a function which adds/remove a like, changes the status of the thumbUp icon.
-            ckikcked_thumbLike(){
+            toggleLike(){
                 // Add or remove a like
                 // The thumbUp icon when a user added 'a like' should be 'ThumbLike20Filled'
                 // The thumbUp icon when a user removed 'a like' should be 'ThumbLike20Regular'
@@ -305,30 +305,34 @@
                 <!-- END: Event Section -->
 
                 <!-- START: News Section -->
+                <!-- Note: At this moment, this section is just a placeholder. It's been hardcoded. -->
                 <div v-if="activeSection === 'news_section'" class="news_section">
                     <h3>Trending News</h3>
-                    <div class="card_TrendingNews">
-                        <h5>05. Sep. 2023</h5>
-                        <h4>Australians 'in the dark' with arthritis: one of our most prevalent and costly diseases</h4>
-                        <img src="@/assets/communityPage_NewsSection_1.png" alt="1st Treanding News" class="trendingNews" />
-                    </div>
+                        <div class="trendingNews-scroll-container">
+                  
+                                <img src="@/assets/communityPage_NewsSection_1.png" alt="1st Treanding News" class="img-trendingNews" />
+                        
+
+                                <img src="@/assets/communityPage_NewsSection_5.png" alt="2nd Treanding News" class="img-trendingNews" />
+                    
+                        </div>    
 
                     <h3>Today's News</h3>
                     <div class="card_TodaysNews">
                         <h4>There will be a news title.</h4>
-                        <h5>06. Sep. 2023. </h5>
+                        <h5>06. Sep. 2023</h5>
                         <img src="@/assets/communityPage_NewsSection_2.png" alt="1st Today's News" class="todaysNews" />
                     </div>
                     <hr class="todaysNews">
                     <div class="card_TodaysNews">
                         <h4>There will be a news title.</h4>
-                        <h5>06. Sep. 2023. </h5>
+                        <h5>06. Sep. 2023</h5>
                         <img src="@/assets/communityPage_NewsSection_3.png" alt="2nd Today's News" class="todaysNews" />
                     </div>
                     <hr class="todaysNews">
                     <div class="card_TodaysNews">
                         <h4>There will be a news title.</h4>
-                        <h5>06. Sep. 2023. </h5>
+                        <h5>06. Sep. 2023</h5>
                         <img src="@/assets/communityPage_NewsSection_4.png" alt="3rd Today's News" class="todaysNews" />
                     </div>
                 </div>
