@@ -1,8 +1,7 @@
 <!-- Community Page -->
 <script>
     import { ref } from 'vue';
-    import { ChatOutlined } from '@vicons/material';
-    import { ThumbLike20Regular, LineHorizontal320Filled, Add20Filled, Home20Filled, BriefcaseMedical20Regular, Gift20Regular, Person20Regular } from '@vicons/fluent'
+    import { ThumbLike20Regular, LineHorizontal320Filled, CommentMultiple20Regular, Add20Filled, Home20Filled, BriefcaseMedical20Regular, Gift20Regular, Person20Regular } from '@vicons/fluent'
     import { Icon } from '@vicons/utils'
     import SideBarContent from '@/component/Sidebar.vue';
     import { UserFilled } from '@element-plus/icons-vue';
@@ -208,7 +207,6 @@
             Icon,
             SideBarContent,
             UserFilled,
-            ChatOutlined,
             LineHorizontal320Filled,
             Add20Filled, 
             Home20Filled, 
@@ -216,7 +214,7 @@
             Gift20Regular, 
             Person20Regular,
             ThumbLike20Regular,  // Default like button  // When user liked a post
-            // comment icon
+            CommentMultiple20Regular // comment icon
         }
     };
 </script>
@@ -249,7 +247,7 @@
                 </div>
 
                 <div v-if="activeSection === 'discussion_section'">
-                    <div v-for="post in posts" :key="post.id" class="postCard" @click="viewPost(post)">
+                    <div v-for="post in posts" :key="post.id" class="postCard">
                         <div class="icon_name_time">
                             <!-- NOTE: the code below to display an image is a hardcode and shouldn'r be used. -->
                             <img :src="avatar1" alt="avatar" class="avatar" />
@@ -257,7 +255,7 @@
                             <div class="username">{{ post.username }}</div>
                             <div class="time-ago">{{ getTimeAgo(post.timestamp) }}</div>
                         </div>
-                        <div class="content">
+                        <div class="content" @click="viewPost(post)">
                             <p class="postTitle">{{ post.title }}</p>
                             <p v-if="!post.expanded" class="content">{{ truncateContent(post.content) }}</p>
                             <p v-else class="content">{{ post.content }}</p>
@@ -269,14 +267,14 @@
                                     <img src="@/assets/postImage3.png" :alt="image.alt" class="aImage"/> 
                                 </span>    
                             </div>
-                            <div class="like_comment_section">
+                        </div>
+                        <div class="like_comment_section">
                                 <!-- Note for Don:  -->
                                 <Icon class="thumbLike_icon"><ThumbLike20Regular /></Icon>
                                 <p class="numberOfLikes">{{ post.numberOfLikes }}</p>
-                                <Icon class="comment_icon" ><ChatOutlined /></Icon>
+                                <Icon class="comment_icon" ><CommentMultiple20Regular /></Icon>
                                 <p class="numberOfComments">{{ post.numberOfComments }}</p>
                             </div>
-                        </div>
                         <hr style="width: 100%;">
                     </div>
 
@@ -372,7 +370,7 @@
                 <!-- END: News Section -->
             </el-main> 
         </el-container>
-        
+
 <!--============================ START: The Bottom Navigation Bar ============================-->       
         <var-bottom-navigation
             class="footer"
