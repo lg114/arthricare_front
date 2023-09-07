@@ -103,6 +103,7 @@
                         avatar: '@/assets/user_avatar.png',
                         username: 'Anthony',
                         timestamp: new Date(),
+                        postedTime: '06/09/2023/hh/mm/ss',
                         title: 'This is a title for the News post',
                         content: "ghju fgufj fgrfd dfgv ed fgf f f gea.",
                         expanded: false,
@@ -168,7 +169,6 @@
             togglePostExpansion(post) {
                 console.log('Toggling post expansion', post);
                 post.expanded = !post.expanded;
-                
             },
             // END: 3 methods for SeeMore/SeeLess buttons
             viewPost() {
@@ -198,6 +198,9 @@
                 // Add or remove a like
                 // The thumbUp icon when a user added 'a like' should be 'ThumbLike20Filled'
                 // The thumbUp icon when a user removed 'a like' should be 'ThumbLike20Regular'
+            },
+            goToMessagePage(){
+                this.$router.push('/Message');
             }
         },
 //============================== END: Unique Functions for Community Page ==============================//
@@ -242,7 +245,7 @@
                     <input type="radio" checked id="1" name="section" class="section" @click="changeSection('discussion_section')"><label for="1">Discussion</label>
                     <input type="radio" id="2" name="section" class="section" @click="changeSection('event_section')"><label for="2">Event</label>
                     <input type="radio" id="3" name="section" class="section" @click="changeSection('news_section')"><label for="3">News</label>
-                    <input type="radio" id="4" name="section" class="section" @click="changeSection('message_section')"><label for="4">Message</label>
+                    <input type="radio" id="4" name="section" class="section" @click="goToMessagePage"><label for="4">Message</label>
                 </div>
 
                 <div v-if="activeSection === 'discussion_section'">
@@ -274,7 +277,7 @@
                                 <p class="numberOfComments">{{ post.numberOfComments }}</p>
                             </div>
                         </div>
-                        <hr style="width: 200%">
+                        <hr style="width: 100%;">
                     </div>
 
                     <!-- Note for Don: This is #4. The code below is to jump to the top of the page, but this function is not working. 
@@ -286,21 +289,24 @@
                 <!-- END: Discussion Section -->
 
                 <!-- START: Event Section -->
+                <!-- Note: At this moment, this section is just a placeholder. It's been hardcoded. -->
                 <div v-if="activeSection === 'event_section'">
-                    <table class="event-table">
-                        <thead>
-                            <tr>
-                                <th>Dates</th>
-                                <th>Upcoming Events</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(event, index) in events" :key="index">
-                            <td>{{ event.date }}</td>
-                            <td><a :href="event.link" target="_blank">{{ event.name }}</a></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <h3>Upcoming Events</h3>
+                    <div class="card_event">
+                        <img src="@/assets/communityPage_event_1.png" alt="1st event" class="event" />
+                        <h5 class="event-date">15. Apr. 2023</h5>
+                        <a href="https://events.arthritis.org/index.cfm?fuseaction=donorDrive.event&eventID=1479" target="_blank" class="eventLink">2023 Walk to CURE Arthritis - Savannah, GA</a>
+                    </div>
+                    <div class="card_event">
+                        <img src="@/assets/communityPage_event_2.png" alt="2nd event" class="event" />
+                        <h5 class="event-date">22. Apr. 2023</h5>
+                        <a href="https://events.arthritis.org/index.cfm?fuseaction=donorDrive.event&eventID=1466" target="_blank" class="eventLink">2023 Walk to CURE Juvenile Arthritis - Bloomington, MN</a>
+                    </div>
+                    <div class="card_event">
+                        <img src="@/assets/communityPage_event_1.png" alt="3rd event" class="event" />
+                        <h5 class="event-date">22. Apr. 2023</h5>
+                        <a href="https://events.arthritis.org/index.cfm?fuseaction=donorDrive.event&eventID=1480" target="_blank" class="eventLink">2023 Walk to CURE Arthritis - Jacksonville, FL</a>
+                    </div>
                 </div>
                 <!-- END: Event Section -->
 
@@ -316,42 +322,57 @@
                             </div>
                             <div class="card_TrendingNews">
                                 <img src="@/assets/communityPage_NewsSection_5.png" alt="2nd Treanding News" />
-                                <h5 class="top-left">05. Sep. 2023</h5>
-                                <h4 class="bottom-center">Australians 'in the dark' with arthritis: one of our most prevalent and costly diseases</h4>
+                                <h5 class="top-left">04. Sep. 2023</h5>
+                                <h4 class="bottom-center">Reducing opioid harm through regulatory changes - Information for consumers, patients and carers</h4>
                             </div>
                         </div>    
 
-                    <h3>Today's News</h3>
-                    <div class="card_TodaysNews">
-                        <h4>There will be a news title.</h4>
-                        <h5>06. Sep. 2023</h5>
-                        <img src="@/assets/communityPage_NewsSection_2.png" alt="1st Today's News" class="todaysNews" />
+                    <h3 style="padding-top:15px;">Latest News</h3>
+                    <div class="card_latestNews">
+                        <div class="latestNews_title_date">
+                            <h4 class="latestNews-title">Arthritis Australia launches new Multicultural Resources</h4>
+                            <h5 class="latestNews-date">06. Sep. 2023</h5>
+                        </div>
+                        <div class="latestNews_img">
+                            <img src="@/assets/communityPage_NewsSection_2.png" alt="1st Today's News" class="latestNews" />
+                        </div>
                     </div>
-                    <hr class="todaysNews">
-                    <div class="card_TodaysNews">
-                        <h4>There will be a news title.</h4>
-                        <h5>06. Sep. 2023</h5>
-                        <img src="@/assets/communityPage_NewsSection_3.png" alt="2nd Today's News" class="todaysNews" />
+                    <hr class="latestNews">
+                    <div class="card_latestNews">
+                        <div class="latestNews_title_date">
+                            <h4 class="latestNews-title">Young women urged to be vigilant and assess persistent back pain</h4>
+                            <h5 class="latestNews-date">01. Sep. 2023</h5>
+                        </div>
+                        <div class="latestNews_img">
+                            <img src="@/assets/communityPage_NewsSection_3.png" alt="2nd Today's News" class="latestNews" />
+                        </div>
                     </div>
-                    <hr class="todaysNews">
-                    <div class="card_TodaysNews">
-                        <h4>There will be a news title.</h4>
-                        <h5>06. Sep. 2023</h5>
-                        <img src="@/assets/communityPage_NewsSection_4.png" alt="3rd Today's News" class="todaysNews" />
+                    <hr class="latestNews">
+                    <div class="card_latestNews">
+                        <div class="latestNews_title_date">
+                            <h4 class="latestNews-title">Parliamentary Friends of Arthritis event</h4>
+                            <h5 class="latestNews-date">25. Aug. 2023</h5>
+                        </div>
+                        <div class="latestNews_img">
+                            <img src="@/assets/communityPage_NewsSection_4.png" alt="3rd Today's News" class="latestNews" />
+                        </div>
                     </div>
+                    <hr class="latestNews">
+                    <div class="card_latestNews">
+                        <div class="latestNews_title_date">
+                            <h4 class="latestNews-title">Crisis brewing in arthritis set to hit community and economy hard</h4>
+                            <h5 class="latestNews-date">23. Aug. 2023</h5>
+                        </div>
+                        <div class="latestNews_img">
+                            <img src="@/assets/communityPage_NewsSection_6.png" alt="4th Today's News" class="latestNews" />
+                        </div>
+                    </div>
+                    <hr class="latestNews">
                 </div>
                 <!-- END: News Section -->
-
-                <!-- START: Message Section -->
-                <div v-if="activeSection === 'message_section'">
-                    <p>Content for Message</p>
-                </div>
-                <!-- END: Message Section -->
             </el-main> 
         </el-container>
-
-
-
+        
 <!--============================ START: The Bottom Navigation Bar ============================-->       
         <var-bottom-navigation
             class="footer"

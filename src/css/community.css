@@ -251,10 +251,8 @@ p{
 .postCard{
     display: flex;
     flex-wrap: wrap;
-
+    width: 350px;
     flex-direction: column;
-    padding-left: 5px;
-    padding-right: 5px;
 }
 .username{
     display: block;
@@ -308,6 +306,7 @@ p{
     width: 192px;
     height: 125px;
     padding-right: 4px;
+    object-fit: cover;
 }
 .like_comment_section{
     display: flex;
@@ -337,20 +336,6 @@ p{
     color: #949596;
     margin: 0px;
 }
-/*
-NOTE: sara's code here
-.scrollToTopButton{
-    position: absolute;
-    font-size: 60px;
-    color: #006973;
-    float: right;
-    margin-right:5px;
-
-    right: 0px;
-    bottom: 10%;
-}
-*/
-
 .scrollToTopButton {
     position: fixed;
     font-size: 60px;
@@ -360,57 +345,50 @@ NOTE: sara's code here
     cursor: pointer;
     transition: background-color 0.3s;
 }
-
 .scrollToTopButton:hover {
     background-color: #E6E6E6;
 }
-
-
+hr{
+    background-color:#E5E5E5;
+    border: none;
+    height:1px;
+}
 /* START: Event Section */
-table.event-table{
-    border: 1px solid #aaa;
-    border-collapse: separate;
-    overflow: hidden;
-    border-spacing: 0;
+.card_event{
+    height: 250px;
+    background-color: #CFEEF5;
     border-radius: 10px;
-    text-align: center;
+    margin:  0 auto;
+    width: 350px;
     margin-top: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
-th,td {
-    padding: .6em 3em;
-    vertical-align: middle;
-
-    +th,+td {
-        border-left: 1px solid #aaa;
-    }
+img.event{
+    width: 350px;
+    height: 149px;
+    border-radius: 10px 10px 0px 0px;
+    object-fit: cover;
 }
-th {
-    background: #CFEEF5;
+.event-date{
+    color: black;
+    padding: 5px;
+    padding-left: 10px;
+    margin: 0px;
 }
-td {
-    background: #fff;
-    border-top: 1px solid #aaa;
-    text-align: left;
+a.eventLink{
+    padding: 5px;
+    padding-left: 10px;
+    color: black;
+    width: 357px;
+    word-wrap: break-word;
 }
-tr+tr {
-    th,td{
-        border-top: 1px solid #aaa;
-    }
-}
-/* Responsive Styles */
-@media (max-width: 600px) {
-    .event-table th, .event-table td {
-      padding: 4px;
-    }
-}
-
 .scroll-to-top-container {
     position: fixed;
     bottom: 20px;
     right: 20px;
     z-index: 9999;
-  }
-
+}
 /* END: Event Section */
 
 /* START: News Section */
@@ -425,8 +403,7 @@ tr+tr {
     white-space: nowrap;
     border-radius: 5px;
     width: 350px;
-    height: 220px;
-
+    height: 200px;
     display: flex;
     flex-direction: row;
 }
@@ -436,26 +413,21 @@ tr+tr {
     height: 200px;
     margin-right: 10px;
     position: relative;
+    object-fit: cover;
 }
-
 h3{
     text-align: left;
-    color:black;
     margin-bottom: 10px;
 }
-h4{
-    text-align: left;
-}
 h5{
-    color: #949596;
+    color: #FFFFFF;
     text-align: left;
 }
-
 .top-left{
     /* Date for a trending news */
     position: absolute;
     top: 10px;
-    left: 25px;
+    left: 15px;
     margin-top: 0;
     margin-bottom: 0;
 }
@@ -463,25 +435,41 @@ h5{
     /* Header for a trending news */
     position: absolute;
     bottom: 10px;
-    left: 25px;
+    left: 15px;
     width: 283px;
-    height: 69px;
     margin-top: 0;
     margin-bottom: 0;
+    white-space: normal;
+    filter: drop-shadow(1px 1px 1px white);
 }
-div.card_TodaysNews{
-    width: 100%;
-    background-color: #acec09;
+div.card_latestNews{
+    width: 350px;
+    display: flex;
+    flex-direction: row;
+    height: 115px;
     position: relative;
 }
-img.todaysNews{
-    width: 131px;
-    height: 99px;
-    border-radius: 5px;
+.latestNews-title{
+    margin-top: 0px;
+    margin-bottom: 10px;
+    padding-right: 5px;
 }
-hr.todaysNews{
-    color:#E5E5E5; 
-    width: 100%;
+.latestNews-date{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    color: #949596;
+    position: absolute;
+    bottom: 0px;
+}
+img.latestNews{
+    width: 135px;
+    height: 115px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+hr.latestNews{
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 /* END: News Section */
 
