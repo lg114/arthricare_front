@@ -1,5 +1,6 @@
 /* Welcome Page Css */
 .container{
+  position: relative;
   background-color: #CFEEF5;
   height: 100vh;
 }
@@ -43,6 +44,9 @@
   --button-normal-font-size: 16px;
   --button-border-radius: 5px;
 }
+.main{
+  overflow: hidden;
+}
 .name{
   margin-top: 45px;
 }
@@ -63,6 +67,9 @@
   color: rgba(217,217,227,.8);
   line-height: 1.5rem;
 }
+a {
+  text-decoration: none;
+}
 /* responsive design */
 @media screen and (min-width: 380px) {
   .popping-text{
@@ -70,8 +77,12 @@
     top: 20%;
     left: 50;
   }
+
 }
 @media screen and (min-width: 768px) {
+  .main{
+    overflow: hidden;
+  }
   .popping-text{
     position: relative;
     top: 35%;

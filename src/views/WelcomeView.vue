@@ -6,7 +6,7 @@
               <p>ArthriCare</p>
           </div>
       </el-header>
-      <el-main>
+      <el-main class = "main">
           <div class = "popping-text">
               <h2>Your Pathway to <br> Joint Wellness</h2>
           </div>
@@ -18,7 +18,7 @@
                           <var-button color="#55BDCA" text-color="#F5F4F3" elevation = 0><b>Log in</b></var-button>                            
                       </router-link>
                       <router-link  to = "/Signup">
-                          <var-button color="#55BDCA" text-color="#F5F4F3" elevation = 0><b>Sign up</b></var-button>
+                          <var-button color="#55BDCA" text-color="#F5F4F3" elevation = 0 text-decoration: none><b>Sign up</b></var-button>
                       </router-link>
                   </div>
                   <div class = "name">

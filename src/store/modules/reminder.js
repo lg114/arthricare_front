@@ -51,7 +51,9 @@ const actions = {
                         id: idCounter++,
                         name: reminder.medicationName,
                         time: timeWithoutSeconds,
-                        date: ""
+                        dosageUnit: reminder.dosageUnit,
+                        category: reminder.category,
+                        takeMedTime: reminder.takeMedTime
                     });
                 });
                 console.log('Fetched reminders:', reminders); 

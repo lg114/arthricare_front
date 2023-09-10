@@ -3,8 +3,6 @@
     import { ref } from 'vue';
     import { AccountCircleRound, ModeEditOutlineOutlined, MoreHorizFilled, MedicationOutlined, CardGiftcardOutlined, HomeRound, AccountCircleOutlined, AddCircleFilled, AddCircleOutlineFilled } from '@vicons/material';
     import { Icon } from '@vicons/utils'
-    import SideBarContent from '@/component/Sidebar.vue';
-    import { UserFilled } from '@element-plus/icons-vue';
     export default{
         mounted() {
                 document.title = "User Profile | ArthriCare";
@@ -42,8 +40,6 @@
             AddCircleOutlineFilled,
             AccountCircleRound,
             ModeEditOutlineOutlined,
-            SideBarContent,
-            UserFilled
         }
     };
 </script>
@@ -105,20 +101,7 @@
                 <span id="rewardsText">Rewards</span>
                 <span id="profileText">Profile</span>
         </el-footer>
-        <el-drawer style="background-color: #1890FF;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
-            <!--Action是模拟接口，与后端连接时更换-->
-                <div class = "sidebar">
-                    <el-upload action="" :show-file-list="false">
-                        <el-avatar :size="65">
-                            <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
-                                <template v-else>
-                                    <UserFilled class="defalut-avatar" />
-                                </template>
-                        </el-avatar>   
-                    </el-upload> 
-                </div>
-            <SideBarContent :imgUrl="imgUrl" />    
-        </el-drawer>
+
     </div>
 </template>
 

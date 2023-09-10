@@ -1,5 +1,5 @@
 <template>
-    <vue-hash-calendar class = "calendar" lang="EN" :scroll-change-date="true" :show-week-view="true" :show-today-button="true" picker-type="date"  :show-arrow="true" :theme-color="themeColor" format="MM DD,YY at hh:mm F" @change="handleChange">
+    <vue-hash-calendar class = "calendar" lang="EN" :scroll-change-date="true" :show-week-view="true" :show-today-button="true" picker-type="date" :theme-color="themeColor" format="MM DD,YY at hh:mm F" @change="handleChange">
     </vue-hash-calendar>
 </template>
 
@@ -13,10 +13,9 @@
 
       mounted() {
           this.themeColor = ref({
-              'main-color': '#1890ff',
-              'main-font-color': '#1890ff',
+              'main-color': '#006973',
+              'main-font-color': '#006973',
               'bg-color': 'white',
-              // 'disabled-font-color': 'yellow'
           });
       },
 

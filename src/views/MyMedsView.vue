@@ -3,9 +3,7 @@
 <script setup>
   import { ref } from 'vue';
   import {  MoreHorizFilled, MedicationOutlined, CardGiftcardOutlined, HomeRound, AccountCircleOutlined, AddCircleFilled } from '@vicons/material';
-  import { UserFilled } from '@element-plus/icons-vue';
   import { Icon } from '@vicons/utils';
-  import SideBarContent from '@/component/Sidebar.vue';
   //import {ArrowLeftBold} from '@element-plus/icons-vue';
   //import {CirclePlus} from '@element-plus/icons-vue';
   import {ArrowRightBold} from '@element-plus/icons-vue';
@@ -110,20 +108,6 @@
     <span id="rewardsText">Rewards</span>
     <span id="profileText">Profile</span>
   </el-footer>
-        <el-drawer style="background-color: #1890FF;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
-            <!--Action是模拟接口，与后端连接时更换-->
-                <div class = "sidebar">
-                    <el-upload action="" :show-file-list="false">
-                        <el-avatar :size="65">
-                            <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
-                                <template v-else>
-                                    <UserFilled class="defalut-avatar" />
-                                </template>
-                        </el-avatar>   
-                    </el-upload> 
-                </div>
-            <SideBarContent :imgUrl="imgUrl" />    
-        </el-drawer>
   </div>
 </template>
 
@@ -291,7 +275,6 @@ export default {
           HomeRound, 
           AccountCircleOutlined,
           AddCircleFilled,
-          SideBarContent
         }
       }
         
