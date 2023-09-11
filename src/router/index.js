@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-import { ElMessage } from 'element-plus';
-import store from '@/store';
+//import { ElMessage } from 'element-plus';
+//import store from '@/store';
 import WelcomePage from '@/views/WelcomeView.vue';
 import LoginPage from '@/views/LoginView.vue';
 import SignUpPage from '@/views/SignupView.vue';
@@ -16,6 +16,14 @@ import EducationPage from '@/views/educationView.vue';
 import SearchPage from '@/views/searchView.vue';
 import EditProfilePage from '@/views/EditProfile.vue';
 import EducationArticlePage from '@/views/EducationArticle.vue';
+import CommunityPage from '@/views/CommunityView.vue';
+import MessagePage from '@/views/MessageView.vue';
+import ChatPage from '@/views/ChatView.vue';
+import AddPostPage from '@/views/AddPostView.vue';
+import PostDetailPage from '@/views/PostDetailView.vue';
+import MyPostsPage from '@/views/MyPostsView.vue';
+
+
 
 const router  = createRouter({
     history : createWebHashHistory(),
@@ -100,6 +108,9 @@ const router  = createRouter({
             path: '/Education',
             name: 'Education',
             component: EducationPage,
+            path: '/Community',
+            name: 'Community',
+            component: CommunityPage,
             meta: {
                 requiresAuth: true
             }
@@ -108,6 +119,9 @@ const router  = createRouter({
             path: '/SearchArticle',
             name: 'SearchArticle',
             component: SearchPage,
+            path: '/Message',
+            name: 'Message',
+            component: MessagePage,
             meta: {
                 requiresAuth: true
             }
@@ -116,6 +130,9 @@ const router  = createRouter({
             path: '/EducationArticle',
             name: 'EducationArticle',
             component: EducationArticlePage,
+            path: '/Chat',
+            name: 'Chat',
+            component: ChatPage,
             meta: {
                 requiresAuth: true
             }
@@ -124,6 +141,25 @@ const router  = createRouter({
             path: '/EditProfile',
             name: 'EditProfile',
             component: EditProfilePage,
+            path: '/AddPost',
+            name: 'AddPost',
+            component: AddPostPage,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/PostDetail/:id',
+            name: 'PostDetail',
+            component: PostDetailPage,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/MyPosts',
+            name: 'MyPosts',
+            component: MyPostsPage,
             meta: {
                 requiresAuth: true
             }
@@ -133,7 +169,7 @@ const router  = createRouter({
 });
 
 //Router Guard 导航守卫
-
+/*
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
         if (store.getters['user/isLoggedIn']) {
@@ -146,7 +182,7 @@ router.beforeEach((to, from, next) => {
         next(); // 不需要身份验证的路由，直接继续访问
     }
 });
-
+*/
 
 
 export default router;

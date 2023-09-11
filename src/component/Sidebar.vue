@@ -1,5 +1,6 @@
 <script>
     import { Avatar, CaretRight, Message, MessageBox, Reading, WarningFilled, SwitchButton } from '@element-plus/icons-vue';
+   // import router from '@/router';
 
     export default {
         name: "SidebarContent",
@@ -13,6 +14,7 @@
         },
         methods: {
             goToUserProfile(){
+                console.log("Logout button clicked");
                 this.$router.push('/UserProfile');
             },
             goToEducation(){
@@ -21,6 +23,7 @@
             async logout(){
                 this.$store.dispatch('user/logout');
             }
+
         },
         components: {
             Avatar,
@@ -114,7 +117,7 @@
         align-items: center;
         justify-content: space-between;
         width: 100%;
-        cursor: pointer;
+        cursor: pointer; 
     }
     .menu-button3{
         display: flex;

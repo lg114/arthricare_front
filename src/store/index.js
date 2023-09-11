@@ -1,3 +1,4 @@
+// store/index.js
 import {createStore} from "vuex";
 import user from '@/store/modules/user.js';
 import reminder from '@/store/modules/reminder.js'

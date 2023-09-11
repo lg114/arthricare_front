@@ -1,0 +1,262 @@
+/* User Profile Css */
+.header{
+    display: flex;
+    align-items: center;
+    color: white;
+    width: 100%;
+}
+.more{
+    position: absolute;
+    left: 20px;
+    top:2.5%;
+    font-size: 30px;
+    color: white;
+}
+.user{
+    position:absolute;
+    left: 30%;
+    font-size: 30px;
+}
+.pageTitle{
+    position:absolute;
+    left: 40%;
+    font-size: 20px;
+    white-space: nowrap;
+}
+.edit{
+    position: absolute;
+    right:20px;
+    top:20px;
+    font-size: 30px;
+}
+.container{
+    display: grid;
+    flex-direction: column;
+    place-items: center;
+    height: 100vh;
+    background-color: #006973;
+    overflow-y: auto;
+}
+.main{
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    padding-bottom: 80px;
+    background-color: white;
+}
+h2{
+    text-align: center;
+    /*color: white;*/
+    color:black;
+}
+p{
+    text-align: center;
+    /*color: white;*/
+    color:black;
+}
+.box{
+    width: 350px;
+    height: 110px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 2px 2px 2px rgb(83, 83, 83);
+    margin-left: 5px;
+    margin-bottom: 15px;
+}
+.collectionImage{
+    width: 80px;
+    height: 60px;
+    margin-left: 10px;
+    float: left;
+    border-radius: 10px;
+}
+.friend_avatar{
+    width: 50px;
+    height: 50px;
+    margin-left: 10px;
+    float: left;
+}
+.add{
+    font-size: 40px;
+    color: #006973;
+    float: right;
+    margin-right:5px;
+}
+.image{
+    height: 20px;
+    width: 40px;
+    margin-left: 10px;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+.footer{
+    background-color: white;
+    position: fixed;
+    bottom:0;
+    height: 80px;
+    width:100%;
+    text-align: center;
+    white-space: nowrap;
+    box-shadow: inset 0 0 5px grey;
+}
+.sidebar{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+}
+#addMed{
+    color: #006973;
+}
+#profile{
+    color: #006973;
+}
+.footerBtn{
+    font-size: 45px;
+    color: gray;
+    height: 50px;
+    width: 50px;
+    padding-top: 8px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+#homeText{
+    position: relative;
+    color: gray;
+    right: 50px;
+}
+#medText{
+    position: relative;
+    color: gray;
+    right: 35px;
+}
+#rewardsText{
+    position: relative;
+    color:gray;
+    left: 35px;
+}
+#profileText{
+    position: relative;
+    color: #006973;
+    left: 48px;
+}
+.uploaded-avatar {
+    width: 100%;
+    height: 100%;
+}
+.defalut-avatar{
+    width: 70%;
+    height: 80%;
+}
+.menu-item{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+}
+.menu-icon{
+    color: #ffffff;
+    font-size: 20px;
+}
+.menu-icon1{
+    color: #ffffff;
+    font-size: 25px;
+    margin-right: 15px;
+}
+.menu-icon2{
+    color: #ffffff;
+    font-size: 25px;
+    margin-right: 5px;
+}
+.menu-icon3{
+    color: #ffffff;
+    font-size: 25px;
+    margin-right: 1px;
+}
+.menu-button{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    cursor: pointer;
+}
+.menu-button3{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 130px;
+    cursor: pointer;
+}
+.menu-button3 p{
+    font-size: 20px;
+    font-weight: 550;
+    margin: 20px 35px;
+}
+.menu-button p{
+    font-size: 20px;
+    font-weight: 550;
+    margin: 30px 30px;
+    text-decoration: none;
+}
+
+/* START: Unique CSS for Message Page */
+.avatar{
+    display: flex;
+    height: 63px;
+    width: 63px;
+    background-color: #7c8383;
+    border-radius: 50%;
+}
+#searchUserToChat{
+    width: 348px;
+    height: 39px;
+    color: #01385C;
+    font-size: 16px;
+    background-color: #E5E5E5;
+    border-radius: 10px;
+    border: none;
+    margin-bottom: 10px;
+}
+#searchUserToChat:focus {
+    border: 2px solid #55BDCA; 
+    z-index: 10;
+    outline: 0;
+}
+.chatPartner{
+    height: 72;
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    margin-bottom: 5px;
+}
+.chatPartner_name{
+    font-size: 22px;
+    font-weight: bold;
+    padding-left: 10px;
+}
+.chatPartner_latest_massage{
+    font-size: 16px;
+    padding-left: 10px;
+    color: #949596;
+}
+.name_message{
+    display: flex;
+    align-items: left;
+    flex-direction: column;
+    padding-left: 10px;
+}
+::placeholder {
+	padding-left: 9px;
+}
+.orangeCircle{
+    font-size: 15px;
+    color: #F27B42;
+}
+/* START: Unique CSS for Message Page */
