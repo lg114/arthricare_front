@@ -1,7 +1,7 @@
 <!-- Add Post Page -->
 <script setup>
     import { ref } from 'vue';
-    import { ImageRound } from '@vicons/material';
+    import { ImageRound, CancelFilled } from '@vicons/material';
     import { Icon } from '@vicons/utils'
 </script>
 
@@ -20,22 +20,21 @@
                 </div>
 
                 <input type="text" v-model="postTitle" name="post_title" class="post_title" placeholder="Set a title here..."><br>
-                <textarea v-model="postContent" class="post_content" name="post_content" placeholder="What's on your mind?" rows="10" cols="50" maxlength="500" autofocus required></textarea><br>
+                <textarea v-model="postContent" class="post_content" name="post_content" placeholder="What's on your mind?" rows="17" cols="50" maxlength="500" autofocus required></textarea><br>
 
-                <!-- Display selected images -->
-                <div class="selected-images">
-                    <img v-for="(image, index) in images" :src="image" :key="index" class="selected-image" />
+
+                <div class="scrollable-container"> 
+                    <input type="file" @change="handleImageUpload" accept="image/*" ref="fileInput" style="display: none" multiple />
+                    
+                    <!-- Display selected images -->
+                    <div v-for="(image, index) in selectedImages" :key="index" class="image-container">
+                        <img :src="image.url" alt="Selected Image" />
+                        <Icon class="cancel_icon" @click="removeImage(index)"><CancelFilled /></Icon>
+                    </div>
                 </div>
+                <!-- Add button to trigger file input -->
+                <Icon class="image_icon" @click="openFileInput" :disabled="selectedImages.length >= 4"><ImageRound /></Icon>
 
-                <Icon class="image_icon" @click="$refs.imageInput.click()"><ImageRound />
-                    <input
-                        type="file"
-                        accept="image/*"
-                        ref="imageInput"
-                        style="display: none"
-                        @change="handleImageSelection"
-                    />
-                </Icon>
             </el-main> 
         </el-container>
     </div>
@@ -52,17 +51,8 @@
         },
         setup(){
             const avatar1 = ref(require('@/assets/user_avatar.png'));
-            const images = ref([]);
-            const addImage = () => {
-                if (images.value.length < 5) {
-                    /* images.value.push(URL.createObjectURL(imageFile)); */
-                    images.value.push('@/assets/user_avatar.png');
-                }
-            };
             return {
-                avatar1,
-                images,
-                addImage
+                avatar1
             }
         },
         data(){
@@ -75,12 +65,14 @@
                 newPost:{
                     postID: "",
                     userID: "",
-                    title: "",
-                    content: "",
-                    time: "",
+                    postTitle: "",
+                    postContent: "",
+                    time: new Date(),
                     images: [this.images]
                 },
                 drawer: ref(false),
+
+                selectedImages: [],
             };
         },
         methods:{
@@ -90,25 +82,43 @@
             beforeDrawerClose(done) {
                 done();
             },
-            handleImageSelection(event) {
-                const selectedFiles = event.target.files;
-                for (let i = 0; i < 5; i++) {
-                    const selectedFile = selectedFiles[i];
-                    // Check if the selected file is an image
-                    if (selectedFile.type.startsWith('image/')) {
-                        this.addImage(selectedFile);
-                    }
-                }
-                // Clear the input value to allow selecting the same file again
-                this.$refs.imageInput.value = '';
-            },
             clicked_postButton(){
                 // It requires back-end
-            }
+            },
+
+
+
+
+            openFileInput() {
+                this.$refs.fileInput.click();
+            },
+            handleImageUpload(event) {
+                /*  It checks if the number of selected images is less than 4. 
+                    If it is, the selected image is read as a data URL and added to the selectedImages array.  */
+                const files = event.target.files;
+                if (files) {
+                    for (let i = 0; i < files.length; i++) {
+                    if (this.selectedImages.length < 4) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                        this.selectedImages.push({ url: e.target.result, file: files[i] });
+                        };
+                        reader.readAsDataURL(files[i]);
+                    } else {
+                        // Error handling
+                        console.log("You can only upload up to 4 images.");
+                    }
+                    }
+                }
+            },
+            removeImage(index) {
+                this.selectedImages.splice(index, 1);
+            },
         },
         components: {
             Icon,
-            ImageRound
+            ImageRound,
+            CancelFilled
         }
     };
 </script>
