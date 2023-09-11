@@ -105,9 +105,6 @@ const router  = createRouter({
             }
         },
         {
-            path: '/Education',
-            name: 'Education',
-            component: EducationPage,
             path: '/Community',
             name: 'Community',
             component: CommunityPage,
@@ -115,10 +112,20 @@ const router  = createRouter({
                 requiresAuth: true
             }
         },
+
         {
-            path: '/SearchArticle',
-            name: 'SearchArticle',
-            component: SearchPage,
+
+            path: '/Education',
+            name: 'Education',
+            component: EducationPage,
+
+
+        },
+
+
+
+        {
+
             path: '/Message',
             name: 'Message',
             component: MessagePage,
@@ -126,10 +133,19 @@ const router  = createRouter({
                 requiresAuth: true
             }
         },
+
         {
-            path: '/EducationArticle',
-            name: 'EducationArticle',
-            component: EducationArticlePage,
+
+            path: '/SearchArticle',
+            name: 'SearchArticle',
+            component: SearchPage,
+
+
+        },
+
+
+        {
+
             path: '/Chat',
             name: 'Chat',
             component: ChatPage,
@@ -137,10 +153,19 @@ const router  = createRouter({
                 requiresAuth: true
             }
         },
+
         {
-            path: '/EditProfile',
-            name: 'EditProfile',
-            component: EditProfilePage,
+
+            path: '/EducationArticle',
+            name: 'EducationArticle',
+            component: EducationArticlePage,
+
+
+
+        },
+
+        {
+
             path: '/AddPost',
             name: 'AddPost',
             component: AddPostPage,
@@ -148,6 +173,17 @@ const router  = createRouter({
                 requiresAuth: true
             }
         },
+
+        {
+
+            path: '/EditProfile',
+            name: 'EditProfile',
+            component: EditProfilePage,
+
+
+        },
+
+
         {
             path: '/PostDetail/:id',
             name: 'PostDetail',
