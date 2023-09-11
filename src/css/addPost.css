@@ -1,4 +1,4 @@
-/* START: Unique Code for Add Post Page */
+/* START: Unique CSS for Add Post Page */
 .header{
     color: white;
     width: 100%;
@@ -44,7 +44,7 @@ input.postButton{
     font-weight: bold;
     margin-left: 15px;
 }
-.title_input{
+.post_title{
     outline: solid 1px #CAC4CD;
     border: none;
     border-radius: 10px;
@@ -62,7 +62,7 @@ input[type="text"]:focus {
     color: #949596;
     padding-left: 5px;
 }
-textarea{
+.post_content{
     border: none; 
     outline: none;
     background-color: transparent;
@@ -87,26 +87,12 @@ textarea{
     height: 125px;
     padding-right: 4px;
 }
-.camera_icon{
-    font-size: 32px;
-    color: #006973;
-    padding: 5px;
-
-    position: relative;
-    bottom: 0%;
-    left: 0%;
-    z-index: 1;
-    margin-bottom: 10px;
-}
 .image_icon{
     font-size: 32px;
     color: #006973;
-    padding: 5px;
 
-    position: relative;
-    bottom: 0%;
-    left: 10%;
-    z-index: 1;
-    margin-bottom: 10px;
+    position: absolute;
+    bottom: 20px;
+    left: 5;
 }
-/* END: Unique Code for Add Post Page */
+/* END: Unique CSS for Add Post Page */

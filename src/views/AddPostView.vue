@@ -1,8 +1,51 @@
 <!-- Add Post Page -->
-<script>
+<script setup>
     import { ref } from 'vue';
-    import { CameraAltFilled, ImageRound } from '@vicons/material';
+    import { ImageRound } from '@vicons/material';
     import { Icon } from '@vicons/utils'
+</script>
+
+<template>
+    <div class="container">
+        <el-container>
+            <el-header class="header">
+                <input type="submit" value="Post" class="postButton" @click="clicked_postButton"> 
+            </el-header>
+            <el-main class="main">
+
+                <div class="user_icon_name">
+                    <!-- NOTE: After Flyger figures out how to display the avatar images by using Vue-dataset, the hard-code below will be updated in the future. -->
+                    <img :src="avatar1" alt="user_icon" class="user_icon" />
+                    <p class="userName">{{ user.name }}</p>
+                </div>
+
+                <input type="text" v-model="postTitle" name="post_title" class="post_title" placeholder="Set a title here..."><br>
+                <textarea v-model="postContent" class="post_content" name="post_content" placeholder="What's on your mind?" rows="10" cols="50" maxlength="500" autofocus required></textarea><br>
+
+                <!-- Display selected images -->
+                <div class="selected-images">
+                    <img v-for="(image, index) in images" :src="image" :key="index" class="selected-image" />
+                </div>
+
+                <Icon class="image_icon" @click="$refs.imageInput.click()"><ImageRound />
+                    <input
+                        type="file"
+                        accept="image/*"
+                        ref="imageInput"
+                        style="display: none"
+                        @change="handleImageSelection"
+                    />
+                </Icon>
+            </el-main> 
+        </el-container>
+    </div>
+</template>
+
+
+
+
+
+<script>
     export default{
         mounted() {
             document.title = "Add Post | ArthriCare";
@@ -47,34 +90,6 @@
             beforeDrawerClose(done) {
                 done();
             },
-            //Router
-            goToUserProfile(){
-                this.$router.push('/UserProfile');
-            },
-            async activateCamera() {
-                try {
-                    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                    const video = document.createElement('video');
-                    video.srcObject = stream;
-                    video.play();
-
-                    // Wait for the video to start playing
-                    await new Promise((resolve) => video.onplay = resolve);
-
-                    // Capture a snapshot from the video stream
-                    const canvas = document.createElement('canvas');
-                    canvas.width = video.videoWidth;
-                    canvas.height = video.videoHeight;
-                    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-                    canvas.toBlob((blob) => {
-                        const imageFile = new File([blob], 'camera_snapshot.jpg', { type: 'image/jpeg' });
-                        this.addImage(imageFile);
-                        stream.getTracks().forEach(track => track.stop());
-                    }, 'image/jpeg', 0.9);
-                } catch (error) {
-                    console.error('Error accessing camera:', error);
-                }
-            },
             handleImageSelection(event) {
                 const selectedFiles = event.target.files;
                 for (let i = 0; i < 5; i++) {
@@ -88,67 +103,14 @@
                 this.$refs.imageInput.value = '';
             },
             clicked_postButton(){
-                // NOTE: add a function to save the newely created post. After saving the post, go back to the mainCommunity Page.
-                // NOTE: Have a look at the code inside the vue dataset such as newPost
-                /*
-                newPost:{
-                    postID: "",
-                    userID: "",
-                    title: "",
-                    content: "",
-                    time: "",
-                    images: [this.images]
-                }
-                */
-
+                // It requires back-end
             }
         },
         components: {
             Icon,
-            CameraAltFilled, 
             ImageRound
         }
     };
 </script>
-
-<template>
-    <div class="container">
-        <el-container>
-            <el-header class="header">
-                <input type="submit" value="Post" class="postButton" @click="clicked_postButton"> 
-            </el-header>
-            <el-main class="main">
-
-                <div class="user_icon_name">
-                    <!-- NOTE: After Flyger figures out how to display the avatar images by using Vue-dataset, the hard-code below will be updated in the future. -->
-                    <img :src="avatar1" alt="user_icon" class="user_icon" />
-                    <p class="userName">{{ user.name }}</p>
-                </div>
-
-                <input type="text" id="post_title" name="post_title" class="title_input" placeholder="Set a title here..."><br>
-                <textarea id="post_context" name="post_context" placeholder="What's on your mind?" rows="10" cols="50" maxlength="500" autofocus required></textarea><br>
-
-                <!-- Display selected images -->
-                <div class="selected-images">
-                    <img v-for="(image, index) in images" :src="image" :key="index" class="selected-image" />
-                </div>
-
-                <!-- NOTE: Should I wrap the icons below by <div></div> ? -->
-                <Icon class="camera_icon" @click="activateCamera"><CameraAltFilled /></Icon>
-                <Icon class="image_icon" @click="$refs.imageInput.click()"><ImageRound />
-                    <input
-                        type="file"
-                        accept="image/*"
-                        ref="imageInput"
-                        style="display: none"
-                        @change="handleImageSelection"
-                    />
-                </Icon>
-            </el-main> 
-        </el-container>
-    </div>
-</template>
-
-
 
 <style src = "@/css/addPost.css" scoped></style>

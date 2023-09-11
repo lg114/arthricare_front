@@ -15,9 +15,9 @@ import RewardsPage from '@/views/RewardsView.vue';
 import CommunityPage from '@/views/CommunityView.vue';
 import MessagePage from '@/views/MessageView.vue';
 import ChatPage from '@/views/ChatView.vue';
-//import EventPage from '@/views/EventView.vue';
 import AddPostPage from '@/views/AddPostView.vue';
 import PostDetailPage from '@/views/PostDetailView.vue';
+import MyPostsPage from '@/views/MyPostsView.vue';
 
 
 
@@ -124,16 +124,6 @@ const router  = createRouter({
                 requiresAuth: true
             }
         },
-        /*
-        {
-            path: '/Event',
-            name: 'Event',
-            component: EventPage,
-            meta: {
-                requiresAuth: true
-            }
-        }
-        */
         {
             path: '/AddPost',
             name: 'AddPost',
@@ -143,9 +133,17 @@ const router  = createRouter({
             }
         },
         {
-            path: '/PostDetail',
+            path: '/PostDetail/:id',
             name: 'PostDetail',
             component: PostDetailPage,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/MyPosts',
+            name: 'MyPosts',
+            component: MyPostsPage,
             meta: {
                 requiresAuth: true
             }
