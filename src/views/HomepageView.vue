@@ -6,7 +6,7 @@
     import { CastForEducationFilled } from '@vicons/material';
     import { Icon } from '@vicons/utils';
     import HorizontalCalendar from '@/component/calendar.vue';
-    import { mapGetters, mapActions } from 'vuex';
+    import { mapGetters, mapActions, mapMutations } from 'vuex';
     
     export default{
         mounted(){
@@ -22,11 +22,11 @@
                 //初始化存放当天需要服用的药物列表
                 medicationList: [],
                 //初始化选中日期
-                selectedDate: null,
                 dialog: ref(false)
             }
         },
         methods:{
+            ...mapMutations('reminder', ['SET_SELECTED_DATE']),
             ...mapActions('reminder', ['fetchRemindersFromBackend']),
 
             // side bar goes to profile page
@@ -42,6 +42,7 @@
             async onDateSelected(selectedDate){
                 //存储选定的日期
                 this.selectedDate = selectedDate; 
+                this.SET_SELECTED_DATE(selectedDate);
                 console.log('Selected date:', selectedDate);
                 //假设medicationList是从后端获取的当天药物数据的数组
                 this.medicationList = await this.fetchRemindersFromBackend(selectedDate);
@@ -66,7 +67,16 @@
             }
         },
         computed: {
-            ...mapGetters('user', ['loggedInUser'])
+            ...mapGetters('user', ['loggedInUser']),
+            selectedDate(){
+                return this.$store.state.reminder.selectedDate;
+            },
+            formattedDate(){
+                const date = new Date(this.selectedDate);
+                const options = { month: 'long', day: 'numeric' };
+                const formattedDate = date.toLocaleDateString('en-US', options);
+                return formattedDate;
+            }
         },
         components:{
             Icon,
@@ -92,12 +102,14 @@
             <var-icon class = "header-icon2" name="message-text-outline" />
         </el-header>    
         <el-main class = "main">
-            <HorizontalCalendar @date-selected="onDateSelected" />
+            <div class = "calendar">
+                <HorizontalCalendar @date-selected="onDateSelected" />
+            </div>
             <template v-if = "medicationList && medicationList.length > 0">
                 <div :class="['divider', {'last-medication': index === medicationList.length - 1}]" v-for = "(medication, index) in medicationList" :key = "medication.reminderId">
                     <span style = "width: 30vw; color: #006973; font-weight: bold;">{{ medication.time }}</span>
                     <var-divider vertical/>
-                    <var-card layout="row">
+                    <var-card layout="row" elevation = 0 outline @click = "showMedicationDetails(medication)">
                         <template #title>
                             <h3>{{ medication.name }}</h3>
                         </template>
@@ -106,30 +118,38 @@
                                 <p>Taken at {{ medication.takenMedTime }}</p>
                             </div>
                         </template>
-                        <template #extra>
-                                <var-button @click = "showMedicationDetails(medication)">
-                                    <var-icon name = "cog" color = "#006973"/>
-                                </var-button>
-                        </template>
                     </var-card>
                 </div>
             </template>
             <template v-else>
                     <div style = "text-align: center; padding: 20px; color:#006973; font-size: larger;">
-                        <p><b>No meds on today...</b></p>
+                        <p><b>No meds on this date</b></p>
                     </div>
             </template>
         </el-main>
     </el-container>
-    <el-dialog  v-model = "dialog" center align-center width="90%" round show-close = "false">
+    <el-dialog  v-model = "dialog" center align-center width="90%" round>
         <template #header>
             <span style="color: #006973; font-weight: bold; font-size: larger;">{{ selectedMedication.name }}</span>
         </template>
-        <div style = "text-align: center;">
-            <el-button color = "#006973" @click="onTime(medication)" round>On Time</el-button>
-            <el-button color = "#006973" @click="nowTime(medication)" round>Now</el-button>
-            <el-button color = "#006973" @click="setTime(selectedMedication)" round>Set Time</el-button>
+        <div style = "text-align: center; font-size: small; line-height: 2;">
+            <span>Scheduled for {{ selectedMedication.time}}, {{ formattedDate }}</span><br>
+            <span>Medication category: {{ selectedMedication.category}}</span><br>
+            <span>Take {{ selectedMedication.dosageUnit }}
+                <span v-if="selectedMedication.category === 'Pill'">pill(s)</span>
+                <span v-if="selectedMedication.category === 'Tablet'">tablet(s)</span>
+                <span v-if="selectedMedication.category === 'Injection'">injection(s)</span>
+                <span v-if="selectedMedication.category === 'Drop'">drop(s)</span>
+            </span>
         </div>
+        <template #footer>
+            <div style = "text-align: center;">
+                <el-button color = "#006973" @click="onTime(medication)" round>On Time</el-button>
+                <el-button color = "#006973" @click="nowTime(medication)" round>Now</el-button>
+                <el-button color = "#006973" @click="setTime(selectedMedication)" round>Set Time</el-button>
+            </div>
+        </template>
+
     </el-dialog>
 
     <var-bottom-navigation
@@ -255,7 +275,14 @@
     .var-card{
         margin-right: 5vw;
         color:#006973;
-        height: 15vh;
+        height: 12vh;
+        --card-border-radius: 5px;
+        --card-outline-color: #006973;
+    }
+    .el-dialog__header{
+        margin-right: 0px;
+        background-color: #006973;
+        color: #FFFFFF;
     }
     @media screen and (min-width: 380px){
         .header{

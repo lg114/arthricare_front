@@ -1,5 +1,15 @@
 <template>
     <vue-hash-calendar class = "calendar" lang="EN" :scroll-change-date="true" :show-week-view="true" :show-today-button="true" picker-type="date" :theme-color="themeColor" format="MM DD,YY at hh:mm F" @change="handleChange">
+        <template v-slot:week="scope">
+            <div class = "week">
+                {{ `${scope?.week}` }}
+            </div>
+        </template>
+        <template v-slot:day="scope">
+            <div class = "date">
+                {{ scope?.date?.day }}
+            </div>
+        </template>
     </vue-hash-calendar>
 </template>
 
@@ -60,6 +70,14 @@
 
 <style scoped>
   .calendar{
-    font-weight: bold;
+    font-size: 4vw;
+
   }
+  .week{
+    font-size: 4vw;
+  }
+  .date{
+        font-size: 4vw;
+    }
+
 </style>
