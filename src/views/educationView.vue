@@ -38,18 +38,20 @@
         pointer-events="initial"
       >
         <var-tab @click="showVideo">Video</var-tab>
-        <var-tab @click="showArtical">Artical</var-tab>
+        <var-tab @click="showArtical">Article</var-tab>
        
       </var-tabs>
 
       <div v-if="VideoVisible">
+        <router-link to="/educationVideo">
         <div class = "container3">
           <img src="@/assets/Med1.jpg" alt="Image" class="image">
           <div id = "label">
             Medication sale
           </div>
         </div>
-
+      </router-link>
+      
         <div class = "container3">   
           <img src="@/assets/exe2.jpg" alt="Image" class="image">
           <div id = "label">

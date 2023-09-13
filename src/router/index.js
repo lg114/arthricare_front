@@ -16,6 +16,7 @@ import EducationPage from '@/views/educationView.vue';
 import SearchPage from '@/views/searchView.vue';
 import EditProfilePage from '@/views/EditProfile.vue';
 import EducationArticlePage from '@/views/EducationArticle.vue';
+import EducationVideoPage from '@/views/EducationVideo.vue';
 
 const router  = createRouter({
     history : createWebHashHistory(),
@@ -128,11 +129,18 @@ const router  = createRouter({
                 requiresAuth: true
             }
         },
-        
+        {
+            path: '/EducationVideo',
+            name: 'EducationVideo',
+            component: EducationVideoPage,
+            meta: {
+                requiresAuth: true
+            }
+        }
     ]
 });
 
-//Router Guard 导航守卫
+// Router Guard 导航守卫
 
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
