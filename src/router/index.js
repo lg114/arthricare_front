@@ -13,7 +13,7 @@ import RewardsPage from '@/views/RewardsView.vue';
 import EducationPage from '@/views/educationView.vue';
 import SearchPage from '@/views/searchView.vue';
 import AssessmentPage from '@/views/AssessmentView.vue';
-import SelectAssessmentPage from '@/views/SelectAssessmentView.vue';
+
 
 const router  = createRouter({
     history : createWebHashHistory(),
@@ -87,12 +87,7 @@ const router  = createRouter({
       path: '/Assessment',
       name: 'Assessment',
       component: AssessmentPage,
-  },
-  {
-    path: '/SelectAssessment',
-    name: 'SelectAssessment',
-    component: SelectAssessmentPage,
-},
+  }
     ]
 })
 
