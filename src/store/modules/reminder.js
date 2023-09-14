@@ -35,7 +35,7 @@ const actions = {
     async fetchRemindersFromBackend({ commit, getters}, selectedDate){
         try{
             if(getters.loggedInUser){
-                const userId = getters.loggedInUser.id;
+                const userId = getters.loggedInUser.userId;
                 const data = {
                     userId: userId,
                     chooseDate: selectedDate
