@@ -269,7 +269,9 @@
         <!-- Fab button -->
         <var-fab v-model:active="showAction" style="margin-bottom: 100px;" color="#006973" inactive-icon-size="26px" active-icon-size="30px" elevation="5">
             <var-button class="action" round color="#F27B42" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
+                <var-link href="/#/AddPost" text-color="white" text-size="25px">
                 <Icon><ChannelAdd20Regular /></Icon>
+            </var-link>
             </var-button>
             <var-button class="action" round color="#55BDCA" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
                 <var-link href="/#/AddMed" text-color="white" text-size="25px">

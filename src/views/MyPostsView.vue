@@ -1,7 +1,7 @@
 <!-- MyPosts Page -->
 <script setup>
     import { ref } from 'vue';
-    import { ThumbLike20Regular, LineHorizontal320Filled, CommentMultiple20Regular, Add20Filled, Home20Filled, BriefcaseMedical20Regular, Gift20Regular, Person20Regular } from '@vicons/fluent'
+    import { ThumbLike20Regular, LineHorizontal320Filled, CommentMultiple20Regular, Pill28Filled, ChannelAdd20Regular , Home20Filled, BriefcaseMedical20Regular, Gift20Regular, Person20Regular } from '@vicons/fluent'
     import { Icon } from '@vicons/utils'
     import SideBarContent from '@/component/Sidebar.vue';
     import { UserFilled } from '@element-plus/icons-vue';
@@ -84,12 +84,25 @@
                 <span>Profile</span>
             </var-bottom-navigation-item>    
             </var-link>
-            <template #fab >
+            <!-- <template #fab >
                 <var-link href="/#/AddMed" style="color: white;">
                 <Icon class="addButton"><Add20Filled /></Icon>
                 </var-link>
-            </template>
+            </template> -->
         </var-bottom-navigation>
+                        <!-- Fab button -->
+                        <var-fab v-model:active="showAction" style="margin-bottom: 100px;" color="#006973" inactive-icon-size="26px" active-icon-size="30px" elevation="5">
+            <var-button class="action" round color="#F27B42" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
+                <var-link href="/#/AddPost" text-color="white" text-size="25px">
+                <Icon><ChannelAdd20Regular /></Icon>
+            </var-link>
+            </var-button>
+            <var-button class="action" round color="#55BDCA" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
+                <var-link href="/#/AddMed" text-color="white" text-size="25px">
+                    <Icon><Pill28Filled /></Icon>
+                </var-link>
+            </var-button>
+        </var-fab>
 <!--============================ END: The Bottom Navigation Bar ============================-->       
 <!--============================ START: The Side Menu Bar ============================-->               
         <el-drawer style="background-color: #1890FF;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
@@ -201,7 +214,7 @@
             SideBarContent,
             UserFilled,
             LineHorizontal320Filled,
-            Add20Filled, 
+            Pill28Filled, ChannelAdd20Regular , 
             Home20Filled, 
             BriefcaseMedical20Regular, 
             Gift20Regular, 
