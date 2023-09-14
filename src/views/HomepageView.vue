@@ -1,7 +1,7 @@
 <script>
     import { ref } from 'vue';
     import { AlertCircle, Logout } from '@vicons/tabler';
-    import { LineHorizontal320Filled, Add20Filled, Home20Filled, BriefcaseMedical20Regular, Gift20Regular, Person20Regular } from '@vicons/fluent';
+    import { LineHorizontal320Filled, Home20Filled, BriefcaseMedical20Regular, Gift20Regular, Person20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent';
     import { UserProfileAlt } from '@vicons/carbon';
     import { CastForEducationFilled } from '@vicons/material';
     import { Icon } from '@vicons/utils';
@@ -26,24 +26,6 @@
                 onTime: ref(false),
                 now: ref(false),
                 setTime: ref(false),
-                actionSheet: ref(false),
-                actions: ref([
-                    {
-                        name: 'Now',
-                        icon: 'https://img.icons8.com/material-outlined/48/006973/time.png',
-                        color: '#006973'
-                    },
-                    {
-                        name: 'On time',
-                        icon: 'https://img.icons8.com/material-outlined/48/006973/time.png',
-                        color: '#006973'
-                    },
-                    {
-                        name: 'Set time',
-                        icon: 'https://img.icons8.com/material-outlined/48/006973/time.png',
-                        color: '#006973'
-                    },
-                ])
             }
         },
         methods:{
@@ -66,7 +48,7 @@
                 this.SET_SELECTED_DATE(selectedDate);
                 console.log('Selected date:', selectedDate);
                 //假设medicationList是从后端获取的当天药物数据的数组
-                this.medicationList = await this.fetchRemindersFromBackend(selectedDate);
+                const medicationList = await this.fetchRemindersFromBackend(selectedDate);
                 //然后从早到晚排序 sorting
                 this.medicationList.sort((a, b) => {
                     const timeA = a.time.split(":").map(Number);
@@ -78,17 +60,27 @@
 
                     return timeA[1] - timeB[1];
                 });
+                this.medicationList = medicationList;
                 //testing
                 console.log("Medication List for selected date:", this.medicationList);
             },
-
             showMedicationDetails(medication) {
                 this.selectedMedication = medication;
+                this.$store.commit('reminder/SET_CURRENT_MEDICATION', this.selectedMedication);
                 this.dialog = true;
             },
-            handleSetTime(){
+            handleNow() {
+                console.log('Now button clicked');
+                this.$store.dispatch('reminder/takeMedicationNow');
                 this.dialog = false;
-                this.actionSheet = true;    
+            },
+            handleOnTime() {
+                this.dialog = false;
+                console.log('On Time button clicked');
+            },
+            handleSetTime() {
+                this.dialog = false;
+                console.log('Set Time button clicked');
             }
         },
         computed: {
@@ -108,7 +100,6 @@
             Logout,
             AlertCircle,
             LineHorizontal320Filled,
-            Add20Filled,
             Home20Filled, 
             BriefcaseMedical20Regular, 
             Gift20Regular, 
@@ -116,6 +107,8 @@
             UserProfileAlt,
             CastForEducationFilled,
             HorizontalCalendar,
+            ChannelAdd20Regular,
+            Pill28Filled,
         }
     }
 </script>
@@ -169,13 +162,12 @@
         </div>
         <template #footer>
             <div style = "text-align: center;">
-                <el-button color = "#006973" @click="handleSetTime()" round>Take Med &#10004;</el-button>
+                <el-button color="#006973" @click="handleNow()" round>Now &#10004;</el-button>
+                <el-button color="#006973" @click="handleOnTime()" round>On Time &#10004;</el-button>
+                <el-button color="#006973" @click="handleSetTime()" round>Set Time &#10004;</el-button>
             </div>
         </template>
     </el-dialog>
-
-    <var-action-sheet v-model:show="actionSheet" :actions="actions" title="Choose your take med time" style=" --action-sheet-title-color: #006973; --action-sheet-title-font-size: 18px;"/>
-
     <!-- time selector dialog -->
     <el-dialog v-model="onTime" center align-center width="90%" round>
         <template #header>
@@ -185,7 +177,7 @@
             <el-date-picker v-model = "value2" type="datetime" placeholder="Pick a date and time" format="YYYY/MM/DD HH:mm:ss"/>
         </div>
     </el-dialog>
-    
+
     <var-bottom-navigation
             class="footer"
             v-model:active="active"
@@ -217,12 +209,21 @@
                 <span><b>Profile</b></span>
             </var-bottom-navigation-item>    
             </var-link>
-            <template #fab >
-                <var-link href="/#/AddMed" style="color: white;">
-                <Icon class="addButton"><Add20Filled /></Icon>
-                </var-link>
-            </template>
     </var-bottom-navigation>
+
+    <!-- Fab button -->
+    <var-fab v-model:active="showAction" style="margin-bottom: 100px;" color="#006973" inactive-icon-size="26px" active-icon-size="30px" elevation="5">
+        <var-button class="action" round color="#F27B42" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
+            <var-link href="/#/AddPost" text-color="white" text-size="25px">
+            <Icon><ChannelAdd20Regular /></Icon>
+        </var-link>
+        </var-button>
+        <var-button class="action" round color="#55BDCA" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
+            <var-link href="/#/AddMed" text-color="white" text-size="25px">
+                <Icon><Pill28Filled /></Icon>
+            </var-link>
+        </var-button>
+    </var-fab>
 
     <!-- Side barDrawer -->
     <el-drawer v-model="drawer" direction="ltr" size="70%" :show-close="false" style = " background-color: #006973;">

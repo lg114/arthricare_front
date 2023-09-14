@@ -1,111 +1,103 @@
 <!--Add Med Page -->
 <script setup>
-  import {ArrowLeftBold} from '@element-plus/icons-vue';
   import store from "@/store";
-  import {Plus,Minus} from '@element-plus/icons-vue';
   import { mapGetters } from 'vuex';
-  
+  import '@varlet/ui/es/button/style/index';
 </script>
 
 <template>
-   <el-container class = "container">
-      
-    <div class = "container-flex" style="height:100% ; width:50% ;">
-        <router-link to = "/home">
-          <el-icon class = "backBtn"><ArrowLeftBold/></el-icon>
-        </router-link>
-        <p id= "title">My Meds</p>
-      </div>
-      
-      <div id = container2>
-        <p id = "label" style = "font-size : 35px ; font-weight:500;" >Add Medication</p>
-        <p id = "label">Medication Name *</p>
+  <el-container class = "container">
+     
+   <div class = "container-flex" style="height:100% ; width:50% ;">
+     <router-link to = "/MyMeds">
+       <var-icon class="backBtn" name="chevron-left" :size="42" color="white"/>
+     </router-link> 
 
-        <input ref="MedName" id="MedName" type="text" placeholder="Medication Name" @keyup="processInput" @focus="toggleOptions" />
+       <p id= "title">Add Medication</p>
+     </div>
+     
+    <div id = container2>
+     <div class = "container3">
+       <h1>MEDICATION DETAIL </h1>
 
-        <div  class="menu" v-if="this.Meds2!==null  && showMed">
-          <div ref="MedOption"  class="selected-option" v-for="item in Meds2" :key="item" @click="handleItemClick(item)">{{ item }}</div>
-        </div> 
+       <p id = "label" >Medication Name *</p>
+       <input ref="MedName" id="MedName" type="text" placeholder="Mecication Name" @keyup="processInput" @focus="toggleOptions"/>
+       
+       <div  class="menu" v-if="this.Meds2!==null  && showMed">
+         <div ref="MedOption"  class="selected-option" v-for="item in Meds2" :key="item" @click="handleItemClick(item)">{{ item }}</div>
+       </div> 
 
-        <p id = "label">Select Category *</p>
-        <div>
-          <b><label for = "Category"></label></b>
-          <select  ref = "Category" name="Category" id="Category" class = "row-input" v-model="selectedCategory">
-           <option value="" disabled selected>Select Category *</option>
+     <div class="container-flex" >
+       <div class="container-block"  >
+         <p id = "label" >Category *</p>
+         <label for = "Category"></label>
+         <select style = " height: 48px;width:115% ; margin-right:5px ; padding-left: 13%;padding-top: 1%;padding-bottom: 1%" ref = "Category" name="Category" id="Category" class = "row-input" v-model="selectedCategory">
+           <option value="" data-icon="@/assets/capsulesblue.png" alt="ArthriCare Logo" disabled selected>Select Category *</option>
            <option value="Pill" selected>Pill</option>
            <option value="Tablet">Tablet</option>
            <option value="Injection">Injection</option>
            <option value="Drop">Drop</option>
          </select>
-        </div>
+       </div>
 
-        <p id = "label" >How often are you taking this medication ? *</p>
-        <!-- <input ref="Frequency" id="input" type="text" placeholder="  " /> -->
-        <div>
-          <select  ref="Frequency" name="Frequency" id="Frequency" class ="row-input" v-model="selectedFrequency">
-           <option value="" disabled selected>Select Category</option>
-           <option value="Once a Day">Once a Day</option>
-           <option value="Twice a Day">Twice a Day</option>
-           <option value="Three times a Day">Three times a Day</option>
-          </select>
-        </div>
+       <div class="container-block" style="margin-left:9% ;">
+         <p id = "label">Doses *</p>
+         <input ref="Unit" style = "width:128% ; height: 66.4%;padding-left:12% " type="number" placeholder="Dosage"  />
+       </div>  
+   
+     </div>
 
-        <div v-if="selectedFrequency === 'Once a Day'">
-          <input type="time" v-model="timeInput1" />
-        </div>
+       <p id = "label">Note (Optional)</p>
+       <input id="Note" ref="Note" type="text" placeholder="Note"  />
+     </div>   
+     <div class = "container3">
+       <h1>SET REMINDER</h1>
 
-        <div v-else-if="selectedFrequency === 'Twice a Day'">
+       <p id = "label" >Frequency *</p>
+       <div class="Frequency1">
+         <select  ref="Frequency" name="Frequency" id="Frequency" class ="row-input" v-model="selectedFrequency" style = "padding-left:5% ">
+          <option value="" disabled selected>Select Category</option>
+          <option value="Once a Day">Once a day</option>
+          <option value="Twice a Day">Twice a day</option>
+          <option value="Three times a Day">Three times a day</option>
+         </select>
+       </div>
+       <p id = "label" >Time *</p>
+       <div  v-if="selectedFrequency === 'Once a Day'">
+         <input type="time" v-model="timeInput1" />
+       </div>
+
+       <div v-else-if="selectedFrequency === 'Twice a Day'">
+         <input type="time" v-model="timeInput1" />
+         <input type="time" v-model="timeInput2" />
+       </div>
+
+       <div class="Frequency" v-else-if="selectedFrequency === 'Three times a Day'">
+         <input type="time" v-model="timeInput1" />
+         <input type="time" v-model="timeInput2" />
+         <input type="time" v-model="timeInput3" />
+       </div>
+
+       <p id = "label">Start Time *</p>
+       <div id = "date" >
+         <VueDatePicker1 ref = "StartDate" id="startDate"  v-model="selectedStartDate" :format="dateFormat"></VueDatePicker1>
+       </div>
+       
+       <p id = "label" style="margin-top: 7%;">End Time *</p>
       
-          <input type="time" v-model="timeInput1" />
-          <input type="time" v-model="timeInput2" />
-        </div>
+         <VueDatePicker2 ref = "EndDate" id="endDate" v-model="selectedEndDate" :format="dateFormat"></VueDatePicker2>
 
-        <div v-else-if="selectedFrequency === 'Three times a Day'">
+       <div class = "container-flex" style="margin-top:10%">   
+     </div>   
+       </div>  
+       <el-footer class >
+           <div class="buttons" >
+                <el-button class = "login-button" @click = "saveData">ADD</el-button> 
+           </div>
+        </el-footer> 
+     </div>
 
-          <input type="time" v-model="timeInput1" />
-          <input type="time" v-model="timeInput2" />
-          <input type="time" v-model="timeInput3" />
-        </div>
-
-        <p id = "label">How many units do you take each time ? *</p>
-
-        <div class = "calculationPart">
-          <el-icon class = "decreaseButton" @click="decreaseCounter"><Minus/></el-icon>
-          <div ref = "Unit" class = "number">{{ counter }}</div>
-          <el-icon class = "increaseButton" @click="increaseCounter"><Plus/></el-icon>
-        </div>
-
-
-        
-        <p id = "label">When did you start taking this medication ? *</p>
-        <div id = "date" >
-          <VueDatePicker1 ref = "StartDate" id="startDate"  v-model="selectedStartDate" :format="dateFormat"></VueDatePicker1>
-        </div>
-        
-        <p id = "label" style="margin-top: 50px;">When did you stop taking this medication ? *</p>
-        <div id = "date">
-          <VueDatePicker2  ref = "EndDate" id="endDate" v-model="selectedEndDate" :format="dateFormat"></VueDatePicker2>
-        </div>
-
-      
-      
-
-        <p id = "label" style = "margin-top:60px">Add a note ? (0ptional)</p>
-        <div >
-          <textarea ref="Note" id = "textarea1" name = "Note" column="20" row="20"></textarea>
-        </div>
-        <div class = "container-flex" style="margin-top:5%">   
-
-        </div>  
-        <el-footer class >
-            <div class="buttons" >
-                 <el-button class = "login-button" @click = "saveDataAndmedicineData">ADD</el-button> 
-            </div>
-         </el-footer>
-        <!-- <date-picker v-model:value = "selectedDate"></date-picker> -->
-      </div>
-
-    </el-container>
+   </el-container>
 </template>
 
 <style src="@/css/addMed.css" scoped></style>
@@ -213,13 +205,10 @@ export default {
       ],
       selectedMed: null,
       showMed: false,
-
     };
-    
   },
   
   methods: {
-
     increaseCounter() {
         this.counter++;
     },
