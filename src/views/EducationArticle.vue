@@ -1,7 +1,7 @@
 <!--Education Post Page -->
 <script>
     import { ref } from 'vue';
-    import { ChevronLeft20Filled, BookOpen20Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, Person20Regular, CommentMultiple20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
+    import { ChevronLeft20Filled, BookOpen20Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular, CommentMultiple20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
     import { ThumbUpAltOutlined } from '@vicons/material'
     import { Icon } from '@vicons/utils'
     export default{
@@ -55,7 +55,7 @@
             BriefcaseMedical20Regular,
             BookOpen20Filled,
             Gift20Regular, 
-            Person20Regular, 
+            PeopleCommunity20Regular, 
             ThumbUpAltOutlined,
             CommentMultiple20Regular,
             Icon, 
@@ -116,10 +116,10 @@
                 <span>Rewards</span>
             </var-bottom-navigation-item>
             </var-link>
-            <var-link href="/#/UserProfile" underline="none">
+            <var-link href="/#/Community" underline="none">
             <var-bottom-navigation-item class="bottomButton" name="profileButton">
-                <Icon style="font-size: 38px;"><Person20Regular /></Icon><br>
-                <span>Profile</span>
+                <Icon style="font-size: 38px;"><PeopleCommunity20Regular /></Icon><br>
+                <span>Community</span>
             </var-bottom-navigation-item>    
             </var-link>
             <!-- <template #fab>

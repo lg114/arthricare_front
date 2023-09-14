@@ -20,11 +20,11 @@
             goToMessage(){
                 this.$router.push('/Message')
             },
-            goToCommunity(){
-                this.$router.push('/Community')
-            },
             goToEducation(){
                 this.$router.push('/Education')
+            },
+            goToAssessment(){
+                this.$router.push('/Assessment')
             },
             async logout(){
                 this.$store.dispatch('user/logout');
@@ -58,14 +58,14 @@
                             <p>Message</p>
                             <el-icon class="menu-icon"><CaretRight /></el-icon>
                         </div>
-                        <div class = "menu-button" @click = "goToCommunity">
-                            <el-icon class="menu-icon2"><MessageBox /></el-icon>
-                            <p>Community</p>
-                            <el-icon class="menu-icon"><CaretRight /></el-icon>
-                        </div>
                         <div class = "menu-button" @click = "goToEducation">
                             <el-icon class="menu-icon1"><Reading /></el-icon>
                             <p>Education</p>
+                            <el-icon class="menu-icon"><CaretRight /></el-icon>
+                        </div>
+                        <div class = "menu-button" @click = "goToAssessment">
+                            <el-icon class="menu-icon2"><MessageBox /></el-icon>
+                            <p>Assessment</p>
                             <el-icon class="menu-icon"><CaretRight /></el-icon>
                         </div>
                         <div class = "menu-button3">

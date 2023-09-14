@@ -77,22 +77,6 @@
     font-size: 20px;
     white-space: nowrap;
 }
-.footer{
-    background-color: white;
-    position:fixed;
-    bottom:0;
-    height: 80px;
-    width:100%;
-    text-align: center;
-    margin-left: 0;
-    margin-right: 0;
-    white-space: nowrap;
-    box-shadow: inset 0 0 5px grey;
-}
-.bottomButton{
-    padding-left:20px;
-    padding-right: 20px;
-}
 /* START: Unique CSS for MyPosts Page */
 .zeroObjAlert{
     width:90%;
@@ -115,3 +99,19 @@
     width:100%;
     height:14%;
 }
+/* footer */
+.bottomButton{
+    width: 90px;
+    padding-left:20px;
+    padding-right: 20px;
+}
+.footer{
+    display: inline;
+    position: fixed;
+    text-align: center;
+    bottom: 0;
+    height:80px;
+    --bottom-navigation-item-font-size: 13px;
+    --bottom-navigation-item-active-color: #646566;
+    white-space: nowrap;
+}  

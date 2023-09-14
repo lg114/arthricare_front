@@ -1,241 +1,16 @@
 <!-- Community Page -->
-<script setup>
+<script>
     import { ref } from 'vue';
-    import { ThumbLike20Regular, LineHorizontal320Filled, CommentMultiple20Regular, Home20Filled, BriefcaseMedical20Regular, Gift20Regular, Person20Regular,Pill28Filled, ChannelAdd20Regular  } from '@vicons/fluent'
+    import { ThumbLike20Regular, LineHorizontal320Filled, CommentMultiple20Regular, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Filled,Pill28Filled, ChannelAdd20Regular  } from '@vicons/fluent'
     import { Icon } from '@vicons/utils'
     import SideBarContent from '@/component/Sidebar.vue';
     import { UserFilled } from '@element-plus/icons-vue';
-</script>
-
-<template>
-    <div class="container">
-        <el-container>
-            <el-header class="header">
-                <Icon class="more" @click="drawer = true"><LineHorizontal320Filled /></Icon>
-                <b class="pageTitle">Community</b>
-            </el-header>
-
-            <el-main class="main">
-                <div class="sectionFilter">
-                    <input type="radio" checked id="1" name="section" class="section" @click="changeSection('discussion_section')"><label for="1">Discussion</label>
-                    <input type="radio" id="2" name="section" class="section" @click="changeSection('event_section')"><label for="2">Event</label>
-                    <input type="radio" id="3" name="section" class="section" @click="changeSection('news_section')"><label for="3">News</label>
-                    <input type="radio" id="4" name="section" class="section" @click="goToMessagePage"><label for="4">Message</label>
-                </div>
-
-                <div v-if="activeSection === 'discussion_section'">
-                    <div v-for="post in posts" :key="post.id" class="postCard">
-                        <div class="icon_name_time">
-                            <!-- NOTE: the code below to display an image is a hardcode and shouldn'r be used. -->
-                            <img :src="avatar1" alt="avatar" class="avatar" />
-                            <!-- NOTE: This code should work, but, for some reason, it's not working. <img :src="post.avatar" :alt="post.alt" />  -->
-                            <div class="username">{{ post.username }}</div>
-                            <div class="time-ago">{{ getTimeAgo(post.timestamp) }}</div>
-                        </div>
-                        <div class="content" @click="goToPostDetail(post.id)">
-                            <p class="postTitle">{{ post.title }}</p>
-                            <p v-if="!post.expanded" class="content">{{ truncateContent(post.content) }}</p>
-                            <p v-else class="content">{{ post.content }}</p>
-                            <button @click="goToPostDetail(post.id)" class="seeMoreButton">
-                                ... See more
-                            </button><br>
-                            <div id="image-scroll-container">
-                                <span v-for="(image, imageIndex) in post.images" :key="imageIndex">
-                                    <img src="@/assets/postImage3.png" :alt="image.alt" class="aImage"/> 
-                                </span>    
-                            </div>
-                        </div>
-                        <div class="like_comment_section">
-                                <!-- Note for Don:  -->
-                                <Icon class="thumbLike_icon"><ThumbLike20Regular /></Icon>
-                                <p class="numberOfLikes">{{ post.numberOfLikes }}</p>
-                                <Icon class="comment_icon" @click="showCommentInput(post.id)"><CommentMultiple20Regular /></Icon>
-                                <p class="numberOfComments">{{ post.numberOfComments }}</p>
-                                <div v-if="showCommentInputId === post.id">
-                                    <input v-model="newComment" placeholder="Enter your comment" />
-                                    <button @click="addComment(post.id)">Submit</button>
-                                </div>
-                            </div>
-                        <hr style="width: 100%;">
-                    </div>
-
-                    <!-- Note for Don: This is #4. The code below is to jump to the top of the page, but this function is not working. 
-                    <div class="scroll-to-top-container">
-                        <Icon @click="scrollToTop"><ArrowCircleUpTwotone class="scrollToTopButton" /></Icon>
-                    </div>
-                    -->
-                </div> 
-                <!-- END: Discussion Section -->
-
-                <!-- START: Event Section -->
-                <!-- Note: At this moment, this section is just a placeholder. It's been hardcoded. -->
-                <div v-if="activeSection === 'event_section'">
-                    <h3>Upcoming Events</h3>
-                    <div class="card_event">
-                        <img src="@/assets/communityPage_event_1.png" alt="1st event" class="event" />
-                        <h5 class="event-date">15. Apr. 2023</h5>
-                        <a href="https://events.arthritis.org/index.cfm?fuseaction=donorDrive.event&eventID=1479" target="_blank" class="eventLink">2023 Walk to CURE Arthritis - Savannah, GA</a>
-                    </div>
-                    <div class="card_event">
-                        <img src="@/assets/communityPage_event_2.png" alt="2nd event" class="event" />
-                        <h5 class="event-date">22. Apr. 2023</h5>
-                        <a href="https://events.arthritis.org/index.cfm?fuseaction=donorDrive.event&eventID=1466" target="_blank" class="eventLink">2023 Walk to CURE Juvenile Arthritis - Bloomington, MN</a>
-                    </div>
-                    <div class="card_event">
-                        <img src="@/assets/communityPage_event_1.png" alt="3rd event" class="event" />
-                        <h5 class="event-date">22. Apr. 2023</h5>
-                        <a href="https://events.arthritis.org/index.cfm?fuseaction=donorDrive.event&eventID=1480" target="_blank" class="eventLink">2023 Walk to CURE Arthritis - Jacksonville, FL</a>
-                    </div>
-                </div>
-                <!-- END: Event Section -->
-
-                <!-- START: News Section -->
-                <!-- Note: At this moment, this section is just a placeholder. It's been hardcoded. -->
-                <div v-if="activeSection === 'news_section'" class="news_section">
-                    <h3>Trending News</h3>
-                        <div class="trendingNews-scroll-container">
-                            <div class="card_TrendingNews">
-                                <img src="@/assets/communityPage_NewsSection_1.png" alt="1st Treanding News" />
-                                <h5 class="top-left">05. Sep. 2023</h5>
-                                <h4 class="bottom-center">Australians 'in the dark' with arthritis: one of our most prevalent and costly diseases</h4>
-                            </div>
-                            <div class="card_TrendingNews">
-                                <img src="@/assets/communityPage_NewsSection_5.png" alt="2nd Treanding News" />
-                                <h5 class="top-left">04. Sep. 2023</h5>
-                                <h4 class="bottom-center">Reducing opioid harm through regulatory changes - Information for consumers, patients and carers</h4>
-                            </div>
-                        </div>    
-
-                    <h3 style="padding-top:15px;">Latest News</h3>
-                    <div class="card_latestNews">
-                        <div class="latestNews_title_date">
-                            <h4 class="latestNews-title">Arthritis Australia launches new Multicultural Resources</h4>
-                            <h5 class="latestNews-date">06. Sep. 2023</h5>
-                        </div>
-                        <div class="latestNews_img">
-                            <img src="@/assets/communityPage_NewsSection_2.png" alt="1st Today's News" class="latestNews" />
-                        </div>
-                    </div>
-                    <hr class="latestNews">
-                    <div class="card_latestNews">
-                        <div class="latestNews_title_date">
-                            <h4 class="latestNews-title">Young women urged to be vigilant and assess persistent back pain</h4>
-                            <h5 class="latestNews-date">01. Sep. 2023</h5>
-                        </div>
-                        <div class="latestNews_img">
-                            <img src="@/assets/communityPage_NewsSection_3.png" alt="2nd Today's News" class="latestNews" />
-                        </div>
-                    </div>
-                    <hr class="latestNews">
-                    <div class="card_latestNews">
-                        <div class="latestNews_title_date">
-                            <h4 class="latestNews-title">Parliamentary Friends of Arthritis event</h4>
-                            <h5 class="latestNews-date">25. Aug. 2023</h5>
-                        </div>
-                        <div class="latestNews_img">
-                            <img src="@/assets/communityPage_NewsSection_4.png" alt="3rd Today's News" class="latestNews" />
-                        </div>
-                    </div>
-                    <hr class="latestNews">
-                    <div class="card_latestNews">
-                        <div class="latestNews_title_date">
-                            <h4 class="latestNews-title">Crisis brewing in arthritis set to hit community and economy hard</h4>
-                            <h5 class="latestNews-date">23. Aug. 2023</h5>
-                        </div>
-                        <div class="latestNews_img">
-                            <img src="@/assets/communityPage_NewsSection_6.png" alt="4th Today's News" class="latestNews" />
-                        </div>
-                    </div>
-                    <hr class="latestNews">
-                </div>
-                <!-- END: News Section -->
-            </el-main> 
-        </el-container>
-
-<!--============================ START: The Bottom Navigation Bar ============================-->       
-        <var-bottom-navigation
-            class="footer"
-            v-model:active="active"
-            border="true"
-            safe-area="true"
-            :fab-props="{color:'#55BDCA'}"
-        >
-            <var-link href="/#/Home" underline="none">
-            <var-bottom-navigation-item class="bottomButton" name="homeButton">
-                <Icon  style="font-size: 38px;"><Home20Filled /></Icon><br>
-                <span>Home</span>
-            </var-bottom-navigation-item>
-            </var-link>
-            <var-link href="/#/MyMeds" underline="none">
-            <var-bottom-navigation-item class="bottomButton" name="medsButton">
-                <Icon style="font-size: 38px;"><BriefcaseMedical20Regular /></Icon><br>
-                <span>My Meds</span>
-            </var-bottom-navigation-item>
-            </var-link>
-            <var-link href="/#/Rewards" underline="none">
-            <var-bottom-navigation-item class="bottomButton" name="rewardsButton">
-                <Icon style="font-size: 38px;"><Gift20Regular /></Icon><br>
-                <span>Rewards</span>
-            </var-bottom-navigation-item>
-            </var-link>
-            <var-link href="/#/UserProfile" underline="none">
-            <var-bottom-navigation-item class="bottomButton" name="profileButton">
-                <Icon style="font-size: 38px;"><Person20Regular /></Icon><br>
-                <span>Profile</span>
-            </var-bottom-navigation-item>    
-            </var-link>
-            <!-- <template #fab >
-                <var-link href="/#/AddMed" style="color: white;">
-                <Icon class="addButton"><Add20Filled /></Icon>
-                </var-link>
-            </template> -->
-        </var-bottom-navigation>
-                <!-- Fab button -->
-                <var-fab v-model:active="showAction" style="margin-bottom: 100px;" color="#006973" inactive-icon-size="26px" active-icon-size="30px" elevation="5">
-            <var-button class="action" round color="#F27B42" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
-                <var-link href="/#/AddPost" text-color="white" text-size="25px">
-                <Icon><ChannelAdd20Regular /></Icon>
-            </var-link>
-            </var-button>
-            <var-button class="action" round color="#55BDCA" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
-                <var-link href="/#/AddMed" text-color="white" text-size="25px">
-                    <Icon><Pill28Filled /></Icon>
-                </var-link>
-            </var-button>
-        </var-fab>
-<!--============================ END: The Bottom Navigation Bar ============================-->       
-<!--============================ START: The Side Menu Bar ============================-->               
-        <el-drawer style="background-color: #006973;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
-            <!--Action是模拟接口，与后端连接时更换-->
-                <div class = "sidebar">
-                    <el-upload action="" :show-file-list="false">
-                        <el-avatar :size="65">
-                            <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
-                                <template v-else>
-                                    <UserFilled class="defalut-avatar" />
-                                </template>
-                        </el-avatar>   
-                    </el-upload> 
-                </div>
-            <SideBarContent :imgUrl="imgUrl" />    
-        </el-drawer>
-<!--============================ END: The Side Menu Bar ============================-->        
-    </div>
-</template>
-
-
-
-
-
-
-
-
-<script>
     export default{
         mounted() {
             document.title = "Community | ArthriCare";
         },
         setup(){
+            const activeBottom = ref(3);
             const avatar1 = ref()
             const avatar2 = ref()
             const avatar3 = ref()
@@ -248,11 +23,13 @@
                 avatar1,
                 avatar2,
                 avatar3,
-                avatar4
+                avatar4,
+                activeBottom
             }
         },
         data(){
             return{
+                
                 activeSection: 'discussion_section',
                 user:{
                     name: 'Kris Wu',
@@ -446,14 +223,238 @@
             UserFilled,
             LineHorizontal320Filled,
             Pill28Filled, ChannelAdd20Regular, 
-            Home20Filled, 
+            Home20Regular, 
             BriefcaseMedical20Regular, 
             Gift20Regular, 
-            Person20Regular,
+            PeopleCommunity20Filled,
             ThumbLike20Regular,  // Default like button  // When user liked a post
             CommentMultiple20Regular // comment icon
         }
     };
 </script>
+<template>
+    <div class="container">
+        <el-container>
+            <el-header class="header">
+                <Icon class="more" @click="drawer = true"><LineHorizontal320Filled /></Icon>
+                <b class="pageTitle">Community</b>
+            </el-header>
+
+            <el-main class="main">
+                <div class="sectionFilter">
+                    <input type="radio" checked id="1" name="section" class="section" @click="changeSection('discussion_section')"><label for="1">Discussion</label>
+                    <input type="radio" id="2" name="section" class="section" @click="changeSection('event_section')"><label for="2">Event</label>
+                    <input type="radio" id="3" name="section" class="section" @click="changeSection('news_section')"><label for="3">News</label>
+                    <input type="radio" id="4" name="section" class="section" @click="goToMessagePage"><label for="4">Message</label>
+                </div>
+
+                <div v-if="activeSection === 'discussion_section'">
+                    <div v-for="post in posts" :key="post.id" class="postCard">
+                        <div class="icon_name_time">
+                            <!-- NOTE: the code below to display an image is a hardcode and shouldn'r be used. -->
+                            <img :src="avatar1" alt="avatar" class="avatar" />
+                            <!-- NOTE: This code should work, but, for some reason, it's not working. <img :src="post.avatar" :alt="post.alt" />  -->
+                            <div class="username">{{ post.username }}</div>
+                            <div class="time-ago">{{ getTimeAgo(post.timestamp) }}</div>
+                        </div>
+                        <div class="content" @click="goToPostDetail(post.id)">
+                            <p class="postTitle">{{ post.title }}</p>
+                            <p v-if="!post.expanded" class="content">{{ truncateContent(post.content) }}</p>
+                            <p v-else class="content">{{ post.content }}</p>
+                            <button @click="goToPostDetail(post.id)" class="seeMoreButton">
+                                ... See more
+                            </button><br>
+                            <div id="image-scroll-container">
+                                <span v-for="(image, imageIndex) in post.images" :key="imageIndex">
+                                    <img src="@/assets/postImage3.png" :alt="image.alt" class="aImage"/> 
+                                </span>    
+                            </div>
+                        </div>
+                        <div class="like_comment_section">
+                                <!-- Note for Don:  -->
+                                <Icon class="thumbLike_icon"><ThumbLike20Regular /></Icon>
+                                <p class="numberOfLikes">{{ post.numberOfLikes }}</p>
+                                <Icon class="comment_icon" @click="showCommentInput(post.id)"><CommentMultiple20Regular /></Icon>
+                                <p class="numberOfComments">{{ post.numberOfComments }}</p>
+                                <div v-if="showCommentInputId === post.id">
+                                    <input v-model="newComment" placeholder="Enter your comment" />
+                                    <button @click="addComment(post.id)">Submit</button>
+                                </div>
+                            </div>
+                        <hr style="width: 100%;">
+                    </div>
+
+                    <!-- Note for Don: This is #4. The code below is to jump to the top of the page, but this function is not working. 
+                    <div class="scroll-to-top-container">
+                        <Icon @click="scrollToTop"><ArrowCircleUpTwotone class="scrollToTopButton" /></Icon>
+                    </div>
+                    -->
+                </div> 
+                <!-- END: Discussion Section -->
+
+                <!-- START: Event Section -->
+                <!-- Note: At this moment, this section is just a placeholder. It's been hardcoded. -->
+                <div v-if="activeSection === 'event_section'">
+                    <h3>Upcoming Events</h3>
+                    <div class="card_event">
+                        <img src="@/assets/communityPage_event_1.png" alt="1st event" class="event" />
+                        <h5 class="event-date">15. Apr. 2023</h5>
+                        <a href="https://events.arthritis.org/index.cfm?fuseaction=donorDrive.event&eventID=1479" target="_blank" class="eventLink">2023 Walk to CURE Arthritis - Savannah, GA</a>
+                    </div>
+                    <div class="card_event">
+                        <img src="@/assets/communityPage_event_2.png" alt="2nd event" class="event" />
+                        <h5 class="event-date">22. Apr. 2023</h5>
+                        <a href="https://events.arthritis.org/index.cfm?fuseaction=donorDrive.event&eventID=1466" target="_blank" class="eventLink">2023 Walk to CURE Juvenile Arthritis - Bloomington, MN</a>
+                    </div>
+                    <div class="card_event">
+                        <img src="@/assets/communityPage_event_1.png" alt="3rd event" class="event" />
+                        <h5 class="event-date">22. Apr. 2023</h5>
+                        <a href="https://events.arthritis.org/index.cfm?fuseaction=donorDrive.event&eventID=1480" target="_blank" class="eventLink">2023 Walk to CURE Arthritis - Jacksonville, FL</a>
+                    </div>
+                </div>
+                <!-- END: Event Section -->
+
+                <!-- START: News Section -->
+                <!-- Note: At this moment, this section is just a placeholder. It's been hardcoded. -->
+                <div v-if="activeSection === 'news_section'" class="news_section">
+                    <h3>Trending News</h3>
+                        <div class="trendingNews-scroll-container">
+                            <div class="card_TrendingNews">
+                                <img src="@/assets/communityPage_NewsSection_1.png" alt="1st Treanding News" />
+                                <h5 class="top-left">05. Sep. 2023</h5>
+                                <h4 class="bottom-center">Australians 'in the dark' with arthritis: one of our most prevalent and costly diseases</h4>
+                            </div>
+                            <div class="card_TrendingNews">
+                                <img src="@/assets/communityPage_NewsSection_5.png" alt="2nd Treanding News" />
+                                <h5 class="top-left">04. Sep. 2023</h5>
+                                <h4 class="bottom-center">Reducing opioid harm through regulatory changes - Information for consumers, patients and carers</h4>
+                            </div>
+                        </div>    
+
+                    <h3 style="padding-top:15px;">Latest News</h3>
+                    <div class="card_latestNews">
+                        <div class="latestNews_title_date">
+                            <h4 class="latestNews-title">Arthritis Australia launches new Multicultural Resources</h4>
+                            <h5 class="latestNews-date">06. Sep. 2023</h5>
+                        </div>
+                        <div class="latestNews_img">
+                            <img src="@/assets/communityPage_NewsSection_2.png" alt="1st Today's News" class="latestNews" />
+                        </div>
+                    </div>
+                    <hr class="latestNews">
+                    <div class="card_latestNews">
+                        <div class="latestNews_title_date">
+                            <h4 class="latestNews-title">Young women urged to be vigilant and assess persistent back pain</h4>
+                            <h5 class="latestNews-date">01. Sep. 2023</h5>
+                        </div>
+                        <div class="latestNews_img">
+                            <img src="@/assets/communityPage_NewsSection_3.png" alt="2nd Today's News" class="latestNews" />
+                        </div>
+                    </div>
+                    <hr class="latestNews">
+                    <div class="card_latestNews">
+                        <div class="latestNews_title_date">
+                            <h4 class="latestNews-title">Parliamentary Friends of Arthritis event</h4>
+                            <h5 class="latestNews-date">25. Aug. 2023</h5>
+                        </div>
+                        <div class="latestNews_img">
+                            <img src="@/assets/communityPage_NewsSection_4.png" alt="3rd Today's News" class="latestNews" />
+                        </div>
+                    </div>
+                    <hr class="latestNews">
+                    <div class="card_latestNews">
+                        <div class="latestNews_title_date">
+                            <h4 class="latestNews-title">Crisis brewing in arthritis set to hit community and economy hard</h4>
+                            <h5 class="latestNews-date">23. Aug. 2023</h5>
+                        </div>
+                        <div class="latestNews_img">
+                            <img src="@/assets/communityPage_NewsSection_6.png" alt="4th Today's News" class="latestNews" />
+                        </div>
+                    </div>
+                    <hr class="latestNews">
+                </div>
+                <!-- END: News Section -->
+            </el-main> 
+        </el-container>
+
+<!--============================ START: The Bottom Navigation Bar ============================-->       
+        <var-bottom-navigation
+            class="footer"
+            v-model:active="activeBottom"
+            border="true"
+            safe-area="true"
+            :fab-props="{color:'#55BDCA'}"
+        >
+            <var-link href="/#/Home" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="homeButton">
+                <Icon  style="font-size: 38px;"><Home20Regular /></Icon><br>
+                <span>Home</span>
+            </var-bottom-navigation-item>
+            </var-link>
+            <var-link href="/#/MyMeds" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="medsButton">
+                <Icon style="font-size: 38px;"><BriefcaseMedical20Regular /></Icon><br>
+                <span>My Meds</span>
+            </var-bottom-navigation-item>
+            </var-link>
+            <var-link href="/#/Rewards" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="rewardsButton">
+                <Icon style="font-size: 38px;"><Gift20Regular /></Icon><br>
+                <span>Rewards</span>
+            </var-bottom-navigation-item>
+            </var-link>
+            <var-link href="/#/Community" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="profileButton">
+                <Icon style="font-size: 38px;"><PeopleCommunity20Filled /></Icon><br>
+                <span>Community</span>
+            </var-bottom-navigation-item>    
+            </var-link>
+            <!-- <template #fab >
+                <var-link href="/#/AddMed" style="color: white;">
+                <Icon class="addButton"><Add20Filled /></Icon>
+                </var-link>
+            </template> -->
+        </var-bottom-navigation>
+                <!-- Fab button -->
+                <var-fab v-model:active="showAction" style="margin-bottom: 100px;" color="#006973" inactive-icon-size="26px" active-icon-size="30px" elevation="5">
+            <var-button class="action" round color="#F27B42" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
+                <var-link href="/#/AddPost" text-color="white" text-size="25px">
+                <Icon><ChannelAdd20Regular /></Icon>
+            </var-link>
+            </var-button>
+            <var-button class="action" round color="#55BDCA" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
+                <var-link href="/#/AddMed" text-color="white" text-size="25px">
+                    <Icon><Pill28Filled /></Icon>
+                </var-link>
+            </var-button>
+        </var-fab>
+<!--============================ END: The Bottom Navigation Bar ============================-->       
+<!--============================ START: The Side Menu Bar ============================-->               
+        <el-drawer style="background-color: #006973;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
+            <!--Action是模拟接口，与后端连接时更换-->
+                <div class = "sidebar">
+                    <el-upload action="" :show-file-list="false">
+                        <el-avatar :size="65">
+                            <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
+                                <template v-else>
+                                    <UserFilled class="defalut-avatar" />
+                                </template>
+                        </el-avatar>   
+                    </el-upload> 
+                </div>
+            <SideBarContent :imgUrl="imgUrl" />    
+        </el-drawer>
+<!--============================ END: The Side Menu Bar ============================-->        
+    </div>
+</template>
+
+
+
+
+
+
+
+
+
 
 <style src="@/css/community.css" scoped></style>

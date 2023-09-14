@@ -25,11 +25,9 @@
     font-weight: 600;
     font-size: 45px;
   }
-  .logo{
-    margin: -200px;
-  }
   img{
-    width: 250px;
+    margin-left: 50px;
+    width: 180px;
   }
 /* -------------------------------- Content -------------------------------------------------*/
 

@@ -11,7 +11,7 @@
 
    <el-container  class = "container">
 
-      <router-link to = "/" v-if="this.MARS===false">
+      <router-link to = "/home" v-if="this.MARS===false">
         <var-icon class="backBtn" name="chevron-left" :size="42" color="white"/>
       </router-link>
       <div v-if="this.MARS==true" >

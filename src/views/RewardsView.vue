@@ -1,7 +1,7 @@
 <!--Rewards Page -->
 <script>
     import { ref, reactive, computed } from 'vue';
-    import { LineHorizontal320Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Filled, Person20Regular, AddCircle20Regular,Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
+    import { LineHorizontal320Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Filled, PeopleCommunity20Regular, AddCircle20Regular,Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
     import { Icon } from '@vicons/utils';
     import SideBarContent from '@/component/Sidebar.vue';
     import { UserFilled } from '@element-plus/icons-vue';
@@ -220,7 +220,7 @@
             Home20Regular, 
             BriefcaseMedical20Regular, 
             Gift20Filled, 
-            Person20Regular,
+            PeopleCommunity20Regular,
             UserFilled,
             AddCircle20Regular,
             SideBarContent
@@ -349,10 +349,10 @@
                 <span>Rewards</span>
             </var-bottom-navigation-item>
             </var-link>
-            <var-link href="/#/UserProfile" underline="none">
+            <var-link href="/#/Community" underline="none">
             <var-bottom-navigation-item class="bottomButton" name="profileButton">
-                <Icon style="font-size: 38px;"><Person20Regular /></Icon><br>
-                <span>Profile</span>
+                <Icon style="font-size: 38px;"><PeopleCommunity20Regular /></Icon><br>
+                <span>Community</span>
             </var-bottom-navigation-item>    
             </var-link>
         </var-bottom-navigation>

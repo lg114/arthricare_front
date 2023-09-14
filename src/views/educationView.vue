@@ -2,7 +2,7 @@
 <!--Welcome Page -->
 <script setup>
   import store from "@/store";
-  import { LineHorizontal320Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, Person20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
+  import { LineHorizontal320Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
   import { Icon } from '@vicons/utils'
   // import {Plus,Minus} from '@element-plus/icons-vue';
   import SideBarContent from '@/component/Sidebar.vue';
@@ -131,10 +131,10 @@
                 <span>Rewards</span>
             </var-bottom-navigation-item>
             </var-link>
-            <var-link href="/#/UserProfile" underline="none">
+            <var-link href="/#/Community" underline="none">
             <var-bottom-navigation-item class="bottomButton" name="profileButton">
-                <Icon style="font-size: 38px;"><Person20Regular /></Icon><br>
-                <span>Profile</span>
+                <Icon style="font-size: 38px;"><PeopleCommunity20Regular /></Icon><br>
+                <span>Community</span>
             </var-bottom-navigation-item>    
             </var-link>
             <!-- <template #fab>
@@ -202,7 +202,6 @@
       position: relative;
 
     }
-
     .calculationPart{
       display:flex;
       width:40%;
@@ -309,7 +308,7 @@
   font-family: system-ui;
   top:13%;
   width:100%;
-  left:10%;
+  left:20%;
   padding-top:6.5%;
   }
 
@@ -324,7 +323,6 @@
   background-color:#F7F0F0;
   border-radius:0px 0px 15px 15px;
   box-shadow: 1px 2px 2px 1px #ccdde9; 
-  z-index: 3;
   position:absolute;
   bottom:0;
 }
@@ -355,9 +353,9 @@ input{
 
   .backBtn{
     color:#FFFFFF;
-    position:fixed;
+    position:absolute;
     left: 30px;
-    top:3.5%;
+    top:4%;
     }
 
   .searchBtn{
@@ -390,6 +388,7 @@ input{
   }
   /* footer */
   .bottomButton{
+    width: 90px;
     padding-left:20px;
     padding-right: 20px;
 }
@@ -408,7 +407,7 @@ input{
 <script>
 
 export default {
-  components: {SideBarContent,LineHorizontal320Filled,Icon, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, Person20Regular, Pill28Filled, ChannelAdd20Regular},
+  components: {SideBarContent,LineHorizontal320Filled,Icon, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular, Pill28Filled, ChannelAdd20Regular},
   computed: {
     changeToTrue() {
       return this.$store.state.changeToTrue;

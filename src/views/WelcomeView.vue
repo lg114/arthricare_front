@@ -4,7 +4,7 @@
     <el-container class = "content-container">
       <el-header>
         <div class = "logo">
-          <img src="@/assets/icon.png" alt="ArthriCare Logo">
+          <img src="@/assets/logo.png" alt="ArthriCare Logo" class="logoPic">
         </div>        
       </el-header>
       <el-main class = "welcome">
