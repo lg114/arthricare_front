@@ -1,7 +1,8 @@
 <!-- Message Page -->
 <script>
     import { ref } from 'vue';
-    import { MoreHorizFilled, CircleFilled } from '@vicons/material';
+    import { CircleFilled } from '@vicons/material';
+    import { LineHorizontal320Filled } from '@vicons/fluent';
     import { Icon } from '@vicons/utils'
     import SideBarContent from '@/component/Sidebar.vue';
     import { UserFilled } from '@element-plus/icons-vue';
@@ -77,7 +78,7 @@
         },
         components: {
             Icon,
-            MoreHorizFilled,
+            LineHorizontal320Filled,
             SideBarContent,
             UserFilled,
             CircleFilled
@@ -89,7 +90,7 @@
     <div class="container">
         <el-container>
             <el-header class="header">
-                <Icon class="more" @click="drawer = true"><MoreHorizFilled /></Icon>
+                <Icon class="more" @click="drawer = true"><LineHorizontal320Filled /></Icon>
                 <b class="pageTitle">Messsage</b>
             </el-header>
             <el-main class="main">
@@ -120,7 +121,7 @@
 
             </el-main> 
         </el-container>
-        <el-drawer style="background-color: #1890FF;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
+        <el-drawer style="background-color: #006973;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
             <!--Action是模拟接口，与后端连接时更换-->
                 <div class = "sidebar">
                     <el-upload action="" :show-file-list="false">

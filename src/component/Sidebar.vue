@@ -17,6 +17,9 @@
                 console.log("Logout button clicked");
                 this.$router.push('/UserProfile');
             },
+            goToMessage(){
+                this.$router.push('/Message')
+            },
             goToCommunity(){
                 this.$router.push('/Community')
             },
@@ -50,7 +53,7 @@
                             <p>My Profile</p>
                             <el-icon class="menu-icon"><CaretRight /></el-icon>
                         </div>
-                        <div class = "menu-button">
+                        <div class = "menu-button" @click = "goToMessage">
                             <el-icon class="menu-icon1"><Message /></el-icon>
                             <p>Message</p>
                             <el-icon class="menu-icon"><CaretRight /></el-icon>
