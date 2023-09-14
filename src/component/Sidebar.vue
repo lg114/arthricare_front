@@ -55,7 +55,7 @@
                             <p>Message</p>
                             <el-icon class="menu-icon"><CaretRight /></el-icon>
                         </div>
-                        <div class = "menu-button">
+                        <div class = "menu-button" @click = "goToCommunity">
                             <el-icon class="menu-icon2"><MessageBox /></el-icon>
                             <p>Community</p>
                             <el-icon class="menu-icon"><CaretRight /></el-icon>
