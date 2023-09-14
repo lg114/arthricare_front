@@ -1,6 +1,7 @@
 <!--Education Post Page -->
 <script>
-    import { ChevronLeft20Filled, BookOpen20Filled, Add20Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, Person20Regular, CommentMultiple20Regular } from '@vicons/fluent'
+    import { ref } from 'vue';
+    import { ChevronLeft20Filled, BookOpen20Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, Person20Regular, CommentMultiple20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
     import { ThumbUpAltOutlined } from '@vicons/material'
     import { Icon } from '@vicons/utils'
     export default{
@@ -18,7 +19,8 @@
                     content: 'Arthritis is a term often used to mean any disorder that affects joints. Symptoms generally include joint pain and stiffness. Other symptoms may include redness, warmth, swelling, and decreased range of motion of the affected joints. In some types of arthritis, other organs are also affected. Onset can be gradual or sudden. There are over 100 types of arthritis. The most common forms are osteoarthritis (degenerative joint disease) and rheumatoid arthritis. Osteoarthritis usually occurs with age and affects the fingers, knees, and hips. Rheumatoid arthritis is an autoimmune disorder that often affects the hands and feet.Other types include gout, lupus, fibromyalgia, and septic arthritis.They are all types of rheumatic disease.',
                     likes: 0
             },
-                liked: false
+                liked: false,
+                showAction: ref(false), //Show actions of the fab
             };
         },
         computed:{
@@ -41,11 +43,14 @@
             //Router
             goToEducationArticle(){
                 this.$router.push('/EducationArticle');
+            },
+            toggleAction(){
+                this.showAction.value = !this.showAction.value
             }
         },
         components: {
             ChevronLeft20Filled, 
-            Add20Filled, 
+            // Add20Filled, 
             Home20Regular, 
             BriefcaseMedical20Regular,
             BookOpen20Filled,
@@ -53,7 +58,9 @@
             Person20Regular, 
             ThumbUpAltOutlined,
             CommentMultiple20Regular,
-            Icon,
+            Icon, 
+            Pill28Filled, 
+            ChannelAdd20Regular
         }
     };
 </script>
@@ -90,7 +97,6 @@
             class="footer"
             border="true"
             safe-area="true"
-            :fab-props="{color:'#55BDCA'}"
         >
             <var-link href="/#/Home" underline="none">
             <var-bottom-navigation-item class="bottomButton" name="homeButton">
@@ -116,12 +122,23 @@
                 <span>Profile</span>
             </var-bottom-navigation-item>    
             </var-link>
-            <template #fab>
+            <!-- <template #fab>
                 <var-link href="/#/AddMed" style="color: white;">
             <Icon class="addButton"><Add20Filled /></Icon>
             </var-link>
-            </template>
+            </template> -->
         </var-bottom-navigation>
+                <!-- Fab button -->
+                <var-fab v-model:active="showAction" style="margin-bottom: 100px;" color="#006973" inactive-icon-size="26px" active-icon-size="30px" elevation="5">
+            <var-button class="action" round color="#F27B42" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
+                <Icon><ChannelAdd20Regular /></Icon>
+            </var-button>
+            <var-button class="action" round color="#55BDCA" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
+                <var-link href="/#/AddMed" text-color="white" text-size="25px">
+                    <Icon><Pill28Filled /></Icon>
+                </var-link>
+            </var-button>
+        </var-fab>
         
     </div>
 </template>

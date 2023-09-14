@@ -2,11 +2,12 @@
 <!--Welcome Page -->
 <script setup>
   import store from "@/store";
+  import { ChevronLeft20Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, Person20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
+  import { Icon } from '@vicons/utils'
   // import {Plus,Minus} from '@element-plus/icons-vue';
   import '@varlet/ui/es/button/style/index';
   import { ref } from 'vue'
 
-  const active = ref(0);
   
 </script>
 
@@ -15,7 +16,7 @@
       
     <div class = "container-flex" style="height:100% ; width:50% ;">
         <router-link to = "/home">
-          <var-icon class="backBtn" name="menu" :size="25" color="white"/>
+          <Icon class="backBtn" name="menu" :size="25" color="white"><ChevronLeft20Filled/></Icon>
         </router-link> 
         <p id= "title">Education</p>
 
@@ -94,7 +95,52 @@
     </div>
    
     </el-container>
-    
+    <var-bottom-navigation
+            class="footer"
+            border="true"
+            safe-area="true"
+        >
+            <var-link href="/#/Home" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="homeButton">
+                <Icon  style="font-size: 38px;"><Home20Regular /></Icon><br>
+                <span>Home</span>
+            </var-bottom-navigation-item>
+            </var-link>
+            <var-link href="/#/MyMeds" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="medsButton">
+                <Icon style="font-size: 38px;"><BriefcaseMedical20Regular /></Icon><br>
+                <span>My Meds</span>
+            </var-bottom-navigation-item>
+            </var-link>
+            <var-link href="/#/Rewards" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="rewardsButton">
+                <Icon style="font-size: 38px;"><Gift20Regular /></Icon><br>
+                <span>Rewards</span>
+            </var-bottom-navigation-item>
+            </var-link>
+            <var-link href="/#/UserProfile" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="profileButton">
+                <Icon style="font-size: 38px;"><Person20Regular /></Icon><br>
+                <span>Profile</span>
+            </var-bottom-navigation-item>    
+            </var-link>
+            <!-- <template #fab>
+                <var-link href="/#/AddMed" style="color: white;">
+            <Icon class="addButton"><Add20Filled /></Icon>
+            </var-link>
+            </template> -->
+        </var-bottom-navigation>
+                    <!-- Fab button -->
+                    <var-fab v-model:active="showAction" style="margin-bottom: 100px;" color="#006973" inactive-icon-size="26px" active-icon-size="30px" elevation="5">
+            <var-button class="action" round color="#F27B42" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
+                <Icon><ChannelAdd20Regular /></Icon>
+            </var-button>
+            <var-button class="action" round color="#55BDCA" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
+                <var-link href="/#/AddMed" text-color="white" text-size="25px">
+                    <Icon><Pill28Filled /></Icon>
+                </var-link>
+            </var-button>
+        </var-fab>
 </template>
 
 <style lang = "css" scoped> 
@@ -326,13 +372,27 @@ input{
   border: 2px solid white;
   transition: background-color 0.5s, color 0.5s;
   }
-
+  /* footer */
+  .bottomButton{
+    padding-left:20px;
+    padding-right: 20px;
+}
+.footer{
+    display: inline;
+    position: fixed;
+    text-align: center;
+    bottom: 0;
+    height:80px;
+    --bottom-navigation-item-font-size: 13px;
+    --bottom-navigation-item-active-color: #646566;
+    white-space: nowrap;
+}  
 </style>
 
 <script>
 
 export default {
-  components: {},
+  components: {Icon,ChevronLeft20Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, Person20Regular, Pill28Filled, ChannelAdd20Regular},
   computed: {
     changeToTrue() {
       return this.$store.state.changeToTrue;
@@ -347,6 +407,7 @@ export default {
       Meds2:[],
       //always empty
       Meds3:[],
+      showAction: ref(false), //Show actions of the fab
     };
   },
   
@@ -362,7 +423,10 @@ export default {
     con(){
       console.log(this.$store.state.changeToTrue);
       store.commit("changeToTrue");
-    }
+    },
+    toggleAction(){
+                this.showAction.value = !this.showAction.value
+            }
 
 },
   mounted(){
