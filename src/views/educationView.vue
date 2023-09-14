@@ -2,9 +2,10 @@
 <!--Welcome Page -->
 <script setup>
   import store from "@/store";
-  import { ChevronLeft20Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, Person20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
+  import { LineHorizontal320Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, Person20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
   import { Icon } from '@vicons/utils'
   // import {Plus,Minus} from '@element-plus/icons-vue';
+  import SideBarContent from '@/component/Sidebar.vue';
   import '@varlet/ui/es/button/style/index';
   import { ref } from 'vue'
 
@@ -15,9 +16,8 @@
    <el-container class = "container">
       
     <div class = "container-flex" style="height:100% ; width:50% ;">
-        <router-link to = "/home">
-          <Icon class="backBtn" name="menu" :size="25" color="white"><ChevronLeft20Filled/></Icon>
-        </router-link> 
+          <Icon class="backBtn" name="menu" :size="25" color="white" @click="drawer = true"><LineHorizontal320Filled/></Icon>
+
         <p id= "title">Education</p>
 
         <router-link to = "/SearchArticle">
@@ -93,7 +93,20 @@
         </div>
       </div>
     </div>
-   
+    <el-drawer style="background-color: #006973;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
+            <!--Action是模拟接口，与后端连接时更换-->
+                <div class = "sidebar">
+                    <el-upload action="" :show-file-list="false">
+                        <el-avatar :size="65">
+                            <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
+                                <template v-else>
+                                    <UserFilled class="defalut-avatar" />
+                                </template>
+                        </el-avatar>   
+                    </el-upload> 
+                </div>
+            <SideBarContent :imgUrl="imgUrl" />    
+        </el-drawer>
     </el-container>
     <var-bottom-navigation
             class="footer"
@@ -143,6 +156,7 @@
                 </var-link>
             </var-button>
         </var-fab>
+
 </template>
 
 <style lang = "css" scoped> 
@@ -341,9 +355,9 @@ input{
 
   .backBtn{
     color:#FFFFFF;
-    position:relative;
-    right:250%;
-    top:42%;
+    position:fixed;
+    left: 30px;
+    top:3.5%;
     }
 
   .searchBtn{
@@ -394,7 +408,7 @@ input{
 <script>
 
 export default {
-  components: {Icon,ChevronLeft20Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, Person20Regular, Pill28Filled, ChannelAdd20Regular},
+  components: {SideBarContent,LineHorizontal320Filled,Icon, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, Person20Regular, Pill28Filled, ChannelAdd20Regular},
   computed: {
     changeToTrue() {
       return this.$store.state.changeToTrue;
@@ -410,10 +424,17 @@ export default {
       //always empty
       Meds3:[],
       showAction: ref(false), //Show actions of the fab
+      drawer: ref(false),
     };
   },
   
   methods: {
+    openDrawer() {
+                this.drawer = true;
+            },
+            beforeDrawerClose(done) {
+                done();
+            },
     showVideo() {
       this.VideoVisible = true;
       this.ArticalVisible = false;
