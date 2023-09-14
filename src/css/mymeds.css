@@ -68,53 +68,7 @@
     color: #FFFFFF;
   }
 
-  /* Footer */
-  .footer{
-    background-color: white;
-    position:fixed;
-    bottom:0;
-    height: 80px;
-    width:100%;
-    text-align: center;
-    margin-left: 0;
-    margin-right: 0;
-    white-space: nowrap;
-}
-#addMed{
-    color: #1890FF;
-}
-#medication{
-    color: #1890FF;
-}
-.footerBtn{
-    font-size: 45px;
-    color: gray;
-    height: 50px;
-    width: 50px;
-    padding-top: 8px;
-    padding-left: 10px;
-    padding-right: 10px;
-}
-#homeText{
-    position: relative;
-    color: gray;
-    right: 50px;
-}
-#medText{
-    position: relative;
-    color: #1890FF;
-    right: 35px;
-}
-#rewardsText{
-    position: relative;
-    color:gray;
-    left: 35px;
-}
-#profileText{
-    position: relative;
-    color: gray;
-    left: 48px;
-}
+
   .bar-menu-container {
     display: flex;
     align-items: center;
@@ -166,7 +120,7 @@
     flex-direction: column;
     place-items: center;
     height: 100vh;
-    background-color: #1890FF;
+    background-color: #006973;
     overflow-y: auto;
 }
 .main{
@@ -201,6 +155,7 @@
     align-items: center;
     justify-content: left;
     border-bottom: 2px solid #ccc;
+    padding-bottom: 10px;
   }
 
   .medication-word {
@@ -210,7 +165,7 @@
     line-height: 20px;
     letter-spacing: 0em;
     text-align: center;
-    color: #1890FF;
+    color: #006973;
   }
 
   .sidebar{
@@ -293,7 +248,7 @@
 }
 
 .zeroObjAlertP{
-    color:#1890FF;
+    color:#006973;
     position: relative;
     top:20%;
     font-size:200%;
@@ -378,7 +333,7 @@
 
 .arrowBtn_icon{
     font-size: 30px;
-    color: #1890FF;
+    color: #006973;
 }
 .medObject{
     border-bottom: 2px solid #DDDDDD;

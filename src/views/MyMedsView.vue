@@ -11,17 +11,15 @@
    import { ref } from 'vue';
   import { LineHorizontal320Filled, Home20Regular, BriefcaseMedical20Filled, Gift20Regular, Person20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent';
   import SideBarContent from '@/component/Sidebar.vue';
-    import { Icon } from '@vicons/utils'
-    const active= ref(1);
+    import { Icon } from '@vicons/utils';
+    const active = ref(1);
 </script>
 
 <template>
   <div class="container">
   
    <div class = "container-flex">
-     <router-link to = "/">
-        <el-icon class = "OperaBtn"><LineHorizontal320Filled/></el-icon>
-     </router-link>
+        <Icon class = "OperaBtn" @click="drawer = true"><LineHorizontal320Filled/></Icon>
      <!-- <Icon @click="drawer = true"><MoreHorizFilled /></Icon> -->
      <p id = "title">My Meds</p>
    </div> 
@@ -32,9 +30,10 @@
     <div class="ExperiedContainer">
         <div class="ExperiedMedication">
           <p class="medication-word">Current Medication</p>
+          <br>
         </div>
         <div class = "zeroObjAlert" v-if="store.state.unExperiedMedArray.length === 0">
-          <p class="zeroObjAlertP">You haven't add any Medication</p>
+          <p class="zeroObjAlertP">You haven't added any medication</p>
         </div >
         <div class="unExperiedmed" v-for="(item, index) in store.state.unExperiedMedArray" :key="index">
           <div class="container-flex">
@@ -60,9 +59,10 @@
       <div class="ExperiedContainer">
         <div class="ExperiedMedication">
           <p class="medication-word">Past Medication</p>
+          <br>
         </div>
         <div class = "zeroObjAlert" v-if="store.state.ExperiedMedArray.length === 0">
-          <p class="zeroObjAlertP">You haven't have any Medication Experied</p>
+          <p class="zeroObjAlertP">You don't have any past medication</p>
         </div >
         <div class="Experiedmed" v-for="(item, index) in store.state.ExperiedMedArray" :key="index">
           <div class="container-flex">
@@ -103,8 +103,8 @@
            </var-link>
            <var-link href="/#/MyMeds" underline="none">
            <var-bottom-navigation-item class="bottomButton" name="medsButton">
-               <Icon style="font-size: 38px;"><BriefcaseMedical20Filled /></Icon><br>
-               <span>My Meds</span>
+               <Icon style="font-size: 38px; color:#55BDCA"><BriefcaseMedical20Filled /></Icon><br>
+               <span style="color:#55BDCA">My Meds</span>
            </var-bottom-navigation-item>
            </var-link>
            <var-link href="/#/Rewards" underline="none">
@@ -133,7 +133,7 @@
                </var-link>
            </var-button>
        </var-fab>
-<el-drawer style="background-color: #1890FF;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
+<el-drawer style="background-color: #006973;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
            <!--Action是模拟接口，与后端连接时更换-->
                <div class = "sidebar">
                    <el-upload action="" :show-file-list="false">
@@ -173,6 +173,7 @@ export default {
     return{
       MedicineArray: [],
       drawer: ref(false),
+      showAction: ref(false),
       imgArray:[blue ,yellow,red
       ,green,purple,orange]
       // MedName : this.$route.params.MedName,
@@ -287,6 +288,9 @@ export default {
     //Router
     goToUserProfile(){
                 this.$router.push('/MyMeds');
+            },
+            toggleAction(){
+                this.showAction.value = !this.showAction.value
             }
   },
       
@@ -297,7 +301,8 @@ export default {
     }
       ,
         setup(){
-          
+          const active= ref(1);
+          return {active}
         },
         components:{
           Icon,
