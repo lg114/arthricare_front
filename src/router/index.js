@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-//import { ElMessage } from 'element-plus';
-//import store from '@/store';
+import { ElMessage } from 'element-plus';
+import store from '@/store';
 import WelcomePage from '@/views/WelcomeView.vue';
 import LoginPage from '@/views/LoginView.vue';
 import SignUpPage from '@/views/SignupView.vue';
@@ -204,8 +204,8 @@ const router  = createRouter({
     ]
 });
 
-//Router Guard 导航守卫
-/*
+// Router Guard 导航守卫
+
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
         if (store.getters['user/isLoggedIn']) {
@@ -218,7 +218,7 @@ router.beforeEach((to, from, next) => {
         next(); // 不需要身份验证的路由，直接继续访问
     }
 });
-*/
+
 
 
 export default router;
