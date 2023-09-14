@@ -9,7 +9,7 @@
    import orange from "@/assets/capsulesorange.png";
    import store from "@/store";
    import { ref } from 'vue';
-  import { LineHorizontal320Filled, Home20Regular, BriefcaseMedical20Filled, Gift20Regular, Person20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent';
+  import { LineHorizontal320Filled, Home20Regular, BriefcaseMedical20Filled, Gift20Regular, PeopleCommunity20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent';
   import SideBarContent from '@/component/Sidebar.vue';
     import { Icon } from '@vicons/utils';
     const active = ref(1);
@@ -30,7 +30,6 @@
     <div class="ExperiedContainer">
         <div class="ExperiedMedication">
           <p class="medication-word">Current Medication</p>
-          <br>
         </div>
         <div class = "zeroObjAlert" v-if="store.state.unExperiedMedArray.length === 0">
           <p class="zeroObjAlertP">You haven't added any medication</p>
@@ -59,7 +58,6 @@
       <div class="ExperiedContainer">
         <div class="ExperiedMedication">
           <p class="medication-word">Past Medication</p>
-          <br>
         </div>
         <div class = "zeroObjAlert" v-if="store.state.ExperiedMedArray.length === 0">
           <p class="zeroObjAlertP">You don't have any past medication</p>
@@ -113,10 +111,10 @@
                <span>Rewards</span>
            </var-bottom-navigation-item>
            </var-link>
-           <var-link href="/#/UserProfile" underline="none">
+           <var-link href="/#/Community" underline="none">
            <var-bottom-navigation-item class="bottomButton" name="profileButton">
-               <Icon style="font-size: 38px;"><Person20Regular /></Icon><br>
-               <span>Profile</span>
+               <Icon style="font-size: 38px;"><PeopleCommunity20Regular /></Icon><br>
+               <span>Community</span>
            </var-bottom-navigation-item>    
            </var-link>
        </var-bottom-navigation>
@@ -311,7 +309,7 @@ export default {
           Home20Regular, 
           BriefcaseMedical20Filled, 
           Gift20Regular, 
-          Person20Regular,
+          PeopleCommunity20Regular,
           SideBarContent
         }
       }
