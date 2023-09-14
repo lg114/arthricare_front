@@ -205,7 +205,7 @@
         </var-fab>
 <!--============================ END: The Bottom Navigation Bar ============================-->       
 <!--============================ START: The Side Menu Bar ============================-->               
-        <el-drawer style="background-color: #1890FF;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
+        <el-drawer style="background-color: #006973;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
             <!--Action是模拟接口，与后端连接时更换-->
                 <div class = "sidebar">
                     <el-upload action="" :show-file-list="false">
