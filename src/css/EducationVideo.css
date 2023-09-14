@@ -1,0 +1,110 @@
+/* Education Video Css */
+.header{
+    display: flex;
+    align-items: center;
+    color: white;
+    text-align: center;
+    margin-right: 100px;
+    height: 60px;
+}
+.back{
+    position: absolute;
+    left: 5%;
+    top:2.5%;
+    font-size: 30px;
+    color: white;
+}
+.titleIcon{
+    position: relative;
+    font-size: 30px;
+    margin-right: 5px;
+    left: 45%;
+}
+.pageTitle{
+    position:relative;
+    font-size: 20px;
+    left: 45%;
+    top: -5%;
+    white-space: nowrap;
+}
+.container{
+    display: grid;
+    flex-direction: column;
+    place-items: center;
+    height: 100vh;
+    background-color: #006973;
+    overflow-y: auto;
+}
+.main{
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    background-color: white;
+    width: 100%;
+    margin: 0 auto;
+}
+video{
+    width: 100%;
+    padding-bottom: 20px;
+}
+.likeComment{
+    display: flex;
+    align-items: center;
+    padding-bottom: 10px;
+}
+/* Contents */
+.articleTitle{
+    color: #006973;
+    margin-top: 0px;
+}
+.articleContent{
+    color: #01385C;
+    letter-spacing: 1px;
+}
+.coverImage{
+    max-width: 100%;
+    display: block;
+
+}
+.main .likeButton{
+    font-size: 20px;
+    color: grey;
+}
+.main .likeButton.liked{
+    color: #F27B42;
+}
+.likeCount{
+    font-size: 15px;
+    padding-left: 5px;
+    padding-right: 20px;
+    color: grey;
+}
+.commentButton{
+    font-size: 20px;
+    color:grey;
+}
+.commentCount{
+    padding-left: 5px;
+    color: grey;
+}
+.relativeTitle{
+    color: #006973;
+}
+    /* footer */
+    .bottomButton{
+        padding-left:20px;
+        padding-right: 20px;
+    }
+    .footer{
+        display: inline;
+        position: fixed;
+        text-align: center;
+        bottom: 0;
+        height:80px;
+        --bottom-navigation-item-font-size: 13px;
+        --bottom-navigation-item-active-color: #646566;
+        white-space: nowrap;
+    }  
+    .addButton{
+        font-size: 35px;
+    }

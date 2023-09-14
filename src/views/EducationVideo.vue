@@ -1,48 +1,50 @@
-<!--Education Post Page -->
+<!--Education Video Page -->
 <script>
     import { ref } from 'vue';
     import { ChevronLeft20Filled, BookOpen20Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, Person20Regular, CommentMultiple20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
     import { ThumbUpAltOutlined } from '@vicons/material'
     import { Icon } from '@vicons/utils'
+
     export default{
         mounted() {
-                document.title = "Education Article | ArthriCare";
+                document.title = "Education Video | ArthriCare";
         },
         setup(){
         },
         data(){
             return{
-                selectedArticle:{
+                videoURL: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley',
+                selectedVideo:{
                     id: 1,
-                    title: 'Example Article',
-                    coverImage: 'https://orthoinfo.aaos.org/globalassets/figures/a00389f02.jpg',
-                    content: 'Arthritis is a term often used to mean any disorder that affects joints. Symptoms generally include joint pain and stiffness. Other symptoms may include redness, warmth, swelling, and decreased range of motion of the affected joints. In some types of arthritis, other organs are also affected. Onset can be gradual or sudden. There are over 100 types of arthritis. The most common forms are osteoarthritis (degenerative joint disease) and rheumatoid arthritis. Osteoarthritis usually occurs with age and affects the fingers, knees, and hips. Rheumatoid arthritis is an autoimmune disorder that often affects the hands and feet.Other types include gout, lupus, fibromyalgia, and septic arthritis.They are all types of rheumatic disease.',
+                    title: 'Example Video',
+                    // coverImage: 'https://orthoinfo.aaos.org/globalassets/figures/a00389f02.jpg',
+                    // content: 'Arthritis is a term often used to mean any disorder that affects joints. Symptoms generally include joint pain and stiffness. Other symptoms may include redness, warmth, swelling, and decreased range of motion of the affected joints. In some types of arthritis, other organs are also affected. Onset can be gradual or sudden. There are over 100 types of arthritis. The most common forms are osteoarthritis (degenerative joint disease) and rheumatoid arthritis. Osteoarthritis usually occurs with age and affects the fingers, knees, and hips. Rheumatoid arthritis is an autoimmune disorder that often affects the hands and feet.Other types include gout, lupus, fibromyalgia, and septic arthritis.They are all types of rheumatic disease.',
                     likes: 0
             },
                 liked: false,
                 showAction: ref(false), //Show actions of the fab
             };
         },
-        computed:{
-            relatedArticles(){
-                return [
-                    {id: 1, title: 'Relative Article 1'},
-                    {id: 2, title: 'Relative Article 2'}
-                ]
-            }
-        },
+        // computed:{
+        //     relatedArticles(){
+        //         return [
+        //             {id: 1, title: 'Relative Article 1'},
+        //             {id: 2, title: 'Relative Article 2'}
+        //         ]
+        //     }
+        // },
         methods:{
             toggleLike(){
                 this.liked = !this.liked;
                 if(this.liked){
-                    this.selectedArticle.likes++;
+                    this.selectedVideo.likes++;
                 }else{
-                    this.selectedArticle.likes--;
+                    this.selectedVideo.likes--;
                 }
             },
             //Router
-            goToEducationArticle(){
-                this.$router.push('/EducationArticle');
+            goToEducationVideo(){
+                this.$router.push('/EducationVideo');
             },
             toggleAction(){
                 this.showAction.value = !this.showAction.value
@@ -50,7 +52,7 @@
         },
         components: {
             ChevronLeft20Filled, 
-            // Add20Filled, 
+            Pill28Filled, ChannelAdd20Regular,
             Home20Regular, 
             BriefcaseMedical20Regular,
             BookOpen20Filled,
@@ -58,16 +60,13 @@
             Person20Regular, 
             ThumbUpAltOutlined,
             CommentMultiple20Regular,
-            Icon, 
-            Pill28Filled, 
-            ChannelAdd20Regular
+            Icon,
         }
     };
 </script>
 
 <template>
     <div class="container">
-        <el-container>
             <el-header class="header">
                 <router-link to="/education">
                 <Icon class="back"><ChevronLeft20Filled /></Icon>
@@ -76,27 +75,30 @@
                 <b class="pageTitle">Education</b>
             </el-header>
             <el-main class="main">
-                <h1 class="articleTitle">{{ selectedArticle.title }}</h1>
-                <img :src="selectedArticle.coverImage" class="coverImage">
-                <p class="articleContent">{{ selectedArticle.content }}</p>
+                <h1 class="articleTitle">{{ selectedVideo.title }}</h1>
+                <video controls class="video">
+                    <source src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=H_AROzOjRZQfJgBm" type="video/mp4">
+                </video>
+                <!-- <img :src="selectedVideo.coverImage" class="coverImage">
+                <p class="articleContent">{{ selectedVideo.content }}</p> -->
                 <div class="likeComment">
                     <Icon :class="['likeButton', {liked : liked}]" @click="toggleLike"><ThumbUpAltOutlined/></Icon>
-                    <span class="likeCount">{{ selectedArticle.likes }}</span>
+                    <span class="likeCount">{{ selectedVideo.likes }}</span>
                     <Icon class="commentButton"><CommentMultiple20Regular /></Icon>
                     <span class="commentCount">0</span>
                 </div>
                 <var-divider />
 
-                <h4>Related Articles:</h4>
+                <!-- <h4>Related Articles:</h4>
                 <ul>
                     <li v-for="relatedArticle in relatedArticles" :key="relatedArticle.id" class="relativeTitle">{{ relatedArticle.title }}</li>
-                </ul>
+                </ul> -->
             </el-main> 
-        </el-container>
         <var-bottom-navigation
             class="footer"
             border="true"
             safe-area="true"
+            :fab-props="{color:'#55BDCA'}"
         >
             <var-link href="/#/Home" underline="none">
             <var-bottom-navigation-item class="bottomButton" name="homeButton">
@@ -128,8 +130,8 @@
             </var-link>
             </template> -->
         </var-bottom-navigation>
-                <!-- Fab button -->
-                <var-fab v-model:active="showAction" style="margin-bottom: 100px;" color="#006973" inactive-icon-size="26px" active-icon-size="30px" elevation="5">
+                        <!-- Fab button -->
+                        <var-fab v-model:active="showAction" style="margin-bottom: 100px;" color="#006973" inactive-icon-size="26px" active-icon-size="30px" elevation="5">
             <var-button class="action" round color="#F27B42" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
                 <Icon><ChannelAdd20Regular /></Icon>
             </var-button>
@@ -145,4 +147,4 @@
 
 
 
-<style src = "@/css/EducationArticle.css" scoped></style>
+<style src = "@/css/EducationVideo.css" scoped></style>

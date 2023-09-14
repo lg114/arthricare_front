@@ -9,7 +9,7 @@
    import orange from "@/assets/capsulesorange.png";
    import store from "@/store";
    import { ref } from 'vue';
-  import { LineHorizontal320Filled, Add20Filled, Home20Regular, BriefcaseMedical20Filled, Gift20Regular, Person20Regular } from '@vicons/fluent';
+  import { LineHorizontal320Filled, Home20Regular, BriefcaseMedical20Filled, Gift20Regular, Person20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent';
   import SideBarContent from '@/component/Sidebar.vue';
     import { Icon } from '@vicons/utils'
     const active= ref(1);
@@ -106,12 +106,18 @@
                 <span>Profile</span>
             </var-bottom-navigation-item>    
             </var-link>
-            <template #fab >
-                <var-link href="/#/AddMed" style="color: white;">
-                <Icon class="addButton"><Add20Filled /></Icon>
-                </var-link>
-            </template>
         </var-bottom-navigation>
+                        <!-- Fab button -->
+                        <var-fab v-model:active="showAction" style="margin-bottom: 100px;" color="#006973" inactive-icon-size="26px" active-icon-size="30px" elevation="5">
+            <var-button class="action" round color="#F27B42" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
+                <Icon><ChannelAdd20Regular /></Icon>
+            </var-button>
+            <var-button class="action" round color="#55BDCA" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
+                <var-link href="/#/AddMed" text-color="white" text-size="25px">
+                    <Icon><Pill28Filled /></Icon>
+                </var-link>
+            </var-button>
+        </var-fab>
 <el-drawer style="background-color: #1890FF;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
             <!--Action是模拟接口，与后端连接时更换-->
                 <div class = "sidebar">
@@ -378,7 +384,8 @@ beforeCreate(){
     return{
       MedicineArray: [],
       imgArray:[red ,yellow,purple
-      ,green,blue,orange]
+      ,green,blue,orange],
+      showAction: ref(false), //Show actions of the fab
       // MedName : this.$route.params.MedName,
       // Field : this.$route.params.Field,
       // Category : this.$route.params.Category
@@ -448,6 +455,9 @@ beforeCreate(){
             beforeDrawerClose(done) {
                 done();
             },
+            toggleAction(){
+                this.showAction.value = !this.showAction.value
+            }
   },
       
   mounted(){
@@ -462,12 +472,13 @@ beforeCreate(){
           console.log("error mounted")
           
       }
+      
     },
 
         components:{
           Icon,
           LineHorizontal320Filled, 
-          Add20Filled, 
+          Pill28Filled, ChannelAdd20Regular,
           Home20Regular, 
           BriefcaseMedical20Filled, 
           Gift20Regular, 

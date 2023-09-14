@@ -2,13 +2,12 @@
 <script>
     import { ref,reactive} from 'vue';
     import { UserFilled } from '@element-plus/icons-vue';
-    import { LineHorizontal320Filled, Add20Filled, Home20Filled, BriefcaseMedical20Regular, Gift20Regular, Person20Regular } from '@vicons/fluent'
+    import { LineHorizontal320Filled, Home20Filled, BriefcaseMedical20Regular, Gift20Regular, Person20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
     import { Icon } from '@vicons/utils';
     import HorizontalCalendar from '@/component/calendar.vue';
     import SideBarContent from '@/component/Sidebar.vue';
     import MedicationDialog from '@/component/MedicationDialog.vue';
     import { mapGetters, mapActions } from 'vuex';
-
 
     export default{
         mounted(){
@@ -44,6 +43,8 @@
                 medicationTime: null, //Timepicker中用户设置的将会吃药的时间
                 selectedMedication: {}, //存储用户当前选择的药物
                 showTimePicker: false, //timepicker
+                showAction: ref(false), //Show actions of the fab
+                showOverlay: ref(false) //Show overlay when click the fab
             };
         },
         //get user information from store
@@ -160,6 +161,10 @@
                 this.showTimePicker = false;
                 this.dialogVisible = false;
             },
+            //When clicking fab, show actions
+            toggleAction(){
+                this.showAction.value = !this.showAction.value
+            }
         },
         components:{
             UserFilled,
@@ -168,11 +173,12 @@
             BriefcaseMedical20Regular, 
             Gift20Regular, 
             Person20Regular,
-            Add20Filled,
             Icon,
             HorizontalCalendar,
             SideBarContent,
-            MedicationDialog
+            MedicationDialog,
+            Pill28Filled,
+            ChannelAdd20Regular
     }
 };
 </script>
@@ -219,7 +225,6 @@
                         <el-button type="primary" @click="onTimePickerConfirm" round>Confirm</el-button>
                     </template>
                 </el-dialog>
-
                 <!-------------------------------------------------MedicationDialog---------------------------------------------->
             </el-main>
 
@@ -229,7 +234,6 @@
             v-model:active="active"
             border="true"
             safe-area="true"
-            :fab-props="{color:'#55BDCA'}"
         >
             <var-link href="/#/Home" underline="none">
             <var-bottom-navigation-item class="bottomButton" name="homeButton">
@@ -255,12 +259,24 @@
                 <span>Profile</span>
             </var-bottom-navigation-item>    
             </var-link>
-            <template #fab >
+            <!-- <template #fab >
                 <var-link href="/#/AddMed" style="color: white;">
                 <Icon class="addButton"><Add20Filled /></Icon>
                 </var-link>
-            </template>
+            </template> -->
         </var-bottom-navigation>
+        
+        <!-- Fab button -->
+        <var-fab v-model:active="showAction" style="margin-bottom: 100px;" color="#006973" inactive-icon-size="26px" active-icon-size="30px" elevation="5">
+            <var-button class="action" round color="#F27B42" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
+                <Icon><ChannelAdd20Regular /></Icon>
+            </var-button>
+            <var-button class="action" round color="#55BDCA" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
+                <var-link href="/#/AddMed" text-color="white" text-size="25px">
+                    <Icon><Pill28Filled /></Icon>
+                </var-link>
+            </var-button>
+        </var-fab>
         <el-drawer style="background-color: #006973;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
             <!--Action是模拟接口，与后端连接时更换-->
                 <div class = "sidebar">

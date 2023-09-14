@@ -16,6 +16,7 @@ import EducationPage from '@/views/educationView.vue';
 import SearchPage from '@/views/searchView.vue';
 import EditProfilePage from '@/views/EditProfile.vue';
 import EducationArticlePage from '@/views/EducationArticle.vue';
+import EducationVideoPage from '@/views/EducationVideo.vue';
 import CommunityPage from '@/views/CommunityView.vue';
 import MessagePage from '@/views/MessageView.vue';
 import ChatPage from '@/views/ChatView.vue';
@@ -159,6 +160,15 @@ const router  = createRouter({
             path: '/EducationArticle',
             name: 'EducationArticle',
             component: EducationArticlePage,
+
+
+
+        },
+        {
+
+            path: '/EducationVideo',
+            name: 'EducationVideo',
+            component: EducationVideoPage,
 
 
 
