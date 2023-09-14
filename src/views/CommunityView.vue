@@ -5,6 +5,7 @@
     import { Icon } from '@vicons/utils'
     import SideBarContent from '@/component/Sidebar.vue';
     import { UserFilled } from '@element-plus/icons-vue';
+    import axios from 'axios';
 </script>
 
 <template>
@@ -234,6 +235,7 @@
     export default{
         mounted() {
             document.title = "Community | ArthriCare";
+            this.fetchDataFromBackend();
         },
         setup(){
             const avatar1 = ref()
@@ -437,6 +439,25 @@
             },
             goToMessagePage(){
                 this.$router.push('/Message');
+            },
+
+            async fetchDataFromBackend(){
+                try {
+                    const response = await axios.get('http://localhost:8181/ComityPost/getAllPost')
+
+                    const posts = response.data;
+
+                    if (posts.length !== 0) {
+                        // 显示加载的帖子
+                        for (const post of posts) {
+                            console.log(post);
+                        }
+                    } else {
+                        console.log(posts);
+                    }
+                } catch (error) {
+                    console.error("Error fetching data:", error);
+                }
             }
         },
 //============================== END: Unique Functions for Community Page ==============================//
