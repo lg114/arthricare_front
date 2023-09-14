@@ -17,6 +17,9 @@
                 console.log("Logout button clicked");
                 this.$router.push('/UserProfile');
             },
+            goToCommunity(){
+                this.$router.push('/Community')
+            },
             goToEducation(){
                 this.$router.push('/Education')
             },
