@@ -2,7 +2,7 @@
     import { ref } from 'vue';
     import { AlertCircle, Logout } from '@vicons/tabler';
     import { LineHorizontal320Filled, Add20Filled, Home20Filled, BriefcaseMedical20Regular, Gift20Regular, Person20Regular } from '@vicons/fluent';
-    import { UserProfileAlt} from '@vicons/carbon';
+    import { UserProfileAlt } from '@vicons/carbon';
     import { CastForEducationFilled } from '@vicons/material';
     import { Icon } from '@vicons/utils';
     import HorizontalCalendar from '@/component/calendar.vue';
@@ -22,7 +22,28 @@
                 //初始化存放当天需要服用的药物列表
                 medicationList: [],
                 //初始化选中日期
-                dialog: ref(false)
+                dialog: ref(false),
+                onTime: ref(false),
+                now: ref(false),
+                setTime: ref(false),
+                actionSheet: ref(false),
+                actions: ref([
+                    {
+                        name: 'Now',
+                        icon: 'https://img.icons8.com/material-outlined/48/006973/time.png',
+                        color: '#006973'
+                    },
+                    {
+                        name: 'On time',
+                        icon: 'https://img.icons8.com/material-outlined/48/006973/time.png',
+                        color: '#006973'
+                    },
+                    {
+                        name: 'Set time',
+                        icon: 'https://img.icons8.com/material-outlined/48/006973/time.png',
+                        color: '#006973'
+                    },
+                ])
             }
         },
         methods:{
@@ -64,6 +85,10 @@
             showMedicationDetails(medication) {
                 this.selectedMedication = medication;
                 this.dialog = true;
+            },
+            handleSetTime(){
+                this.dialog = false;
+                this.actionSheet = true;    
             }
         },
         computed: {
@@ -144,14 +169,23 @@
         </div>
         <template #footer>
             <div style = "text-align: center;">
-                <el-button color = "#006973" @click="onTime(medication)" round>On Time</el-button>
-                <el-button color = "#006973" @click="nowTime(medication)" round>Now</el-button>
-                <el-button color = "#006973" @click="setTime(selectedMedication)" round>Set Time</el-button>
+                <el-button color = "#006973" @click="handleSetTime()" round>Take Med &#10004;</el-button>
             </div>
         </template>
-
     </el-dialog>
 
+    <var-action-sheet v-model:show="actionSheet" :actions="actions" title="Choose your take med time" style=" --action-sheet-title-color: #006973; --action-sheet-title-font-size: 18px;"/>
+
+    <!-- time selector dialog -->
+    <el-dialog v-model="onTime" center align-center width="90%" round>
+        <template #header>
+            <span style="color: #006973; font-weight: bold; font-size: larger;">{{ selectedMedication.name }}</span>
+        </template>
+        <div style = "text-align: center; font-size: small; line-height: 2;">
+            <el-date-picker v-model = "value2" type="datetime" placeholder="Pick a date and time" format="YYYY/MM/DD HH:mm:ss"/>
+        </div>
+    </el-dialog>
+    
     <var-bottom-navigation
             class="footer"
             v-model:active="active"
@@ -230,134 +264,4 @@
     </el-drawer>
 </template>
 
-<style scoped>
-    .container{
-        height: 100%;
-    }
-    .header{
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #006973;
-        color: #FFFFFF;
-    }
-    .header-icon{
-        font-size: 20px;
-        position: absolute;
-        left: 5%;
-        font-weight: bold;
-    }
-    .header-icon2{
-        position: absolute;
-        right: 5%;
-    }
-    .username{
-        font-weight: bold;
-    }
-    .main{
-        --el-main-padding: 0;
-        background-color: #ffffff;  /* for the arrow's color of the calendar */
-        margin-bottom: 55px;
-    }
-
-    .divider{
-        display: flex;
-        justify-content: space-evenly;
-        align-items: center;
-        --divider-color: #006973;
-        text-align: center;
-        margin-top: 5vw;
-    }
-    .last-medication{
-        margin-bottom: 15vw;
-    }
-    .var-card{
-        margin-right: 5vw;
-        color:#006973;
-        height: 12vh;
-        --card-border-radius: 5px;
-        --card-outline-color: #006973;
-    }
-    .el-dialog__header{
-        margin-right: 0px;
-        background-color: #006973;
-        color: #FFFFFF;
-    }
-    @media screen and (min-width: 380px){
-        .header{
-
-        }
-    }
-  @media screen and (min-width: 768px){
-        .header{
-            height: 10vh;
-        }
-        .username{
-            font-size: 25px;
-        }
-   }
-
-
-
-   .topping{
-        color:#FFFFFF;
-        font-weight: bold;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-   }
-   .var-avatar{
-        position: relative;
-        top: 5vh;
-   }
-   .middle{
-        color:#FFFFFF;
-        font-weight: bold;
-        display: flex;
-        flex-direction: column;
-        margin-top: 50px;
-   }
-   .middle p{
-        margin-bottom: 20px;
-        text-align: center;
-   }
-   .icon-container {
-        display: inline-block;
-        margin-right: 50px; 
-    }
-    .icon-text-container {
-        display: flex;
-        align-items: center;
-        padding-inline: 5px;
-        justify-content: center;
-    }
-
-   .bottom{
-        color:#FFFFFF;
-        font-weight: bold;
-        display: flex;
-        flex-direction: column;
-   }
-   .bottom p {
-        margin-bottom: 20px;
-   }
-
-   .bottomButton{
-        padding-left:20px;
-        padding-right: 20px;
-    }
-    .footer{
-        display: inline;
-        position: fixed;
-        text-align: center;
-        bottom: 0;
-        height:80px;
-        --bottom-navigation-item-font-size: 13px;
-        --bottom-navigation-item-active-color: #006973;
-        white-space: nowrap;
-    }  
-    .addButton{
-        font-size: 35px;
-    }
-</style>
+<style src="@/css/homepage.css" scoped></style>
