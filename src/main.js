@@ -13,6 +13,16 @@ import VueHashCalendar from 'vue3-hash-calendar';
 import 'vue3-hash-calendar/es/index.css';
 import '@varlet/ui/es/button/style/index';
 
+// Push notification
+//import { createApp } from 'vue'
+import OneSignalVuePlugin from '@onesignal/onesignal-vue3'
+
+createApp(App).use(OneSignalVuePlugin, {
+  appId: '194aa163-81c5-4e4e-aa9f-54a2f03abe05',
+}).mount('#app');
+
+
+
 const app = createApp(App);
 
 app.component('VueDatePicker', VueDatePicker);

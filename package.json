@@ -12,6 +12,7 @@
   "dependencies": {
     "@element-plus/icons": "^0.0.11",
     "@mdi/font": "^7.2.96",
+    "@onesignal/onesignal-vue3": "^2.0.1",
     "@popperjs/core": "^2.11.8",
     "@varlet/icons": "^2.14.1",
     "@varlet/ui": "^2.16.2",
