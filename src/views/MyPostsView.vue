@@ -1,7 +1,7 @@
 <!-- MyPosts Page -->
 <script setup>
     import { ref } from 'vue';
-    import { ThumbLike20Regular, LineHorizontal320Filled, CommentMultiple20Regular, Pill28Filled, ChannelAdd20Regular , Home20Filled, BriefcaseMedical20Regular, Gift20Regular, Person20Regular } from '@vicons/fluent'
+    import { ThumbLike20Regular, LineHorizontal320Filled, CommentMultiple20Regular, Pill28Filled, ChannelAdd20Regular , Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular } from '@vicons/fluent'
     import { Icon } from '@vicons/utils'
     import SideBarContent from '@/component/Sidebar.vue';
     import { UserFilled } from '@element-plus/icons-vue';
@@ -62,7 +62,7 @@
         >
             <var-link href="/#/Home" underline="none">
             <var-bottom-navigation-item class="bottomButton" name="homeButton">
-                <Icon  style="font-size: 38px;"><Home20Filled /></Icon><br>
+                <Icon  style="font-size: 38px;"><Home20Regular /></Icon><br>
                 <span>Home</span>
             </var-bottom-navigation-item>
             </var-link>
@@ -78,10 +78,10 @@
                 <span>Rewards</span>
             </var-bottom-navigation-item>
             </var-link>
-            <var-link href="/#/UserProfile" underline="none">
+            <var-link href="/#/Community" underline="none">
             <var-bottom-navigation-item class="bottomButton" name="profileButton">
-                <Icon style="font-size: 38px;"><Person20Regular /></Icon><br>
-                <span>Profile</span>
+                <Icon style="font-size: 38px;"><PeopleCommunity20Regular /></Icon><br>
+                <span>Community</span>
             </var-bottom-navigation-item>    
             </var-link>
             <!-- <template #fab >
@@ -215,10 +215,10 @@
             UserFilled,
             LineHorizontal320Filled,
             Pill28Filled, ChannelAdd20Regular , 
-            Home20Filled, 
+            Home20Regular, 
             BriefcaseMedical20Regular, 
             Gift20Regular, 
-            Person20Regular,
+            PeopleCommunity20Regular,
             ThumbLike20Regular,  // Default like button  // When user liked a post
             CommentMultiple20Regular // comment icon
         }

@@ -1,7 +1,7 @@
 <!--User Profile Page -->
 <script>
     import { ref } from 'vue';
-    import { LineHorizontal320Filled,Pill28Filled, ChannelAdd20Regular, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, Person20Filled, Edit20Regular, AddCircle20Regular } from '@vicons/fluent'
+    import { LineHorizontal320Filled,Pill28Filled, ChannelAdd20Regular, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular, Edit20Regular, AddCircle20Regular } from '@vicons/fluent'
     import { Icon } from '@vicons/utils'
     import SideBarContent from '@/component/Sidebar.vue';
     import { UserFilled } from '@element-plus/icons-vue';
@@ -10,8 +10,6 @@
                 document.title = "User Profile | ArthriCare";
         },
         setup(){
-            const active = ref(3);
-            return {active};
         },
         data(){
             return{
@@ -46,7 +44,7 @@
             Home20Regular, 
             BriefcaseMedical20Regular,
              Gift20Regular, 
-             Person20Filled, 
+             PeopleCommunity20Regular, 
              Edit20Regular,
              AddCircle20Regular,
             Icon,
@@ -125,10 +123,10 @@
                 <span>Rewards</span>
             </var-bottom-navigation-item>
             </var-link>
-            <var-link href="/#/UserProfile" underline="none">
+            <var-link href="/#/Community" underline="none">
             <var-bottom-navigation-item class="bottomButton" name="profileButton">
-                <Icon style="font-size: 38px;"><Person20Filled /></Icon><br>
-                <span>Profile</span>
+                <Icon style="font-size: 38px;"><PeopleCommunity20Regular /></Icon><br>
+                <span>Community</span>
             </var-bottom-navigation-item>    
             </var-link>
 

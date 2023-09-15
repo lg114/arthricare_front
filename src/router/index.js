@@ -23,7 +23,7 @@ import ChatPage from '@/views/ChatView.vue';
 import AddPostPage from '@/views/AddPostView.vue';
 import PostDetailPage from '@/views/PostDetailView.vue';
 import MyPostsPage from '@/views/MyPostsView.vue';
-
+import AssessmentPage from '@/views/AssessmentView.vue';
 
 
 const router  = createRouter({
@@ -192,6 +192,12 @@ const router  = createRouter({
 
 
         },
+        
+        {
+          path: '/Assessment',
+          name: 'Assessment',
+          component: AssessmentPage,
+      },
 
 
         {
@@ -209,6 +215,7 @@ const router  = createRouter({
             meta: {
                 requiresAuth: true
             }
+            
         },
         
     ]

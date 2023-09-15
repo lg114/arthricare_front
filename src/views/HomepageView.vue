@@ -2,7 +2,7 @@
 <script>
     import { ref,reactive} from 'vue';
     import { UserFilled } from '@element-plus/icons-vue';
-    import { LineHorizontal320Filled, Home20Filled, BriefcaseMedical20Regular, Gift20Regular, Person20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
+    import { LineHorizontal320Filled, Home20Filled, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
     import { Icon } from '@vicons/utils';
     import HorizontalCalendar from '@/component/calendar.vue';
     import SideBarContent from '@/component/Sidebar.vue';
@@ -172,7 +172,7 @@
             Home20Filled, 
             BriefcaseMedical20Regular, 
             Gift20Regular, 
-            Person20Regular,
+            PeopleCommunity20Regular,
             Icon,
             HorizontalCalendar,
             SideBarContent,
@@ -253,10 +253,10 @@
                 <span>Rewards</span>
             </var-bottom-navigation-item>
             </var-link>
-            <var-link href="/#/UserProfile" underline="none">
+            <var-link href="/#/Community" underline="none">
             <var-bottom-navigation-item class="bottomButton" name="profileButton">
-                <Icon style="font-size: 38px;"><Person20Regular /></Icon><br>
-                <span>Profile</span>
+                <Icon style="font-size: 38px;"><PeopleCommunity20Regular /></Icon><br>
+                <span>Community</span>
             </var-bottom-navigation-item>    
             </var-link>
             <!-- <template #fab >

@@ -2,7 +2,7 @@
 <!--Welcome Page -->
 <script setup>
   // import {ArrowLeftBold} from '@element-plus/icons-vue';
-  import store from "@/store";
+  //import store from "@/store";
   // import {Plus,Minus} from '@element-plus/icons-vue';
   import '@varlet/ui/es/button/style/index';
  
@@ -139,7 +139,7 @@
         </div>  
         <el-footer class >
             <div class="buttons" >
-                 <el-button class = "login-button" @click = "saveData">ADD</el-button> 
+                 <el-button class = "login-button" @click = "medicineData">ADD</el-button> 
             </div>
          </el-footer> 
         <!-- <date-picker v-model:value = "selectedDate"></date-picker> -->
@@ -507,6 +507,8 @@ option {
 <script>
 import VueDatePicker1 from '@vuepic/vue-datepicker';
 import VueDatePicker2 from '@vuepic/vue-datepicker';
+import axios from 'axios';
+import { mapGetters } from 'vuex';
 
 // import DatePicker from 'vue-datepicker-next';
 // import 'vue-datepicker-next/index.css';
@@ -515,6 +517,7 @@ import VueDatePicker2 from '@vuepic/vue-datepicker';
 export default {
   components: { VueDatePicker1 , VueDatePicker2},
   computed: {
+    ...mapGetters('user', ['loggedInUser']),
     changeToTrue() {
       return this.$store.changeToTrue;
     },
@@ -680,47 +683,72 @@ export default {
       return formattedTime;
     },
 
-    // pass value to MyMed
-    saveData() {
-      // const dataObject = {
-      //   Field: this.$refs.Field.value,
-      //   MedName: this.$refs.MedName.value,
-      //   Category: this.$refs.Category.value,
-      //   Frequency:this.$refs.Frequency.value,
-      //   StartDate: this.$refs.StartDate.value ,
-      //   EndDate: this.$refs.EndDate.value,
-      //   Note: this.$refs.Note.value,
+    getReminderTimes() {
+      this.timeInputs = []; // Clear the timeInputs array
+    if (this.selectedFrequency === 'Once a Day') {
+      this.timeInputs.push(this.timeInput1);
+    } else if (this.selectedFrequency === 'Twice a Day') {
+      this.timeInputs.push(this.timeInput1, this.timeInput2);
+    } else if (this.selectedFrequency === 'Three times a Day') {
+      this.timeInputs.push(this.timeInput1, this.timeInput2, this.timeInput3);
+    }
+      console.log(this.timeInputs);
+    },
 
-      //  };
+    // New function for medicineData
+  medicineData() {
+  this.getReminderTimes();
+  const reminderTimes = [];
 
-        //  this.$router.push({
-        //       path: '/MyMeds2',
-        //       query: {
-        //         Field: this.$refs.Field.value,
-        //         MedName: this.$refs.MedName.value,
-        //         Category: this.$refs.Category.value,
-        //     }
-        //   });
-        store.commit('changeToTrue');
-        this.$router.push({
-              path: '/MyMeds',
-              query: {
-                MedName: this.$refs.MedName.value,
-                Category: this.selectedCategory,
-                Frequency:this.selectedFrequency,
-                Unit:this.$refs.Unit.value,
-                StartDate: this.selectedStartDate ,
-                EndDate: this.selectedEndDate,
-                Note: this.$refs.Note.value,
-                timeInput1: this.timeInput1,
-                timeInput2: this.timeInput2,
-                timeInput3: this.timeInput3,
-             }
-           })
-           console.log(this.timeInput1)
-           console.log(this.selectedEndDate)
+    // Now call this.$nextTick() after updating the array
+  this.$nextTick(() => {
+    if (this.$refs.timePicker1) {
+      reminderTimes.push(this.$refs.timePicker1.value);
+    }
+    if (this.$refs.timePicker2) {
+      reminderTimes.push(this.$refs.timePicker2.value);
+    }
+    if (this.$refs.timePicker3) {
+      reminderTimes.push(this.$refs.timePicker3.value);
+    }
+    
+    console.log ('TING TING IS HERE',this.loggedInUser);
+   
 
-    }},
+/////////////////////////////////////////////////////////////
+    const dataObject = {
+      userId: this.loggedInUser.userId,
+      medicationName: this.$refs.MedName.value,
+      medicationCategory: this.selectedCategory,
+      frequency: this.selectedFrequency,
+      dosageUnit: this.$refs.Unit.value,
+      startDate: this.selectedStartDate,
+      endDate: this.selectedEndDate,
+      note: this.$refs.Note.value,
+      reminderTimes: JSON.stringify(this.timeInputs),
+    };
+
+    console.log(dataObject)
+
+    const backendurl = 'http://localhost:8181/medications/create';
+    
+    axios
+      .post(backendurl, dataObject)
+      .then((response) => {
+        console.log('Data sent successfully', response);
+        this.$router.push({path: '/Home'})
+      })
+      .catch((error) => {
+        console.log('Data sending failed', error);
+      });
+  }); // Here
+}, //
+
+ watch: {
+    selectedFrequency: 'getReminderTimes',
+  },
+},
+
   mounted(){
             document.title = 'Add Medication';
            // this.selectValue();

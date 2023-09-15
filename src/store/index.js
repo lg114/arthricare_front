@@ -4,6 +4,9 @@ import user from '@/store/modules/user.js';
 import reminder from '@/store/modules/reminder.js'
 export default createStore({
     state:{
+        ExperiedMedArray: [],
+        unExperiedMedArray: [],
+        homePage_ReminderArray: [],
         navigation:false,
         MedArray: []
         
