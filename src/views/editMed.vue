@@ -5,6 +5,7 @@
 <script setup>
 
   import store from "@/store";
+  import axios from 'axios';
   // import {Plus,Minus} from '@element-plus/icons-vue';
   
 </script>
@@ -135,7 +136,7 @@
         </div>  
         <el-footer class >
             <div class="buttons" >
-                 <el-button class = "login-button" @click = "ReplaceObjectIntoArray">Save</el-button> 
+                 <el-button class = "login-button" @click = "updateMedication">Save</el-button> 
                  <el-button class = "delete-button" @click = "ReplaceObjectIntoArray">Delete</el-button> 
             </div>
          </el-footer> 
@@ -521,10 +522,12 @@ import VueDatePicker1 from '@vuepic/vue-datepicker';
 import VueDatePicker2 from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import {ref} from 'vue';
+import { mapGetters } from 'vuex';
 
 export default {
   components: { VueDatePicker1 , VueDatePicker2},
   computed: {
+    ...mapGetters('user', ['loggedInUser']),
     changeToTrue() {
       return this.$store.state.changeToTrue;
     },
@@ -724,12 +727,146 @@ export default {
           
            })
           
+    },
+
+    parseTimestampToDateString(timestamp) {
+        
+        const date = new Date(timestamp);
+        
+        // 将日期加一天
+        date.setDate(date.getDate() + 1);
+
+        // 将日期对象转换为字符串
+        return date.toISOString().slice(0, 10);
+    },
+
+
+    populateFormWithMedicationDetails(medicationDetails) {
+      /*var dosageUnit = parseFloat(medicationDetails.dosageUnit);
+      if (!(dosageUnit % 1 !== 0)) {
+        dosageUnit = dosageUnit.toFixed(1);
+      }*/
+      console.log("Medication Details:", medicationDetails);
+      this.$refs.MedName.value = medicationDetails.medicationName;
+      this.selectedCategory = medicationDetails.medicationCategory;
+      this.selectedFrequency = medicationDetails.frequency;
+      this.$refs.Unit.value = medicationDetails.dosageUnit;
+      this.selectedStartDate = this.parseTimestampToDateString(medicationDetails.startDate);
+      this.selectedEndDate = this.parseTimestampToDateString(medicationDetails.endDate);
+      console.log(this.parseTimestampToDateString(medicationDetails.startDate))
+      this.$refs.Note.value = medicationDetails.note;
+
+      this.getReminderTime()
+    },
+
+
+    getReminderTime() {
+      axios.get(`http://localhost:8181/reminders/findUniqueReminderTimeByMedicationId/${this.medicationId}`) 
+        .then(response => {
+          if (response.status === 200) {
+            return response.data;
+          } else {
+            throw new Error("Failed to fetch medication details.");
+          }
+        })
+        .then(timeList => {
+            console.log(timeList);
+            for (let i = 0; i < timeList.length; i++) {
+            this[`timeInput${i + 1}`] = timeList[i];
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+
+    getReminderTimes() {
+      this.reminderTimes = []; // Clear the timeInputs array
+    if (this.selectedFrequency === 'Once a Day') {
+      this.reminderTimes.push(this.timeInput1);
+    } else if (this.selectedFrequency === 'Twice a Day') {
+      this.reminderTimes.push(this.timeInput1, this.timeInput2);
+    } else if (this.selectedFrequency === 'Three times a Day') {
+      this.reminderTimes.push(this.timeInput1, this.timeInput2, this.timeInput3);
     }
+      console.log(this.timeInputs);
+    },
+
+    getFrequencyPickerCount(frequency) {
+      switch (frequency) {
+        case "Once a Day":
+          return 1;
+        case "Twice a Day":
+          return 2;
+        case "Three times a Day":
+          return 3;
+        // Add more cases as needed for other frequency options
+        default:
+          return 1; // Default to 1 time picker if frequency is not recognized
+      }
+    },
+    fetchMedicationDetailsAndPopulateForm() {
+      axios.get (`http://localhost:8181/medications/${this.medicationId}`) 
+        .then(response => {
+          if (response.status === 200 ){
+            return response.data;
+          } else {
+            throw new Error("Failed to fetch medication details.");
+          }
+        })
+        .then(data => {
+          this.populateFormWithMedicationDetails(data);   
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+
+    updateMedication() {
+      this.getReminderTimes();
+      // Get updated values from the form fields
+      var data = {
+        userId: this.loggedInUser.userId,
+        medicationId: this.medicationId,
+        medicationName: this.$refs.MedName.value,
+        medicationCategory: this.selectedCategory,
+        frequency: this.selectedFrequency,
+        dosageUnit: this.$refs.Unit.value,
+        startDate: this.selectedStartDate,
+        endDate: this.selectedEndDate,
+        note: this.$refs.Note.value,
+        reminderTimes: JSON.stringify(this.reminderTimes),
+      };
+      console.log(data);
+      // Make a PUT request to update the medication
+      
+      axios.put(`http://localhost:8181/medications/updateMedication`, data, {
+        headers: {
+          "Content-Type": "application/json",
+        }
+      })
+        .then(response => {
+          if (response.status === 200) {
+            sessionStorage.removeItem('medicationId');
+            // Redirect to home page after successful update
+            this.$router.push('/MyMeds');
+          } else {
+            
+            console.log ('error making put request')
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+
+
   },
  
   mounted(){
             document.title = 'Sign Up | ArthriCare',
-            this.EditInputValue();
+            this.medicationId = sessionStorage.getItem('medicationId');
+            this.fetchMedicationDetailsAndPopulateForm();
         },
         
         setup(){
