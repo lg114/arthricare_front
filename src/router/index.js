@@ -54,7 +54,7 @@ const router  = createRouter({
             name: 'Home',
             component: HomePage,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
         {
@@ -62,7 +62,7 @@ const router  = createRouter({
             name: 'AddMed',
             component: AddMedPage,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
         {
@@ -70,7 +70,7 @@ const router  = createRouter({
             name: 'Menu',
             component: MenuPage,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
         {
@@ -78,7 +78,7 @@ const router  = createRouter({
             name: 'UserProfile',
             component: UserProfilePage,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
         {
@@ -86,7 +86,7 @@ const router  = createRouter({
             name: 'EditMed',
             component: EditMedPage,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
         {
@@ -94,7 +94,7 @@ const router  = createRouter({
             name: 'MyMeds',
             component: MyMedsPage,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
         {
@@ -102,7 +102,7 @@ const router  = createRouter({
             name: 'Rewards',
             component: RewardsPage,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
         {
