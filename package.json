@@ -14,7 +14,7 @@
     "@mdi/font": "^7.2.96",
     "@popperjs/core": "^2.11.8",
     "@varlet/icons": "^2.14.1",
-    "@varlet/ui": "^2.16.2",
+    "@varlet/ui": "^2.16.6",
     "@vuepic/vue-datepicker": "^5.2.0",
     "axios": "^1.4.0",
     "core-js": "^3.8.3",

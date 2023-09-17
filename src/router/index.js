@@ -110,7 +110,7 @@ const router  = createRouter({
             name: 'Community',
             component: CommunityPage,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
 
@@ -131,7 +131,7 @@ const router  = createRouter({
             name: 'Message',
             component: MessagePage,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
 
@@ -151,7 +151,7 @@ const router  = createRouter({
             name: 'Chat',
             component: ChatPage,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
 
@@ -180,7 +180,7 @@ const router  = createRouter({
             name: 'AddPost',
             component: AddPostPage,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
 
@@ -205,7 +205,7 @@ const router  = createRouter({
             name: 'PostDetail',
             component: PostDetailPage,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
         {
@@ -213,13 +213,15 @@ const router  = createRouter({
             name: 'MyPosts',
             component: MyPostsPage,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
             
         },
         
     ]
 });
+
+
 
 // Router Guard 导航守卫
 
