@@ -83,12 +83,12 @@ import { mapGetters } from 'vuex';
 
                 const response = await axios.post('http://localhost:8181/ComityPost/createPost', postData);
 
-                if (response.ok) {
+                if (response.status === 200) {
                     const postId = response.data.postId;
                     if (this.selectedImages.length > 0) {
                     await this.uploadImages(postId);
                     }
-                    this.$router.push('/mainCommunity');
+                    this.$router.push('/Community');
                 } else {
                     alert('Failed to create post.');
                 }
@@ -158,7 +158,7 @@ import { mapGetters } from 'vuex';
         <el-container>
             <el-header class="header">
                 <input type="submit" value="Cancel" class="cancelButton" @click="clicked_cancelButton"> 
-                <input type="submit" value="Post" class="postButton" @click="clicked_postButton">
+                <input type="submit" value="Post" class="postButton" @click="clicked_postButton"> 
             </el-header>
             <el-main class="main">
 
