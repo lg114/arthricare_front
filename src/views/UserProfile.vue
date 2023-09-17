@@ -5,11 +5,14 @@
     import { Icon } from '@vicons/utils'
     import SideBarContent from '@/component/Sidebar.vue';
     import { UserFilled } from '@element-plus/icons-vue';
+    
     export default{
         mounted() {
                 document.title = "User Profile | ArthriCare";
         },
         setup(){
+            const avatar = ref([]);
+            return {avatar}
         },
         data(){
             return{
@@ -20,6 +23,7 @@
                 },
                 drawer: ref(false),
                 showAction: ref(false), //Show actions of the fab
+                //For avatar upload
             };
         },
         methods:{
@@ -35,7 +39,10 @@
             },
             toggleAction(){
                 this.showAction.value = !this.showAction.value
-            }
+            },
+            handleAfterRead(avatar) { 
+            console.log(avatar)
+          }
         },
         components: {
             UserFilled,
@@ -65,9 +72,8 @@
                 </router-link>
             </el-header>
             <el-main class="main">
-                <el-avatar class="avatar">
-                    <img src="@/assets/user_avatar.png"/>
-                </el-avatar> 
+                    <var-uploader class="avatar" v-model="avatar" @after-read="handleAfterRead" maxlength="1">
+                    </var-uploader>
                 <h2>{{ user.name }}</h2>
                 <p>Level {{ user.level }} | {{ user.points }} points</p>
                 <div class="box">

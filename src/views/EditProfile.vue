@@ -1,13 +1,12 @@
 <!--Edit Profile Page -->
 <script>
-    import {  reactive } from 'vue';
+    import { reactive } from 'vue';
     import { ChevronLeft20Filled, Edit20Filled } from '@vicons/fluent'; //, MedicationOutlined, CardGiftcardOutlined, HomeRound, AccountCircleOutlined, AddCircleFilled
     import { Icon } from '@vicons/utils';
     import { ElMessage } from 'element-plus';
     import axios from 'axios';
     import router from '@/router';
     
-
     export default{
         mounted() {
                 document.title = "Edit Profile | ArthriCare";
