@@ -211,9 +211,6 @@
                 // Add or remove a like
                 // The thumbUp icon when a user added 'a like' should be 'ThumbLike20Filled'
                 // The thumbUp icon when a user removed 'a like' should be 'ThumbLike20Regular'
-            },
-            goToMessagePage(){
-                this.$router.push('/Message');
             }
         },
 //============================== END: Unique Functions for Community Page ==============================//
@@ -245,7 +242,6 @@
                     <input type="radio" checked id="1" name="section" class="section" @click="changeSection('discussion_section')"><label for="1">Discussion</label>
                     <input type="radio" id="2" name="section" class="section" @click="changeSection('event_section')"><label for="2">Event</label>
                     <input type="radio" id="3" name="section" class="section" @click="changeSection('news_section')"><label for="3">News</label>
-                    <input type="radio" id="4" name="section" class="section" @click="goToMessagePage"><label for="4">Message</label>
                 </div>
 
                 <div v-if="activeSection === 'discussion_section'">
