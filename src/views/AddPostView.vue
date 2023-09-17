@@ -41,9 +41,6 @@
 </template>
 
 
-
-
-
 <script>
     export default{
         mounted() {
@@ -124,3 +121,5 @@
 </script>
 
 <style src = "@/css/addPost.css" scoped></style>
+
+
