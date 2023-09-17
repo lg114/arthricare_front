@@ -59,7 +59,7 @@ import { mapGetters } from 'vuex';
             },
             clicked_cancelButton() {
                 this.$router.push('/Community');
-            }
+            },
 
 ///
             async createPost() {
@@ -157,7 +157,8 @@ import { mapGetters } from 'vuex';
     <div class="container">
         <el-container>
             <el-header class="header">
-                <input type="submit" value="Post" class="postButton" @click="clicked_postButton"> 
+                <input type="submit" value="Cancel" class="cancelButton" @click="clicked_cancelButton"> 
+                <input type="submit" value="Post" class="postButton" @click="clicked_postButton">
             </el-header>
             <el-main class="main">
 
@@ -177,7 +178,6 @@ import { mapGetters } from 'vuex';
                     <!-- Display selected images -->
                     <div v-for="(image, index) in selectedImages" :key="index" class="image-container">
                         <img :src="image.url" alt="Selected Image" />
-                        <input type="submit" value="Cancel" class="cancelButton" @click="clicked_cancelButton"> 
                     </div>
                 </div>
                 <!-- Add button to trigger file input -->
