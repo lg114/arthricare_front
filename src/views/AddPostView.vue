@@ -107,7 +107,7 @@ import { mapGetters } from 'vuex';
                     formData.append('image', image.file);
                 }
 
-                const response = await axios.post('http://localhost:8181/uploadImage/postImage', formData);
+                const response = await axios.post('/uploadImage', formData);
 
                 if (response.data.success) {
                     console.log ('Post and images uploaded successfully.');
@@ -168,8 +168,9 @@ import { mapGetters } from 'vuex';
                     <p class="userName">{{ user.name }}</p>
                 </div>
 
-                <input type="text" v-model="postTitle" name="post_title" class="post_title" placeholder="Set a title here..."><br>
-                <textarea v-model="postContent" class="post_content" name="post_content" placeholder="What's on your mind?" rows="17" cols="50" maxlength="500" autofocus required></textarea><br>
+                <input type="text" v-model="newPost.postTitle" name="post_title" class="post_title" placeholder="Set a title here..."><br>
+                <textarea v-model="newPost.postContent" class="post_content" name="post_content" placeholder="What's on your mind?" rows="17" cols="50" maxlength="500" autofocus required></textarea><br>
+
 
 
                 <div class="scrollable-container"> 
