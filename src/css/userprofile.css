@@ -61,12 +61,22 @@ p{
     margin-bottom: 50px;
 }
 .avatar{
+    margin-left: 37%;
+    margin-top: 10px;
+    margin-bottom: -20px;
+    --uploader-file-size: 100px;
+    --uploader-file-margin: 0;
+    --uploader-file-name-padding:0;
+    --uploader-file-close-icon-font-size:20px;
+    --uploader-file-cover-fit:cover;
+    --uploader-file-indicator-height:0px;
+    --uploader-action-background:#CFEEF5;
+    --uploader-action-icon-color:#006973;
+}
+.var-uploader__file-list {
+    width: 110px;
     display: flex;
-    width: 130px;
-    height: 130px;
-    margin: auto;
-    border: 3px solid #55BDCA;
-    box-shadow: 2px 2px 2px rgb(83, 83, 83);
+    flex-wrap: wrap;
 }
 .box{
     width: 365px;
