@@ -84,7 +84,7 @@ import { mapGetters } from 'vuex';
                 const response = await axios.post('http://localhost:8181/ComityPost/createPost', postData);
 
                 if (response.status === 200) {
-                    const postId = response.data.postId;
+                    const postId = await response.data;
                     if (this.selectedImages.length > 0) {
                     await this.uploadImages(postId);
                     }
@@ -100,22 +100,22 @@ import { mapGetters } from 'vuex';
 ////
             async uploadImages(postId) {
                 try {
-                const formData = new FormData();
-                formData.append('postId', postId);
+                    for (const image of this.selectedImages) {
+                        const formData = new FormData();
+                        formData.append('postId', postId);
+                        formData.append('image', image.file);
+                        console.log(postId);
+                        console.log(image.file);
+                        const response = await axios.post('http://localhost:8181/uploadImage/postImage', formData);
 
-                for (const image of this.selectedImages) {
-                    formData.append('image', image.file);
-                }
-
-                const response = await axios.post('/uploadImage', formData);
-
-                if (response.data.success) {
-                    console.log ('Post and images uploaded successfully.');
-                } else {
-                    console.log('Some images failed to upload. Please check and try again.');
-                }
+                        if (response.data.success) {
+                            console.log(`Image with name ${image.fileName || image.name} uploaded successfully.`);
+                        } else {
+                            console.log(`Image with name ${image.fileName || image.name} failed to upload.`);
+                        }
+                    }
                 } catch (error) {
-                console.error('Error uploading images:', error);
+                    console.error('Error uploading images:', error);
                 }
             },
 ////

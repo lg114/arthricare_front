@@ -442,7 +442,7 @@
             ThumbLike20Regular,  // Default like button  // When user liked a post
             CommentMultiple20Regular // comment icon
         }
-    };
+    }
 </script>
 
 <style src="@/css/community.css" scoped></style>
