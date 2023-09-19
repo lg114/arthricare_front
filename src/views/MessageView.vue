@@ -67,16 +67,35 @@
         methods:{
 
             initializeUser() {
-                const loggedInUser = this.loggedInUser.userId;
+                const loggedInUser = this.loggedInUser;
                 console.log ("here is it", loggedInUser);
                 if (loggedInUser){
-                    const user = JSON.parse(loggedInUser);
-                    const userFromId = `${user.userId}-${user.name}`;
-                    this.getChannels(userFromId); // Call the getChannels function with the user's ID
 
-                } else{ this.$router.push('/'); }
+                    const userFromId = `${loggedInUser.userId}-${loggedInUser.name}`;
+                    console.log('check userfromID',userFromId )
+                    this.getChannels(userFromId); // Call the getChannels function with the user's ID
+                    
+
+                } else{ 
+                    console.log("user not logged in");
+                    this.$router.push('/'); }
 
             },
+
+            
+         async getChannels(userFromId) {
+            try {
+                const response = await axios.get(`http://localhost:8181/ComityChat/getChatChannel?userFromId=${userFromId}`);
+                const data = response.data;
+                this.chathistory = data.map(chat => ({
+                userFromId: chat.userFromId,
+                userToId: chat.userToId,
+                newContent: chat.newContent,
+                }));
+            } catch (error) {
+                console.error('Fetch error:', error);
+            }
+         },
         
             openDrawer() {
                 this.drawer = true;
@@ -101,23 +120,6 @@
                 this.$router.push('/Chat');
             }
         },
-
-
-                async getChannels(userFromId) {
-            try {
-                const response = await axios.get(`/ComityChat/getChatChannel?userFromId=${userFromId}`);
-                const data = response.data;
-                this.chathistory = data.map(chat => ({
-                userFromId: chat.userFromId,
-                userToId: chat.userToId,
-                newContent: chat.newContent,
-                }));
-            } catch (error) {
-                console.error('Fetch error:', error);
-            }
-         },
-
-
 
 
         components: {
@@ -150,11 +152,11 @@
                             <span class="chatPartner_latest_massage">{{ shortenMessage(chat.newContent) }}</span>
                         </div>    
                         
-                        <div v-if="chatPartner.newMessage === true">
+                        <div v-if="chat.newMessage === true">
                             <!-- Display an orange circle icon -->
                             <Icon class="orangeCircle"><CircleFilled /></Icon>
                         </div>
-                        <div v-if="chatPartner.newMessage === false">
+                        <div v-if="chat.newMessage === false">
                             <!-- Hide an orange circle icon -->
                         </div>
                     </div>
