@@ -458,6 +458,4 @@
     </div>
 </template>
 
-
-
 <style src="@/css/community.css" scoped></style>
