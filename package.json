@@ -1,0 +1,70 @@
+{
+  "name": "arthricare",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist -r https://github.com/lg114/arthricare.git -b gh-pages"
+  },
+  "dependencies": {
+    "@element-plus/icons": "^0.0.11",
+    "@mdi/font": "^7.2.96",
+    "@popperjs/core": "^2.11.8",
+    "@varlet/icons": "^2.14.1",
+    "@varlet/ui": "^2.14.1",
+    "@vicons/utils": "^0.1.4",
+    "@vuepic/vue-datepicker": "^5.2.0",
+    "axios": "^1.4.0",
+    "core-js": "^3.8.3",
+    "element-plus": "^2.3.5",
+    "gh-pages": "^5.0.0",
+    "popper.js": "^1.16.1",
+    "vue": "^3.2.13",
+    "vue-router": "^4.2.2",
+    "vuex": "^4.1.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@babel/eslint-parser": "^7.12.16",
+    "@ricons/fluent": "^0.12.0",
+    "@vicons/antd": "^0.12.0",
+    "@vicons/carbon": "^0.12.0",
+    "@vicons/fluent": "^0.12.0",
+    "@vicons/ionicons4": "^0.12.0",
+    "@vicons/ionicons5": "^0.12.0",
+    "@vicons/material": "^0.12.0",
+    "@vicons/tabler": "^0.12.0",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^8.0.3",
+    "node-sass": "^9.0.0",
+    "sass-loader": "^13.3.2",
+    "unplugin-auto-import": "^0.16.6",
+    "unplugin-vue-components": "^0.24.1"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "@babel/eslint-parser"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ]
+}
