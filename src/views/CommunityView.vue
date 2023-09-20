@@ -1,11 +1,10 @@
 <!-- Community Page -->
-<script setup>
+<script>
     import { ref } from 'vue';
-    import { ThumbLike20Regular, LineHorizontal320Filled, CommentMultiple20Regular, Home20Filled, BriefcaseMedical20Regular, Gift20Regular, Person20Regular,Pill28Filled, ChannelAdd20Regular  } from '@vicons/fluent'
+    import { ThumbLike20Regular, LineHorizontal320Filled, CommentMultiple20Regular, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Filled,Pill28Filled, ChannelAdd20Regular  } from '@vicons/fluent'
     import { Icon } from '@vicons/utils'
     import SideBarContent from '@/component/Sidebar.vue';
     import { UserFilled } from '@element-plus/icons-vue';
-<<<<<<< HEAD
     export default{
         mounted() {
             document.title = "Community | ArthriCare";
@@ -245,11 +244,7 @@
             },
         },
     };
-=======
-    import axios from 'axios';
->>>>>>> bd86a14389be0c741c3b7428d2566b74a870205a
 </script>
-
 <template>
     <div class="container">
         <el-container>
@@ -263,18 +258,13 @@
                     <input type="radio" checked id="1" name="section" class="section" @click="changeSection('discussion_section')"><label for="1">Discussion</label>
                     <input type="radio" id="2" name="section" class="section" @click="changeSection('event_section')"><label for="2">Event</label>
                     <input type="radio" id="3" name="section" class="section" @click="changeSection('news_section')"><label for="3">News</label>
-                    <input type="radio" id="4" name="section" class="section" @click="goToMessagePage"><label for="4">Message</label>
                 </div>
 
                 <div v-if="activeSection === 'discussion_section'">
                     <div v-for="(post, index) in posts" :key="post.postID" class="postCard">
                         <div class="icon_name_time">
                             <!-- NOTE: the code below to display an image is a hardcode and shouldn'r be used. -->
-<<<<<<< HEAD
                             <img :src="post.avatar" alt="avatar" class="avatar" @click="open_MyPosts(post.userID)" />
-=======
-                            <img :src="avatar" alt="avatar" class="avatar" />
->>>>>>> bd86a14389be0c741c3b7428d2566b74a870205a
                             <!-- NOTE: This code should work, but, for some reason, it's not working. <img :src="post.avatar" :alt="post.alt" />  -->
                             <div class="username" @click="open_MyPosts(post.userID)">{{ post.username }}</div>
                             <div class="time-ago">{{ formattedPostTime[index] }}</div>
@@ -288,8 +278,8 @@
                             </button><br>
                             <div class="image-scroll-container">
                                 <span v-for="(image, imageIndex) in post.images" :key="imageIndex">
-                                    <img :src="image.url" :alt="image.alt" class="aImage"/> 
-                                </span> 
+                                    <img src="@/assets/postImage3.png" :alt="image.alt" class="aImage"/> 
+                                </span>    
                             </div>
                         </div>
                         <div class="like_comment_section">
@@ -400,14 +390,14 @@
 <!--============================ START: The Bottom Navigation Bar ============================-->       
         <var-bottom-navigation
             class="footer"
-            v-model:active="active"
+            v-model:active="activeBottom"
             border="true"
             safe-area="true"
             :fab-props="{color:'#55BDCA'}"
         >
             <var-link href="/#/Home" underline="none">
             <var-bottom-navigation-item class="bottomButton" name="homeButton">
-                <Icon  style="font-size: 38px;"><Home20Filled /></Icon><br>
+                <Icon  style="font-size: 38px;"><Home20Regular /></Icon><br>
                 <span>Home</span>
             </var-bottom-navigation-item>
             </var-link>
@@ -423,10 +413,10 @@
                 <span>Rewards</span>
             </var-bottom-navigation-item>
             </var-link>
-            <var-link href="/#/UserProfile" underline="none">
+            <var-link href="/#/Community" underline="none">
             <var-bottom-navigation-item class="bottomButton" name="profileButton">
-                <Icon style="font-size: 38px;"><Person20Regular /></Icon><br>
-                <span>Profile</span>
+                <Icon style="font-size: 38px;"><PeopleCommunity20Filled /></Icon><br>
+                <span>Community</span>
             </var-bottom-navigation-item>    
             </var-link>
             <!-- <template #fab >
@@ -470,226 +460,4 @@
 
 
 
-<<<<<<< HEAD
-=======
-
-
-
-
-
-<script>
-    export default{
-        mounted() {
-            document.title = "Community | ArthriCare";
-            this.fetchDataFromBackend();
-        },
-        setup(){
-            const avatar1 = ref()
-            const avatar2 = ref()
-            const avatar3 = ref()
-            const avatar4 = ref()
-            avatar1.value = require('@/assets/friend_1.png')
-            avatar2.value = require('@/assets/friend_1.png')
-            avatar3.value = require('@/assets/friend_2.png')
-            avatar4.value = require('@/assets/friend_3.png')
-            return {
-                avatar1,
-                avatar2,
-                avatar3,
-                avatar4
-            }
-        },
-        data(){
-            return{
-                avatar: require('@/assets/user_avatar.png'),
-                activeSection: 'discussion_section',
-                user:{
-                    name: 'Kris Wu',
-                    level: '10',
-                    points: '1000',
-                    avatar: '@/assets/useravatar.png' 
-                },
-                posts:[
-
-                ], 
-                showCommentInputId: null,
-                newComment: "",
-                drawer: ref(false),
-            };
-        },
-        methods:{
-            openDrawer() {
-                this.drawer = true;
-            },
-            beforeDrawerClose(done) {
-                done();
-            },
-     //============================== START: Unique Functions for Community Page ==============================//
-            changeSection(sectionName) {
-                this.activeSection = sectionName;
-            },
-            getTimeAgo(timestamp) {
-                // Implement the function to calculate time ago from the given timestamp
-                const currentTime = new Date();
-                const postTime = new Date(timestamp);
-
-                const timeDifference = currentTime - postTime;
-                const seconds = Math.floor(timeDifference / 1000);
-                const minutes = Math.floor(seconds / 60);
-                const hours = Math.floor(minutes / 60);
-                const days = Math.floor(hours / 24);
-
-                if (days > 0) {
-                    return days + 'd';
-                } else if (hours > 0) {
-                    return hours + 'h';
-                } else if (minutes > 0) {
-                    return minutes + 'm';
-                } else {
-                    return seconds + 's';
-                }
-            },
-            // START: 3 methods for SeeMore buttons
-            truncateContent(content) {
-                const sentences = content.split(" ");
-                const truncated = sentences.slice(0, 22).join(" ");
-                return truncated;
-            },
-            togglePostExpansion(post) {
-                console.log('Toggling post expansion', post);
-                post.expanded = !post.expanded;
-            },
-            goToPostDetail(postId) {
-                this.$router.push({ name: 'PostDetail', params: { id: postId } });
-            },
-            // END: 3 methods for SeeMore buttons
-
-            // START: 2 methods to add a comment
-            showCommentInput(postId) {
-                this.showCommentInputId = postId;
-            },
-            addComment(postId) {
-                const post = this.posts.find((p) => p.id === postId);
-                post.comments.push({
-                    username: this.user.name,
-                    content: this.newComment,
-                });
-                this.newComment = "";
-            },
-            // END: 2 methods to add a comment
-
-            // SATR: Filter the posts by a section
-            filterBysection(sectionID){
-                if(sectionID==="1"){
-                    // Only display the posts with Discussion section
-                }else if(sectionID==="2"){
-                    // Only display the posts with Event section
-                }
-                else if(sectionID==="3"){
-                    // Only display the posts with News section
-                }
-                else if(sectionID==="4"){
-                    // Only display the posts with Message section
-                }
-            },
-            // END: Filter the posts by a section
-
-            // Note for Don: Add a function which adds/remove a like, changes the status of the thumbUp icon.
-            toggleLike(){
-                // Add or remove a like
-                // The thumbUp icon when a user added 'a like' should be 'ThumbLike20Filled'
-                // The thumbUp icon when a user removed 'a like' should be 'ThumbLike20Regular'
-            },
-            goToMessagePage(){
-                this.$router.push('/Message');
-            },
-
-            async fetchDataFromBackend(){
-                try {
-                    const response = await axios.get('http://localhost:8181/ComityPost/getAllPost')
-
-                    const posts = response.data;
-
-                    if (posts.length !== 0) {
-                        // 显示加载的帖子
-                        for (const post of posts) {
-                            this.makePost(post);
-                        }
-                    }
-                } catch (error) {
-                    console.error("Error fetching data:", error);
-                }
-            }, 
-        
-            async makePost(post) {
-                const date = new Date(post.createdTime);
-                const formattedDate = date.toLocaleString();
-                
-                // Await the result of makeImageArray(post)
-                const images = await this.makeImageArray(post);
-
-                const postData = {
-                    id: post.postId,
-                    avatar: require('@/assets/user_avatar.png'),
-                    username: post.username,
-                    postedDateTime: '',
-                    timestamp: formattedDate,
-                    title: post.title,
-                    content: post.content,
-                    expanded: this.determinePostExpandOrNot(post.content),
-                    numberOfLikes: post.likeNum,
-                    numberOfComments: post.commentNum,
-                    images: images,
-                    comments: []
-                };
-
-                this.posts.push(postData);
-                //console.log(post);
-            },
-
-
-            determinePostExpandOrNot(content){
-                if(content.length > 100){
-                    return false;
-                }
-                return true;
-            },
-
-            async makeImageArray(post) {
-                if (!post.haveImage) {
-                    return [];
-                }
-                try {
-                    const { data: urls } = await axios.get(`http://localhost:8181/ComityPost/getPostImages?postId=${post.postId}`);
-                    const images = urls.map((url, index) => ({
-                        url: "http://localhost:8181/" + url,
-                        alt: `postImage${index + 1} for postID ${post.postId}`
-                    }));
-                    //console.log(images);
-                    return images;
-                } catch (error) {
-                    console.error("Error fetching image URLs:", error);
-                    return [];
-                }
-            }
-
-     }, 
-     //============================== END: Unique Functions for Community Page ==============================//
-        components: {
-            Icon,
-            SideBarContent,
-            UserFilled,
-            LineHorizontal320Filled,
-            Pill28Filled, ChannelAdd20Regular, 
-            Home20Filled, 
-            BriefcaseMedical20Regular, 
-            Gift20Regular, 
-            Person20Regular,
-            ThumbLike20Regular,  // Default like button  // When user liked a post
-            CommentMultiple20Regular // comment icon
-        }
-    }
-</script>
-
->>>>>>> bd86a14389be0c741c3b7428d2566b74a870205a
 <style src="@/css/community.css" scoped></style>
