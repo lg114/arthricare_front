@@ -296,7 +296,7 @@ p{
     width: 192px;
     height: 125px;
     padding-right: 4px;
-    object-fit: cover;
+    object-fit: contain;
 }
 .like_comment_section{
     display: flex;

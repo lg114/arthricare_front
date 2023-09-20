@@ -16,7 +16,7 @@ import EducationPage from '@/views/educationView.vue';
 import SearchPage from '@/views/searchView.vue';
 import EditProfilePage from '@/views/EditProfile.vue';
 import EducationArticlePage from '@/views/EducationArticle.vue';
-import EducationVideoPage from '@/views/EducationVideo.vue';
+//import EducationVideoPage from '@/views/EducationVideo.vue';
 import CommunityPage from '@/views/CommunityView.vue';
 import MessagePage from '@/views/MessageView.vue';
 import ChatPage from '@/views/ChatView.vue';
@@ -110,7 +110,7 @@ const router  = createRouter({
             name: 'Community',
             component: CommunityPage,
             meta: {
-                requiresAuth: false
+                requiresAuth: true
             }
         },
 
@@ -131,7 +131,7 @@ const router  = createRouter({
             name: 'Message',
             component: MessagePage,
             meta: {
-                requiresAuth: false
+                requiresAuth: true
             }
         },
 
@@ -151,7 +151,7 @@ const router  = createRouter({
             name: 'Chat',
             component: ChatPage,
             meta: {
-                requiresAuth: false
+                requiresAuth: true
             }
         },
 
@@ -168,7 +168,7 @@ const router  = createRouter({
 
             path: '/EducationVideo',
             name: 'EducationVideo',
-            component: EducationVideoPage,
+            component: true,
 
 
 
@@ -180,7 +180,7 @@ const router  = createRouter({
             name: 'AddPost',
             component: AddPostPage,
             meta: {
-                requiresAuth: false
+                requiresAuth: true
             }
         },
 
@@ -205,7 +205,7 @@ const router  = createRouter({
             name: 'PostDetail',
             component: PostDetailPage,
             meta: {
-                requiresAuth: false
+                requiresAuth: true
             }
         },
         {
@@ -213,7 +213,7 @@ const router  = createRouter({
             name: 'MyPosts',
             component: MyPostsPage,
             meta: {
-                requiresAuth: false
+                requiresAuth: true
             }
             
         },

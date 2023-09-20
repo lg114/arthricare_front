@@ -83,12 +83,12 @@ import { mapGetters } from 'vuex';
 
                 const response = await axios.post('http://localhost:8181/ComityPost/createPost', postData);
 
-                if (response.ok) {
-                    const postId = response.data.postId;
+                if (response.status === 200) {
+                    const postId = await response.data;
                     if (this.selectedImages.length > 0) {
                     await this.uploadImages(postId);
                     }
-                    this.$router.push('/mainCommunity');
+                    this.$router.push('/Community');
                 } else {
                     alert('Failed to create post.');
                 }
@@ -100,22 +100,22 @@ import { mapGetters } from 'vuex';
 ////
             async uploadImages(postId) {
                 try {
-                const formData = new FormData();
-                formData.append('postId', postId);
+                    for (const image of this.selectedImages) {
+                        const formData = new FormData();
+                        formData.append('postId', postId);
+                        formData.append('image', image.file);
+                        console.log(postId);
+                        console.log(image.file);
+                        const response = await axios.post('http://localhost:8181/uploadImage/postImage', formData);
 
-                for (const image of this.selectedImages) {
-                    formData.append('image', image.file);
-                }
-
-                const response = await axios.post('http://localhost:8181/uploadImage/postImage', formData);
-
-                if (response.data.success) {
-                    console.log ('Post and images uploaded successfully.');
-                } else {
-                    console.log('Some images failed to upload. Please check and try again.');
-                }
+                        if (response.data.success) {
+                            console.log(`Image with name ${image.fileName || image.name} uploaded successfully.`);
+                        } else {
+                            console.log(`Image with name ${image.fileName || image.name} failed to upload.`);
+                        }
+                    }
                 } catch (error) {
-                console.error('Error uploading images:', error);
+                    console.error('Error uploading images:', error);
                 }
             },
 ////
@@ -158,7 +158,7 @@ import { mapGetters } from 'vuex';
         <el-container>
             <el-header class="header">
                 <input type="submit" value="Cancel" class="cancelButton" @click="clicked_cancelButton"> 
-                <input type="submit" value="Post" class="postButton" @click="clicked_postButton">
+                <input type="submit" value="Post" class="postButton" @click="clicked_postButton"> 
             </el-header>
             <el-main class="main">
 
@@ -168,8 +168,9 @@ import { mapGetters } from 'vuex';
                     <p class="userName">{{ user.name }}</p>
                 </div>
 
-                <input type="text" v-model="postTitle" name="post_title" class="post_title" placeholder="Set a title here..."><br>
-                <textarea v-model="postContent" class="post_content" name="post_content" placeholder="What's on your mind?" rows="17" cols="50" maxlength="500" autofocus required></textarea><br>
+                <input type="text" v-model="newPost.postTitle" name="post_title" class="post_title" placeholder="Set a title here..."><br>
+                <textarea v-model="newPost.postContent" class="post_content" name="post_content" placeholder="What's on your mind?" rows="17" cols="50" maxlength="500" autofocus required></textarea><br>
+
 
 
                 <div class="scrollable-container"> 
