@@ -27,9 +27,9 @@
     /* padding-right: 0px; */
 }
 .arrowBack{
-    /* position: absolute; */
-    left: 20px;
-    top: 2.5%;
+    position: absolute;
+    left: 5%;
+    top:2.5%;
     font-size: 30px;
     color: white;
 }

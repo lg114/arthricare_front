@@ -2,7 +2,7 @@
 <!-- NOTE: Run the page on a smartphone, and check if a keyboard comes up on the screen when a user clicks the input fields. -->
 <script>
     import { ref } from 'vue';
-    import { ArrowBackFilled, CameraAltFilled, ImageRound, MicRound, ArrowCircleUpTwotone } from '@vicons/material';
+    import { ChevronLeft20Filled, Camera20Filled, Image20Filled, Mic20Filled, ArrowCircleUp20Filled } from '@vicons/fluent';
     import { Icon } from '@vicons/utils'
     export default{
         mounted() {
@@ -118,11 +118,11 @@
         },
         components: {
             Icon,
-            ArrowBackFilled,
-            CameraAltFilled,
-            ImageRound,
-            MicRound,
-            ArrowCircleUpTwotone
+            ChevronLeft20Filled,
+            Camera20Filled,
+            Image20Filled,
+            Mic20Filled,
+            ArrowCircleUp20Filled
         }
     };
 </script>
@@ -131,9 +131,9 @@
     <div class="container">
         <el-container>
             <el-header class="header">
-                    <Icon class="arrowBack" @click="goBack_messagePage()"><ArrowBackFilled /></Icon>
-                    <img :src="avatar5" alt="avatar" class="header_avatar" />
-                    <b class="header_chatPartnerName">Timothy</b> <!-- NOTE: I guess'Timothy' should come from the session info? -->
+                <Icon class="arrowBack" @click="goBack_messagePage()"><ChevronLeft20Filled /></Icon>
+                <img :src="avatar5" alt="avatar" class="header_avatar" />
+                <b class="header_chatPartnerName">Timothy</b> <!-- NOTE: I guess'Timothy' should come from the session info? -->
             </el-header>
             <el-main class="main">
                 <div id="chat_background">
@@ -167,9 +167,9 @@
 
                 <div class="chat_footer">
                     <div class="chat_footer_icons">
-                        <Icon class="camera_icon"><CameraAltFilled /></Icon> <!-- NOTE: put @click="" inside the icon tag-->
-                        <Icon class="image_icon"><ImageRound /></Icon> <!-- NOTE: put @click="" inside the icon tag-->
-                        <Icon class="microphone_icon"><MicRound /></Icon> <!-- NOTE: put @click="" inside the icon tag-->
+                        <Icon class="camera_icon"><Camera20Filled /></Icon> <!-- NOTE: put @click="" inside the icon tag-->
+                        <Icon class="image_icon"><Image20Filled /></Icon> <!-- NOTE: put @click="" inside the icon tag-->
+                        <Icon class="microphone_icon"><Mic20Filled /></Icon> <!-- NOTE: put @click="" inside the icon tag-->
                     </div>
                     <div class="message_input_textField">
                         <div class="enterMessageHere">
@@ -177,7 +177,7 @@
                         </div>
                         <div class="arrow_to_send_a_message" @click="sendMessage">
                             <!-- NOTE: How can I place the arrowUp icon inside the texFiled above? -->
-                            <Icon><ArrowCircleUpTwotone /></Icon>
+                            <Icon><ArrowCircleUp20Filled /></Icon>
                         </div>
                     </div>
                 </div>
