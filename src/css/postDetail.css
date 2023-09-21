@@ -27,11 +27,10 @@
     overflow-x: hidden;
 }
 .main{
-    justify-content: center;
-    align-items: center;
+    padding: 0px;
     height: 90vh;
-    padding-bottom: 80px;
     background-color: white;
+    width: 100%;
 }
 .box{
     width: 350px;
@@ -70,8 +69,7 @@
 .postDetail_section{
     display: flex;
     flex-direction: column;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding: 20px;
 }
 .icon_name_time{
     display: flex;
@@ -83,6 +81,13 @@
     display: block;
     height: 50px;
     width: 50px;
+    background-color: #7c8383;
+    border-radius: 50%;
+}
+.commentedUserAvatar{
+    display: block;
+    height: 30px;
+    width: 30px;
     background-color: #7c8383;
     border-radius: 50%;
 }
@@ -105,6 +110,7 @@
     text-align: left;
     margin-top: 0%;
     margin-bottom: 0%;
+    color: black;
 }
 .postTitle{
     font-weight: bold;
@@ -113,6 +119,7 @@
     margin-top: 2%;
     margin-bottom: 1.5%;
     line-height: 19px;
+    color: black;
 }
 #image-scroll-container {
     overflow-x: auto;
@@ -156,5 +163,64 @@
 .numberOfComments{
     color: #949596;
     margin: 0px;
+}
+.postDetail_footer{
+    bottom: 0;
+    height: 60px;
+    width: 100%; /* NOTE: Better to use '100%' or 'rem' ? */
+    white-space: nowrap;
+
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+
+    background-color: white;
+    position:fixed;
+}
+.image_icon{
+    font-size: 32px;
+    bottom:10px;
+    left:0;
+    color:#006973;
+
+    position: absolute;
+    bottom: 10px;
+    left: 20px;
+    z-index: 1;
+}
+div.enterCommentHere{
+    position: absolute;
+    bottom: 0%;
+    right: 0%;
+    z-index: 1;
+    padding-bottom: 5px;
+    padding-right: 10px;
+    width: 80%;
+}
+.arrow_to_send_a_comment{
+    color: #01385C;
+    font-size: 32px;
+    height: 32px;
+
+    position: absolute;
+    bottom: 20%;
+    right: 10px;
+    z-index: 1;
+}
+input{
+    height: 37px;
+    font-size: 16px;
+    background-color: #E5E5E5;
+    border-radius: 10px;
+    border: none;
+    width: 100%;
+}
+input:focus {
+    border: 2px solid #55BDCA; 
+    z-index: 10;
+    outline: 0;
+}
+::placeholder {
+	padding-left: 9px;
 }
 /* END: Unique CSS Code for Post Detail Page */

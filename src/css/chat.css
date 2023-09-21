@@ -128,10 +128,6 @@ p.text_from_partner{
 
     background-color: white;
     position:fixed;
-    box-shadow: inset 0 0 5px grey;
-}
-.message_input_textField{
-
 }
 .camera_icon{
     font-size: 32px;
@@ -170,7 +166,7 @@ p.text_from_partner{
 
     position: absolute;
     bottom: 20%;
-    right: 0%;
+    right: 10px;
     z-index: 1;
 }
 input{
@@ -178,8 +174,8 @@ input{
     font-size: 16px;
     background-color: #E5E5E5;
     border-radius: 10px;
-    width: 254px;
     border: none;
+    width: 100%;
 }
 input:focus {
     border: 2px solid #55BDCA; 
@@ -192,10 +188,8 @@ div.enterMessageHere{
     right: 0%;
     z-index: 1;
     padding-bottom: 5px;
-    width: 70%;
-}
-input{
-    width: 100%;
+    padding-right: 10px;
+    width: 65%;
 }
 ::placeholder {
 	padding-left: 9px;

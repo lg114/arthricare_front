@@ -1,9 +1,7 @@
 <!-- Add Post Page -->
-
 <script>
-
 import { ref } from 'vue';
-import { ImageRound } from '@vicons/material';
+import { Image20Filled } from '@vicons/fluent';
 import { Icon } from '@vicons/utils'
 import axios from 'axios';
 import { mapGetters } from 'vuex';
@@ -148,7 +146,7 @@ import { mapGetters } from 'vuex';
         },
         components: {
             Icon,
-            ImageRound
+            Image20Filled
         }
     };
 </script>
@@ -182,7 +180,7 @@ import { mapGetters } from 'vuex';
                     </div>
                 </div>
                 <!-- Add button to trigger file input -->
-                <Icon class="image_icon" @click="openFileInput" :disabled="selectedImages.length >= 4"><ImageRound /></Icon>
+                <Icon class="image_icon" @click="openFileInput" :disabled="selectedImages.length >= 4"><Image20Filled /></Icon>
 
             </el-main> 
         </el-container>

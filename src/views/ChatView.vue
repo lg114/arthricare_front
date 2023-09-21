@@ -166,12 +166,12 @@
                 </div>
 
                 <div class="chat_footer">
-                    <div class="chat_footer_icons">
+                    <div>
                         <Icon class="camera_icon"><Camera20Filled /></Icon> <!-- NOTE: put @click="" inside the icon tag-->
                         <Icon class="image_icon"><Image20Filled /></Icon> <!-- NOTE: put @click="" inside the icon tag-->
                         <Icon class="microphone_icon"><Mic20Filled /></Icon> <!-- NOTE: put @click="" inside the icon tag-->
                     </div>
-                    <div class="message_input_textField">
+                    <div>
                         <div class="enterMessageHere">
                             <input type="text" placeholder="Message..." v-model="messageInput" @keyup.enter="sendMessage" />
                         </div>
