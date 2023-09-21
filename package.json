@@ -25,6 +25,7 @@
     "popper.js": "^1.16.1",
     "v-calendar": "^3.0.3",
     "vue": "^3.2.36",
+    "vue-native-websocket": "^2.0.15",
     "vue-router": "^4.0.13",
     "vue-scrollto": "^2.20.0",
     "vue3-hash-calendar": "^1.1.3",
