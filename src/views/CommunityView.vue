@@ -14,25 +14,7 @@
         },
         setup(){
             const activeBottom = ref(3);
-            const avatar1 = ref()
-            const avatar2 = ref()
-            const avatar3 = ref()
-            const avatar4 = ref()
-            const avatar5 = ref()
-            const avatar6 = ref()
-            avatar1.value = require('@/assets/user_avatar.png') // Kris
-            avatar2.value = require('@/assets/friend_1.png')
-            avatar3.value = require('@/assets/friend_2.png')   // Adam
-            avatar4.value = require('@/assets/friend_3.png')    // Tom
-            avatar5.value = require('@/assets/friend_4.png') // Thimoty
-            avatar6.value = require('@/assets/friend_5.png')
             return {
-                avatar1,
-                avatar2,
-                avatar3,
-                avatar4,
-                avatar5,
-                avatar6,
                 activeBottom
             }
         },
@@ -43,12 +25,12 @@
                     name: 'Kris Wu',
                     level: '10',
                     points: '1000',
-                    avatar: this.avatar1
+                    avatar: require('@/assets/user_avatar.png')
                 },
                 posts:[
                     {
                         postID: 1,
-                        avatar: this.avatar3,
+                        avatar: require('@/assets/friend_2.png'),
                         userID: 'testID_1',
                         username: 'Adam',
                         postedDateTime: new Date("2023-09-20T15:25:00+10:00"), // September 20, 2023, 15:20:00 AEST
@@ -58,15 +40,15 @@
                         numberOfLikes: 17,
                         numberOfComments: 8,
                         images: [
-                            { url: '@/assets/postImage1.png', alt: 'postImage1 for postID 1' },
-                            { url: '@/assets/postImage2.png', alt: 'postImage2 for postID 1' }, 
-                            { url: '@/assets/postImage3.png', alt: 'postImage3 for postID 1' },
-                            { url: '@/assets/postImage4.png', alt: 'postImage4 for postID 1' }
+                            { url: require('@/assets/postImage1.png'), alt: 'postImage1 for postID 1' },
+                            { url: require('@/assets/postImage2.png'), alt: 'postImage2 for postID 1' }, 
+                            { url: require('@/assets/postImage3.png'), alt: 'postImage3 for postID 1' },
+                            { url: require('@/assets/postImage4.png'), alt: 'postImage4 for postID 1' }
                         ]
                     },
                     {
                         postID: 2,
-                        avatar: this.avatar5,
+                        avatar: require('@/assets/friend_4.png'),
                         userID: 'testID_2',
                         username: 'Timothy',
                         postedDateTime: new Date("2023-09-20T09:30:00+10:00"), // September 20, 2023, 9:30:00 AEST
@@ -76,14 +58,14 @@
                         numberOfLikes: 14,
                         numberOfComments: 8,
                         images: [
-                            { url: '@/assets/postImage5.png', alt: 'postImage5 for postID 2' }, 
-                            { url: '@/assets/postImage6.png', alt: 'postImage6 for postID 2' },
-                            { url: '@/assets/postImage7.png', alt: 'postImage7 for postID 2' }
+                            { url: require('@/assets/postImage5.png'), alt: 'postImage5 for postID 2' }, 
+                            { url: require('@/assets/postImage6.png'), alt: 'postImage6 for postID 2' },
+                            { url: require('@/assets/postImage7.png'), alt: 'postImage7 for postID 2' }
                         ]
                     }, 
                     {
                         postID: 3,
-                        avatar: this.avatar4,
+                        avatar: require('@/assets/friend_3.png'),
                         userID: 'testID_3',
                         username: 'Tom',
                         postedDateTime: new Date("2023-09-19T09:30:00+10:00"), // September 19, 2023, 9:30:00 AEST
@@ -93,13 +75,13 @@
                         numberOfLikes: 3,
                         numberOfComments: 2,
                         images: [
-                            { url: '@/assets/postImage8.png', alt: 'postImage6 for postID 3' },
-                            { url: '@/assets/postImage9.png', alt: 'postImage7 for postID 3' }
+                            { url: require('@/assets/postImage8.png'), alt: 'postImage6 for postID 3' },
+                            { url: require('@/assets/postImage6.png'), alt: 'postImage7 for postID 3' }
                         ]
                     },
                     {
                         postID: 4,
-                        avatar: this.avatar6,
+                        avatar: require('@/assets/friend_5.png'),
                         userID: 'testID_4',
                         username: 'Anthony',
                         postedDateTime: new Date("2023-09-06T09:30:00+10:00"), // September 6, 2023, 9:30:00 AEST
@@ -109,12 +91,12 @@
                         numberOfLikes: 8,
                         numberOfComments: 6,
                         images: [
-                            { url: '@/assets/postImage1.png', alt: 'postImage1 for postID 4' }
+                            { url: require('@/assets/postImage1.png'), alt: 'postImage1 for postID 4' }
                         ]
                     },
                     {
                         postID: 5,
-                        avatar: this.avatar6,
+                        avatar: require('@/assets/friend_5.png'),
                         userID: 'testID_5',
                         username: 'Anthony',
                         postedDateTime: new Date("2023-08-24T09:30:00+10:00"), // August 24, 2023, 9:30:00 AEST
@@ -311,6 +293,7 @@
         },
     };
 </script>
+
 <template>
     <div class="container">
         <el-container>
@@ -344,8 +327,7 @@
                             </button><br>
                             <div class="image-scroll-container">
                                 <span v-for="(image, imageIndex) in post.images" :key="imageIndex">
-                                    <img src="@/assets/postImage3.png" :alt="image.alt" class="aImage"/> 
-                                    <!-- src="@/assets/postImage3.png" -->
+                                    <img :src="image.url" :alt="image.alt" class="aImage"/> 
                                 </span>    
                             </div>
                         </div>
