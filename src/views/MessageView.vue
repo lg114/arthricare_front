@@ -87,11 +87,20 @@
             try {
                 const response = await axios.get(`http://localhost:8181/ComityChat/getChatChannel?userFromId=${userFromId}`);
                 const data = response.data;
+                /*
                 this.chathistory = data.map(chat => ({
                 userFromId: chat.userFromId,
                 userToId: chat.userToId,
                 newContent: chat.newContent,
-                }));
+                }));*/
+                data.forEach(chat => {
+                    if (chat.userFromId !== userFromId) {
+                        const t = chat.userFromId;
+                        chat.userFromId = chat.userToId;
+                        chat.userToId = t;
+                    }
+                });
+                this.chathistory = data;
             } catch (error) {
                 console.error('Fetch error:', error);
             }
@@ -116,6 +125,7 @@
             },
             viewChat(chat) {
                 // Navigate to a new page to view the whole post content
+                console.log(chat);
                 sessionStorage.setItem('chatChannelInfor', JSON.stringify(chat));
                 this.$router.push('/Chat');
             }

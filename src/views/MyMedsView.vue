@@ -174,10 +174,7 @@ export default {
       showAction: ref(false),
       imgArray:[blue ,yellow,red
       ,green,purple,orange]
-      // MedName : this.$route.params.MedName,
-      // Field : this.$route.params.Field,
-      // Category : this.$route.params.Category
-   
+
     };
 },
   methods: {
@@ -295,11 +292,30 @@ export default {
   mounted(){
           document.title = "User Profile | ArthriCare";
           this.clearMedArray();
+          /*const expiredMedicationTestData = {            
+            medicationId:1,
+            MedName:"Aspirin",
+            date:"4/4"}
+
+          const unExpiredMedicationTestData = {            
+            medicationId:2,
+            MedName:"Metoprolol",
+            date:"Today 10:00"}
+          console.log(expiredMedicationTestData);
+          console.log(unExpiredMedicationTestData);
+          store.state.ExperiedMedArray.push(expiredMedicationTestData);
+          store.state.ExperiedMedArray.push(expiredMedicationTestData);
+          store.state.ExperiedMedArray.push(expiredMedicationTestData);
+          store.state.unExperiedMedArray.push(unExpiredMedicationTestData);
+          store.state.unExperiedMedArray.push(unExpiredMedicationTestData);
+          store.state.unExperiedMedArray.push(unExpiredMedicationTestData);*/
+          
           this.fetchData();
     }
-      ,
+,
         setup(){
           const active= ref(1);
+
           return {active}
         },
         components:{

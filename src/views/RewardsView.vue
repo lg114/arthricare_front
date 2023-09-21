@@ -14,6 +14,9 @@
             this.checkRewardsStatue();
         },
         setup(){
+
+
+
             const activeBottom = ref(2);
             const active = ref(0);
             //Tasks Handle
@@ -59,6 +62,11 @@
         },
         data(){
             return{
+                imageMap: [
+                    require("@/assets/puzzleImage/puzzle1_initial.png"),
+                    ...Array.from({ length: 34 }, (v, i) => require(`@/assets/puzzleImage/puzzle1_${i + 1}.png`)),
+                    require("@/assets/puzzleImage/puzzle1_completed.png")
+                ],
 
                 user:{
                     name: 'Username',
@@ -68,9 +76,10 @@
                     pointsNoLevel: "10"
                 },
                 puzzle:{
+                    url: require("@/assets/puzzleImage/puzzle1_initial.png"),
                     title: 'The Starry Night',
-                    completed: '10',
-                    total: '15',
+                    completed: 0,
+                    total: 35,
                 },
                 drawer: ref(false),
                 showAction: ref(false), //Show actions of the fab
@@ -203,7 +212,19 @@
                         console.log('Error claiming reward:', error);
                         });
                     },
+            
+            fetchPuzzleDataFromBackend(){
 
+            },    
+            
+            collectPuzzle() {
+                if(this.puzzle.completed<this.puzzle.total){
+                    this.puzzle.completed++;
+                    this.puzzle.url = this.imageMap[this.puzzle.completed];
+                }
+            },
+
+            
             toggleCompletion(task){
                 if(task.id==4){this.completeLoginTask();}
                 if(task.id==5){this.completeProfileTask();}
@@ -278,7 +299,8 @@
                 <var-tabs-items class="tabItems" v-model:active="active">
                     <var-tab-item>
                         <h2 class="puzzleTitle">{{ puzzle.title }} ({{ puzzle.completed }}/{{ puzzle.total }})</h2>
-                        <el-image class="puzzleImage" :fit="contain"></el-image><br><br>
+                        <var-button type="primary" @click="collectPuzzle">Collect one puzzle</var-button><br><br>
+                        <img :src="puzzle.url" :alt="puzzle" class="puzzleImage" :fit="contain"/><br><br>
                         <div class="box">
                             <text class="collectionTitle">My Collection</text><br>
                             <img src="@/assets/pic_1.jpg" class="collectionImage" :fit="cover"/>
