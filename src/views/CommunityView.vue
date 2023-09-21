@@ -1,13 +1,16 @@
 <!-- Community Page -->
 <script>
     import { ref } from 'vue';
-    import { ThumbLike20Regular, LineHorizontal320Filled, CommentMultiple20Regular, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Filled,Pill28Filled, ChannelAdd20Regular  } from '@vicons/fluent'
+    import { ThumbLike20Regular, LineHorizontal320Filled, CommentMultiple20Regular, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Filled, Pill28Filled, ChannelAdd20Regular  } from '@vicons/fluent'
     import { Icon } from '@vicons/utils'
     import SideBarContent from '@/component/Sidebar.vue';
     import { UserFilled } from '@element-plus/icons-vue';
+    import axios from 'axios';
+
     export default{
         mounted() {
             document.title = "Community | ArthriCare";
+            this.fetchDataFromBackend();
         },
         setup(){
             const activeBottom = ref(3);
@@ -17,11 +20,11 @@
             const avatar4 = ref()
             const avatar5 = ref()
             const avatar6 = ref()
-            avatar1.value = require('@/assets/user_avatar.png')
+            avatar1.value = require('@/assets/user_avatar.png') // Kris
             avatar2.value = require('@/assets/friend_1.png')
-            avatar3.value = require('@/assets/friend_2.png')
-            avatar4.value = require('@/assets/friend_3.png')
-            avatar5.value = require('@/assets/friend_4.png')
+            avatar3.value = require('@/assets/friend_2.png')   // Adam
+            avatar4.value = require('@/assets/friend_3.png')    // Tom
+            avatar5.value = require('@/assets/friend_4.png') // Thimoty
             avatar6.value = require('@/assets/friend_5.png')
             return {
                 avatar1,
@@ -35,7 +38,6 @@
         },
         data(){
             return{
-                
                 activeSection: 'discussion_section',
                 user:{
                     name: 'Kris Wu',
@@ -180,9 +182,6 @@
                 else if(sectionID==="3"){
                     // Only display the posts with News section
                 }
-                else if(sectionID==="4"){
-                    // Only display the posts with Message section
-                }
             },
             // END: Filter the posts by a section
 
@@ -195,6 +194,73 @@
             open_MyPosts(userID){
                 this.$router.push({ name: 'MyPosts', params: { id: userID } });
             },
+
+            // START: Merging backend
+            async fetchDataFromBackend(){
+                try {
+                    const response = await axios.get('http://localhost:8181/ComityPost/getAllPost')
+
+                    const posts = response.data;
+
+                    if (posts.length !== 0) {
+                        // 显示加载的帖子
+                        for (const post of posts) {
+                            this.makePost(post);
+                        }
+                    }
+                } catch (error) {
+                    console.error("Error fetching data:", error);
+                }
+            }, 
+            async makePost(post) {
+                const date = new Date(post.createdTime);
+                const formattedDate = date.toLocaleString();
+                
+                // Await the result of makeImageArray(post)
+                const images = await this.makeImageArray(post);
+
+                const postData = {
+                    id: post.postId,
+                    avatar: require('@/assets/user_avatar.png'),
+                    username: post.username,
+                    postedDateTime: '',
+                    timestamp: formattedDate,
+                    title: post.title,
+                    content: post.content,
+                    expanded: this.determinePostExpandOrNot(post.content),
+                    numberOfLikes: post.likeNum,
+                    numberOfComments: post.commentNum,
+                    images: images,
+                    comments: []
+                };
+
+                this.posts.push(postData);
+                //console.log(post);
+            },
+            determinePostExpandOrNot(content){
+                if(content.length > 100){
+                    return false;
+                }
+                return true;
+            },
+            async makeImageArray(post) {
+                if (!post.haveImage) {
+                    return [];
+                }
+                try {
+                    const { data: urls } = await axios.get(`http://localhost:8181/ComityPost/getPostImages?postId=${post.postId}`);
+                    const images = urls.map((url, index) => ({
+                        url: "http://localhost:8181/" + url,
+                        alt: `postImage${index + 1} for postID ${post.postId}`
+                    }));
+                    //console.log(images);
+                    return images;
+                } catch (error) {
+                    console.error("Error fetching image URLs:", error);
+                    return [];
+                }
+            }
+            // END: Merging backend
         },
 //============================== END: Unique Functions for Community Page ==============================//
         components: {
@@ -278,7 +344,8 @@
                             </button><br>
                             <div class="image-scroll-container">
                                 <span v-for="(image, imageIndex) in post.images" :key="imageIndex">
-                                    <img src="@/assets/postImage3.png" :alt="image.alt" class="aImage"/> 
+                                    <img :src="image[imageIndex].url" :alt="image.alt" class="aImage"/> 
+                                    <!-- src="@/assets/postImage3.png" -->
                                 </span>    
                             </div>
                         </div>
