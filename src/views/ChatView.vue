@@ -1,12 +1,42 @@
 <!-- Chat Page -->
 <!-- NOTE: Run the page on a smartphone, and check if a keyboard comes up on the screen when a user clicks the input fields. -->
+
 <script>
     import { ref } from 'vue';
-    import { ChevronLeft20Filled, Camera20Filled, Image20Filled, Mic20Filled, ArrowCircleUp20Filled } from '@vicons/fluent';
+    import { ArrowBackFilled, CameraAltFilled, ImageRound, MicRound, ArrowCircleUpTwotone } from '@vicons/material';
     import { Icon } from '@vicons/utils'
+    import axios from 'axios';
+    //import VueNativeSock from 'vue-native-websocket';
+   // import SockJS from 'sockjs-client';
+   // import { Stomp } from '@stomp/stompjs';
+   // import { Client } from '@stomp/stompjs';
+
     export default{
         mounted() {
-            document.title = "Chat | ArthriCare";
+            document.title = "Chat | ArthriCare"
+            // Connect to WebSocket when the component is mounted
+                this.connectWebSocket();
+
+            // Retrieve chat channel information from sessionStorage
+            const chatChannelInfor = JSON.parse(sessionStorage.getItem('chatChannelInfor'));
+               // Call registerUser when the WebSocket connection is established
+            this.$options.sockets.onopen = () => {
+            this.registerUser();
+            };
+
+              // Set up a WebSocket message handler
+            this.$socket.onMessage(this.handleWebSocketMessage);
+
+            if (chatChannelInfor) {
+            const userName = chatChannelInfor.userToId.split('-')[1];
+            this.chatPartnerName = userName;
+            } else {
+            this.chatPartnerName = 'Chatting Partner';
+            }
+
+            // Fetch chat history when the component is mounted
+            this.fetchChatHistory();
+
         },
         setup(){
             const avatar1 = ref()
@@ -19,6 +49,8 @@
             avatar3.value = require('@/assets/friend_2.png')
             avatar4.value = require('@/assets/friend_3.png')
             avatar5.value = require('@/assets/friend_4.png')
+
+
             return {
                 avatar1,
                 avatar2,
@@ -52,9 +84,123 @@
                 messageInput: '', // Add this property to hold the message input value
                 chatHistory: [], // Add this property to store chat history
                 drawer: ref(false),
+                chatPartnerName: '', // Initialize with the chat partner's name
+                chatMessages: [], // Array to store chat messages
+                
             };
         },
         methods:{
+
+            // Function to connect to WebSocket
+            connectWebSocket() {
+            // Connect to WebSocket manually
+                this.$connect();
+                },
+            // Function to fetch chat history from the backend
+             fetchChatHistory() {
+             const chatChannelInfor = JSON.parse(sessionStorage.getItem('chatChannelInfor'));
+             if (!chatChannelInfor) {
+                console.error('Chat channel information not found in session storage');
+                return;
+            }
+            const channelId = chatChannelInfor.channelId;
+
+            axios.get('http://localhost:8080/ComityChat/getChatHistory', {params: {channelId: channelId,},})
+                .then((response) => {
+                if (response.status === 200) {
+                    const chatHistories = response.data;
+                    chatHistories.forEach((history) => {
+                    const sender = history.from;
+                    const content = history.content;
+                    this.displayMessage(sender, content);
+                    });
+                } else {
+                    console.error('Failed to fetch chat histories');
+                }
+                })
+                .catch((error) => {
+                console.error('Error fetching chat history:', error);
+                });
+            },
+
+                // Function to send a chat message via WebSocket
+                sendMessage() {
+                    const message = this.messageInput.trim();
+                    if (message === '') {
+                    return;
+                    }
+
+                    if (!this.chatChannelInfor) {
+                    return;
+                    }
+
+                    const chatMessage = {
+                    type: 'message',
+                    channelId: this.chatChannelInfor.channelId,
+                    from: this.chatChannelInfor.userFromId,
+                    to: this.chatChannelInfor.userToId,
+                    content: message,
+                    time: new Date(),
+                    };
+
+                    // Send the message using WebSocket
+                    this.$socket.sendObj(chatMessage);
+
+                    // Clear the message input
+                    this.messageInput = '';
+                },
+                // Function to handle incoming WebSocket messages
+                handleIncomingMessage(receivedMessage) {
+                const content = receivedMessage.content;
+                const sender = receivedMessage.from;
+                this.displayMessage(sender, content);
+                },
+
+                displayMessage(sender, content) {
+                const message = {
+                    sender,
+                    content,
+                    timestamp: new Date().toISOString(),
+                };
+                // Add the new message to chatHistory
+                this.chatHistory.push(message);
+
+                // Scroll to the bottom of the chat box
+              //  this.$nextTick(() => {
+                    // Using $nextTick to ensure the DOM is updated before scrolling
+              //      const chatBox = document.getElementById('chat_background'); // Replace with your chat box element's ID
+               //     chatBox.scrollTop = chatBox.scrollHeight;
+              //  });
+                },
+
+            // Define the registerUser function
+            registerUser() {
+            if (this.chatChannelInfor) {
+                this.$socket.sendObj({ type: 'register', userFromId: this.chatChannelInfor.userFromId });
+             }
+            },
+
+            handleWebSocketMessage(event) {
+                const receivedMessage = JSON.parse(event.data);
+                const content = receivedMessage.content;
+                const sender = receivedMessage.from;
+                this.displayMessage(sender, content);
+            },
+
+            beforeDestroy() {
+            if (this.$socket.isConnected) {
+                // Send a leave message before the component is destroyed
+                const leaveMessage = {
+                type: 'leave', // You can define a message type like 'leave'
+                userFromId: this.chatChannelInfor.userFromId,
+                // Include any other relevant information
+                };
+                this.$socket.sendObj(leaveMessage);
+            }
+            },
+            
+
+/* //////////////////////////////////////////use format if needed///////////////////////////////
             formatDateAndTime(timestamp) {
         const options = {
             day: '2-digit', // Display day in two digits (01, 02, etc.)
@@ -72,6 +218,8 @@
                 return `${formattedDate} ${timePart}`;
             },
 
+            */
+
             openDrawer() {  
                 this.drawer = true;
             },
@@ -79,28 +227,22 @@
                 done();
             },
             // New method to send a message and update chat history
-            sendMessage(){
+/*  sendMessage(){
 
                 console.log('sendMessage method called');
                 if (this.messageInput.trim() === '')
                 {return;}
 
-                // demonstration
-                const newMessage = {
-                    sender: 'me', // You can set the sender
-                    content: this.messageInput,
-                    timestamp: new Date().toISOString(),
-                };
                 console.log('New message:', newMessage);
                 // Push the new message to the chat history
                     this.chatHistory.push(newMessage);
                     console.log('Chat history:', this.chatHistory);
 
-
                 // Clear the message input
                 this.messageInput = '';
 
             },
+*/
             //Router
             goToUserProfile(){
                 this.$router.push('/UserProfile');
@@ -118,28 +260,27 @@
         },
         components: {
             Icon,
-            ChevronLeft20Filled,
-            Camera20Filled,
-            Image20Filled,
-            Mic20Filled,
-            ArrowCircleUp20Filled
+            ArrowBackFilled,
+            CameraAltFilled,
+            ImageRound,
+            MicRound,
+            ArrowCircleUpTwotone
         }
     };
 </script>
-
 <template>
     <div class="container">
         <el-container>
             <el-header class="header">
-                <Icon class="arrowBack" @click="goBack_messagePage()"><ChevronLeft20Filled /></Icon>
-                <img :src="avatar5" alt="avatar" class="header_avatar" />
-                <b class="header_chatPartnerName">Timothy</b> <!-- NOTE: I guess'Timothy' should come from the session info? -->
+                    <Icon class="arrowBack" @click="goBack_messagePage()"><ArrowBackFilled /></Icon>
+                    <img :src="avatar5" alt="avatar" class="header_avatar" />
+                    <b class="header_chatPartnerName">userName</b> <!-- NOTE: I guess'Timothy' should come from the session info? -->
             </el-header>
             <el-main class="main">
                 <div id="chat_background">
                     <div id="messageTop">
                         <img :src="avatar5" alt="avatar" id="messageTop_avatar" />
-                        <b id="messageTop_partnerName">Timothy</b> <!-- NOTE: I guess'Timothy' should come from the session info? -->
+                        <b id="messageTop_partnerName">userName</b> <!-- NOTE: I guess'Timothy' should come from the session info? -->
                     </div>
                     
                     <!-- NOTE: This section needs to be updated by using for-loop to display the chat history in DB -->
@@ -166,18 +307,18 @@
                 </div>
 
                 <div class="chat_footer">
-                    <div>
-                        <Icon class="camera_icon"><Camera20Filled /></Icon> <!-- NOTE: put @click="" inside the icon tag-->
-                        <Icon class="image_icon"><Image20Filled /></Icon> <!-- NOTE: put @click="" inside the icon tag-->
-                        <Icon class="microphone_icon"><Mic20Filled /></Icon> <!-- NOTE: put @click="" inside the icon tag-->
+                    <div class="chat_footer_icons">
+                        <Icon class="camera_icon"><CameraAltFilled /></Icon> <!-- NOTE: put @click="" inside the icon tag-->
+                        <Icon class="image_icon"><ImageRound /></Icon> <!-- NOTE: put @click="" inside the icon tag-->
+                        <Icon class="microphone_icon"><MicRound /></Icon> <!-- NOTE: put @click="" inside the icon tag-->
                     </div>
-                    <div>
+                    <div class="message_input_textField">
                         <div class="enterMessageHere">
                             <input type="text" placeholder="Message..." v-model="messageInput" @keyup.enter="sendMessage" />
                         </div>
                         <div class="arrow_to_send_a_message" @click="sendMessage">
                             <!-- NOTE: How can I place the arrowUp icon inside the texFiled above? -->
-                            <Icon><ArrowCircleUp20Filled /></Icon>
+                            <Icon><ArrowCircleUpTwotone /></Icon>
                         </div>
                     </div>
                 </div>
