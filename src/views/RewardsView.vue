@@ -63,9 +63,9 @@
         data(){
             return{
                 imageMap: [
-                    require("@/assets/puzzleImage/puzzle1_initial.png"),
-                    ...Array.from({ length: 34 }, (v, i) => require(`@/assets/puzzleImage/puzzle1_${i + 1}.png`)),
-                    require("@/assets/puzzleImage/puzzle1_completed.png")
+                    require("@/assets/puzzleImage/puzzle1_initial.jpg"),
+                    ...Array.from({ length: 34 }, (v, i) => require(`@/assets/puzzleImage/puzzle1_${i + 1}.jpg`)),
+                    require("@/assets/puzzleImage/puzzle1_completed.jpg")
                 ],
 
                 user:{
@@ -76,7 +76,7 @@
                     pointsNoLevel: "10"
                 },
                 puzzle:{
-                    url: require("@/assets/puzzleImage/puzzle1_initial.png"),
+                    url: require("@/assets/puzzleImage/puzzle1_initial.jpg"),
                     title: 'The Starry Night',
                     completed: 0,
                     total: 35,
