@@ -344,7 +344,7 @@
                             </button><br>
                             <div class="image-scroll-container">
                                 <span v-for="(image, imageIndex) in post.images" :key="imageIndex">
-                                    <img :src="image[imageIndex].url" :alt="image.alt" class="aImage"/> 
+                                    <img src="@/assets/postImage3.png" :alt="image.alt" class="aImage"/> 
                                     <!-- src="@/assets/postImage3.png" -->
                                 </span>    
                             </div>
