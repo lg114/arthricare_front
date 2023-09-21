@@ -299,7 +299,7 @@
                 <var-tabs-items class="tabItems" v-model:active="active">
                     <var-tab-item>
                         <h2 class="puzzleTitle">{{ puzzle.title }} ({{ puzzle.completed }}/{{ puzzle.total }})</h2>
-                        <var-button type="primary" @click="collectPuzzle">Collect one puzzle</var-button><br><br>
+                        <var-button style="background-color: #55BDCA; color: white;" @click="collectPuzzle">Collect one puzzle</var-button><br><br>
                         <img :src="puzzle.url" :alt="puzzle" class="puzzleImage" :fit="contain"/><br><br>
                         <div class="box">
                             <text class="collectionTitle">My Collection</text><br>

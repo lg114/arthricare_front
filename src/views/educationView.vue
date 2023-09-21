@@ -2,13 +2,13 @@
 <!--Welcome Page -->
 <script setup>
   import store from "@/store";
-  import { LineHorizontal320Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
-  import { Icon } from '@vicons/utils'
   // import {Plus,Minus} from '@element-plus/icons-vue';
-  import SideBarContent from '@/component/Sidebar.vue';
   import '@varlet/ui/es/button/style/index';
+  import SideBarContent from '@/component/Sidebar.vue';
   import { ref } from 'vue'
-
+  import { LineHorizontal320Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular,Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
+  import { Icon } from '@vicons/utils';
+  const active = ref(0);
   
 </script>
 
@@ -16,102 +16,118 @@
    <el-container class = "container">
       
     <div class = "container-flex" style="height:100% ; width:50% ;">
-          <Icon class="backBtn" name="menu" :size="25" color="white" @click="drawer = true"><LineHorizontal320Filled/></Icon>
-
+          <Icon  @click="drawer = true" class="backBtn" name="menu" :size="25" color="white"><LineHorizontal320Filled /></Icon>
         <p id= "title">Education</p>
 
         <router-link to = "/SearchArticle">
           <var-icon name="magnify" class="searchBtn" size="30" color="white"/>
         </router-link> 
-      </div>
-      
+      </div> 
+
      <div id = container2>
       <var-tabs 
         color="transparent"
         active-color="#55BBC9"
-        inactive-color="#ddd"
+        inactive-color="#006973"
         v-model:active="active"
-        indicator-position="none"
-        indicator-size="0px"
-        v-ripple="{ disabled: true }"
         ripple="{ disabled: true }"
         pointer-event="none"
         pointer-events="initial"
       >
+      <!-- indicator-position="none"
+        indicator-size="0px"  it is a border attribute-->
         <var-tab @click="showVideo">Video</var-tab>
         <var-tab @click="showArtical">Article</var-tab>
        
       </var-tabs>
 
-      <div v-if="VideoVisible">
-        <router-link to="/educationVideo">
-        <div class = "container3">
+      <div class="container-flex" style="margin-top:2vh;">
+        <img class="starIcon" src= "@/assets/circle-star.png" alt="Image" id  = "medIcon">
+        <h1  v-if="VideoVisible">SUGGESTED VIDEO</h1>
+        <h1 v-if="ArticalVisible">SUGGESTED ARTICAL</h1>
+
+      </div>
+
+      <div v-if="VideoVisible" style=" align-items: center;">
+        <router-link to="/EducationVideo">
+        <div class = "container3" style="margin-top:3vh">
           <img src="@/assets/Med1.jpg" alt="Image" class="image">
           <div id = "label">
-            Medication sale
+            <p style="margin:0;width:70%"> Medication</p>
+            <img class="like" src= "@/assets/like.png" alt="Image" id  = "medIcon">
+            <p class="likeNumber"> 562</p>
           </div>
         </div>
       </router-link>
-      
+
+        <router-link to="/EducationVideo">
         <div class = "container3">   
           <img src="@/assets/exe2.jpg" alt="Image" class="image">
           <div id = "label">
-            Medication
+            <p style="margin:0;width:70%"> Exercise</p>
+            <img class="like" src= "@/assets/like.png" alt="Image" id  = "medIcon">
+            <p class="likeNumber"> 222</p>
           </div>
         </div>
+      </router-link>
 
+        <router-link to="/EducationVideo">
         <div class = "container3">
           <img src="@/assets/Med3.jpg" alt="Image" class="image">
           <div id = "label">
-            Medication
+          
+            <p style="margin:0;width:70%"> Medication</p>
+            <img class="like" src= "@/assets/like.png" alt="Image" id  = "medIcon">
+            <p class="likeNumber"> 442</p>
           </div>
         </div>
+      </router-link>
       </div>
 
-      <div v-if="ArticalVisible">
+      <div v-if="ArticalVisible" style="margin-top:3vh">
         <router-link to="/educationArticle">
         <div class = "container3">
           <img src="@/assets/Med4.jpg" alt="Image" class="image">
           <div id = "label">
-           Medication
+            <p style="margin:0;width:70%"> exercise</p>
+            <img class="like" src= "@/assets/like.png" alt="Image" id  = "medIcon">
+            <p class="likeNumber"> 17</p>
           </div>
         </div>
       </router-link>
 
+        <router-link to="/educationArticle">
         <div class = "container3">   
           <img src="@/assets/exe1.png" alt="Image" class="image">
           <div id = "label">
-            exercise
+            <p style="margin:0;width:70%"> Medication</p>
+            <img class="like" src= "@/assets/like.png" alt="Image" id  = "medIcon">
+            <p class="likeNumber"> 83</p>
           </div>
         </div>
+      </router-link>
 
+        <router-link to="/educationArticle">
         <div class = "container3">
           <img src="@/assets/doc1.png" alt="Image" class="image">
           <div id = "label">
-            doctor
+            <p style="margin:0;width:70"> Doctor</p>
+            <img class="like" src= "@/assets/like.png" alt="Image" id  = "medIcon">
+            <p class="likeNumber"> 54</p>
+            
           </div>
         </div>
+      </router-link>
       </div>
     </div>
-    <el-drawer style="background-color: #006973;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
-            <!--Action是模拟接口，与后端连接时更换-->
-                <div class = "sidebar">
-                    <el-upload action="" :show-file-list="false">
-                        <el-avatar :size="65">
-                            <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
-                                <template v-else>
-                                    <UserFilled class="defalut-avatar" />
-                                </template>
-                        </el-avatar>   
-                    </el-upload> 
-                </div>
-            <SideBarContent :imgUrl="imgUrl" />    
-        </el-drawer>
+   
     </el-container>
     <var-bottom-navigation
             class="footer"
+            v-model:active="activeBottom"
             border="true"
             safe-area="true"
+            :fab-props="{color:'#55BDCA'}"
         >
             <var-link href="/#/Home" underline="none">
             <var-bottom-navigation-item class="bottomButton" name="homeButton">
@@ -137,16 +153,11 @@
                 <span>Community</span>
             </var-bottom-navigation-item>    
             </var-link>
-            <!-- <template #fab>
-                <var-link href="/#/AddMed" style="color: white;">
-            <Icon class="addButton"><Add20Filled /></Icon>
-            </var-link>
-            </template> -->
         </var-bottom-navigation>
-                    <!-- Fab button -->
-                    <var-fab v-model:active="showAction" style="margin-bottom: 100px;" color="#006973" inactive-icon-size="26px" active-icon-size="30px" elevation="5">
+                        <!-- Fab button -->
+                        <var-fab v-model:active="showAction" style="margin-bottom: 100px;" color="#006973" inactive-icon-size="26px" active-icon-size="30px" elevation="5">
             <var-button class="action" round color="#F27B42" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
-              <var-link href="/#/AddPost" text-color="white" text-size="25px">
+                <var-link href="/#/AddPost" text-color="white" text-size="25px">
                 <Icon><ChannelAdd20Regular /></Icon>
             </var-link>
             </var-button>
@@ -156,15 +167,53 @@
                 </var-link>
             </var-button>
         </var-fab>
-
+    <el-drawer style="background-color: #006973;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
+            <!--Action是模拟接口，与后端连接时更换-->
+                <div class = "sidebar">
+                    <el-upload action="" :show-file-list="false">
+                        <el-avatar :size="65">
+                            <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
+                                <template v-else>
+                                    <UserFilled class="defalut-avatar" />
+                                </template>
+                        </el-avatar>   
+                    </el-upload> 
+                </div>
+            <SideBarContent :imgUrl="imgUrl" />    
+        </el-drawer>
 </template>
 
 <style lang = "css" scoped> 
+  .likeNumber{
+    padding:0;
+    margin:0;
+    margin-left:2%;
+    left:6%;
+    position:relative;
+    top:0.7vh;
+    font-size:90%;
+
+  }
+  .like{
+    height:3vh;
+    position:relative;
+    left:6%;
+    top:0.1vh;
+
+  }
+  .starIcon{
+    width:5vh;
+    height:5vh;
+    position:relative;
+    left:1.5vh;
+    top:0.3vh;
+    color:#006973;
+  }
 
 .image {
   width:100%; 
   height: 100%;
-  border-radius:15px 15px 0px 0px;
+  border-radius:5px 5px 5px 5px;
   display: block;
   z-index: 1;
 
@@ -173,35 +222,43 @@
     size:50%;
     font-size:100%; 
     font-weight:bold;
+    color:#006973;
 
 }
+
+.var-tabs .var-tab--inactive {
+    size:50%;
+    font-size:100%; 
+    font-weight:bold;
+    color:#006973;
+    border-bottom: 1px solid #ccc;
+}
+
 .var-tabs .var-tab__ripple {
   display: none;
 }
  
-
 /* scoped src="@/style/addMed.css" */
     h1{
-      color:#55BBC9;
-      font-size:17px;
+      color:#006973;;
+      font-size:90%;
       font-family: system-ui;
       margin-left:5%;
+      margin-top:1.7vh;
     }
     .container3{
-      border-bottom: 3px solid #d8d0d0;
-      margin:5%;
-      margin-top:3%;
-      margin-bottom:8%;
       background-color: #ffffff;
-      border-radius:15px 15px 15px 15px;
-      height:70%;
-      width:90%;
+      border-radius:5px 5px 5px 5px;
+      height:25vh;
+      width:95vw;
       align-items: center;
-      max-height: 200px;
+      max-height: 25vh;
       overflow: hidden;
       position: relative;
-
+      margin:auto;
+      margin-bottom:1.5vh;
     }
+
     .calculationPart{
       display:flex;
       width:40%;
@@ -218,6 +275,7 @@
 }
 
 .container-flex{
+  height:auto;
   display:flex;
   z-index: 1;
 }
@@ -297,7 +355,7 @@
   width:100%;
   padding-bottom:100px;
   justify-content: center;
-  align-items: center;
+  align-items: center;    
   display:inline-block;
   }
 
@@ -308,7 +366,7 @@
   font-family: system-ui;
   top:13%;
   width:100%;
-  left:20%;
+  left:25%;
   padding-top:6.5%;
   }
 
@@ -316,15 +374,19 @@
   width:100%;
   font-weight:600;
   font-size: 100%;
-  color:  #006973;
-  padding:2%;
+  color:  white;
+  padding:3%;
   text-align: left;
   font-family: system-ui;
-  background-color:#F7F0F0;
-  border-radius:0px 0px 15px 15px;
-  box-shadow: 1px 2px 2px 1px #ccdde9; 
+  background: repeating-linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4));
+
   position:absolute;
   bottom:0;
+  display:flex;
+  padding:1%;
+  padding-left:6%;
+  
+  
 }
 
 input{
@@ -386,28 +448,36 @@ input{
   border: 2px solid white;
   transition: background-color 0.5s, color 0.5s;
   }
-  /* footer */
-  .bottomButton{
-    width: 90px;
-    padding-left:20px;
-    padding-right: 20px;
-}
-.footer{
-    display: inline;
-    position: fixed;
-    text-align: center;
-    bottom: 0;
-    height:80px;
-    --bottom-navigation-item-font-size: 13px;
-    --bottom-navigation-item-active-color: #646566;
-    white-space: nowrap;
-}  
+ /* footer */
+ .bottomButton{
+        width: 90px;
+        padding-left:20px;
+        padding-right: 20px;
+    }
+    .footer{
+        display: inline;
+        position: fixed;
+        text-align: center;
+        bottom: 0;
+        height:80px;
+        --bottom-navigation-item-font-size: 13px;
+        --bottom-navigation-item-active-color: #646566;
+        white-space: nowrap;
+    }  
+    .addButton{
+        font-size: 35px;
+    }
 </style>
 
 <script>
 
 export default {
-  components: {SideBarContent,LineHorizontal320Filled,Icon, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular, Pill28Filled, ChannelAdd20Regular},
+  components: {
+    Icon,
+    SideBarContent,
+    Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular,Pill28Filled, ChannelAdd20Regular
+
+  },
   computed: {
     changeToTrue() {
       return this.$store.state.changeToTrue;
@@ -419,17 +489,13 @@ export default {
       VideoVisible: true,
       ArticalVisible: false,
       Meds : [],
-      Meds2:[],
-      //always empty
-      Meds3:[],
-      showAction: ref(false), //Show actions of the fab
       drawer: ref(false),
     };
   },
   
   methods: {
     openDrawer() {
-                this.drawer = true;
+            this.drawer = true;
             },
             beforeDrawerClose(done) {
                 done();
@@ -445,14 +511,11 @@ export default {
     con(){
       console.log(this.$store.state.changeToTrue);
       store.commit("changeToTrue");
-    },
-    toggleAction(){
-                this.showAction.value = !this.showAction.value
-            }
+    }
 
 },
   mounted(){
-            document.title = 'Education'
+            document.title = 'Education | ArthriCare'
 
         },
         setup(){

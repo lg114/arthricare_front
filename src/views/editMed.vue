@@ -14,7 +14,7 @@
    <el-container class = "container">
       
     <div class = "container-flex" style="height:100% ; width:50% ;">
-        <router-link to = "/">
+        <router-link to = "/MyMeds">
           <var-icon class="backBtn" name="chevron-left" :size="42" color="white"/>
         </router-link> 
         <p id= "title">Edit Medication</p>
@@ -864,7 +864,7 @@ export default {
   },
  
   mounted(){
-            document.title = 'Sign Up | ArthriCare',
+            document.title = 'Edit Med | ArthriCare',
             this.medicationId = sessionStorage.getItem('medicationId');
             this.fetchMedicationDetailsAndPopulateForm();
         },
