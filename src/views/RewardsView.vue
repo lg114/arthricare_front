@@ -63,9 +63,9 @@
         data(){
             return{
                 imageMap: [
-                    require("@/assets/puzzleImage/puzzle1_initial.png"),
-                    ...Array.from({ length: 34 }, (v, i) => require(`@/assets/puzzleImage/puzzle1_${i + 1}.png`)),
-                    require("@/assets/puzzleImage/puzzle1_completed.png")
+                    require("@/assets/puzzleImage/puzzle1_initial.jpg"),
+                    ...Array.from({ length: 34 }, (v, i) => require(`@/assets/puzzleImage/puzzle1_${i + 1}.jpg`)),
+                    require("@/assets/puzzleImage/puzzle1_completed.jpg")
                 ],
 
                 user:{
@@ -76,7 +76,7 @@
                     pointsNoLevel: "10"
                 },
                 puzzle:{
-                    url: require("@/assets/puzzleImage/puzzle1_initial.png"),
+                    url: require("@/assets/puzzleImage/puzzle1_initial.jpg"),
                     title: 'The Starry Night',
                     completed: 0,
                     total: 35,
@@ -299,7 +299,7 @@
                 <var-tabs-items class="tabItems" v-model:active="active">
                     <var-tab-item>
                         <h2 class="puzzleTitle">{{ puzzle.title }} ({{ puzzle.completed }}/{{ puzzle.total }})</h2>
-                        <var-button type="primary" @click="collectPuzzle">Collect one puzzle</var-button><br><br>
+                        <var-button style="background-color: #55BDCA; color: white;" @click="collectPuzzle">Collect one puzzle</var-button><br><br>
                         <img :src="puzzle.url" :alt="puzzle" class="puzzleImage" :fit="contain"/><br><br>
                         <div class="box">
                             <text class="collectionTitle">My Collection</text><br>
