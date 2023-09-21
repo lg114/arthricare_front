@@ -79,6 +79,9 @@
             sendComment(){
                 // Add code here. The code should be simmilar to sendMessage() in ChatView.vue?
             },
+            open_MyPosts(userID){
+                this.$router.push({ name: 'MyPosts', params: { id: userID } });
+            },
         },
         components: {
             Icon,
@@ -136,7 +139,7 @@
                 <div class="postDetail_section">
                     <div class="icon_name_time">
                         <!-- NOTE: The code below to display an image is a hardcode. It needs to be improved. P.S. Flyger's been workikng on figuring out. -->
-                        <img :src="selectedPost.avatar" alt="avatar" class="avatar" />
+                        <img :src="selectedPost.avatar" alt="avatar" class="avatar" @click="open_MyPosts(selectedPost.userID)" />
                         <div class="username">{{ selectedPost ? selectedPost.username : '' }}</div>
                         <div class="time-ago">{{ selectedPost ? formattedPostTime : '' }}</div>
                     </div>

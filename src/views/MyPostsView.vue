@@ -80,9 +80,8 @@
                 // The thumbUp icon when a user removed 'a like' should be 'ThumbLike20Regular'
             },
             goback_previousPage(){
-                // NOTE: Instead of doing the code below, I just want to go back to the previous page the user opened before MyPostView, but idk how to do that
-                this.$router.push('/PostDetail');
-                this.$router.push('/Community');
+                // Use window.history to navigate back
+                window.history.back();
             },
             startMessaging(){
                 /* Instead of doing the code below, I want to open a new chat page with a particular user, but idk how to do that.
@@ -144,7 +143,7 @@
 <template>
     <div class="container">
         <el-header class="header">
-            <Icon class="arrowBack"><ChevronLeft20Filled /></Icon>
+            <Icon class="arrowBack" @click="goback_previousPage()"><ChevronLeft20Filled /></Icon>
             <b class="pageTitle">{{ selectedUser_postsPage.name }}'s Posts</b> 
         </el-header>
 
