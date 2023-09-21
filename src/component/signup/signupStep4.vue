@@ -143,6 +143,7 @@
     @media screen and (min-width: 768px){
         img{
             width: 15%;
+            margin-left: 25px;
         }
     }
 </style>

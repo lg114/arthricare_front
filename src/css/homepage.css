@@ -8,14 +8,16 @@
     align-items: center;
     background-color: #006973;
     color: #FFFFFF;
+    height: 80px;
 }
 .header-icon{
-    font-size: 20px;
+    font-size: 25px;
     position: absolute;
     left: 5%;
     font-weight: bold;
 }
 .header-icon2{
+    font-size: 25px;
     position: absolute;
     right: 5%;
 }
@@ -42,7 +44,7 @@
 .var-card{
     margin-right: 5vw;
     color:#006973;
-    height: 12vh;
+    height: 10vh;
     --card-border-radius: 5px;
     --card-outline-color: #006973;
 }

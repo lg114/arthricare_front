@@ -116,7 +116,9 @@
     <el-container class = "container">
         <el-header class = "header">
             <Icon class="header-icon" @click="drawer = true"><LineHorizontal320Filled /></Icon>
-            <span class = "username">Welcome to ArthriCare, {{ loggedInUser && loggedInUser.name ? loggedInUser.name : 'Guest' }}</span>
+            <var-ellipsis style="max-width: 270px" :tooltip="false">            
+                <span class = "username">Welcome to ArthriCare, {{ loggedInUser && loggedInUser.name ? loggedInUser.name : 'Guest' }}</span>
+            </var-ellipsis>
             <var-icon class = "header-icon2" name="message-text-outline" />
         </el-header>    
         <el-main class = "main">
