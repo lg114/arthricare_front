@@ -72,7 +72,7 @@
                 if (loggedInUser){
 
                     const userFromId = `${loggedInUser.userId}-${loggedInUser.name}`;
-                    console.log('check userfromID',userFromId )
+                    //console.log('check userfromID',userFromId )
                     this.getChannels(userFromId); // Call the getChannels function with the user's ID
                     
 

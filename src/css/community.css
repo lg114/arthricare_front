@@ -202,13 +202,26 @@ p{
 /* END: Bottom Navigation Bar */
 
 /* START: Unique CSS for Community Page */
-.sectionFilter{
+.sectionFilter {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    /*space-around: 23px, 28px;*/
+    justify-content: flex-start;
     margin-top: -10px;
     padding-bottom: 15px;
+
+    
+}
+.sectionFilter > * {
+    margin-left: 0px;
+    margin-right: 60px;
+}
+
+.sectionFilter > :first-child {
+    margin-left: 0;
+}
+
+.sectionFilter > :last-child {
+    margin-right: 0;
 }
 .sectionFilter label{
     display: block;

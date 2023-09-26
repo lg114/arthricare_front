@@ -24,6 +24,7 @@ import AddPostPage from '@/views/AddPostView.vue';
 import PostDetailPage from '@/views/PostDetailView.vue';
 import MyPostsPage from '@/views/MyPostsView.vue';
 import AssessmentPage from '@/views/AssessmentView.vue';
+import addMedCopy from "@/views/addMedCopy.vue"
 
 
 const router  = createRouter({
@@ -201,7 +202,7 @@ const router  = createRouter({
 
 
         {
-            path: '/PostDetail/:id',
+            path: '/PostDetail',
             name: 'PostDetail',
             component: PostDetailPage,
             meta: {
@@ -217,6 +218,14 @@ const router  = createRouter({
             }
             
         },
+        {
+            path: '/addMedCopy',
+            name: 'addMedCopy',
+            component: addMedCopy,
+            meta: {
+                requiresAuth: true
+            }
+        }
         
     ]
 });

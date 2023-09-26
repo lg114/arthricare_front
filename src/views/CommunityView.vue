@@ -29,9 +29,9 @@
                 },
                 posts:[
                     {
-                        postID: 1,
+                        postId: 1,
                         avatar: require('@/assets/friend_2.png'),
-                        userID: 'testID_1',
+                        userId: 'testID_1',
                         username: 'Adam',
                         postedDateTime: new Date("2023-09-20T15:25:00+10:00"), // September 20, 2023, 15:20:00 AEST
                         title: '21M diagnosed with Rheumatoid Arthritis',
@@ -39,6 +39,7 @@
                         expanded: false,
                         numberOfLikes: 17,
                         numberOfComments: 8,
+                        haveImage:true,
                         images: [
                             { url: require('@/assets/postImage1.png'), alt: 'postImage1 for postID 1' },
                             { url: require('@/assets/postImage2.png'), alt: 'postImage2 for postID 1' }, 
@@ -47,9 +48,9 @@
                         ]
                     },
                     {
-                        postID: 2,
+                        postId: 2,
                         avatar: require('@/assets/friend_4.png'),
-                        userID: 'testID_2',
+                        userId: 'testID_2',
                         username: 'Timothy',
                         postedDateTime: new Date("2023-09-20T09:30:00+10:00"), // September 20, 2023, 9:30:00 AEST
                         title: '“Morning” stiffness worse in the middle of the night?',
@@ -57,6 +58,7 @@
                         expanded: false,
                         numberOfLikes: 14,
                         numberOfComments: 8,
+                        haveImage:true,
                         images: [
                             { url: require('@/assets/postImage5.png'), alt: 'postImage5 for postID 2' }, 
                             { url: require('@/assets/postImage6.png'), alt: 'postImage6 for postID 2' },
@@ -64,9 +66,9 @@
                         ]
                     }, 
                     {
-                        postID: 3,
+                        postId: 3,
                         avatar: require('@/assets/friend_3.png'),
-                        userID: 'testID_3',
+                        userId: 'testID_3',
                         username: 'Tom',
                         postedDateTime: new Date("2023-09-19T09:30:00+10:00"), // September 19, 2023, 9:30:00 AEST
                         title: 'When to resume mtx',
@@ -74,37 +76,40 @@
                         expanded: false,
                         numberOfLikes: 3,
                         numberOfComments: 2,
+                        haveImage:true,
                         images: [
                             { url: require('@/assets/postImage8.png'), alt: 'postImage6 for postID 3' },
                             { url: require('@/assets/postImage6.png'), alt: 'postImage7 for postID 3' }
                         ]
                     },
                     {
-                        postID: 4,
+                        postId: 4,
                         avatar: require('@/assets/friend_5.png'),
-                        userID: 'testID_4',
+                        userId: 'testID_4',
                         username: 'Anthony',
                         postedDateTime: new Date("2023-09-06T09:30:00+10:00"), // September 6, 2023, 9:30:00 AEST
                         title: 'This is a title for the General post',
                         content: "ghju fgufj fgrfd dfgv ed fgf f f gea.",
-                        expanded: false,
+                        expanded: true,
                         numberOfLikes: 8,
                         numberOfComments: 6,
+                        haveImage:true,
                         images: [
                             { url: require('@/assets/postImage1.png'), alt: 'postImage1 for postID 4' }
                         ]
                     },
                     {
-                        postID: 5,
+                        postId: 5,
                         avatar: require('@/assets/friend_5.png'),
-                        userID: 'testID_5',
+                        userId: 'testID_5',
                         username: 'Anthony',
                         postedDateTime: new Date("2023-08-24T09:30:00+10:00"), // August 24, 2023, 9:30:00 AEST
                         title: 'This is a title for the News post',
                         content: "The shortest content.",
-                        expanded: false,
+                        expanded: true,
                         numberOfLikes: 8,
                         numberOfComments: 0,
+                        haveImage:false,
                         images: []
                     }
                     // Add more posts here
@@ -135,17 +140,18 @@
                 console.log('Toggling post expansion', post);
                 post.expanded = !post.expanded;
             },
-            goToPostDetail(postID) {
-                this.$router.push({ name: 'PostDetail', params: { id: postID } });
+            goToPostDetail(postId) {
+                sessionStorage.setItem("postDetailInfoId",postId);
+                this.$router.push({ name: 'PostDetail'});
             },
             // END: 3 methods for SeeMore buttons
 
             // START: 2 methods to add a comment
-            showCommentInput(postID) {
-                this.showCommentInputId = postID;
+            showCommentInput(postId) {
+                this.showCommentInputId = postId;
             },
             addComment(postid) {
-                const post = this.posts.find((p) => p.postID === postid);
+                const post = this.posts.find((p) => p.postId === postid);
                 post.comments.push({
                     username: this.user.name,
                     content: this.newComment,
@@ -173,8 +179,13 @@
                 // The thumbUp icon when a user added 'a like' should be 'ThumbLike20Filled'
                 // The thumbUp icon when a user removed 'a like' should be 'ThumbLike20Regular'
             },
-            open_MyPosts(userID){
-                this.$router.push({ name: 'MyPosts', params: { id: userID } });
+            open_MyPosts(userId,userName){
+                const postUserInfor = {
+                    userId:userId,
+                    userName:userName
+                }
+                sessionStorage.setItem("postUserInfor",JSON.stringify(postUserInfor));
+                this.$router.push({ name: 'MyPosts'});
             },
 
             // START: Merging backend
@@ -187,6 +198,7 @@
                     if (posts.length !== 0) {
                         // 显示加载的帖子
                         for (const post of posts) {
+                            //console.log(post)
                             this.makePost(post);
                         }
                     }
@@ -197,27 +209,25 @@
             async makePost(post) {
                 const date = new Date(post.createdTime);
                 const formattedDate = date.toLocaleString();
-                
                 // Await the result of makeImageArray(post)
                 const images = await this.makeImageArray(post);
 
                 const postData = {
-                    id: post.postId,
+                    postId: post.postId,
                     avatar: require('@/assets/user_avatar.png'),
-                    username: post.username,
-                    postedDateTime: '',
-                    timestamp: formattedDate,
+                    userId: post.userId,
+                    username: post.userName,
+                    postedDateTime: formattedDate,
                     title: post.title,
                     content: post.content,
                     expanded: this.determinePostExpandOrNot(post.content),
                     numberOfLikes: post.likeNum,
                     numberOfComments: post.commentNum,
+                    haveImage:post.haveImage,
                     images: images,
-                    comments: []
                 };
 
                 this.posts.push(postData);
-                //console.log(post);
             },
             determinePostExpandOrNot(content){
                 if(content.length > 100){
@@ -241,7 +251,12 @@
                     console.error("Error fetching image URLs:", error);
                     return [];
                 }
+            },
+            incrementLikes(index)
+            {
+                this.posts[index].numberOfLikes += 1;
             }
+
             // END: Merging backend
         },
 //============================== END: Unique Functions for Community Page ==============================//
@@ -270,6 +285,7 @@
                 // If the time difference is more than a week, display the posted date
                 if (timeDifference > oneWeekInMilliseconds) {
                     const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                    //console.log(postDate.toLocaleDateString(undefined, options));
                     return postDate.toLocaleDateString(undefined, options);
                 }
 
@@ -310,36 +326,34 @@
                 </div>
 
                 <div v-if="activeSection === 'discussion_section'">
-                    <div v-for="(post, index) in posts" :key="post.postID" class="postCard">
+                    <div v-for="(post, index) in posts" :key="post.id" class="postCard">
                         <div class="icon_name_time">
                             <!-- NOTE: the code below to display an image is a hardcode and shouldn'r be used. -->
-                            <img :src="post.avatar" alt="avatar" class="avatar" @click="open_MyPosts(post.userID)" />
+                            <img :src="post.avatar" alt="avatar" class="avatar" @click="open_MyPosts(post.userId,post.username)" />
                             <!-- NOTE: This code should work, but, for some reason, it's not working. <img :src="post.avatar" :alt="post.alt" />  -->
-                            <div class="username" @click="open_MyPosts(post.userID)">{{ post.username }}</div>
+                            <div class="username" @click="open_MyPosts(post.userId,post.username)">{{ post.username }}</div>
                             <div class="time-ago">{{ formattedPostTime[index] }}</div>
                         </div>
-                        <div class="content" @click="goToPostDetail(post.postID)">
+                        <div class="content" @click="goToPostDetail(post.postId)">
                             <p class="postTitle">{{ post.title }}</p>
                             <p v-if="!post.expanded" class="content">{{ truncateContent(post.content) }}</p>
                             <p v-else class="content">{{ post.content }}</p>
-                            <button @click="goToPostDetail(post.postID)" class="seeMoreButton">
+                            <button v-if="!post.expanded" @click="goToPostDetail(post.postId)" class="seeMoreButton">
                                 ... See more
                             </button><br>
-                            <div class="image-scroll-container">
+                            <div v-if="post.haveImage" class="image-scroll-container">
                                 <span v-for="(image, imageIndex) in post.images" :key="imageIndex">
                                     <img :src="image.url" :alt="image.alt" class="aImage"/> 
                                 </span>    
                             </div>
                         </div>
                         <div class="like_comment_section">
+                            <div @click="incrementLikes(index)">
                                 <Icon class="thumbLike_icon"><ThumbLike20Regular /></Icon>
-                                <p class="numberOfLikes">{{ post.numberOfLikes }}</p>
-                                <Icon class="comment_icon" @click="showCommentInput(post.postID)"><CommentMultiple20Regular /></Icon>
+                            </div>
+                            <p class="numberOfLikes">{{ post.numberOfLikes }}</p>
+                                <Icon class="comment_icon" @click="showCommentInput(post.postId)"><CommentMultiple20Regular /></Icon>
                                 <p class="numberOfComments">{{ post.numberOfComments }}</p>
-                                <div v-if="showCommentInputId === post.postID">
-                                    <input v-model="newComment" placeholder="Enter your comment" />
-                                    <button @click="addComment(post.postID)">Submit</button>
-                                </div>
                             </div>
                         <hr style="width: 100%;">
                     </div>
