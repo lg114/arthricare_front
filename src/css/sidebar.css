@@ -1,0 +1,44 @@
+.topping{
+    color:#FFFFFF;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.var-avatar{
+    position: relative;
+    top: 5vh;
+}
+.middle{
+    color:#FFFFFF;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+}
+.middle p{
+    margin-bottom: 20px;
+    text-align: center;
+    color:#FFFFFF;
+}
+.icon-container {
+    display: inline-block;
+    margin-right: 50px; 
+}
+.icon-text-container {
+    display: flex;
+    align-items: center;
+    padding-inline: 5px;
+    justify-content: center;
+}
+
+.bottom{
+    color:#FFFFFF;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+}
+.bottom p {
+    margin-bottom: 20px;
+    color:#FFFFFF;
+}

@@ -5,9 +5,11 @@
   // import {Plus,Minus} from '@element-plus/icons-vue';
   import '@varlet/ui/es/button/style/index';
   import { ChevronLeft20Filled, LineHorizontal320Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular,Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
-  import SideBarContent from '@/component/Sidebar.vue';
   import { ref } from 'vue'
   import { Icon } from '@vicons/utils';
+  import { UserProfileAlt } from '@vicons/carbon';
+  import { CastForEducationFilled } from '@vicons/material';
+  import { AlertCircle, Logout } from '@vicons/tabler';
 </script>
 
 <template>
@@ -138,20 +140,46 @@
                 </var-link>
             </var-button>
         </var-fab>
-    <el-drawer style="background-color: #006973;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
-            <!--Action是模拟接口，与后端连接时更换-->
-                <div class = "sidebar">
-                    <el-upload action="" :show-file-list="false">
-                        <el-avatar :size="65">
-                            <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
-                                <template v-else>
-                                    <UserFilled class="defalut-avatar" />
-                                </template>
-                        </el-avatar>   
-                    </el-upload> 
+<!--============================ START: The Side Menu Bar ============================-->               
+            <!-- Side barDrawer -->
+            <el-drawer v-model="drawer" direction="ltr" size="70%" :show-close="false" style = " background-color: #006973;">
+        <template #header>
+            <div class = "topping">
+                <var-avatar :size = "100" bordered bordered-color="#FFFFFF" lazy error = "https://img.icons8.com/fluency-systems-regular/48/user--v1.png"/>
+            </div>
+        </template>
+        <div class = "middle">
+            <div class = "icon-text-container" @click = "goToUserProfile">
+                <div class="icon-container">
+                    <Icon><UserProfileAlt/></Icon>
                 </div>
-            <SideBarContent :imgUrl="imgUrl" />    
-        </el-drawer>
+                <p>My profile</p>
+            </div>
+            <div class = "icon-text-container">
+                <div class="icon-container">
+                    <Icon><CastForEducationFilled/></Icon>
+                </div>
+                <p>Education</p>
+            </div>
+        </div>
+        <template #footer>
+            <div class = "bottom">
+                <div class = "icon-text-container">
+                    <div class="icon-container">
+                        <Icon><AlertCircle/></Icon>
+                    </div>
+                    <p>About</p>
+                </div>
+                <div class = "icon-text-container" @click = "logout">
+                    <div class="icon-container">
+                        <Icon><Logout/></Icon>
+                    </div>
+                    <p>Log out</p>
+                </div>
+            </div>
+        </template>
+    </el-drawer>
+<!--============================ END: The Side Menu Bar ============================-->        
 </template>
 
 <style lang = "css" scoped>   
@@ -490,13 +518,12 @@ input{
         font-size: 35px;
     }
 </style>
-
+<style src="@/css/sidebar.css" scoped></style>
 <script>
 
 export default {
   components: {
-    Icon,
-    SideBarContent,
+    Icon,Logout,AlertCircle,UserProfileAlt,CastForEducationFilled,
     Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular,Pill28Filled, ChannelAdd20Regular
   },
   computed: {
@@ -592,7 +619,17 @@ export default {
       const formattedTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       console.log(formattedTime);
       return formattedTime;
-    }
+    },
+    goToUserProfile(){
+                this.$router.push('/UserProfile');
+    },
+    gotoMsg(){
+        this.$router.push('/Message');
+    // side bar log out
+    },
+    async logout(){
+        this.$store.dispatch('user/logout');
+    },
   
 },
   mounted(){

@@ -1,10 +1,11 @@
 <!--Rewards Page -->
 <script>
     import { ref, reactive, computed } from 'vue';
-    import { LineHorizontal320Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Filled, PeopleCommunity20Regular, AddCircle20Regular,Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
+    import { LineHorizontal320Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Filled, PeopleCommunity20Regular, AddCircle20Regular,Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent';
+    import { UserProfileAlt } from '@vicons/carbon';
+    import { CastForEducationFilled } from '@vicons/material';
+    import { AlertCircle, Logout } from '@vicons/tabler';
     import { Icon } from '@vicons/utils';
-    import SideBarContent from '@/component/Sidebar.vue';
-    import { UserFilled } from '@element-plus/icons-vue';
     import axios from 'axios';
 
     export default{
@@ -105,7 +106,16 @@
             goToRewards(){
                 this.$router.push('/Rewards');
             },
-
+            goToUserProfile(){
+                this.$router.push('/UserProfile');
+            },
+            gotoMsg(){
+                this.$router.push('/Message');
+            // side bar log out
+            },
+            async logout(){
+                this.$store.dispatch('user/logout');
+            },
             findPointFromBackend()
             {
                 var loggedInUser = sessionStorage.getItem('loggedInUser');
@@ -242,9 +252,11 @@
             BriefcaseMedical20Regular, 
             Gift20Filled, 
             PeopleCommunity20Regular,
-            UserFilled,
             AddCircle20Regular,
-            SideBarContent
+            Logout,
+            AlertCircle,
+            UserProfileAlt,
+            CastForEducationFilled,
         }
     };
 </script>
@@ -256,6 +268,7 @@
                 <Icon class="more" @click="drawer = true"><LineHorizontal320Filled /></Icon>
                 <Icon class="present"><Gift20Filled /></Icon>
                 <b class="pageTitle"> Rewards</b>
+                <var-icon class = "header-icon2" name="message-text-outline" @click="gotoMsg"/>
             </el-header>
         </el-container>
         <el-main class="main">
@@ -391,21 +404,45 @@
                 </var-link>
             </var-button>
         </var-fab>
-        <el-drawer style="background-color: #006973;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
-            <!--Action是模拟接口，与后端连接时更换-->
-                <div class = "sidebar">
-                    <el-upload action="" :show-file-list="false">
-                        <el-avatar :size="65">
-                            <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
-                                <template v-else>
-                                    <UserFilled class="defalut-avatar" />
-                                </template>
-                        </el-avatar>   
-                    </el-upload> 
+        <el-drawer v-model="drawer" direction="ltr" size="70%" :show-close="false" style = " background-color: #006973;">
+        <template #header>
+            <div class = "topping">
+                <var-avatar :size = "100" bordered bordered-color="#FFFFFF" lazy error = "https://img.icons8.com/fluency-systems-regular/48/user--v1.png"/>
+            </div>
+        </template>
+        <div class = "middle">
+            <div class = "icon-text-container" @click = "goToUserProfile">
+                <div class="icon-container">
+                    <Icon><UserProfileAlt/></Icon>
                 </div>
-            <SideBarContent :imgUrl="imgUrl" />    
-        </el-drawer>
+                <p>My profile</p>
+            </div>
+            <div class = "icon-text-container">
+                <div class="icon-container">
+                    <Icon><CastForEducationFilled/></Icon>
+                </div>
+                <p>Education</p>
+            </div>
+        </div>
+        <template #footer>
+            <div class = "bottom">
+                <div class = "icon-text-container">
+                    <div class="icon-container">
+                        <Icon><AlertCircle/></Icon>
+                    </div>
+                    <p>About</p>
+                </div>
+                <div class = "icon-text-container" @click = "logout">
+                    <div class="icon-container">
+                        <Icon><Logout/></Icon>
+                    </div>
+                    <p>Log out</p>
+                </div>
+            </div>
+        </template>
+    </el-drawer>
     </div>
 </template>
 
 <style src = "@/css/rewards.css" scoped></style>
+<style src = "@/css/sidebar.css" scoped></style>

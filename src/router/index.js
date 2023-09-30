@@ -54,7 +54,7 @@ const router  = createRouter({
             name: 'Home',
             component: HomePage,
             meta: {
-                requiresAuth: false
+                requiresAuth: true
             }
         },
         {
@@ -62,7 +62,7 @@ const router  = createRouter({
             name: 'AddMed',
             component: AddMedPage,
             meta: {
-                requiresAuth: false
+                requiresAuth: true
             }
         },
         {
@@ -70,7 +70,7 @@ const router  = createRouter({
             name: 'Menu',
             component: MenuPage,
             meta: {
-                requiresAuth: false
+                requiresAuth: true
             }
         },
         {
@@ -78,7 +78,7 @@ const router  = createRouter({
             name: 'UserProfile',
             component: UserProfilePage,
             meta: {
-                requiresAuth: false
+                requiresAuth: true
             }
         },
         {
@@ -86,7 +86,7 @@ const router  = createRouter({
             name: 'EditMed',
             component: EditMedPage,
             meta: {
-                requiresAuth: false
+                requiresAuth: true
             }
         },
         {
@@ -94,7 +94,7 @@ const router  = createRouter({
             name: 'MyMeds',
             component: MyMedsPage,
             meta: {
-                requiresAuth: false
+                requiresAuth: true
             }
         },
         {
@@ -102,7 +102,7 @@ const router  = createRouter({
             name: 'Rewards',
             component: RewardsPage,
             meta: {
-                requiresAuth: false
+                requiresAuth: true
             }
         },
         {
@@ -119,7 +119,9 @@ const router  = createRouter({
             path: '/Education',
             name: 'Education',
             component: EducationPage,
-
+            meta: {
+                requiresAuth: true
+            }
 
         },
 
@@ -140,7 +142,9 @@ const router  = createRouter({
             path: '/SearchArticle',
             name: 'SearchArticle',
             component: SearchPage,
-
+            meta: {
+                requiresAuth: true
+            }
 
         },
 
@@ -160,7 +164,9 @@ const router  = createRouter({
             path: '/EducationArticle',
             name: 'EducationArticle',
             component: EducationArticlePage,
-
+            meta: {
+                requiresAuth: true
+            }
 
 
         },
@@ -169,7 +175,9 @@ const router  = createRouter({
             path: '/EducationVideo',
             name: 'EducationVideo',
             component: EducationVideoPage,
-
+            meta: {
+                requiresAuth: true
+            }
 
 
         },
@@ -197,6 +205,9 @@ const router  = createRouter({
           path: '/Assessment',
           name: 'Assessment',
           component: AssessmentPage,
+          meta: {
+            requiresAuth: true
+        }
       },
 
 

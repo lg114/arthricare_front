@@ -1,117 +1,143 @@
 /* Welcome Page Css */
-/* --------------------------------Base Layout-----------------------------------------------*/
 .container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #CFEEF5;
+  position: relative;
+  background-color: #CFEEF5;
+  height: 100vh;
+}
+.header-left p{
+  font-size: 20px;
+  font-weight: 500;
+  color: #006973;
+}
+.popping-text{
+  position: relative;
+  top: 10%;
+  left: 50;
+}
+.popping-text h2{
+  color: #006973;
+  font-size: 32px;
+  font-weight: 700;
+}
+.bottom{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: #006973;
+  width: 100%;
+  height: 260px;
+  border-radius: 30px 30px 0px 0px;
+  text-align: center;
+}
+.bottom p{        
+  margin: 35px;
+  font-size: 20px;
+  font-weight: 500;
+  color: #CFEEF5;
+}
+.buttons{
+  margin-top: -18px;
+  display: flex;
+  justify-content: space-evenly;
+  --button-normal-height: 48px;
+  --button-normal-padding: 0 55px;
+  --button-normal-font-size: 16px;
+  --button-border-radius: 5px;
+}
+.main{
+  overflow: hidden;
+}
+.name{
+  margin-top: 45px;
+}
+.name span{
+  font-size: .75rem;
+  color: rgba(217,217,227,.8);
+  line-height: 1.5rem;
+}
+.divider-example-vertical-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.divider-example-vertical-container span {
+  font-size: .75rem;
+  color: rgba(217,217,227,.8);
+  line-height: 1.5rem;
+}
+a {
+  text-decoration: none;
+}
+/* responsive design */
+@media screen and (min-width: 380px) {
+  .popping-text{
+    position: relative;
+    top: 20%;
+    left: 50;
+  }
+
+}
+@media screen and (min-width: 768px) {
+  .main{
     overflow: hidden;
   }
-  .content-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  .popping-text{
+    position: relative;
+    top: 35%;
+    height: 100%;
   }
-/* --------------------------------Base Layout-----------------------------------------------*/
-
-/* -------------------------------- Content -------------------------------------------------*/
-  .welcome-text{
-    margin-left: -20px;
-  }
-  h1{
-    color: #006973;
+  .bottom p{        
+    font-size: 30px;
     font-weight: 600;
-    font-size: 45px;
+    color: #CFEEF5;
   }
-  img{
-    margin-left: 50px;
-    width: 180px;
+  .bottom{
+    position: absolute;
+    width: 50%;
+    left: 50%;
+    height: 100%;
+    border-radius: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
   }
-/* -------------------------------- Content -------------------------------------------------*/
-
-/* -------------------------------- Buttons -------------------------------------------------*/
   .buttons{
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 100px;
+    justify-content: space-evenly;
+    width: 100%;
   }
-
-.login-button,
-.signup-button{
-    width: 319px;
-    height: 63px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    font-weight: 700;
-}
-
-.login-button{
-  background: #FFFFFF;
-  color: #006973;
-  position: relative;
-  display: inline-block;
-  padding: 10px 20px;
-  color: #006973;
-  border: 2px solid white;
-  transition: background-color 0.5s, color 0.5s;
-}
-
-.signup-button{
-  background: #006973;
-  color: white;
-  position: relative;
-  display: inline-block;
-  padding: 10px 20px;
-  color: white;
-  border: 2px solid 006973;
-  transition: background-color 0.5s, color 0.5s;
-}
-
-.login-button:hover,
-.signup-button:hover{
-  background-color: #FFFFFF;
-  color: #1890FF;
-  transform: translateZ(10px);
-}
-
-.login-button::before,
-.signup-button::before{
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 100%;
-  background-color: #FFFFFF;
-  transition: width 0.3s;
-  z-index: -1;
-}
-
-.login-button:hover,
-.signup-button:hover{
-  background-color: #FFFFFF;
-  color: #006973;
-  border-radius: 10px;
-}
-
-.login-button:hover::before,
-.signup-button:hover::before{
-  width: 100%;
-  border-radius: 10px;
-}
-/* -------------------------------- Buttons -------------------------------------------------*/
-
-/* -------------------------------- Small Screen -------------------------------------------*/
-@media screen and (max-width: 400px) {
-  .logo{
-    margin: -150px -200px;
+  .name{
+    position: absolute;
+    bottom: 7%;
   }
-  .buttons{
-    margin-top: 50px;
+  .divider-example-vertical-container{
+    position: absolute;
+    bottom: 2%;
   }
 }
-/* -------------------------------- Small Screen -------------------------------------------*/
+/* animation */
+.slide-down-enter-from {
+  opacity: 0;
+  transform: translateY(200%);
+}
+.slide-down-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+}
+.slide-down-enter-active {
+  transition: all 1s ease-in;
+}
+.slide-down-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+.slide-down-leave-to {
+  opacity: 0;
+  transform: translateY(200%);
+}
+.slide-down-leave-active {
+  transition: all 1s ease-in;
+}

@@ -3,9 +3,10 @@
     import { ref} from 'vue';
     import { CircleFilled } from '@vicons/material';
     import { LineHorizontal320Filled } from '@vicons/fluent';
+    import { UserProfileAlt } from '@vicons/carbon';
+    import { CastForEducationFilled } from '@vicons/material';
+    import { AlertCircle, Logout } from '@vicons/tabler';
     import { Icon } from '@vicons/utils'
-    import SideBarContent from '@/component/Sidebar.vue';
-    import { UserFilled } from '@element-plus/icons-vue';
     import axios from 'axios';
     import { mapGetters } from 'vuex';
 
@@ -135,9 +136,11 @@
         components: {
             Icon,
             LineHorizontal320Filled,
-            SideBarContent,
-            UserFilled,
-            CircleFilled
+            CircleFilled,
+            Logout,
+            AlertCircle,
+            UserProfileAlt,
+            CastForEducationFilled
         }
     };
 </script>
@@ -171,24 +174,48 @@
                         </div>
                     </div>
                 </div>
-
             </el-main> 
         </el-container>
-        <el-drawer style="background-color: #006973;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
-            <!--Action是模拟接口，与后端连接时更换-->
-                <div class = "sidebar">
-                    <el-upload action="" :show-file-list="false">
-                        <el-avatar :size="65">
-                            <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
-                                <template v-else>
-                                    <UserFilled class="defalut-avatar" />
-                                </template>
-                        </el-avatar>   
-                    </el-upload> 
+            <!-- Side barDrawer -->
+    <el-drawer v-model="drawer" direction="ltr" size="70%" :show-close="false" style = " background-color: #006973;">
+        <template #header>
+            <div class = "topping">
+                <var-avatar :size = "100" bordered bordered-color="#FFFFFF" lazy error = "https://img.icons8.com/fluency-systems-regular/48/user--v1.png"/>
+            </div>
+        </template>
+        <div class = "middle">
+            <div class = "icon-text-container" @click = "goToUserProfile">
+                <div class="icon-container">
+                    <Icon><UserProfileAlt/></Icon>
                 </div>
-            <SideBarContent :imgUrl="imgUrl" />    
-        </el-drawer>
+                <p>My profile</p>
+            </div>
+            <div class = "icon-text-container">
+                <div class="icon-container">
+                    <Icon><CastForEducationFilled/></Icon>
+                </div>
+                <p>Education</p>
+            </div>
+        </div>
+        <template #footer>
+            <div class = "bottom">
+                <div class = "icon-text-container">
+                    <div class="icon-container">
+                        <Icon><AlertCircle/></Icon>
+                    </div>
+                    <p>About</p>
+                </div>
+                <div class = "icon-text-container" @click = "logout">
+                    <div class="icon-container">
+                        <Icon><Logout/></Icon>
+                    </div>
+                    <p>Log out</p>
+                </div>
+            </div>
+        </template>
+    </el-drawer>
     </div>
 </template>
 
 <style src = "@/css/message.css" scoped></style>
+<style src="@/css/sidebar.css" scoped></style>

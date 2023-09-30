@@ -205,21 +205,20 @@
         letter-spacing:0.5px;
      }
      .bottomButton{
-      width: 90px;
-    padding-left:20px;
-    padding-right: 20px;
-}
-.footer{
-    display: inline;
-    position: fixed;
-    text-align: center;
-    bottom: 0;
-    height:80px;
-    --bottom-navigation-item-font-size: 13px;
-    --bottom-navigation-item-active-color: #55BDCA;
-    white-space: nowrap;
-}  
-.addButton{
-    font-size: 35px;
-}
+      padding-left:20px;
+      padding-right: 20px;
+  }
+  .footer{
+      display: inline;
+      position: fixed;
+      text-align: center;
+      bottom: 0;
+      height:80px;
+      --bottom-navigation-item-font-size: 13px;
+      --bottom-navigation-item-active-color: #55BDCA;
+      white-space: nowrap;
+  }  
+  .addButton{
+      font-size: 35px;
+  }
         

@@ -1,6 +1,5 @@
 <!--Login Page -->
 <script>
-  import { ArrowLeftBold } from '@element-plus/icons-vue';
   import { ref } from 'vue';
   import store from '@/store';
 
@@ -8,6 +7,7 @@
     setup(){
       const email = ref('');
       const password = ref('');
+      const showPassword = ref(false);
 
       const handleLogin = async () => {
         try{
@@ -24,47 +24,50 @@
         email,
         password,
         handleLogin,
+        showPassword,
       }
     },
     //title
     mounted() {
       document.title = 'Login | ArthriCare';
     },
-    components: {
-      ArrowLeftBold,
-    },
   };
 </script>
 <template>
   <div class="container" >
     <el-container class = "content-container">
-      <el-header>
-        <router-link to = "/">
-          <el-icon class = "backBtn"><ArrowLeftBold /></el-icon>
-        </router-link>
-      </el-header>
       <el-main style = "height: 500px">
         <div>
           <form class="input-container">
-            <h2>Welcome Back</h2>
-            <p>Login to your account</p>
-            <b><label>Email Address</label></b>
-            <input class="input" id = "email" type="email" placeholder="Please enter your email" v-model="email"/><br>
-            <b><label>Password</label></b>
-            <input class="input" id = "password" type="password" placeholder="Please enter your passoword" v-model="password"/>
+            <h2>Welcome back</h2>
+            <h4>Login to your account</h4>
+            <var-input class="input" variant="outlined" id = "email" type="email" placeholder="Email" v-model="email"
+            :rules="[
+                    (v) => !!v || 'Email is required',
+                    (v) => /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(v) || 'E-mail must be valid'
+            ]"
+            /><br>
+            <var-input class="input" variant="outlined" id = "password" :type="showPassword ? 'text' : 'password'" placeholder="Passoword" v-model="password">
+              <template #append-icon>
+                <span @click="showPassword = !showPassword" style="font-size: 15px;">{{ showPassword ? 'Hide' : 'Show' }}</span>
+              </template>
+            </var-input>
           </form>
         </div>
         <div id="mid">
-          Don't have an account?
-          <router-link to = "/Signup">Sign Up</router-link>
-          <hr>
-          Forget your password? 
-          <router-link to = "/Resetpassword">Click Here</router-link>
+          <b>Don't have an account? </b>
+          <router-link to = "/Signup"><b style = "color:#006973; text-decoration: none;">Sign up</b></router-link>
+          <var-divider description="Or" style="height: 2px; color:#006973"/>
+          <b>Forget your password? </b>
+          <router-link to = "/Resetpassword"><b style = "color:#006973;">Click here</b></router-link>
         </div>
       </el-main>
-      <el-footer>
+      <el-footer class = "footer">
         <div class="buttons">
-          <el-button class = "login-button" @click = "handleLogin">LOG IN</el-button>
+          <el-button class = "login-button" @click = "handleLogin">Log in</el-button>
+        </div>
+        <div>
+          <span>© 2023 ArthriCare</span>
         </div>
       </el-footer>
     </el-container>

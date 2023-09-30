@@ -1,14 +1,13 @@
-<!--Home Page-->
 <script>
-    import { ref,reactive} from 'vue';
-    import { UserFilled } from '@element-plus/icons-vue';
-    import { LineHorizontal320Filled, Home20Filled, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
+    import { ref } from 'vue';
+    import { AlertCircle, Logout } from '@vicons/tabler';
+    import { LineHorizontal320Filled,Home20Regular, BriefcaseMedical20Regular, PeopleCommunity20Filled, Gift20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent';
+    import { UserProfileAlt } from '@vicons/carbon';
+    import { CastForEducationFilled } from '@vicons/material';
     import { Icon } from '@vicons/utils';
     import HorizontalCalendar from '@/component/calendar.vue';
-    import SideBarContent from '@/component/Sidebar.vue';
-    import MedicationDialog from '@/component/MedicationDialog.vue';
-    import { mapGetters, mapActions } from 'vuex';
-
+    import { mapGetters, mapActions, mapMutations } from 'vuex';
+    
     export default{
         mounted(){
             //title
@@ -17,285 +16,257 @@
             const today = new Date(); 
             this.onDateSelected(today);
         },
-        setup(){
-            const active = ref(0);
-            return {active};
-        },
         data(){
             return{
-                //用户数据
-                user: reactive({
-                        name: "",
-                        email: "",
-                        AvatarUrl: "",
-                    }),
-                //sidebar
-                drawer: false,
+                drawer: ref(false),
                 //初始化存放当天需要服用的药物列表
                 medicationList: [],
                 //初始化选中日期
-                selectedDate: null,
-                //药物弹窗
-                dialogVisible: ref(false),
-                dialogTitle:'',
-                //popup dialog
-                takenMedTime: null,
-                medicationTime: null, //Timepicker中用户设置的将会吃药的时间
-                selectedMedication: {}, //存储用户当前选择的药物
-                showTimePicker: false, //timepicker
-                showAction: ref(false), //Show actions of the fab
-                showOverlay: ref(false) //Show overlay when click the fab
-            };
+                dialog: ref(false),
+                onTime: ref(false),
+                now: ref(false),
+                setTime: ref(false),
+            }
         },
-        //get user information from store
-        computed: {
-            ...mapGetters('user', ['loggedInUser'])
-        },
-        
         methods:{
-            //Drawer
-            beforeDrawerClose(done){
-                done();
-            },
-
+            ...mapMutations('reminder', ['SET_SELECTED_DATE']),
             ...mapActions('reminder', ['fetchRemindersFromBackend']),
 
+            // side bar goes to profile page
+            goToUserProfile(){
+                this.$router.push('/UserProfile');
+            },
+            gotoMsg(){
+                this.$router.push('/Message');
+            // side bar log out
+            },
+            async logout(){
+                this.$store.dispatch('user/logout');
+            },
             //Calendar (父组件中的处理选定日期的方法)
             async onDateSelected(selectedDate){
                 //存储选定的日期
                 this.selectedDate = selectedDate; 
+                this.SET_SELECTED_DATE(selectedDate);
                 console.log('Selected date:', selectedDate);
                 //假设medicationList是从后端获取的当天药物数据的数组
-                this.medicationList = await this.fetchRemindersFromBackend(selectedDate);
+                const medicationList = await this.fetchRemindersFromBackend(selectedDate);
                 //然后从早到晚排序 sorting
-                if (this.medicationList) {
-                    this.medicationList.sort((a, b) => {
-                        const timeA = new Date(a.time);
-                        const timeB = new Date(b.time);
-                        return timeA > timeB;
-                    });
-                }
+                this.medicationList.sort((a, b) => {
+                    const timeA = a.time.split(":").map(Number);
+                    const timeB = b.time.split(":").map(Number);
+
+                    if (timeA[0] !== timeB[0]) {
+                        return timeA[0] - timeB[0];
+                    }
+
+                    return timeA[1] - timeB[1];
+                });
+                this.medicationList = medicationList;
                 //testing
                 console.log("Medication List for selected date:", this.medicationList);
-                console.log (sessionStorage);
             },
-            
-            //Dialog
-            onShowMedicationPopup(medication) {
-                //构建弹窗标题，显示药物的名称和时间
-                this.dialogTitle = `${medication.name} - ${medication.time}`;
-                //将药物信息传递给弹窗组件
-                this.selectedMedication = medication ;
-                this.dialogVisible = true;
+            showMedicationDetails(medication) {
+                this.selectedMedication = medication;
+                this.$store.commit('reminder/SET_CURRENT_MEDICATION', this.selectedMedication);
+                this.dialog = true;
             },
-
-            //on time button
-            onTime(){
-                if (!this.selectedMedication){
-                    // 如果没有选定药物对象，则无法执行按时服药的操作
-                    return;
-                }
-                console.log("On Time button clicked");
-                console.log("Medication Object:", this.selectedMedication);
-                
-                // TODO: 在这里执行按时服药的逻辑，例如更新药物的状态和时间
-                this.selectedMedication.takenMedTime = this.selectedMedication.time;
-                console.log("Medication has been taken in ", this.selectedMedication.takenMedTime);
-                this.dialogVisible = false;
+            handleNow() {
+                console.log('Now button clicked');
+                this.$store.dispatch('reminder/takeMedicationNow');
+                this.dialog = false;
             },
-            //Now button
-            nowTime(){
-                if (!this.selectedMedication){
-                    // 如果没有选定药物对象，则无法执行按时服药的操作
-                    return;
-                }
-                console.log("Now Time button clicked");
-                console.log("Medication Object:", this.selectedMedication);
-                
-                const currentTime = new Date();
-                const currentHour = currentTime.getHours();
-                const currentMinute = currentTime.getMinutes();
-                const formattedTime = `${currentHour}:${currentMinute}`;
-
-                this.selectedMedication.takenMedTime = formattedTime;
-                console.log("Medication has been taken in ", this.selectedMedication.takenMedTime);
-                this.dialogVisible = false;
+            handleOnTime() {
+                this.dialog = false;
+                console.log('On Time button clicked');
             },
-            //set time button
-            setTime(medication){
-                if (!this.selectedMedication){
-                    // 如果没有选定药物对象，则无法执行按时服药的操作
-                    return;
-                }
-                console.log("Set Reminder button clicked");
-                console.log("Medication:", medication);
-                // 设置弹窗标题，显示药物的名称
-                this.dialogTitle = this.selectedMedication.name;
-                // 打开弹窗，显示时间选择器
-                this.showTimePicker = true;
+            handleSetTime() {
+                this.dialog = false;
+                console.log('Set Time button clicked');
+            }
+        },
+        computed: {
+            ...mapGetters('user', ['loggedInUser']),
+            selectedDate(){
+                return this.$store.state.reminder.selectedDate;
             },
-
-            //选择timepicker
-            onTimePickerConfirm() {
-                console.log("Selected time:", this.medicationTime);
-
-                const currentHour = this.medicationTime.getHours();
-                const currentMinute = this.medicationTime.getMinutes();
-                const formattedTime = `${currentHour}:${currentMinute}`;
-
-                //将时间保存到药物对象中
-                this.selectedMedication.takenMedTime = formattedTime;
-                console.log("Medication has been taken in ", this.selectedMedication.takenMedTime);
-                this.showTimePicker = false;
-                this.dialogVisible = false;
-            },
-            //取消选择timepicker
-            onTimePickerCancel() {
-                // 用户取消选择时间，关闭MessageBox
-                this.showTimePicker = false;
-                this.dialogVisible = false;
-            },
-            //关闭timePicker
-            onTimePickerClose() {
-                // MessageBox关闭时，重置时间选择器并关闭MessageBox
-                this.medicationTime = null;
-                this.showTimePicker = false;
-                this.dialogVisible = false;
-            },
-            //When clicking fab, show actions
-            toggleAction(){
-                this.showAction.value = !this.showAction.value
+            formattedDate(){
+                const date = new Date(this.selectedDate);
+                const options = { month: 'long', day: 'numeric' };
+                const formattedDate = date.toLocaleDateString('en-US', options);
+                return formattedDate;
             }
         },
         components:{
-            UserFilled,
-            LineHorizontal320Filled, 
-            Home20Filled, 
+            Icon,
+            Logout,
+            AlertCircle,
+            LineHorizontal320Filled,
+            Home20Regular, 
             BriefcaseMedical20Regular, 
             Gift20Regular, 
-            PeopleCommunity20Regular,
-            Icon,
+            PeopleCommunity20Filled,
+            UserProfileAlt,
+            CastForEducationFilled,
             HorizontalCalendar,
-            SideBarContent,
-            MedicationDialog,
+            ChannelAdd20Regular,
             Pill28Filled,
-            ChannelAdd20Regular
+        }
     }
-};
 </script>
-
 <template>
-    <div class = "container">
-        <el-container class = "content-container">
-            <el-header class = "header">
-                <Icon class="more" @click="drawer = true"><LineHorizontal320Filled /></Icon>
-                <span class = "username">Welcome to ArthriCare, {{ loggedInUser ? loggedInUser.name : 'Guest' }}</span>
-            </el-header>
-            <el-main class = "main">
+    <el-container class = "container">
+        <el-header class = "header">
+            <Icon class="header-icon" @click="drawer = true"><LineHorizontal320Filled /></Icon>
+            <var-ellipsis style="max-width: 270px" :tooltip="false">            
+                <span class = "username">Welcome to ArthriCare, {{ loggedInUser && loggedInUser.name ? loggedInUser.name : 'Guest' }}</span>
+            </var-ellipsis>
+            <var-icon class = "header-icon2" name="message-text-outline" @click="gotoMsg"/>
+        </el-header>    
+        <el-main class = "main">
+            <div class = "calendar">
                 <HorizontalCalendar @date-selected="onDateSelected" />
-                <!-------------------------------------------------MedicationDialog---------------------------------------------->
-                <template v-if = "medicationList && medicationList.length > 0">
-                    <MedicationDialog :medicationList="medicationList" :selectedMedication="selectedMedication" :takenMedTime="selectedMedication.takenMedTime"  v-if="medicationList && medicationList.length > 0" @show-medication-popup="onShowMedicationPopup"/>
-                </template>
-                <template v-else>
-                    <div style = "text-align: center; padding: 20px; color:#006973; font-size: larger;">
-                        <p><b>No meds on today...</b></p>
-                    </div>
-                </template>
-                <!-------------------------------- Dialog -------------------------------->
-                <el-dialog  v-model = "dialogVisible" :title="dialogTitle" center align-center width="90%" round>
-                    <template #header>
-                        <span style="color: #006973; font-weight: bold; font-size: larger;">{{ dialogTitle }}</span>
-                    </template>
-                    <div style = "text-align: center;">
-                        <el-button type="primary" @click="onTime(medication)" round>On Time</el-button>
-                        <el-button type="primary" @click="nowTime(medication)" round>Now</el-button>
-                        <el-button type="primary" @click="setTime(selectedMedication)" round>Set Time</el-button>
-                    </div>
-                </el-dialog>
-                <!------------------------ Dialog for medication time picker ----------------->
-                <el-dialog v-model="showTimePicker" title="Set Time" @close="onTimePickerClose" center align-center width="90%">
-                    <template #header>
-                        <span style="color: #006973; font-weight: bold; font-size: larger;">{{ dialogTitle }}</span>
-                    </template>
-                    <div style = "text-align: center;">
-                        <el-time-picker  v-if="showTimePicker" v-model="medicationTime" placeholder="Select time" format="HH:mm"></el-time-picker>                        
-                    </div>
-                    <template v-slot:footer>
-                        <el-button @click="onTimePickerCancel" round>Cancel</el-button>
-                        <el-button type="primary" @click="onTimePickerConfirm" round>Confirm</el-button>
-                    </template>
-                </el-dialog>
-                <!-------------------------------------------------MedicationDialog---------------------------------------------->
-            </el-main>
-
-        </el-container>
-        <var-bottom-navigation
-            class="footer"
-            v-model:active="active"
-            border="true"
-            safe-area="true"
-        >
-            <var-link href="/#/Home" underline="none">
-            <var-bottom-navigation-item class="bottomButton" name="homeButton">
-                <Icon  style="font-size: 38px;"><Home20Filled /></Icon><br>
-                <span>Home</span>
-            </var-bottom-navigation-item>
-            </var-link>
-            <var-link href="/#/MyMeds" underline="none">
-            <var-bottom-navigation-item class="bottomButton" name="medsButton">
-                <Icon style="font-size: 38px;"><BriefcaseMedical20Regular /></Icon><br>
-                <span>My Meds</span>
-            </var-bottom-navigation-item>
-            </var-link>
-            <var-link href="/#/Rewards" underline="none">
-            <var-bottom-navigation-item class="bottomButton" name="rewardsButton">
-                <Icon style="font-size: 38px;"><Gift20Regular /></Icon><br>
-                <span>Rewards</span>
-            </var-bottom-navigation-item>
-            </var-link>
-            <var-link href="/#/Community" underline="none">
-            <var-bottom-navigation-item class="bottomButton" name="profileButton">
-                <Icon style="font-size: 38px;"><PeopleCommunity20Regular /></Icon><br>
-                <span>Community</span>
-            </var-bottom-navigation-item>    
-            </var-link>
-            <!-- <template #fab >
-                <var-link href="/#/AddMed" style="color: white;">
-                <Icon class="addButton"><Add20Filled /></Icon>
-                </var-link>
-            </template> -->
-        </var-bottom-navigation>
-        
-        <!-- Fab button -->
-        <var-fab v-model:active="showAction" style="margin-bottom: 100px;" color="#006973" inactive-icon-size="26px" active-icon-size="30px" elevation="5">
-            <var-button class="action" round color="#F27B42" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
-                <var-link href="/#/AddPost" text-color="white" text-size="25px">
-                <Icon><ChannelAdd20Regular /></Icon>
-            </var-link>
-            </var-button>
-            <var-button class="action" round color="#55BDCA" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
-                <var-link href="/#/AddMed" text-color="white" text-size="25px">
-                    <Icon><Pill28Filled /></Icon>
-                </var-link>
-            </var-button>
-        </var-fab>
-        <el-drawer style="background-color: #006973;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
-            <!--Action是模拟接口，与后端连接时更换-->
-                <div class = "sidebar">
-                    <el-upload action="" :show-file-list="false">
-                        <el-avatar :size="65">
-                            <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
-                                <template v-else>
-                                    <UserFilled class="defalut-avatar" />
-                                </template>
-                        </el-avatar>   
-                    </el-upload> 
+            </div>
+            <template v-if = "medicationList && medicationList.length > 0">
+                <div :class="['divider', {'last-medication': index === medicationList.length - 1}]" v-for = "(medication, index) in medicationList" :key = "medication.reminderId">
+                    <span style = "width: 30vw; color: #006973; font-weight: bold;">{{ medication.time }}</span>
+                    <var-divider vertical/>
+                    <var-card layout="row" elevation = 0 outline @click = "showMedicationDetails(medication)">
+                        <template #title>
+                            <h3>{{ medication.name }}</h3>
+                        </template>
+                        <template #description>
+                            <div v-if="medication.takenMedTime">
+                                <p>Taken at {{ medication.takenMedTime }}</p>
+                            </div>
+                        </template>
+                    </var-card>
                 </div>
-            <SideBarContent :imgUrl="imgUrl" />    
-        </el-drawer>
-    </div>
+            </template>
+            <template v-else>
+                    <div style = "text-align: center; padding: 20px; color:#006973; font-size: larger;">
+                        <p><b>No meds on this date</b></p>
+                    </div>
+            </template>
+        </el-main>
+    </el-container>
+    <el-dialog  v-model = "dialog" center align-center width="90%" round>
+        <template #header>
+            <span style="color: #006973; font-weight: bold; font-size: larger;">{{ selectedMedication.name }}</span>
+        </template>
+        <div style = "text-align: center; font-size: small; line-height: 2;">
+            <span>Scheduled for {{ selectedMedication.time}}, {{ formattedDate }}</span><br>
+            <span>Medication category: {{ selectedMedication.category}}</span><br>
+            <span>Take {{ selectedMedication.dosageUnit }}
+                <span v-if="selectedMedication.category === 'Pill'">pill(s)</span>
+                <span v-if="selectedMedication.category === 'Tablet'">tablet(s)</span>
+                <span v-if="selectedMedication.category === 'Injection'">injection(s)</span>
+                <span v-if="selectedMedication.category === 'Drop'">drop(s)</span>
+            </span>
+        </div>
+        <template #footer>
+            <div style = "text-align: center;">
+                <el-button color="#006973" @click="handleNow()" round>Now &#10004;</el-button>
+                <el-button color="#006973" @click="handleOnTime()" round>On Time &#10004;</el-button>
+                <el-button color="#006973" @click="handleSetTime()" round>Set Time &#10004;</el-button>
+            </div>
+        </template>
+    </el-dialog>
+    <!-- time selector dialog -->
+    <el-dialog v-model="onTime" center align-center width="90%" round>
+        <template #header>
+            <span style="color: #006973; font-weight: bold; font-size: larger;">{{ selectedMedication.name }}</span>
+        </template>
+        <div style = "text-align: center; font-size: small; line-height: 2;">
+            <el-date-picker v-model = "value2" type="datetime" placeholder="Pick a date and time" format="YYYY/MM/DD HH:mm:ss"/>
+        </div>
+    </el-dialog>
+
+    <var-bottom-navigation
+        class="footer"
+        v-model:active="activeBottom"
+        border="true"
+        safe-area="true"
+        :fab-props="{color:'#55BDCA'}"
+    >
+        <var-link href="/#/Home" underline="none">
+        <var-bottom-navigation-item class="bottomButton" name="homeButton">
+            <Icon  style="font-size: 38px;"><Home20Regular /></Icon><br>
+            <span>Home</span>
+        </var-bottom-navigation-item>
+        </var-link>
+        <var-link href="/#/MyMeds" underline="none">
+        <var-bottom-navigation-item class="bottomButton" name="medsButton">
+            <Icon style="font-size: 38px;"><BriefcaseMedical20Regular /></Icon><br>
+            <span>My Meds</span>
+        </var-bottom-navigation-item>
+        </var-link>
+        <var-link href="/#/Rewards" underline="none">
+        <var-bottom-navigation-item class="bottomButton" name="rewardsButton">
+            <Icon style="font-size: 38px;"><Gift20Regular /></Icon><br>
+            <span>Rewards</span>
+        </var-bottom-navigation-item>
+        </var-link>
+        <var-link href="/#/Community" underline="none">
+        <var-bottom-navigation-item class="bottomButton" name="profileButton">
+            <Icon style="font-size: 38px;"><PeopleCommunity20Filled /></Icon><br>
+            <span>Community</span>
+        </var-bottom-navigation-item>    
+        </var-link>
+    </var-bottom-navigation>
+
+    <!-- Fab button -->
+    <var-fab v-model:active="showAction" style="margin-bottom: 100px;" color="#006973" inactive-icon-size="26px" active-icon-size="30px" elevation="5">
+        <var-button class="action" round color="#F27B42" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
+            <var-link href="/#/AddPost" text-color="white" text-size="25px">
+            <Icon><ChannelAdd20Regular /></Icon>
+        </var-link>
+        </var-button>
+        <var-button class="action" round color="#55BDCA" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
+            <var-link href="/#/AddMed" text-color="white" text-size="25px">
+                <Icon><Pill28Filled /></Icon>
+            </var-link>
+        </var-button>
+    </var-fab>
+
+    <!-- Side barDrawer -->
+    <el-drawer v-model="drawer" direction="ltr" size="70%" :show-close="false" style = " background-color: #006973;">
+        <template #header>
+            <div class = "topping">
+                <var-avatar :size = "100" bordered bordered-color="#FFFFFF" lazy error = "https://img.icons8.com/fluency-systems-regular/48/user--v1.png"/>
+            </div>
+        </template>
+        <div class = "middle">
+            <div class = "icon-text-container" @click = "goToUserProfile">
+                <div class="icon-container">
+                    <Icon><UserProfileAlt/></Icon>
+                </div>
+                <p>My profile</p>
+            </div>
+            <div class = "icon-text-container">
+                <div class="icon-container">
+                    <Icon><CastForEducationFilled/></Icon>
+                </div>
+                <p>Education</p>
+            </div>
+        </div>
+        <template #footer>
+            <div class = "bottom">
+                <div class = "icon-text-container">
+                    <div class="icon-container">
+                        <Icon><AlertCircle/></Icon>
+                    </div>
+                    <p>About</p>
+                </div>
+                <div class = "icon-text-container" @click = "logout">
+                    <div class="icon-container">
+                        <Icon><Logout/></Icon>
+                    </div>
+                    <p>Log out</p>
+                </div>
+            </div>
+        </template>
+    </el-drawer>
 </template>
 
-<!-- the following is all css-->
-<style src = "@/css/homepage.css" scoped></style>
+<style src="@/css/homepage.css" scoped></style>

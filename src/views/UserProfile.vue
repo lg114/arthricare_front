@@ -3,8 +3,9 @@
     import { ref } from 'vue';
     import { LineHorizontal320Filled,Pill28Filled, ChannelAdd20Regular, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular, Edit20Regular, AddCircle20Regular } from '@vicons/fluent'
     import { Icon } from '@vicons/utils'
-    import SideBarContent from '@/component/Sidebar.vue';
-    import { UserFilled } from '@element-plus/icons-vue';
+    import { AlertCircle, Logout } from '@vicons/tabler';
+    import { UserProfileAlt } from '@vicons/carbon';
+    import { CastForEducationFilled } from '@vicons/material';
     
     export default{
         mounted() {
@@ -41,21 +42,26 @@
                 this.showAction.value = !this.showAction.value
             },
             handleAfterRead(avatar) { 
-            console.log(avatar)
-          }
+                console.log(avatar)
+            },
+            async logout(){
+                this.$store.dispatch('user/logout');
+            },
         },
         components: {
-            UserFilled,
             LineHorizontal320Filled, 
             Pill28Filled, ChannelAdd20Regular,
             Home20Regular, 
             BriefcaseMedical20Regular,
-             Gift20Regular, 
-             PeopleCommunity20Regular, 
-             Edit20Regular,
-             AddCircle20Regular,
+            Gift20Regular, 
+            PeopleCommunity20Regular, 
+            Edit20Regular,
+            AddCircle20Regular,
+            UserProfileAlt,
+            CastForEducationFilled,
+            AlertCircle,
+            Logout,
             Icon,
-            SideBarContent
         }
     };
 </script>
@@ -135,7 +141,6 @@
                 <span>Community</span>
             </var-bottom-navigation-item>    
             </var-link>
-
         </var-bottom-navigation>
                         <!-- Fab button -->
                         <var-fab v-model:active="showAction" style="margin-bottom: 100px;" color="#006973" inactive-icon-size="26px" active-icon-size="30px" elevation="5">
@@ -150,23 +155,92 @@
                 </var-link>
             </var-button>
         </var-fab>
-        <el-drawer style="background-color: #006973;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
-            <!--Action是模拟接口，与后端连接时更换-->
-                <div class = "sidebar">
-                    <el-upload action="" :show-file-list="false">
-                        <el-avatar :size="65">
-                            <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
-                                <template v-else>
-                                    <UserFilled class="defalut-avatar" />
-                                </template>
-                        </el-avatar>   
-                    </el-upload> 
+    <!-- Side barDrawer -->
+    <el-drawer v-model="drawer" direction="ltr" size="70%" :show-close="false" style = " background-color: #006973;">
+        <template #header>
+            <div class = "topping">
+                <var-avatar :size = "100" bordered bordered-color="#FFFFFF" lazy error = "https://img.icons8.com/fluency-systems-regular/48/user--v1.png"/>
+            </div>
+        </template>
+        <div class = "middle">
+            <div class = "icon-text-container" @click = "goToUserProfile">
+                <div class="icon-container">
+                    <Icon><UserProfileAlt/></Icon>
                 </div>
-            <SideBarContent :imgUrl="imgUrl" />    
-        </el-drawer>
+                <p>My profile</p>
+            </div>
+            <div class = "icon-text-container">
+                <div class="icon-container">
+                    <Icon><CastForEducationFilled/></Icon>
+                </div>
+                <p>Education</p>
+            </div>
+        </div>
+        <template #footer>
+            <div class = "bottom">
+                <div class = "icon-text-container">
+                    <div class="icon-container">
+                        <Icon><AlertCircle/></Icon>
+                    </div>
+                    <p>About</p>
+                </div>
+                <div class = "icon-text-container" @click = "logout">
+                    <div class="icon-container">
+                        <Icon><Logout/></Icon>
+                    </div>
+                    <p>Log out</p>
+                </div>
+            </div>
+        </template>
+    </el-drawer>
     </div>
 </template>
 
 
 
 <style src = "@/css/userprofile.css" scoped></style>
+<style scoped>
+.topping{
+    color:#FFFFFF;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.var-avatar{
+    position: relative;
+    top: 5vh;
+}
+.middle{
+    color:#FFFFFF;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+}
+.middle p{
+    margin-bottom: 20px;
+    text-align: center;
+    color:#FFFFFF;
+}
+.icon-container {
+    display: inline-block;
+    margin-right: 50px; 
+}
+.icon-text-container {
+    display: flex;
+    padding-inline: 5px;
+    justify-content: center;
+}
+
+.bottom{
+    color:#FFFFFF;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+}
+.bottom p {
+    margin-bottom: 20px;
+    color:#FFFFFF;
+}
+</style>
