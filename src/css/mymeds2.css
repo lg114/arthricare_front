@@ -1,0 +1,224 @@
+
+    img{
+      width: 12%;
+      height:12%;
+      margin-top:10px;
+      margin-right:15px;
+
+    }
+    .sidebar{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+  }
+
+.uploaded-avatar {
+        width: 100%;
+        height: 100%;
+}
+.defalut-avatar{
+    width: 70%;
+    height: 80%;
+}
+.menu-item{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+}
+.menu-icon{
+    color: #ffffff;
+    font-size: 20px;
+}
+.menu-icon1{
+    color: #ffffff;
+    font-size: 25px;
+    margin-right: 15px;
+}
+.menu-icon2{
+    color: #ffffff;
+    font-size: 25px;
+    margin-right: 5px;
+}
+.menu-icon3{
+    color: #ffffff;
+    font-size: 25px;
+    margin-right: 1px;
+}
+.menu-button{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    cursor: pointer;
+}
+.menu-button3{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 130px;
+    cursor: pointer;
+}
+.menu-button3 p{
+    font-size: 20px;
+    font-weight: 550;
+    margin: 20px 35px;
+}
+.menu-button p{
+    font-size: 20px;
+    font-weight: 550;
+    margin: 30px 30px;
+    text-decoration: none;
+}
+    
+    .zeroObjAlert{
+      width:100%;
+      height:100%;
+      margin-left:5%;
+      background-color: white;
+   
+    }
+
+    .zeroObjAlertP{
+      color:#55BBC9;
+      position: relative;
+      top:20%;
+      font-size:200%;
+      height:1000%;
+      text-align: center;
+      right:5%;
+
+    }
+    .container{
+      overflow-y: auto;
+        display: flex;
+        align-items: center;
+        height:100%;
+        width:100%;
+        background-color:#006973;
+        overflow: auto;
+        flex-direction: column;
+        margin: 0 ;
+    }
+
+    #container2{
+      overflow-y: auto;
+        padding-left:auto;
+        padding-right:auto;
+        align-items: center;
+        background-color: white;
+        height:100%;
+        width:100%;
+        justify-content: center;
+        align-items: center;
+        display:inline-block;
+    }
+
+    #title{
+      font-size: 130%;
+      position: relative;
+      color:#FFFFFF;
+      left: 33%;
+    }
+
+    .container-flex{
+       display:flex;
+    }
+
+    .container-block{
+       width:100%;
+       height:100%;
+       
+    }
+
+    .OperaBtn{
+        font-size: 20px;
+        color:#FFFFFF;
+        position:relative;
+        left:5%;
+    }
+
+    .PlusBtn{
+        font-size: 45px;
+        color: red;
+        display:relative;
+        margin-top:4%;
+        margin-left:10%;
+      }
+
+      .arrowBtn{
+        font-size: 180%;
+        color: grey;
+        display:relative;
+        margin-top:100%;
+        right:90%;
+        bottom:17%;
+     
+      }
+
+      #medIcon{
+        position:relative;
+        margin-left:10%;
+      }
+
+     #p1{
+        font-size:101%;
+        margin-top:0;
+        margin-bottom:0;
+        display:relative;
+        border-bottom: 1px solid #a39e9e;
+        padding:3%;
+        padding-left:9%;
+        font-weight:bold;
+        font-family: custom;
+     } 
+
+     .medObject{
+        border-bottom: 2px solid #DDDDDD;
+        width:100%;
+        height:11%;
+        padding:3%;
+     }
+
+     .medName{
+        color : Black;
+        margin-left:6%;      
+        margin-right:6%;   
+        display:relative;
+        margin-top:5%;
+        letter-spacing:1px;
+        font-size:15px;
+        width:40%;
+     
+     }
+
+     .date{
+        color : #a39e9e;
+        font-size:3px;
+        margin-left:6%;       
+        display:relative;
+        padding:0;
+        letter-spacing:0.5px;
+     }
+     .bottomButton{
+      padding-left:20px;
+      padding-right: 20px;
+  }
+  .footer{
+      display: inline;
+      position: fixed;
+      text-align: center;
+      bottom: 0;
+      height:80px;
+      --bottom-navigation-item-font-size: 13px;
+      --bottom-navigation-item-active-color: #55BDCA;
+      white-space: nowrap;
+  }  
+  .addButton{
+      font-size: 35px;
+  }
+        

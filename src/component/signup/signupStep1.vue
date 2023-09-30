@@ -1,0 +1,135 @@
+<template>
+    <el-container class = "container">
+        <el-header class = "header">
+            <div>
+                <div class = "buttons">
+                    <span @click="prevStep"><var-icon name="chevron-left" color = "#006973"/>Back</span>
+                    <span @click="nextStep">Skip<var-icon name="chevron-right" color = "#006973"/></span>
+                </div>
+            </div>
+        </el-header>
+        <el-main class = "main">
+            <div class = "logo">
+<<<<<<< Updated upstream
+                <img src = "@/assets/icon.png">
+=======
+                <img src = "@/assets/logo.png">
+>>>>>>> Stashed changes
+            </div>
+            <div class = "form">
+                <h1>Let's create your profile</h1>
+                <h3>What is your name?</h3>
+                <var-input class = "input" variant="outlined" id = "name" type="text" v-model="tempFormData.name" placeholder="Name" style = "margin-bottom: 20px;" />
+                <var-button block @click = "updateData"><b>Continue</b></var-button>
+            </div>
+
+        </el-main>
+        <el-footer class = "footer">
+            <div>
+                <span>© 2023 ArthriCare</span>
+            </div>
+        </el-footer>
+    </el-container>
+</template>
+<script>
+    export default {
+        props: ['formData'],
+        data(){
+            return {
+                currentStep: 'signupStep1',
+                tempFormData: {
+                    name: this.formData.name,
+                }
+            }
+        },
+        methods:{
+            updateData(){
+                this.$emit('updateFormData',{
+                    name:this.tempFormData.name
+                });
+                this.$emit('continueToNextStep');
+            },
+            prevStep() {
+                this.$emit('prevStep');
+            },
+                nextStep() {
+                this.$emit('nextStep');
+            },
+        },
+        watch:{
+            formData:{
+                deep: true,
+                handler(newValue) {
+                    this.tempFormData.name = newValue.name;
+                },
+            }
+        }
+    }
+</script>
+<style scoped>
+    .container{
+        background-color: #CFEEF5;
+        height: 100vh;
+    }
+    .header{
+        margin-top: 5%;
+    }
+    .buttons{
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center; 
+    }
+    .header span{
+        color: #006973;
+        font-size: 15px;
+        font-weight: 500;
+        cursor: pointer;
+    }
+    .logo{
+        position: relative;
+        left: -2%;
+    }
+    img{
+        width: 25%;
+    }
+    .form{
+        --button-default-color: #006973;
+        --button-default-text-color: #CFEEF5;
+        --button-normal-height: 56px;
+    }
+    .input{
+        width: 100%;
+        font-weight: bold;
+        border-radius: 10px;
+        --field-decorator-text-color: #006973;
+        --field-decorator-focus-color: #F27B42;
+        --field-decorator-blur-color: #006973;
+        --field-decorator-placeholder-size: 16px;
+        --field-decorator-line-size: 2px;
+        --input-input-font-size: 18px;
+    }   
+    h1{
+        color:#006973;
+    }
+    h3{
+        color:#006973;
+    }
+    .footer div{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .footer span{
+        margin-left: 8px;
+        color: #006973;
+        font-size: 15px;
+        font-weight: 500;
+    }
+    @media screen and (min-width: 768px){
+        img {
+            width: 15%;
+            margin-left: 25px;
+        }
+    }
+</style>

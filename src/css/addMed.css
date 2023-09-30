@@ -1,0 +1,354 @@
+/* Add Med Page Css */
+.Frequency{
+  width:107%;
+}
+
+/* scoped src="@/style/addMed.css" */
+h1{
+  color:#55BBC9;
+  font-size:17px;
+  font-family: system-ui;
+}
+.container3{
+  border: 1px solid #eceff1;
+  padding-left:5%;
+  padding-right:5%;
+  margin:5%;
+  background-color: #ffffff;
+  padding-bottom:5%;
+}
+.calculationPart{
+  display:flex;
+  width:40%;
+  height:100%;
+  margin-left:20%;
+  border: 4px solid #1890FF;
+  border-radius:10px 10px 10px 10px;
+  margin:0;
+  padding:0;
+}
+.buttons{
+height:30%;
+width:100%;
+}
+
+#textarea1{
+background-size: 100% 4rem;
+border: 1px solid  #DDDDDD;
+width: 96%;
+padding: 2% ;
+font-size:99%;
+color:black;
+font-family: arial;
+margin-top:3%;
+height:10px;
+}
+
+.row-input{
+color: black;
+background-color: white;
+border: 1px solid #ccdde9;
+width: 100.5%;
+height: 20%;
+border-radius: 5px;
+padding-left: 2%;
+outline: none;
+font-size:100%;
+margin-top:3%;
+position:relative;
+z-index: 1;
+padding-bottom:5%;
+padding-top:5%;
+}
+select{
+appearance: none;
+}
+.container-flex{
+display:flex;
+z-index: 1;
+}
+
+.container-block{
+display:inline-block;
+width:40%;
+
+}
+
+.BellBtn{
+font-size: 30px;
+color: #1890FF;
+position:relative;
+margin-left:60%;
+size:40%;
+}
+
+.note{
+position:relative;
+width:130px ; 
+height:30px;
+top:7%;
+left:2%;
+font-size:110%;
+border-radius:10px 10px 10px 10px;
+background-color:#56569D;
+text-align: center;
+color:white;
+cursor: pointer;
+
+}
+.note:hover{
+background-color: grey;
+}
+
+#date{
+margin-top: 2%; 
+width:100.5%; 
+}
+.number{
+display: block;
+float:center;
+background-color: rgb(253, 248, 248);
+bottom: 13%;
+width:1%;
+position:relative;
+font-size:200%;
+color:#0b437a;
+margin-left:12%;
+margin-right:5%;
+
+}
+.increaseButton{
+font-size:180%;
+margin-left:30%;
+color:#56569D;
+position:relative;
+top:4px;
+
+}
+
+.decreaseButton{
+font-size:180%;
+margin-right:10%;
+color:#9F9FC8;
+top:4px;
+position:relative;
+}
+
+.calculationPart{
+display:flex;
+width:40%;
+height:80%;
+border: 2px solid#9F9FC8;
+/* border: 2px solid #1890FF; */
+border-radius:10px;
+justify-content: center;
+padding-left:10%;
+padding-right:10%;
+margin-left:17%;
+margin-top:5%;
+}
+
+.unitButton{
+color: #a19191;
+text-align: center;
+float:right;
+display: block;
+cursor: pointer;
+padding: 10px;
+background-color: rgb(253, 248, 248);
+width:45px;
+position:relative;
+font-size: 15px;
+border-radius:10px 10px 10px 10px;
+border: 2px solid #a39e9e;
+height:8px;
+bottom:3%;
+right:49%;
+
+}
+
+#counter {
+font-size: 24px;
+text-align: center;
+}
+.Button{
+position: relative;
+background-color: #1890FF;
+border: none;
+font-size:130%;
+color: #ffffff;
+padding: 0px;
+width: 50%;
+text-align: center;
+transition-duration: 0.6s;
+text-decoration: none;
+overflow: hidden;
+cursor: pointer;
+left:20%;
+border-radius:10px 10px 10px 10px; 
+height: 4%;
+margin-top:40px;
+line-height: -50px;
+}
+
+.Button::after{
+content: '';
+background:#53a4f0;
+display: block;
+position: absolute;
+padding-top: 300%;
+padding-left: 350%;
+margin-left: -20px ;
+margin-top: -120%;
+opacity: 0;
+transition:all 0.8s;
+}
+.Button:active::after{
+padding: 0;
+margin: 0;
+opacity: 1;
+transition: 0s;
+}
+
+.container{
+overflow-y: auto;
+display: flex;
+align-items: center;
+height: 100%;
+width:100%;
+background-color:#006973;
+overflow: auto;
+flex-direction: column;
+margin: 0 ;
+}
+
+#container2{
+overflow-y: auto;
+padding-left:auto;
+padding-right:auto;
+align-items: center;
+background-color: rgb(251, 251, 255);
+height:200%;
+width:100%;
+padding-bottom:100px;
+justify-content: center;
+align-items: center;
+display:inline-block;
+}
+
+#title{
+font-size: 100%;
+position:relative;
+color:#FFFFFF;
+font-family: system-ui;
+top:13%;
+width:150%;
+padding-top:6.5%;
+}
+
+#label{   
+width:95%;
+font-weight:600;
+font-size: 85%;
+color:  #787885;
+text-align: left;
+margin-bottom:0%;
+margin-top:4%;
+font-family: system-ui;
+margin-left:8px;
+}
+
+input{
+align-items: center;
+width:100%;    
+font-size:90%;   
+background-color: white;
+border:none; 
+border : 1px solid #ccdde9;
+color: black;
+
+margin-bottom:2%;
+margin-top:2%;
+padding:5%;
+border-radius: 5px;
+font-family: system-ui;
+box-sizing: border-box;
+} 
+
+input[type="time"] {
+width:30%;
+height:50px;
+padding:2%;
+padding-left:3%;
+font-size:100%;
+size:5%;
+font-family:system-ui;
+padding-top:1%;
+margin-top:1.5%;
+position:relative;
+margin-right:2%;
+}
+
+input:focus
+{ 
+outline-style: none;
+border-bottom: 1px solid #b5b7c2;
+}
+
+.backBtn{
+color:#FFFFFF;
+position:relative;
+right:150%;
+top:30%;
+}
+
+.menu {
+display: inline-block;
+position:absolute;
+top:25%;
+right:40%;
+height:auto;
+width:50%;
+}
+
+.selected-option {
+width: 120%;
+padding: 10px;
+background-color: #f4f4f4;
+border-radius: 5px;
+cursor: pointer;
+border: 1px solid white;
+color:#008866;
+font-size:50%;
+letter-spacing:1px;
+position: relative;
+z-index: 3;
+}
+
+.login-button{
+margin-top:5%;
+margin-left:2.5%;
+width: 95%;
+height: 350%;
+margin-bottom: 10px;
+border-radius: 10px;
+font-weight: 700;
+font-size:17px;
+}
+
+.login-button{
+color:white;
+position: relative;
+display: inline-block;
+padding: 10px 20px;
+background-color: transparent;
+background-color:#006973;
+border: 2px solid white;
+transition: background-color 0.5s, color 0.5s;
+}
+
+option {
+padding-left: 20px;
+background-image: url("@/assets/capsulesblue.png");
+background-repeat: no-repeat;
+}

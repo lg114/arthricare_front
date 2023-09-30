@@ -1,27 +1,197 @@
 <!--Add Med Page -->
 <script setup>
-  import {ArrowLeftBold} from '@element-plus/icons-vue';
-  
+  import store from "@/store";
+  import { mapGetters } from 'vuex';
+  import '@varlet/ui/es/button/style/index';
 </script>
+
+<template>
+  <el-container class = "container">
+     
+   <div class = "container-flex" style="height:100% ; width:50% ;">
+     <router-link to = "/MyMeds">
+       <var-icon class="backBtn" name="chevron-left" :size="42" color="white"/>
+     </router-link> 
+
+       <p id= "title">Add Medication</p>
+     </div>
+     
+    <div id = container2>
+     <div class = "container3">
+       <h1>MEDICATION DETAIL </h1>
+
+       <p id = "label" >Medication Name *</p>
+       <input ref="MedName" id="MedName" type="text" placeholder="Mecication Name" @keyup="processInput" @focus="toggleOptions"/>
+       
+       <div  class="menu" v-if="this.Meds2!==null  && showMed">
+         <div ref="MedOption"  class="selected-option" v-for="item in Meds2" :key="item" @click="handleItemClick(item)">{{ item }}</div>
+       </div> 
+
+     <div class="container-flex" >
+       <div class="container-block"  >
+         <p id = "label" >Category *</p>
+         <label for = "Category"></label>
+         <select style = " height: 48px;width:115% ; margin-right:5px ; padding-left: 13%;padding-top: 1%;padding-bottom: 1%" ref = "Category" name="Category" id="Category" class = "row-input" v-model="selectedCategory">
+           <option value="" data-icon="@/assets/capsulesblue.png" alt="ArthriCare Logo" disabled selected>Select Category *</option>
+           <option value="Pill" selected>Pill</option>
+           <option value="Tablet">Tablet</option>
+           <option value="Injection">Injection</option>
+           <option value="Drop">Drop</option>
+         </select>
+       </div>
+
+       <div class="container-block" style="margin-left:9% ;">
+         <p id = "label">Doses *</p>
+         <input ref="Unit" style = "width:128% ; height: 66.4%;padding-left:12% " type="number" placeholder="Dosage"  />
+       </div>  
+   
+     </div>
+
+       <p id = "label">Note (Optional)</p>
+       <input id="Note" ref="Note" type="text" placeholder="Note"  />
+     </div>   
+     <div class = "container3">
+       <h1>SET REMINDER</h1>
+
+       <p id = "label" >Frequency *</p>
+       <div class="Frequency1">
+         <select  ref="Frequency" name="Frequency" id="Frequency" class ="row-input" v-model="selectedFrequency" style = "padding-left:5% ">
+          <option value="" disabled selected>Select Category</option>
+          <option value="Once a Day">Once a day</option>
+          <option value="Twice a Day">Twice a day</option>
+          <option value="Three times a Day">Three times a day</option>
+         </select>
+       </div>
+       <p id = "label" >Time *</p>
+       <div  v-if="selectedFrequency === 'Once a Day'">
+         <input type="time" v-model="timeInput1" />
+       </div>
+
+       <div v-else-if="selectedFrequency === 'Twice a Day'">
+         <input type="time" v-model="timeInput1" />
+         <input type="time" v-model="timeInput2" />
+       </div>
+
+       <div class="Frequency" v-else-if="selectedFrequency === 'Three times a Day'">
+         <input type="time" v-model="timeInput1" />
+         <input type="time" v-model="timeInput2" />
+         <input type="time" v-model="timeInput3" />
+       </div>
+
+       <p id = "label">Start Time *</p>
+       <div id = "date" >
+         <VueDatePicker1 ref = "StartDate" id="startDate"  v-model="selectedStartDate" :format="dateFormat"></VueDatePicker1>
+       </div>
+       
+       <p id = "label" style="margin-top: 7%;">End Time *</p>
+      
+         <VueDatePicker2 ref = "EndDate" id="endDate" v-model="selectedEndDate" :format="dateFormat"></VueDatePicker2>
+
+       <div class = "container-flex" style="margin-top:10%">   
+     </div>   
+       </div>  
+       <el-footer class >
+           <div class="buttons" >
+                <el-button class = "login-button" @click = "saveData">ADD</el-button> 
+           </div>
+        </el-footer> 
+     </div>
+
+   </el-container>
+</template>
+
+<style src="@/css/addMed.css" scoped></style>
 
 <script>
 import VueDatePicker1 from '@vuepic/vue-datepicker';
 import VueDatePicker2 from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
+import axios from 'axios';
 
 export default {
-  components: { VueDatePicker1 , VueDatePicker2},
+  components: { VueDatePicker1 , VueDatePicker2 },
+  computed: {
+    changeToTrue() {
+      return this.$store.state.changeToTrue;
+    },
+    //get user information from store
+    ...mapGetters('user', ['isLoggedIn', 'loggedInUser']),
+    
+  },
   data() {
     return {
-      date1: null,
-      date2: null,
+      timeInput1: '',
+      timeInput2: '',
+      timeInput3: '',
+
+      /// don's Edit
+      timeInputs:[],
+
+      selectedDate: null, 
       counter: 0,
-      Meds : ["Abatacept","Adalimumab","Allopurinol","Ambrisentan","Anakinra","Anifrolumab","Apremilast","Azathioprine",
-      "Baricitinib","Biosimilars","Bisphosphonates (Oral)","Bisphosphonates (Intravenous/IV)","Bosentan"
-      ,"Cannabinoids - Medicinal Cannabis","Certolizumab","Colchicine","Ciclosporin"],
+      selectedCategory: null,
+      selectedFrequency: null,
+      selectedStartDate: null,
+      selectedEndDate: null,
+
+      dateFormat: 'yyyy-MM-dd',
+      Meds : ["Abatacept",
+    "Adalimumab",
+    "Allopurinol",
+    "Ambrisentan",
+    "Anakinra",
+    "Anifrolumab",
+    "Apremilast",
+    "Azathioprine",
+    "Baricitinib",
+    "Biosimilars",
+    "Bisphosphonates (Oral)",
+    "Bisphosphonates (Intravenous/IV)",
+    "Bosentan",
+    "Cannabinoids - Medicinal Cannabis",
+    "Certolizumab",
+    "Colchicine",
+    "Ciclosporin",
+    "Cyclophosphamide",
+    "Denosumab",
+    "Duloxetine",
+    "Etanercept",
+    "Febuxostat",
+    "Glucosamine",
+    "Golimumab",
+    "Goserelin",
+    "Guselkumab",
+    "Hyaluronic Acid",
+    "Hydroxychloroquine",
+    "Iloprost",
+    "Infliximab",
+    "Ixekizumab",
+    "IV Immunuglobulin",
+    "Leflunomide",
+    "Methotrexate",
+    "Self-Injecting Methotrexate for the Treatment of Arthritis",
+    "Mycophenolate",
+    "NSAIDs",
+    "Opioids",
+    "Paracetamol",
+    "Prednisolone",
+    "Pregabalin",
+    "Probenecid",
+    "Raloxifene",
+    "Rituximab",
+    "Romosozumab",
+    "Secukinumab",
+    "Sulfasalazine",
+    "Tacrolimus",
+    "Teriparatide",
+    "Tocilizumab",
+    "Tofacitinib",
+    "Ustekinumab",
+    "Upadacitinib"],
       Meds2:[],
       Meds3:[],
-    
+
+      // pass data to MyMed
+
 
       category: [
         { id: 1, title: 'Pill' },
@@ -35,9 +205,7 @@ export default {
       ],
       selectedMed: null,
       showMed: false,
-
     };
-    
   },
   
   methods: {
@@ -51,7 +219,8 @@ export default {
         this.counter--;
       }
     },
-   
+
+    // fliter letter
     filterWordsByLetter(wordsArray, letter) {
       const lowercaseLetter = letter.toLowerCase();
       const filteredWords = wordsArray.filter(word => word.toLowerCase().startsWith(lowercaseLetter));
@@ -69,7 +238,7 @@ export default {
   }
    ,
    getResult(){
-    const filteredWordsStartingWithLetters = this.filterWordsByLetter(this.Meds, this.$refs.MedName.value);
+    const filteredWordsStartingWithLetters = this.filterWordsByLetter(this.words, this.$refs.MedName.value);
     return filteredWordsStartingWithLetters;
    },
    processInput(event) {
@@ -78,12 +247,16 @@ export default {
 
          }
       },
+      
+
+      //show Med in list
     handleItemClick(Med) {
       this.selectedMed = Med;
       this.showMed = false;
       this.$refs.MedName.value = Med;
       this.$refs.MedName.blur();
-      this.Meds2=this.getResult();
+      this.Meds2=this.getResult;
+      this.getReminderTimes(); // don's code. 
       console.log(Med);
 
     },
@@ -92,356 +265,105 @@ export default {
       this.showMed = !this.showMed;
       this.$refs.MedName.focus();
     },
-  },
-  mounted(){
-            document.title = 'Add Med | ArthriCare';
+
+    saveDataAndmedicineData() {
+          this.saveData();
+          this.medicineData();
         },
+
+    getReminderTimes() {
+      this.timeInputs = []; // Clear the timeInputs array
+    if (this.selectedFrequency === 'Once a Day') {
+      this.timeInputs.push(this.timeInput1);
+    } else if (this.selectedFrequency === 'Twice a Day') {
+      this.timeInputs.push(this.timeInput1, this.timeInput2);
+    } else if (this.selectedFrequency === 'Three times a Day') {
+      this.timeInputs.push(this.timeInput1, this.timeInput2, this.timeInput3);
+    }
+      console.log(this.timeInputs);
+    },
+
+    // New function for medicineData
+  medicineData() {
+  this.getReminderTimes();
+  const reminderTimes = [];
+
+    // Now call this.$nextTick() after updating the array
+  this.$nextTick(() => {
+    if (this.$refs.timePicker1) {
+      reminderTimes.push(this.$refs.timePicker1.value);
+    }
+    if (this.$refs.timePicker2) {
+      reminderTimes.push(this.$refs.timePicker2.value);
+    }
+    if (this.$refs.timePicker3) {
+      reminderTimes.push(this.$refs.timePicker3.value);
+    }
+
+  
+  var loggedInUser = this.loggedInUser;
+    if (loggedInUser) {
+      console.log (loggedInUser.id);
+    } else {
+      console.log ('error, user not loggedin');
+    }
+
+/////////////////////////////////////////////////////////////
+    const dataObject = {
+      userId: loggedInUser.id,
+      medicationName: this.$refs.MedName.value,
+      medicationCategory: this.selectedCategory,
+      frequency: this.selectedFrequency,
+      dosageUnit: this.$refs.Unit.innerHTML,
+      startDate: this.selectedStartDate,
+      endDate: this.selectedEndDate,
+      note: this.$refs.Note.value,
+      reminderTimes: JSON.stringify(this.timeInputs),
+    };
+
+    console.log('timereminder test', JSON.stringify(this.timeInputs))
+
+    const backendurl = 'http://localhost:8181/medications/create';
+
+    axios
+      .post(backendurl, dataObject)
+      .then((response) => {
+        console.log('Data sent successfully', response);
+      })
+      .catch((error) => {
+        console.log('Data sending failed', error);
+      });
+  }); // Here
+}, //
+
+ watch: {
+    selectedFrequency: 'getReminderTimes',
+  },
+
+    // pass value to MyMed
+     saveData() {
+        store.commit('changeToTrue');
+        this.$router.push({
+              path: '/MyMeds',
+              query: {
+                MedName: this.$refs.MedName.value,
+                Category: this.selectedCategory,
+                Frequency:this.selectedFrequency,
+                Unit:this.$refs.Unit.innerHTML,
+                StartDate: this.selectedStartDate ,
+                EndDate: this.selectedEndDate,
+                Note: this.$refs.Note.value,
+                timeInput1: this.timeInput1,
+                timeInput2: this.timeInput2,
+                timeInput3: this.timeInput3,
+             }
+           })
+           console.log(this.timeInput1)
+           console.log(this.selectedEndDate)
+
+    }},
+
 }
+
+
 </script>
-
-<template>
-   <el-container class = "container">
-   
-    <div class = "container-flex">
-      <router-link to = "/">
-         <el-icon class = "backBtn"><ArrowLeftBold/></el-icon>
-      </router-link>
-      <p id = "title">My Meds</p>
-    </div>  
-      <div id = container2>
-        <p id = "label" style = "font-size : 35px ; font-weight:500;" >Add Medication</p>
-        <input id="Add" type="text" placeholder="Required Field*" style = "width:50%"/><br>
-        <p id = "label">MEDICATION NAME</p>
-
-        <input ref="MedName" id="MedName" type="text" placeholder="" @keyup="processInput" @focus="toggleOptions"/>
-
-        <div  class="menu" v-if="this.Meds2!==null  && showMed">
-          <div ref="MedOption"  class="selected-option" v-for="item in Meds2" :key="item" @click="handleItemClick(item)">{{ item }}</div>
-        </div> 
-
-        <p id = "label">CHANGE CATEGORY</p>
-        <div>
-          <b><label for = "category"></label></b>
-          <select name="category" id="category" class = "row-input" v-model="category">
-           <option value="" disabled selected>Select Category</option>
-           <option value="Pill">Pill</option>
-           <option value="Tablet">Tablet</option>
-           <option value="Injection">Injection</option>
-           <option value="Drop">Drop</option>
-         </select>
-        </div>
-
-        <p id = "label">HOW OFTEN ARE YOU TAKING THIS MEDICATION?</p>
-        <input id="input" type="text" placeholder="  " />
-        <p id = "label">HOW MANY UNITS DO YOU TAKE EACH TIME?</p>
-
-        <div class = "container-flex">
-          <div class="IncreaseButton" @click="increaseCounter">+</div>
-          <div class = "number">{{ counter }}</div>
-          <div class="DecreaseButton" @click="decreaseCounter">-</div>
-        </div>
-        
-        <p id = "label">WHEN DID YOU START TAKING THIS MEDICATION?</p>
-        <div id = "date" >
-          <VueDatePicker1 id="date1" v-model="date1"></VueDatePicker1>
-        </div>
-        
-        <p id = "label" style="margin-top: 50px;">WHEN DID YOU STOP TAKING THIS MEDICATION?</p>
-        <div id = "date">
-          <VueDatePicker2 id="date2" v-model="date2"></VueDatePicker2>
-        </div>
-
-        <p id = "label" style = "margin-top:60px">ADD A NOTE ? (optional)</p>
-        <div >
-          <textarea id = "textarea1" name = "Note" column="20" row="20"></textarea>
-        </div>
-        <div class = "container-flex" style="margin-top:5%">   
-
-        </div>  
-        <div class="Button" >
-           Next
-        </div>
-      </div>
-
-    </el-container>
-</template>
-
-<style scoped>
-
-        #textarea1{
-          background-image: linear-gradient(#F1F1F1 50%, #F9F9F9 50%);
-          background-size: 100% 4rem;
-          border: 1px solid #CCC;
-          width: 85%;
-          line-height: 2rem;
-          padding: 2% 2%;
-          font-size:20px;
-          color:#1890FF;
-          font-weight:bold;
-          margin-left:4%;
-        }
-
-       .row-input{
-          color: #1890FF;
-          background-color: #f4f4f4;
-          border: 2px solid #f0dddd;
-          width: 40%;
-          height: 30px;
-          border-radius: 5px;
-          margin: 3.5px;
-          padding-left: 10px;
-          outline: none;
-          font-size:100%;
-          font-weight:bold;
-          margin-left:4.5%;
-        }
-
-        .container-flex{
-          display:flex;
-        }
-
-        .BellBtn{
-          font-size: 30px;
-          color: #1890FF;
-          position:relative;
-          margin-left:60%;
-          size:40%;
-      }
-        
-        .note{
-          position:relative;
-          width:130px ; 
-          height:30px;
-          top:7%;
-          left:2%;
-          font-size:110%;
-          border-radius:10px 10px 10px 10px;
-          background-color: #1890FF;
-          text-align: center;
-          color:white;
-          cursor: pointer;
-        }
-        .note:hover{
-          background-color: grey;
-        }
-
-        #date{
-          margin-left: 3%;
-          margin-top: 10px; 
-          width:90%; 
-          height:10px;
-        }
-        .number{
-          z-index: 9;
-          display: block;
-          float:center;
-          padding: 10px;
-          background-color: rgb(253, 248, 248);
-          margin-bottom: 6%;
-          margin-top: 6%;
-          width:40px;
-          height:40px;
-          position:relative;
-          font-size:35px;
-          text-align: center;
-          border: 4px solid #1890FF;
-          border-radius:10px 10px 10px 10px;
-          color:#1890FF;
-          margin-left:12%;
-          margin-right:5%;
-          
-        }
-
-      .IncreaseButton {
-        text-align: center;
-        display: block;
-        cursor: pointer;
-        padding: 1%;
-        background-color: rgb(253, 248, 248);
-        margin-bottom: 10px;
-        width:40px;
-        height:40px;
-        position:relative;
-        font-size:200%;
-        border-radius:10px 10px 10px 10px;
-        border: 2.5px solid #a39e9e;
-        color: #a19191;
-        margin-top:7%;
-        margin-left:8%;
-
-      }
-
-      .DecreaseButton {
-        text-align: center;
-        display: block;
-        cursor: pointer;
-        padding: 1%;
-        background-color: rgb(253, 248, 248);
-        margin-bottom: 10px;
-        width:40px;
-        height:40px;
-        position:relative;
-        font-size:200%;
-        border-radius:10px 10px 10px 10px;
-        border: 2.5px solid #a39e9e;
-        color: #a19191;
-        margin-top:7%;
-        margin-left:8%;
-
-      }
-      .unitButton{
-        color: #a19191;
-        text-align: center;
-        float:right;
-        display: block;
-        cursor: pointer;
-        padding: 10px;
-        background-color: rgb(253, 248, 248);
-        width:45px;
-        position:relative;
-        font-size: 15px;
-        border-radius:10px 10px 10px 10px;
-        border: 2px solid #a39e9e;
-        height:8px;
-        bottom:3%;
-        right:49%;
-        
-      }
-
-      #counter {
-        font-size: 24px;
-        text-align: center;
-      }
-        .Button{
-            position: relative;
-            background-color: #1890FF;
-            border: none;
-            font-size:130%;
-            color: #ffffff;
-            padding: 0px;
-            width: 70%;
-            text-align: center;
-            transition-duration: 0.6s;
-            text-decoration: none;
-            overflow: hidden;
-            cursor: pointer;
-            left:15%;
-            border-radius:10px 10px 10px 10px; 
-            height: 4%;
-            margin-top:40px;
-            line-height: -50px;
-        }
-
-        .Button::after{
-            content: '';
-            background:#53a4f0;
-            display: block;
-            position: absolute;
-            padding-top: 300%;
-            padding-left: 350%;
-            margin-left: -20px ;
-            margin-top: -120%;
-            opacity: 0;
-            transition:all 0.8s;
-        }
-        .Button:active::after{
-            padding: 0;
-            margin: 0;
-            opacity: 1;
-            transition: 0s;
-        }
-
-    .container{
-        display: flex;
-        align-items: center;
-        height: 100vh;
-        width:100%;
-        background-color: #1890FF;
-        overflow: auto;
-        flex-direction: column;
-        margin: 0 ;
-    }
-
-    #container2{
-        padding-left:auto;
-        padding-right:auto;
-        align-items: center;
-        margin-top:6%;
-        background-color: rgb(253, 253, 253);
-        height:200%;
-        width:100%;
-        padding-bottom:100px;
-        justify-content: center;
-        align-items: center;
-        display:inline-block;
-    }
-
-    #title{
-      font-size: 130%;
-      position: relative;
-      color:#FFFFFF;
-      margin:5px;
-      right:9%;
-      top:30%;
-    }
-
-    #label{   
-      width:95%;
-      font-weight:600;
-      font-size: 20%;
-      color:  #1890FF;
-      margin-left:4%;
-      margin-bottom:2%;
-      margin-top:2%;
-      text-align: left;
-      letter-spacing:1px;
-    }
-
-    input{
-      align-items: center;
-      width:80%;    
-      height: 4%;    
-      font-size:100%;    
-      background-color: white;
-      margin:auto;
-      border:none; 
-      border-bottom: 3px solid #DDDDDD;
-      color: #000000;
-      margin-left:5%;
-      letter-spacing:1px;
-      
-    } 
-
-    input:focus
-    { 
-      outline-style: none;
-      border-bottom: 3px solid #c2b5b5;
-    }
-
-    .backBtn{
-        font-size: 25px;
-        color:#FFFFFF;
-        position:relative;
-        margin-top:80%;
-        right:350%;
-    }
-
-    .menu {
-      display: inline-block;
-      left:4%;
-      position:relative;
-    }
-
-    .selected-option {
-
-      width: 120%;
-      padding: 10px;
-      background-color: #f4f4f4;
-      border-radius: 5px;
-      cursor: pointer;
-      border: 1px solid white;
-      color:#000000;
-      font-size:17px;
-      letter-spacing:1px;
-    }
-</style>

@@ -1,9 +1,15 @@
 <!--User Profile Page -->
 <script>
-    import { ref} from 'vue';
-    import { MoreFilled } from '@element-plus/icons';
-    import { UserFilled, Edit, CirclePlus, HomeFilled, Calendar, CirclePlusFilled, Sugar, Present, Avatar, CaretRight, Message, MessageBox, Reading, WarningFilled, SwitchButton } from '@element-plus/icons';
-
+    import { ref } from 'vue';
+    import { AccountCircleRound, ModeEditOutlineOutlined, MoreHorizFilled, MedicationOutlined, CardGiftcardOutlined, HomeRound, AccountCircleOutlined, AddCircleFilled, AddCircleOutlineFilled } from '@vicons/material';
+    import { Icon } from '@vicons/utils'
+<<<<<<< Updated upstream
+=======
+    import { AlertCircle, Logout } from '@vicons/tabler';
+    import { UserProfileAlt } from '@vicons/carbon';
+    import { CastForEducationFilled } from '@vicons/material';
+    
+>>>>>>> Stashed changes
     export default{
         mounted() {
                 document.title = "User Profile | ArthriCare";
@@ -12,8 +18,8 @@
             return{
                 user:{
                     name: 'Username',
-                    level: '69',
-                    points: '420'
+                    level: '10',
+                    points: '1000'
                 },
                 drawer: ref(false),
             };
@@ -28,25 +34,47 @@
             //Router
             goToUserProfile(){
                 this.$router.push('/UserProfile');
+<<<<<<< Updated upstream
             }
         },
         components: {
-            MoreFilled,
-            UserFilled,
-            Calendar,
-            CirclePlus,
-            HomeFilled,
-            Message,
-            MessageBox,
-            Reading,
-            WarningFilled,
-            Sugar,
-            SwitchButton,
-            Edit,
-            CaretRight,
-            Avatar,
-            Present,
-            CirclePlusFilled
+            Icon,
+            MoreHorizFilled,
+            MedicationOutlined, 
+            CardGiftcardOutlined, 
+            HomeRound, 
+            AccountCircleOutlined,
+            AddCircleFilled,
+            AddCircleOutlineFilled,
+            AccountCircleRound,
+            ModeEditOutlineOutlined,
+=======
+            },
+            toggleAction(){
+                this.showAction.value = !this.showAction.value
+            },
+            handleAfterRead(avatar) { 
+                console.log(avatar)
+            },
+            async logout(){
+                this.$store.dispatch('user/logout');
+            },
+        },
+        components: {
+            LineHorizontal320Filled, 
+            Pill28Filled, ChannelAdd20Regular,
+            Home20Regular, 
+            BriefcaseMedical20Regular,
+            Gift20Regular, 
+            PeopleCommunity20Regular, 
+            Edit20Regular,
+            AddCircle20Regular,
+            UserProfileAlt,
+            CastForEducationFilled,
+            AlertCircle,
+            Logout,
+            Icon,
+>>>>>>> Stashed changes
         }
     };
 </script>
@@ -55,259 +83,194 @@
     <div class="container">
         <el-container>
             <el-header class="header">
-                <el-icon class="more" @click="drawer = true"><MoreFilled></MoreFilled></el-icon>
-                <el-icon class="user"><UserFilled></UserFilled></el-icon>
+                <Icon class="more" @click="drawer = true"><MoreHorizFilled /></Icon>
+                <Icon class="user"><AccountCircleRound /></Icon>
                 <b class="pageTitle">My Profile</b>
-                <el-icon class="edit"><Edit></Edit></el-icon>
+                <Icon class="edit"><ModeEditOutlineOutlined /></Icon>
             </el-header>
             <el-main class="main">
-                <el-avatar class="avatar" icon="el-icon-user-solid"></el-avatar> 
+                <el-avatar class="avatar">
+                    <img src="@/assets/user_avatar.png"/>
+                </el-avatar> 
                 <h2>{{ user.name }}</h2>
                 <p>Level {{ user.level }} | {{ user.points }} points</p>
                 <div class="box">
                     <text class="boxTitle">My Puzzles</text><br><br>
-                    <el-icon class="add"><CirclePlus></CirclePlus></el-icon>
+                    <img src="@/assets/pic_1.jpg" class="collectionImage" :fit="cover"/>
+                    <img src="@/assets/pic_2.jpg" class="collectionImage" :fit="cover"/>
+                    <img src="@/assets/pic_3.png" class="collectionImage" :fit="cover"/><br>
+                    <Icon class="add"><AddCircleOutlineFilled /></Icon>
                 </div>
                 <div class="box">
                     <text class="boxTitle">My Friends</text><br><br>
-                    <el-icon class="add"><CirclePlus></CirclePlus></el-icon>
+                    <img src="@/assets/friend_1.png" class="friend_avatar"/>
+                    <img src="@/assets/friend_2.png" class="friend_avatar"/>
+                    <img src="@/assets/friend_3.png" class="friend_avatar"/>
+                    <img src="@/assets/friend_4.png" class="friend_avatar"/>
+                    <img src="@/assets/friend_5.png" class="friend_avatar"/>
+                    <Icon class="add"><AddCircleOutlineFilled /></Icon>
                 </div>
                 <div class="box">
                     <text class="boxTitle">My Posts</text><br><br>
-                    <el-icon class="add"><CirclePlus></CirclePlus></el-icon>
-                </div>
-                <div class="box">
-                    <text class="boxTitle">My Meds</text><br><br>
-                    <el-icon class="add"><CirclePlus></CirclePlus></el-icon>
+                    <text class="postText">You don't have any post yet...</text>
+                    <Icon class="add"><AddCircleOutlineFilled /></Icon>
                 </div>
             </el-main> 
         </el-container>
+<<<<<<< Updated upstream
         <el-footer class="footer">
                 <router-link to = "/Home">
-                <el-icon class="footerBtn" id="home"><HomeFilled></HomeFilled></el-icon>                    
+                        <Icon class="footerBtn" id="home"><HomeRound /></Icon>      
                 </router-link>
-                <el-icon class="footerBtn" id="calendar"><Calendar></Calendar></el-icon>
+                <router-link to = "/MyMeds">
+                    <Icon class="footerBtn" id="medication"><MedicationOutlined /></Icon>  
+                </router-link>
                 <router-link to = "/AddMed">
-                    <el-icon class="footerBtn" id="addMed"><CirclePlusFilled></CirclePlusFilled></el-icon>
+                    <Icon class="footerBtn" id="addMed"><AddCircleFilled /></Icon>  
                 </router-link>
-                <el-icon class="footerBtn" id="medication"><Sugar></Sugar></el-icon>
-                <el-icon class="footerBtn" id="rewards"><Present></Present></el-icon>
+                <router-link to = "/Rewards">
+                <Icon class="footerBtn" id="rewards"><CardGiftcardOutlined /></Icon>
+                </router-link>
+                <Icon class="footerBtn" id="profile"><AccountCircleOutlined /></Icon><br>
+                <span id="homeText">Home</span>
+                <span id="medText">My Meds</span>
+                <span id="rewardsText">Rewards</span>
+                <span id="profileText">Profile</span>
         </el-footer>
-        <el-drawer style="background-color: #1890FF;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
-                <div class = "sidebar">
-                    <div>
-                        <div class = "menu-item">
-                                <el-upload action="" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                                    <el-avatar :size="65">
-                                    <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
-                                    <template v-else>
-                                        <UserFilled class="defalut-avatar" />
-                                    </template>
-                                    </el-avatar>
-                                </el-upload>                                
-                                <div class = "menu-item">
-                                    <div class = "menu-button" @click = "goToUserProfile">
-                                        <el-icon class="menu-icon"><Avatar/></el-icon>
-                                        <p>My Profile</p>
-                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
-                                    </div>
-                                    <div class = "menu-button">
-                                        <el-icon class="menu-icon1"><Message /></el-icon>
-                                        <p>Message</p>
-                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
-                                    </div>
-                                    <div class = "menu-button">
-                                        <el-icon class="menu-icon2"><MessageBox /></el-icon>
-                                        <p>Community</p>
-                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
-                                    </div>
-                                    <div class = "menu-button">
-                                        <el-icon class="menu-icon1"><Reading /></el-icon>
-                                        <p>Education</p>
-                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
-                                    </div>
-                                    <div class = "menu-button3">
-                                        <el-icon class="menu-icon3"><WarningFilled /></el-icon>
-                                        <p>About</p>
-                                    </div>
-                                    <div class = "menu-button">
-                                        <el-icon class="menu-icon3"><SwitchButton /></el-icon>
-                                        <p>Log Out</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
+=======
+        <var-bottom-navigation
+            class="footer"
+            v-model:active="active"
+            border="true"
+            safe-area="true"
+            :fab-props="{color:'#55BDCA'}"
+        >
+            <var-link href="/#/Home" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="homeButton">
+                <Icon  style="font-size: 38px;"><Home20Regular /></Icon><br>
+                <span>Home</span>
+            </var-bottom-navigation-item>
+            </var-link>
+            <var-link href="/#/MyMeds" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="medsButton">
+                <Icon style="font-size: 38px;"><BriefcaseMedical20Regular /></Icon><br>
+                <span>My Meds</span>
+            </var-bottom-navigation-item>
+            </var-link>
+            <var-link href="/#/Rewards" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="rewardsButton">
+                <Icon style="font-size: 38px;"><Gift20Regular /></Icon><br>
+                <span>Rewards</span>
+            </var-bottom-navigation-item>
+            </var-link>
+            <var-link href="/#/Community" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="profileButton">
+                <Icon style="font-size: 38px;"><PeopleCommunity20Regular /></Icon><br>
+                <span>Community</span>
+            </var-bottom-navigation-item>    
+            </var-link>
+        </var-bottom-navigation>
+                        <!-- Fab button -->
+                        <var-fab v-model:active="showAction" style="margin-bottom: 100px;" color="#006973" inactive-icon-size="26px" active-icon-size="30px" elevation="5">
+            <var-button class="action" round color="#F27B42" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
+                <var-link href="/#/AddPost" text-color="white" text-size="25px">
+                <Icon><ChannelAdd20Regular /></Icon>
+            </var-link>
+            </var-button>
+            <var-button class="action" round color="#55BDCA" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
+                <var-link href="/#/AddMed" text-color="white" text-size="25px">
+                    <Icon><Pill28Filled /></Icon>
+                </var-link>
+            </var-button>
+        </var-fab>
+    <!-- Side barDrawer -->
+    <el-drawer v-model="drawer" direction="ltr" size="70%" :show-close="false" style = " background-color: #006973;">
+        <template #header>
+            <div class = "topping">
+                <var-avatar :size = "100" bordered bordered-color="#FFFFFF" lazy error = "https://img.icons8.com/fluency-systems-regular/48/user--v1.png"/>
+            </div>
+        </template>
+        <div class = "middle">
+            <div class = "icon-text-container" @click = "goToUserProfile">
+                <div class="icon-container">
+                    <Icon><UserProfileAlt/></Icon>
                 </div>
-            </el-drawer>
+                <p>My profile</p>
+            </div>
+            <div class = "icon-text-container">
+                <div class="icon-container">
+                    <Icon><CastForEducationFilled/></Icon>
+                </div>
+                <p>Education</p>
+            </div>
+        </div>
+        <template #footer>
+            <div class = "bottom">
+                <div class = "icon-text-container">
+                    <div class="icon-container">
+                        <Icon><AlertCircle/></Icon>
+                    </div>
+                    <p>About</p>
+                </div>
+                <div class = "icon-text-container" @click = "logout">
+                    <div class="icon-container">
+                        <Icon><Logout/></Icon>
+                    </div>
+                    <p>Log out</p>
+                </div>
+            </div>
+        </template>
+    </el-drawer>
+>>>>>>> Stashed changes
     </div>
 </template>
 
 
 
+<style src = "@/css/userprofile.css" scoped></style>
 <style scoped>
-    .header{
-        display: flex;
-        align-items: center;
-        color: white;
-    }
-    .more{
-        margin-left: 5px;
-        margin-right: 50px;
-        font-size: 30px;
-    }
-    .user{
-        margin-left: 10px;
-        margin-right: 10px;
-        font-size: 30px;
-    }
-    .edit{
-        margin-left: 100px;
-        font-size: 30px;
-    }
-    .pageTitle{
-        font-size: 20px;
-        white-space: nowrap;
-    }
-    .container{
-        display: grid;
-        flex-direction: column;
-        place-items: center;
-        height: 100vh;
-        background-color: #1890FF;
-        overflow:hidden;
-    }
-    .main{
-        justify-content: center;
-        align-items: center;
-        overflow-y: auto;
-        height: 100vh;
-    }
-    h2{
-        text-align: center;
-        color: white;
-    }
-    p{
-        text-align: center;
-        color: white;
-    }
-    .avatar{
-        display: flex;
-        align-items: center;
-        width: 130px;
-        height: 130px;
-        margin-left: 115px;
-        border: 3px solid white;
-        box-shadow: 2px 2px 2px rgb(83, 83, 83);
-    }
-    .box{
-        width: 350px;
-        height: 90px;
-        background-color: white;
-        border-radius: 20px;
-        box-shadow: 2px 2px 2px rgb(83, 83, 83);
-        margin-left: 5px;
-        margin-bottom: 15px;
-    }
-    .boxTitle{
-        padding-left: 15px;
-    }
-    .add{
-        font-size: 40px;
-        margin-left: 300px;
-        color: #1890FF;
-    }
-    .image{
-        height: 20px;
-        width: 40px;
-        margin-left: 10px;
-        padding-right: 5px;
-        padding-left: 5px;
-    }
-    .footer{
-        background-color: white;
-        position:fixed;
-        bottom:0;
-        height: 60px;
-        width:100%;
-        text-align: center;
-    }
-    .sidebar{
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-            padding: 20px;
-        }
-    #addMed{
-        color: #1890FF;
-    }
-    .footerBtn{
-        font-size: 45px;
-        color: gray;
-        height: 50px;
-        width: 50px;
-        padding-top: 5px;
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-    .uploaded-avatar {
-            width: 100%;
-            height: 100%;
-        }
-        .defalut-avatar{
-            width: 70%;
-            height: 80%;
-        }
-        .menu-item{
-            margin-top: 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #ffffff;
-        }
-        .menu-icon{
-            color: #ffffff;
-            font-size: 20px;
-        }
-        .menu-icon1{
-            color: #ffffff;
-            font-size: 25px;
-            margin-right: 15px;
-        }
-        .menu-icon2{
-            color: #ffffff;
-            font-size: 25px;
-            margin-right: 5px;
-        }
-        .menu-icon3{
-            color: #ffffff;
-            font-size: 25px;
-            margin-right: 1px;
-        }
-        .menu-button{
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            cursor: pointer;
-        }
-        .menu-button3{
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            margin-top: 130px;
-            cursor: pointer;
-        }
-        .menu-button3 p{
-            font-size: 20px;
-            font-weight: 550;
-            margin: 20px 35px;
-        }
-        .menu-button p{
-            font-size: 20px;
-            font-weight: 550;
-            margin: 30px 30px;
-            text-decoration: none;
-        }
+.topping{
+    color:#FFFFFF;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.var-avatar{
+    position: relative;
+    top: 5vh;
+}
+.middle{
+    color:#FFFFFF;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+}
+.middle p{
+    margin-bottom: 20px;
+    text-align: center;
+    color:#FFFFFF;
+}
+.icon-container {
+    display: inline-block;
+    margin-right: 50px; 
+}
+.icon-text-container {
+    display: flex;
+    padding-inline: 5px;
+    justify-content: center;
+}
+
+.bottom{
+    color:#FFFFFF;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+}
+.bottom p {
+    margin-bottom: 20px;
+    color:#FFFFFF;
+}
 </style>
