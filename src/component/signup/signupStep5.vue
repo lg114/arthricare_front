@@ -10,7 +10,11 @@
         </el-header>
         <el-main class = "main">
             <div class = "logo">
+<<<<<<< Updated upstream
                 <img src = "@/assets/icon.png">
+=======
+                <img src = "@/assets/logo.png">
+>>>>>>> Stashed changes
             </div>
             <div class = "form">
                 <h1>Let's create your profile</h1>

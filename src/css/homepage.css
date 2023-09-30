@@ -11,13 +11,21 @@
     height: 80px;
 }
 .header-icon{
+<<<<<<< Updated upstream
     font-size: 25px;
+=======
+    font-size: 30px;
+>>>>>>> Stashed changes
     position: absolute;
     left: 5%;
     font-weight: bold;
 }
 .header-icon2{
+<<<<<<< Updated upstream
     font-size: 25px;
+=======
+    font-size: 30px;
+>>>>>>> Stashed changes
     position: absolute;
     right: 5%;
 }

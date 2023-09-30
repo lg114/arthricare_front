@@ -92,14 +92,118 @@ const router  = createRouter({
             name: 'Rewards',
             component: RewardsPage,
             meta: {
+<<<<<<< Updated upstream
+=======
                 requiresAuth: true
             }
         },
         {
+            path: '/Community',
+            name: 'Community',
+            component: CommunityPage,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/Education',
+            name: 'Education',
+            component: EducationPage,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/Message',
+            name: 'Message',
+            component: MessagePage,
+            meta: {
+                requiresAuth: true
+            }
+        },
+
+        {
+            path: '/SearchArticle',
+            name: 'SearchArticle',
+            component: SearchPage,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/Chat',
+            name: 'Chat',
+            component: ChatPage,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/EducationArticle',
+            name: 'EducationArticle',
+            component: EducationArticlePage,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/EducationVideo',
+            name: 'EducationVideo',
+            component: EducationVideoPage,
+            meta: {
+                requiresAuth: true
+            }
+        },
+
+        {
+            path: '/AddPost',
+            name: 'AddPost',
+            component: AddPostPage,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/EditProfile',
+            name: 'EditProfile',
+            component: EditProfilePage,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/Assessment',
+            name: 'Assessment',
+            component: AssessmentPage,
+            meta: {
+                requiresAuth: true
+                }
+        },
+        {
+            path: '/PostDetail/:id',
+            name: 'PostDetail',
+            component: PostDetailPage,
+            meta: {
+>>>>>>> Stashed changes
+                requiresAuth: true
+            }
+        },
+        {
+<<<<<<< Updated upstream
             path: '/newhome',
             name: 'newhome',
             component: newHome,
         }
+=======
+            path: '/MyPosts',
+            name: 'MyPosts',
+            component: MyPostsPage,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        
+>>>>>>> Stashed changes
     ]
 });
 

@@ -1,6 +1,7 @@
 <!--Welcome Page -->
 <!--Welcome Page -->
 <script setup>
+<<<<<<< Updated upstream
   import { ref } from 'vue';
   import {  MoreHorizFilled, MedicationOutlined, CardGiftcardOutlined, HomeRound, AccountCircleOutlined, AddCircleFilled } from '@vicons/material';
   import { Icon } from '@vicons/utils';
@@ -16,6 +17,29 @@
   import blue from "@/assets/capsulesblue.png";
   import purple from "@/assets/capsulespurple.png";
   import orange from "@/assets/capsulesorange.png";
+=======
+   //import {ArrowLeftBold} from '@element-plus/icons-vue';
+  //  import {ArrowRightBold} from '@element-plus/icons-vue';
+    import red from "@/assets/capsulesred.png";
+    import yellow from "@/assets/capsulesyellow.png";
+    import green from "@/assets/capsulesgreen.png";
+    import blue from "@/assets/capsulesblue.png";
+    import purple from "@/assets/capsulespurple.png";
+    import orange from "@/assets/capsulesorange.png";
+    import bottle from "@/assets/pills-bottle.png";
+    import tablet from "@/assets/capsules.png";
+    import injection from "@/assets/injection.png";
+    import drop from "@/assets/drop.png";
+    import store from "@/store";
+    import { ref } from 'vue';
+    import { LineHorizontal320Filled, Home20Regular, BriefcaseMedical20Filled, Gift20Regular, PeopleCommunity20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent';
+    import { Icon } from '@vicons/utils';
+    import { AlertCircle, Logout } from '@vicons/tabler';
+    import { UserProfileAlt } from '@vicons/carbon';
+    import { CastForEducationFilled } from '@vicons/material';
+    import { ChevronRight20Filled } from '@vicons/fluent'
+    const active = ref(1);
+>>>>>>> Stashed changes
 </script>
 
 <template>
@@ -86,6 +110,7 @@
           </div>
         </div>
       </div>
+<<<<<<< Updated upstream
     </el-main>
 
 
@@ -111,6 +136,96 @@
   </div>
 </template>
 
+=======
+ </div>
+ <var-bottom-navigation
+           class="footer"
+           v-model:active="active"
+           border="true"
+           safe-area="true"
+           :fab-props="{color:'#55BDCA'}"
+       >
+           <var-link href="/#/Home" underline="none">
+           <var-bottom-navigation-item class="bottomButton" name="homeButton">
+               <Icon  style="font-size: 38px;"><Home20Regular /></Icon><br>
+               <span>Home</span>
+           </var-bottom-navigation-item>
+           </var-link>
+           <var-link href="/#/MyMeds" underline="none">
+           <var-bottom-navigation-item class="bottomButton" name="medsButton">
+               <Icon style="font-size: 38px; color:#55BDCA"><BriefcaseMedical20Filled /></Icon><br>
+               <span style="color:#55BDCA">My Meds</span>
+           </var-bottom-navigation-item>
+           </var-link>
+           <var-link href="/#/Rewards" underline="none">
+           <var-bottom-navigation-item class="bottomButton" name="rewardsButton">
+               <Icon style="font-size: 38px;"><Gift20Regular /></Icon><br>
+               <span>Rewards</span>
+           </var-bottom-navigation-item>
+           </var-link>
+           <var-link href="/#/Community" underline="none">
+           <var-bottom-navigation-item class="bottomButton" name="profileButton">
+               <Icon style="font-size: 38px;"><PeopleCommunity20Regular /></Icon><br>
+               <span>Community</span>
+           </var-bottom-navigation-item>    
+           </var-link>
+       </var-bottom-navigation>
+                       <!-- Fab button -->
+                       <var-fab v-model:active="showAction" style="margin-bottom: 100px;" color="#006973" inactive-icon-size="26px" active-icon-size="30px" elevation="5">
+           <var-button class="action" round color="#F27B42" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
+             <var-link href="/#/AddPost" text-color="white" text-size="25px">
+               <Icon><ChannelAdd20Regular /></Icon>
+           </var-link>
+           </var-button>
+           <var-button class="action" round color="#55BDCA" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
+               <var-link href="/#/AddMed" text-color="white" text-size="25px">
+                   <Icon><Pill28Filled /></Icon>
+               </var-link>
+           </var-button>
+       </var-fab>
+    <!-- Side barDrawer -->
+    <el-drawer v-model="drawer" direction="ltr" size="70%" :show-close="false" style = " background-color: #006973;">
+        <template #header>
+            <div class = "topping">
+                <var-avatar :size = "100" bordered bordered-color="#FFFFFF" lazy error = "https://img.icons8.com/fluency-systems-regular/48/user--v1.png"/>
+            </div>
+        </template>
+        <div class = "middle">
+            <div class = "icon-text-container" @click = "goToUserProfile">
+                <div class="icon-container">
+                    <Icon><UserProfileAlt/></Icon>
+                </div>
+                <p>My profile</p>
+            </div>
+            <div class = "icon-text-container">
+                <div class="icon-container">
+                    <Icon><CastForEducationFilled/></Icon>
+                </div>
+                <p>Education</p>
+            </div>
+        </div>
+        <template #footer>
+            <div class = "bottom">
+                <div class = "icon-text-container">
+                    <div class="icon-container">
+                        <Icon><AlertCircle/></Icon>
+                    </div>
+                    <p>About</p>
+                </div>
+                <div class = "icon-text-container" @click = "logout">
+                    <div class="icon-container">
+                        <Icon><Logout/></Icon>
+                    </div>
+                    <p>Log out</p>
+                </div>
+            </div>
+        </template>
+    </el-drawer>
+</div> 
+</template>
+<style src = "@/css/sidebar.css" scoped></style>
+<style  scoped>
+>>>>>>> Stashed changes
 
 <style src = "@/css/mymeds.css" scoped></style>
 
@@ -177,7 +292,9 @@ export default {
           console.log('Error fetching user information:', error);
         });
     },
-
+    async logout(){
+     this.$store.dispatch('user/logout');
+    },
     displayExpiredMedication(medication) {
       axios.get('http://localhost:8181/reminders/checkMedicationTakeTimes/' + medication.medicationId)
         .then(response => {
@@ -269,12 +386,25 @@ export default {
         },
         components:{
           Icon,
+<<<<<<< Updated upstream
           MoreHorizFilled,
           MedicationOutlined, 
           CardGiftcardOutlined, 
           HomeRound, 
           AccountCircleOutlined,
           AddCircleFilled,
+=======
+          LineHorizontal320Filled,
+          Pill28Filled, ChannelAdd20Regular,
+          Home20Regular, 
+          BriefcaseMedical20Filled, 
+          Gift20Regular, 
+          PeopleCommunity20Regular,
+          UserProfileAlt,
+          CastForEducationFilled,
+          AlertCircle,
+          Logout,
+>>>>>>> Stashed changes
         }
       }
         
