@@ -356,17 +356,17 @@
                 <div v-if="activeSection === 'event_section'">
                     <h3>Upcoming Events</h3>
                     <div class="card_event">
-                        <img src="@/assets/communityPage_event_1.png" alt="1st event" class="event" />
+                        <img src="@/assets/communityPage_event_1.jpg" alt="1st event" class="event" />
                         <h5 class="event-date">15. Apr. 2023</h5>
                         <a href="https://events.arthritis.org/index.cfm?fuseaction=donorDrive.event&eventID=1479" target="_blank" class="eventLink">2023 Walk to CURE Arthritis - Savannah, GA</a>
                     </div>
                     <div class="card_event">
-                        <img src="@/assets/communityPage_event_2.png" alt="2nd event" class="event" />
+                        <img src="@/assets/communityPage_event_2.jpg" alt="2nd event" class="event" />
                         <h5 class="event-date">22. Apr. 2023</h5>
                         <a href="https://events.arthritis.org/index.cfm?fuseaction=donorDrive.event&eventID=1466" target="_blank" class="eventLink">2023 Walk to CURE Juvenile Arthritis - Bloomington, MN</a>
                     </div>
                     <div class="card_event">
-                        <img src="@/assets/communityPage_event_1.png" alt="3rd event" class="event" />
+                        <img src="@/assets/communityPage_event_1.jpg" alt="3rd event" class="event" />
                         <h5 class="event-date">22. Apr. 2023</h5>
                         <a href="https://events.arthritis.org/index.cfm?fuseaction=donorDrive.event&eventID=1480" target="_blank" class="eventLink">2023 Walk to CURE Arthritis - Jacksonville, FL</a>
                     </div>
@@ -379,12 +379,12 @@
                     <h3>Trending News</h3>
                         <div class="trendingNews-scroll-container">
                             <div class="card_TrendingNews">
-                                <img src="@/assets/communityPage_NewsSection_1.png" alt="1st Treanding News" />
+                                <img src="@/assets/communityPage_NewsSection_1.jpg" alt="1st Treanding News" />
                                 <h5 class="top-left">05. Sep. 2023</h5>
                                 <h4 class="bottom-center">Australians 'in the dark' with arthritis: one of our most prevalent and costly diseases</h4>
                             </div>
                             <div class="card_TrendingNews">
-                                <img src="@/assets/communityPage_NewsSection_5.png" alt="2nd Treanding News" />
+                                <img src="@/assets/communityPage_NewsSection_5.jpg" alt="2nd Treanding News" />
                                 <h5 class="top-left">04. Sep. 2023</h5>
                                 <h4 class="bottom-center">Reducing opioid harm through regulatory changes - Information for consumers, patients and carers</h4>
                             </div>
@@ -397,7 +397,7 @@
                             <h5 class="latestNews-date">06. Sep. 2023</h5>
                         </div>
                         <div class="latestNews_img">
-                            <img src="@/assets/communityPage_NewsSection_2.png" alt="1st Today's News" class="latestNews" />
+                            <img src="@/assets/communityPage_NewsSection_2.jpg" alt="1st Today's News" class="latestNews" />
                         </div>
                     </div>
                     <hr class="latestNews">
@@ -407,7 +407,7 @@
                             <h5 class="latestNews-date">01. Sep. 2023</h5>
                         </div>
                         <div class="latestNews_img">
-                            <img src="@/assets/communityPage_NewsSection_3.png" alt="2nd Today's News" class="latestNews" />
+                            <img src="@/assets/communityPage_NewsSection_3.jpg" alt="2nd Today's News" class="latestNews" />
                         </div>
                     </div>
                     <hr class="latestNews">
@@ -417,7 +417,7 @@
                             <h5 class="latestNews-date">25. Aug. 2023</h5>
                         </div>
                         <div class="latestNews_img">
-                            <img src="@/assets/communityPage_NewsSection_4.png" alt="3rd Today's News" class="latestNews" />
+                            <img src="@/assets/communityPage_NewsSection_4.jpg" alt="3rd Today's News" class="latestNews" />
                         </div>
                     </div>
                     <hr class="latestNews">
@@ -427,7 +427,7 @@
                             <h5 class="latestNews-date">23. Aug. 2023</h5>
                         </div>
                         <div class="latestNews_img">
-                            <img src="@/assets/communityPage_NewsSection_6.png" alt="4th Today's News" class="latestNews" />
+                            <img src="@/assets/communityPage_NewsSection_6.jpg" alt="4th Today's News" class="latestNews" />
                         </div>
                     </div>
                     <hr class="latestNews">
