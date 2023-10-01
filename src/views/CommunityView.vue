@@ -154,19 +154,6 @@
             },
             // END: 2 methods to add a comment
 
-            // SATR: Filter the posts by a section
-            filterBysection(sectionID){
-                if(sectionID==="1"){
-                    // Only display the posts with Discussion section
-                }else if(sectionID==="2"){
-                    // Only display the posts with Event section
-                }
-                else if(sectionID==="3"){
-                    // Only display the posts with News section
-                }
-            },
-            // END: Filter the posts by a section
-
             // Note for Don: Add a function which adds/remove a like, changes the status of the thumbUp icon.
             toggleLike(){
                 // Add or remove a like
