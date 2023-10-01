@@ -4,25 +4,37 @@
   import store from "@/store";
   // import {Plus,Minus} from '@element-plus/icons-vue';
   import '@varlet/ui/es/button/style/index';
-  
+  import { ChevronLeft20Filled, LineHorizontal320Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular,Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
+  import SideBarContent from '@/component/Sidebar.vue';
+  import { ref } from 'vue'
+  import { Icon } from '@vicons/utils';
 </script>
 
 <template>
 
    <el-container  class = "container">
 
-      <router-link to = "/home" v-if="this.MARS===false">
+      <!-- <router-link to = "/" v-if="this.MARS===false">
         <var-icon class="backBtn" name="chevron-left" :size="42" color="white"/>
-      </router-link>
-      <div v-if="this.MARS==true" >
-        <var-icon @click="disableASOption" class="backBtn" name="chevron-left" :size="42" color="white"/>
+      </router-link>  -->
+      <div v-if="this.MARS==true || this.QuestionNumber > 10 || this.DASImg ===3 " >
+        <ChevronLeft20Filled @click="disableASOption" class="backBtn"/>
+
+        <!-- <var-icon @click="disableASOption" class="backBtn" name="chevron-left" :size="42" color="white"/> -->
       </div>
-      <p id= "title">Assessment</p>
+      <div v-else>
+        <Icon  @click="drawer = true" class="backBtn" name="menu" :size="25" color="white"><LineHorizontal320Filled /></Icon>
+      </div>
+
+      <b id= "title">Assessment</b>
 
       <div id = container2>
          
-
+        
           <div class="QuestionContainer" v-if="this.MARS==false && this.DAS==false && this.QuestionNumber <= 10">
+            <div class="abackground">
+          </div>
+            <img src="@/assets/test.png" alt="Image" class="testImg">
             <p class="title1" >Select your assessment</p>
 
             <div ref="MARS" class="assessmentContainer" @click="selectMars">
@@ -30,7 +42,7 @@
               <img src="@/assets/MARS.png" alt="Image" class="image">
             </div>
 
-            <div ref="DAS-28" class="assessmentContainer" @click="selectDAS">
+            <div ref="DAS-28" class="assessmentContainer" @click="selectDAS" style="margin-top:3vh;">
               <p class="assessmentTitle" >DAS-28</p>
               <img src="@/assets/DAS-28.png" alt="Image" class="image">
             </div>
@@ -72,16 +84,96 @@
           <div class="QuestionContainer" v-if="this.QuestionNumber > 10 || this.DASImg ===3 ">
             <var-icon class= "circleIcon" name="check-circle-outline" />
             <h1 class="completedTitle">Assessment completed</h1> 
+            <p class="completedTitle2">Completion date</p> 
+            <p class="completedTitle3">{{this.selectedDate}}    {{this.selectedTime}}</p> 
+         
           </div>
 
           <button  v-if="this.MARS===true && this.QuestionNumber <= 10" class= "button" @click="nextQuestion">Next</button>
           <button  v-if="this.DAS===true && this.DASImg <=2 " class= "button" @click="changeDASImg">Next</button>
       </div>
     </el-container>
+    <var-bottom-navigation
+            class="footer"
+            v-model:active="activeBottom"
+            border="true"
+            safe-area="true"
+            :fab-props="{color:'#55BDCA'}"
+        >
+            <var-link href="/#/Home" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="homeButton">
+                <Icon  style="font-size: 38px;"><Home20Regular /></Icon><br>
+                <span>Home</span>
+            </var-bottom-navigation-item>
+            </var-link>
+            <var-link href="/#/MyMeds" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="medsButton">
+                <Icon style="font-size: 38px;"><BriefcaseMedical20Regular /></Icon><br>
+                <span>My Meds</span>
+            </var-bottom-navigation-item>
+            </var-link>
+            <var-link href="/#/Rewards" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="rewardsButton">
+                <Icon style="font-size: 38px;"><Gift20Regular /></Icon><br>
+                <span>Rewards</span>
+            </var-bottom-navigation-item>
+            </var-link>
+            <var-link href="/#/Community" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="profileButton">
+                <Icon style="font-size: 38px;"><PeopleCommunity20Regular /></Icon><br>
+                <span>Community</span>
+            </var-bottom-navigation-item>    
+            </var-link>
+        </var-bottom-navigation>
+                        <!-- Fab button -->
+                        <var-fab v-model:active="showAction" style="margin-bottom: 100px;" color="#006973" inactive-icon-size="26px" active-icon-size="30px" elevation="5">
+            <var-button class="action" round color="#F27B42" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
+                <var-link href="/#/AddPost" text-color="white" text-size="25px">
+                <Icon><ChannelAdd20Regular /></Icon>
+            </var-link>
+            </var-button>
+            <var-button class="action" round color="#55BDCA" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
+                <var-link href="/#/AddMed" text-color="white" text-size="25px">
+                    <Icon><Pill28Filled /></Icon>
+                </var-link>
+            </var-button>
+        </var-fab>
+    <el-drawer style="background-color: #006973;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
+            <!--Action是模拟接口，与后端连接时更换-->
+                <div class = "sidebar">
+                    <el-upload action="" :show-file-list="false">
+                        <el-avatar :size="65">
+                            <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
+                                <template v-else>
+                                    <UserFilled class="defalut-avatar" />
+                                </template>
+                        </el-avatar>   
+                    </el-upload> 
+                </div>
+            <SideBarContent :imgUrl="imgUrl" />    
+        </el-drawer>
 </template>
 
 <style lang = "css" scoped>   
 
+      .abackground{
+        position:absolute;
+        background:rgb(247, 244, 244) ;
+        height:35vh;
+        width:100vw;
+        margin:auto;
+        margin-right:81vw;
+        bottom:32vh;
+
+       }
+        .testImg{
+          height:20vh;
+          width:20vh;
+          position:absolute;
+          left:0;
+          right:0;
+          margin:auto;
+        }
         .DasImg{
           height:60vh;
           width:80vw;
@@ -92,17 +184,14 @@
           border-radius: 10px;
         }
       .title1{
-
         font-size:140%;
         color:#006973;
         font-weight: bold;
         font-family: system-ui;
         height:12vh;
-        width:80vw;
+        width:100vw;
         position:relative;
-        left:0;
-        right:0;
-        top:5vh;
+        top:22vh;
         margin:auto;
         text-align: center;
         margin-bottom:15%;
@@ -117,7 +206,29 @@
       margin:auto;
       text-align: center;
       top:30vh;
-      
+    }
+
+    .completedTitle2{
+      color:#006973;
+      font-size:130%;
+      font-family: system-ui;
+      position:absolute;
+      left:0;
+      right:0;
+      margin:auto;
+      text-align: center;
+      top:40vh;
+    }
+    .completedTitle3{
+      color:#006973;
+      font-size:100%;
+      font-family: system-ui;
+      position:absolute;
+      left:0;
+      right:0;
+      margin:auto;
+      text-align: center;
+      top:45vh;
     }
     .circleIcon{
       color:#006973;
@@ -128,8 +239,10 @@
     }
     .backBtn{
       position:absolute;
-      left:6%;
-      top:2.8%;
+      left:7%;
+      top:3.8%;
+      font-size: 30px;
+      color:white;
     }
     .image{
       position:relative;
@@ -158,13 +271,13 @@
     margin-bottom:2vh;
     position:relative;
     display:flex;
-    top:5%;
+    top:20%;
   }
 
   .assessmentContainer:hover{
    background:#CFEEF5;
+   border: 2px solid #006973;
   }
-
 
   label{
     position:relative;
@@ -176,12 +289,12 @@
     }
   .button{
       background: #FFFFFF;
-      color: white;
+      color: #006973;
       position: absolute;
       display: inline-block;
       padding: 1%;
       background-color: transparent;
-      border: 2px solid white;
+      border: 2px solid #006973;
       transition: background-color 0.5s, color 0.5s;
       width: 80vw;
       height:6.4vh;
@@ -191,8 +304,9 @@
       margin:auto;
       left:0;
       right:0;
-      top:75vh;
+      top:70vh;
     }
+
     .questionText{
         position:relative;
         font-size:140%;
@@ -209,15 +323,16 @@
         word-break: break-all;
         margin-bottom:10%;
     }
+
     .QuestionContainer{
       height:60vh;
-      width:89vw;
+      width:100vw;
       background: white;
       border-radius:15px 15px 15px 15px;
       position: relative;
-      margin:0 auto;
-      justify-content: center;
+      margin-right:3220px;
       top:5vh;
+      padding:0;
       padding-top: 5%;
     }
 
@@ -284,7 +399,7 @@
   align-items: center;
   justify-content: center;
   align-items: center;
-  background-color: #006973;
+  background-color: white;
   height:90%;
   width:100%;
   position:relative;
@@ -355,12 +470,35 @@ input{
     }
 
 
+ /* footer */
+ .bottomButton{
+        width: 90px;
+        padding-left:20px;
+        padding-right: 20px;
+    }
+    .footer{
+        display: inline;
+        position: fixed;
+        text-align: center;
+        bottom: 0;
+        height:80px;
+        --bottom-navigation-item-font-size: 13px;
+        --bottom-navigation-item-active-color: #646566;
+        white-space: nowrap;
+    }  
+    .addButton{
+        font-size: 35px;
+    }
 </style>
 
 <script>
 
 export default {
-  components: {},
+  components: {
+    Icon,
+    SideBarContent,
+    Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular,Pill28Filled, ChannelAdd20Regular
+  },
   computed: {
     changeToTrue() {
       return this.$store.state.changeToTrue;
@@ -374,6 +512,8 @@ export default {
   },
   data() {
     return {
+      selectedDate: this.getCurrentDate(),
+      selectedTime: this.getCurrentTime(),
       transitionName: 'slide-left',
       questions: [
         { id: 1, text: "Do you ever forget to take your medicine?" },
@@ -392,7 +532,8 @@ export default {
       selectedOption: null,
       MARS: false,
       DAS: false,
-      DASImg:1
+      DASImg:1,
+      drawer: ref(false),
 
       
     };
@@ -400,6 +541,12 @@ export default {
   },
   
   methods: {
+    openDrawer() {
+            this.drawer = true;
+            },
+            beforeDrawerClose(done) {
+                done();
+            },
     resetNumber(){
       this.QuestionNumber=1;
       this.DASImg=1;
@@ -434,10 +581,22 @@ export default {
       this.currentQuestionIndex = (this.currentQuestionIndex + 1) % this.questions.length;
       }
     },
+    getCurrentDate() {
+      const now = new Date();
+      const formattedTime = now.toISOString().slice(0, 10);
+      console.log(formattedTime);
+      return formattedTime;
+    },
+    getCurrentTime() {
+      const now = new Date();
+      const formattedTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      console.log(formattedTime);
+      return formattedTime;
+    }
   
 },
   mounted(){
-            document.title = 'Add Medication'
+            document.title = 'Assessment | ArthriCare'
 
         },
         setup(){

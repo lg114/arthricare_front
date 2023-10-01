@@ -1,17 +1,22 @@
 <script setup>
    //import {ArrowLeftBold} from '@element-plus/icons-vue';
-   import {ArrowRightBold} from '@element-plus/icons-vue';
+  //  import {ArrowRightBold} from '@element-plus/icons-vue';
    import red from "@/assets/capsulesred.png";
    import yellow from "@/assets/capsulesyellow.png";
    import green from "@/assets/capsulesgreen.png";
    import blue from "@/assets/capsulesblue.png";
    import purple from "@/assets/capsulespurple.png";
    import orange from "@/assets/capsulesorange.png";
+   import bottle from "@/assets/pills-bottle.png";
+   import tablet from "@/assets/capsules.png";
+   import injection from "@/assets/injection.png";
+   import drop from "@/assets/drop.png";
    import store from "@/store";
    import { ref } from 'vue';
   import { LineHorizontal320Filled, Home20Regular, BriefcaseMedical20Filled, Gift20Regular, PeopleCommunity20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent';
   import SideBarContent from '@/component/Sidebar.vue';
     import { Icon } from '@vicons/utils';
+    import { ChevronRight20Filled } from '@vicons/fluent'
     const active = ref(1);
 </script>
 
@@ -19,9 +24,9 @@
   <div class="container">
   
    <div class = "container-flex">
-        <Icon class = "OperaBtn" @click="drawer = true"><LineHorizontal320Filled/></Icon>
+        <Icon class = "OperaBtn" @click="drawer = true" :size="30"><LineHorizontal320Filled/></Icon>
      <!-- <Icon @click="drawer = true"><MoreHorizFilled /></Icon> -->
-     <p id = "title">My Meds</p>
+     <b id = "title">My Meds</b>
    </div> 
    
 
@@ -34,11 +39,18 @@
         <div class = "zeroObjAlert" v-if="store.state.unExperiedMedArray.length === 0">
           <p class="zeroObjAlertP">You haven't added any medication</p>
         </div >
+        
         <div class="unExperiedmed" v-for="(item, index) in store.state.unExperiedMedArray" :key="index">
-          <div class="container-flex">
+          <div class="medObject">
+           <div class="container-flex">
+            <div class="imgSpace">
             <div class="Drug_picture">
-              <img :src= imgArray[index] alt="Icon" class="capsules_blue-img" /> 
+              <img :src= imgArray[0] v-if="item.Category=='Pill'" alt="Icon" class="capsules_blue-img" /> 
+              <img :src= imgArray[1] v-if="item.Category=='Tablet'" alt="Icon" class="capsules_blue-img" /> 
+              <img :src= imgArray[2] v-if="item.Category=='Injection'" alt="Icon" class="capsules_blue-img" /> 
+              <img :src= imgArray[3] v-if="item.Category=='Drop'" alt="Icon" class="capsules_blue-img" /> 
             </div>
+           </div>
             <div class="container-block">
               <div class="Drug_name">
                 <p class="medName-font">{{ item.MedName }}</p>
@@ -49,11 +61,13 @@
             </div>
             <div class="arrow_button">
               <router-link :to="{ path: '/EditMed', query: { Index: index } }" @click="handleArrowButtonClick('unExperiedMedArray', index)">
-            <el-icon class="arrowBtn_icon"><ArrowRightBold/></el-icon>
-          </router-link>
+                <ChevronRight20Filled @click="disableASOption" class="arrowBtn_icon"/>
+               </router-link>
         </div>
           </div>
+        </div> 
         </div>
+        
       </div>
       <div class="ExperiedContainer">
         <div class="ExperiedMedication">
@@ -62,11 +76,18 @@
         <div class = "zeroObjAlert" v-if="store.state.ExperiedMedArray.length === 0">
           <p class="zeroObjAlertP">You don't have any past medication</p>
         </div >
+
         <div class="Experiedmed" v-for="(item, index) in store.state.ExperiedMedArray" :key="index">
-          <div class="container-flex">
+          <div class="medObject">
+            <div class="container-flex">
+            <div class="imgSpace">
             <div class="Drug_picture">
-              <img :src= imgArray[index] alt="Icon" class="capsules_blue-img" /> 
+              <img :src= imgArray[0] v-if="item.Category=='Pill'" alt="Icon" class="capsules_blue-img" /> 
+              <img :src= imgArray[1] v-if="item.Category=='Tablet'" alt="Icon" class="capsules_blue-img" /> 
+              <img :src= imgArray[2] v-if="item.Category=='Injection'" alt="Icon" class="capsules_blue-img" /> 
+              <img :src= imgArray[3] v-if="item.Category=='Drop'" alt="Icon" class="capsules_blue-img" /> 
             </div>
+          </div>
             <div class="container-block">
               <div class="Drug_name">
                 <p class="medName-font">{{ item.MedName }}</p>
@@ -74,14 +95,17 @@
               <div class="Drug_data">
                 <p class="medData-font">{{ item.date }}</p>
               </div>
+              <ChevronLeft20Filled @click="disableASOption" class="arrowBtn_icon"/>
             </div>
-            <div>
+            
               <div class="arrow_button">
                 <router-link :to="{ path: '/EditMed', query: { Index: index } }" @click="handleArrowButtonClick('ExperiedMedArray', index)">
-                  <el-icon class="arrowBtn_icon"><ArrowRightBold/></el-icon>
+                  <!-- <el-icon class="arrowBtn_icon"><ArrowRightBold/></el-icon> -->
+                  <ChevronRight20Filled @click="disableASOption" class="arrowBtn_icon"/>
                 </router-link>
-              </div>
+              
             </div>
+          </div>
           </div>
         </div>
       </div>
@@ -148,8 +172,454 @@
 </div> 
 </template>
 
-<style src = "@/css/mymeds.css" scoped></style>
-<style src = "@/css/mymeds2.css" scoped></style>
+<style  scoped>
+
+img{
+      width: 12%;
+      height:12%;
+      margin-top:10px;
+      margin-right:15px;
+
+    }
+    .sidebar{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+  }
+
+.uploaded-avatar {
+        width: 100%;
+        height: 100%;
+}
+.defalut-avatar{
+    width: 70%;
+    height: 80%;
+}
+.menu-item{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+}
+.menu-icon{
+    color: #ffffff;
+    font-size: 20px;
+}
+.menu-icon1{
+    color: #ffffff;
+    font-size: 25px;
+    margin-right: 15px;
+}
+.menu-icon2{
+    color: #ffffff;
+    font-size: 25px;
+    margin-right: 5px;
+}
+.menu-icon3{
+    color: #ffffff;
+    font-size: 25px;
+    margin-right: 1px;
+}
+.menu-button{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    cursor: pointer;
+}
+.menu-button3{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 130px;
+    cursor: pointer;
+}
+.menu-button3 p{
+    font-size: 20px;
+    font-weight: 550;
+    margin: 20px 35px;
+}
+.menu-button p{
+    font-size: 20px;
+    font-weight: 550;
+    margin: 30px 30px;
+    text-decoration: none;
+}
+    
+    .zeroObjAlert{
+      width:100%;
+      height:100%;
+      margin-left:5%;
+      background-color: white;
+    }
+
+    .zeroObjAlertP{
+      color:#55BBC9;
+      position: relative;
+      top:20%;
+      font-size:200%;
+      height:1000%;
+      text-align: center;
+      right:5%;
+
+    }
+    .container{
+      overflow-y: auto;
+        display: flex;
+        align-items: center;
+        height:100%;
+        width:100%;
+        background-color:#006973;
+        overflow: auto;
+        flex-direction: column;
+        margin: 0 ;
+    }
+
+    #container2{
+      overflow: auto;
+        padding-left:auto;
+        padding-right:auto;
+        align-items: center;
+        background-color: white;
+        height:100vh;
+        width:100vw;
+        justify-content: center;
+        align-items: center;
+        display:inline-block;
+        margin-bottom:5vh;
+        position:relative;
+   
+    }
+
+    #title{
+      font-size: 130%;
+      position: relative;
+      color:#FFFFFF;
+      left: 30%;
+    }
+
+    .container-flex{
+       display:flex;
+    }
+
+    .OperaBtn{
+        font-size: 20px;
+        color:#FFFFFF;
+        position:relative;
+        left:5%;
+    }
+
+      #medIcon{
+        position:relative;
+        margin-left:10%;
+      }
+
+     #p1{
+        font-size:101%;
+        margin-top:0;
+        margin-bottom:0;
+        display:relative;
+        border-bottom: 1px solid #a39e9e;
+        padding:3%;
+        padding-left:9%;
+        font-weight:bold;
+        font-family: custom;
+     } 
+     .bottomButton{
+      width: 90px;
+    padding-left:20px;
+    padding-right: 20px;
+}
+.footer{
+    display: inline;
+    position: fixed;
+    text-align: center;
+    bottom: 0;
+    height:80px;
+    --bottom-navigation-item-font-size: 13px;
+    --bottom-navigation-item-active-color: #55BDCA;
+    white-space: nowrap;
+}  
+
+/* MyMeds Page Css */
+/* Header */
+.pageTitle{
+    position:relative;
+    left: 40%;
+    font-size: 20px;
+    white-space: nowrap;
+}
+  .TopBar{
+    width: 366px;
+    height: 55px;
+    top: 50px;
+    left: 40px;
+    padding: 8px 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .statue-bar {
+    width: 375px;
+    height: 40px;
+    left: 28px;
+  }
+  .leading-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    gap: 10px;
+    font-size: 48px;
+  }
+  .headline {
+    width: 100%;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .BarMenu_Rewards {
+    width: 80px;
+    height: 54px;
+    font-size: 54px;
+  }
+  .BarMenu_Plus {
+    width: 54px;
+    height: 54px;
+    font-size: 50px;
+  }
+  .BarMenu_Plus el-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .capsules_blue-img {
+    width:4.5vh;
+    height:4.5vh;
+    position: relative;
+    right:24%;
+    bottom:13%;
+  }
+  /* Container & Main */
+  .container{
+    display: grid;
+    flex-direction: column;
+    place-items: center;
+    height: 100vh;
+    background-color: #006973;
+    overflow-y: auto;
+    width:100vw;
+}
+.main{
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    height: 100vh;
+    background-color:white;
+    width: 100%;
+    padding-top: 0%;
+    padding-left: 0%;
+    padding-right: 0%;
+    padding-bottom: 80px;
+}
+  .my-main{ 
+    width: 430px;
+    height: 100%;
+    border: 2px solid #1b1919;
+  }
+  .ExperiedContainer{
+    margin-top: 3%;
+    width: 100%;
+    overflow-y: auto;
+  }
+  .ExperiedMedication {
+    text-align: left;
+    width: 96vw;
+    height: 3.5vh;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    position:relative;
+    top:0.5vh;
+    padding-bottom: 10px;
+    background: rgb(248, 246, 246);
+    border-radius: 8px;
+    left:2vw;
+  }
+  .medication-word {
+    padding:3%;
+    padding-top:5%;
+    margin: 0;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: left;
+    color: #006973;
+    font-family: system-ui;
+    font-weight: 500;
+  }
+  .sidebar{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+  }
+
+.uploaded-avatar {
+        width: 100%;
+        height: 100%;
+}
+.defalut-avatar{
+    width: 70%;
+    height: 80%;
+}
+
+.menu-icon3{
+    color: #ffffff;
+    font-size: 25px;
+    margin-right: 1px;
+}
+.menu-button{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    cursor: pointer;
+}
+.menu-button3{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 130px;
+    cursor: pointer;
+}
+.menu-button3 p{
+    font-size: 20px;
+    font-weight: 550;
+    margin: 20px 35px;
+}
+.menu-button p{
+    font-size: 20px;
+    font-weight: 550;
+    margin: 30px 30px;
+    text-decoration: none;
+}
+.zeroObjAlert{
+    width:100%;
+    height:20%;
+    background-color:#f4f4f4;
+    border-radius: 5px;
+    align-items: center;
+    margin-left:5%;
+    text-align: center;
+    border-bottom: 3px solid #DDDDDD;
+}
+.zeroObjAlertP{
+    color:#006973;
+    position: relative;
+    top:20%;
+    font-size:200%;
+}
+
+.container-flex{
+    height: 70px;
+    width:100%;
+    display:flex;
+    align-items: center;
+   
+}
+.container-block{
+    width:60%;
+    height:100%;
+    position: relative;
+    left: 10vw;
+    bottom:0.6vh;
+}
+.Drug_picture{
+    width:50px;
+    height:50px;
+    font-size: 50px;
+    position: relative;
+    left: 20px;
+}
+.Drug_name
+{
+    width:220px;
+    height:25px;
+    position: relative;
+    top:18px;
+    left: 20px;
+    display:flex;
+    align-items: center;
+    
+}
+
+.medName-font{
+    font-family: Myanmar Khyay;
+    font-size: 120%;
+    font-weight: bold;  
+    line-height: 28px;
+    text-align: left;
+    display: flex;
+    align-items: flex-end;
+    font-family: system-ui;
+    color:#006973;
+}
+
+.Drug_data{
+    width: 230px;
+    height: 12px;
+    position: relative;
+    top:25px;
+    left: 20px;
+    display:flex;
+    align-items: center;
+}
+.medData-font{
+    font-family: Myanmar Khyay;
+    font-size: 7%;
+    font-weight: 400;
+    line-height: 28px;
+    letter-spacing: 0em;
+    text-align: left;
+    margin-bottom:1vw;
+    font-family:system-ui;
+    color: #8fa9ac;
+    width:100%
+}
+.arrowBtn_icon{
+    height:30px;
+    color: #006973;
+    position:relative;
+    left:14vw;
+    top:1vw;
+}
+
+.imgSpace{
+    height:6vh;
+    width:6vh;
+    background:#e9eeee;
+    position:relative;
+    border-radius: 8px;
+    left:5vw;
+}
+.medObject{
+        width:95vw;
+        height:11%;
+        padding:3%;
+        border-bottom: 2px solid #f5f0f0;
+     }
+
+
+</style>
 
 <script>
 import axios from 'axios';
@@ -172,12 +642,9 @@ export default {
       MedicineArray: [],
       drawer: ref(false),
       showAction: ref(false),
-      imgArray:[blue ,yellow,red
-      ,green,purple,orange]
-      // MedName : this.$route.params.MedName,
-      // Field : this.$route.params.Field,
-      // Category : this.$route.params.Category
-   
+      imgArray:[bottle,tablet,injection,drop ,yellow,red
+      ,green,purple,orange,blue]
+
     };
 },
   methods: {
@@ -293,13 +760,54 @@ export default {
   },
       
   mounted(){
-          document.title = "User Profile | ArthriCare";
+          document.title = "My Meds | ArthriCare";
           this.clearMedArray();
-          this.fetchData();
+
+          const unExpiredMedicationTestData = {            
+            medicationId:2,
+            Category:"Tablet",
+            MedName:"Tamitami nmnni",
+            date:"Today 10:00"}
+         const unExpiredMedicationTestData2 = {            
+            medicationId:3,
+            Category:"Pill",
+            MedName:"aoehfoaehfoaehf",
+            date:"Today 10:00"}
+            const unExpiredMedicationTestData3 = {            
+            medicationId:4,
+            Category:"Injection",
+            MedName:"Potion",
+            date:"Today 10:00"}
+
+             const unExpiredMedicationTestData4 = {            
+             medicationId:4,
+             Category:"Drop",
+             MedName:"Drop",
+             date:"Today 10:00"}
+
+          const expiredMedicationTestData = {            
+            medicationId:1,
+            Category:"Pill",
+            MedName:"Aspirin",
+            date:"4/4"}
+            
+
+          console.log(expiredMedicationTestData);
+          console.log(unExpiredMedicationTestData);
+          store.state.unExperiedMedArray.push(unExpiredMedicationTestData);
+          store.state.unExperiedMedArray.push(unExpiredMedicationTestData2);
+          store.state.unExperiedMedArray.push(unExpiredMedicationTestData3);
+          store.state.unExperiedMedArray.push(unExpiredMedicationTestData4);
+          store.state.ExperiedMedArray.push(expiredMedicationTestData);
+          store.state.ExperiedMedArray.push(expiredMedicationTestData);
+          store.state.ExperiedMedArray.push(expiredMedicationTestData);
+          
+          //this.fetchData();
     }
-      ,
+,
         setup(){
           const active= ref(1);
+
           return {active}
         },
         components:{

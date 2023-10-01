@@ -3,10 +3,14 @@
     import { ref } from 'vue';
     import { ChevronLeft20Filled, ThumbLike20Regular, CommentMultiple20Regular, Pill28Filled, ChannelAdd20Regular , Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Filled } from '@vicons/fluent'
     import { Icon } from '@vicons/utils'
+    import { mapGetters } from 'vuex';
+    import axios from 'axios';
 
     export default{
         mounted() {
             document.title = "My Posts | ArthriCare";
+            this.loadUserProfileAndChatButton();
+            this.loadUserPosts(this.selectedUser_postsPage.userID); 
         },
         setup(){
             const activeBottom = ref(3);
@@ -49,9 +53,74 @@
                     ]
                 },
                 drawer: ref(false),
+                chatButtonVisible: true, 
+                userPosts: [], 
             };
         },
         methods:{
+
+        async setupUserProfileAndChatButton() {
+        const userProfileInfo = JSON.parse(sessionStorage.getItem("userProfileInfo"));
+
+        if (userProfileInfo) {
+            const userProfileId = userProfileInfo.userId;
+            const response = await axios.get(`/ComityPost/getUserProfileInfor?userId=${userProfileId}`);
+            const userProfile = response.data;
+
+            this.user.name = userProfileInfo.userName;
+            this.selectedUser_postsPage.totalNumberOfPosts = userProfile.numPosts;
+            this.totalNumberOfLikes = userProfile.numLikes;
+
+            if (this.loggedInUser.userId - userProfileId === 0) {
+                this.chatButtonVisible = false; // Hide the chat button if the user IDs are the same
+            } else {
+                this.chatButtonVisible = true;
+            }
+        }
+    },
+
+    async loadUserProfileAndChatButton() {
+        await this.setupUserProfileAndChatButton();
+    },
+
+    async startMessaging(userFromId, userToId) {
+        try {
+            const response = await axios.post('http://localhost:8080/ComityChat/createChatChannel', {
+                userFromId: userFromId,
+                userToId: userToId
+            });
+
+            if (response.status === 200) {
+                const data = response.data;
+                console.log('create chat channel successfully');
+                sessionStorage.setItem("chatChannelInfor", JSON.stringify(data));
+                this.$router.push('/Chat'); // Use Vue Router to navigate to the "testM2" route
+            } else {
+                console.error('Failed to create chat channel');
+            }
+        } catch (error) {
+            console.error('Error creating chat channel:', error);
+        }
+    },
+
+    async loadUserPosts(userId) {
+        try {
+            const response = await axios.get('http://localhost:8080/ComityPost/getUserPosts', {
+                params: {
+                userId: userId, // Add the userId as a query parameter
+                },
+            });
+            const userPosts = response.data;
+
+            // Update the userPosts data property
+            this.userPosts = userPosts;
+        } catch (error) {
+            console.error('Error loading user posts:', error);
+        }
+    },
+
+
+            
             openDrawer() {
                 this.drawer = true;
             },
@@ -83,11 +152,6 @@
                 // Use window.history to navigate back
                 window.history.back();
             },
-            startMessaging(){
-                /* Instead of doing the code below, I want to open a new chat page with a particular user, but idk how to do that.
-                   Probably I need to get a parameter, 'userID'       */
-                this.$router.push('/Chat');
-            },
         },
 //============================== END: Unique Functions for MyPosts Page ==============================//
         components: {
@@ -103,6 +167,9 @@
             CommentMultiple20Regular, // comment icon
         },
         computed: {
+
+            ...mapGetters('user', ['loggedInUser']), // Map the loggedInUser getter
+
             totalNumberOfLikes() {
                 return this.selectedUser_postsPage.posts.reduce((total, post) => total + post.numberOfLikes, 0);
             },
@@ -170,7 +237,7 @@
                         <div class="username">{{ post.username }}</div>
                         <div class="time-ago">{{ formattedPostTime[index] }}</div>
                     </div>
-                    <div class="content" @click="goToPostDetail(post.postID)">
+                    <div class="content" @click="goToPostDetail(post.postID)" v-for="post in userPosts" :key="post.postId">
                         <p class="postTitle">{{ post.title }}</p>
                         <p v-if="!post.expanded" class="content">{{ truncateContent(post.content) }}</p>
                         <p v-else class="content">{{ post.content }}</p>
