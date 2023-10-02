@@ -47,11 +47,16 @@ const actions = {
 
                 response.data.forEach(reminder => {
                     const timeWithoutSeconds = reminder.reminderTime.slice(0, -3);
+
                     reminders.push({
                         id: idCounter++,
                         name: reminder.medicationName,
                         time: timeWithoutSeconds,
-                        date: ""
+                        category: reminder.category,
+                        dosageUnit: reminder.dosageUnit,
+                        alreadyTakeMedication: reminder.alreadyTakeMedication,
+                        takeMedTime: reminder.takeMedTime,
+                        note: reminder.note,
                     });
                 });
                 console.log('Fetched reminders:', reminders); 

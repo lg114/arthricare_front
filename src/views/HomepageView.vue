@@ -66,6 +66,22 @@
                 //testing
                 console.log("Medication List for selected date:", this.medicationList);
             },
+            formatTakeMedTime(takeMedTime) {
+                console.log("typeof takeMedTime:", typeof takeMedTime);
+                const takemedTimeString = String(takeMedTime);
+                console.log("typeof takeMedTime:", typeof takemedTimeString);
+                if (!takemedTimeString) {
+                    return "No takemedtime available.";
+                }
+
+                const takeMedTimeArray = takemedTimeString.split(',').map(Number); // 将字符串分割并转换为数字数组
+
+                const [year, month, day, hour, minute, second] = takeMedTimeArray;
+
+                const formattedTime = `${year}-${month}-${day} ${hour}:${minute}:${second}`; // 格式化为字符串
+
+                return `Takemedtime: ${formattedTime}`;
+            },
             showMedicationDetails(medication) {
                 this.selectedMedication = medication;
                 this.$store.commit('reminder/SET_CURRENT_MEDICATION', this.selectedMedication);
@@ -127,27 +143,22 @@
             <div class = "calendar">
                 <HorizontalCalendar @date-selected="onDateSelected" />
             </div>
-            <template v-if = "medicationList && medicationList.length > 0">
+            <el-scrollbar max-height="30vh" always>
+                <template v-if = "medicationList && medicationList.length > 0">
                 <div :class="['divider', {'last-medication': index === medicationList.length - 1}]" v-for = "(medication, index) in medicationList" :key = "medication.reminderId">
                     <span style = "width: 30vw; color: #006973; font-weight: bold;">{{ medication.time }}</span>
                     <var-divider vertical/>
-                    <var-card layout="row" elevation = 0 outline @click = "showMedicationDetails(medication)">
-                        <template #title>
-                            <h3>{{ medication.name }}</h3>
-                        </template>
-                        <template #description>
-                            <div v-if="medication.takenMedTime">
-                                <p>Taken at {{ medication.takenMedTime }}</p>
-                            </div>
-                        </template>
-                    </var-card>
+                    <var-chip size="large"  @click = "showMedicationDetails(medication)">
+                        <var-ellipsis style="max-width: 98vw" :tooltip="false"><h4>{{ medication.name }}</h4></var-ellipsis>
+                    </var-chip>
                 </div>
-            </template>
-            <template v-else>
-                    <div style = "text-align: center; padding: 20px; color:#006973; font-size: larger;">
-                        <p><b>No meds on this date</b></p>
-                    </div>
-            </template>
+                </template>
+                <template v-else>
+                        <div style = "text-align: center; padding: 20px; color:#006973; font-size: larger;">
+                            <p><b>No meds on this date.</b></p>
+                        </div>
+                </template>
+            </el-scrollbar>
         </el-main>
     </el-container>
     <el-dialog  v-model = "dialog" center align-center width="90%" round>
@@ -162,7 +173,8 @@
                 <span v-if="selectedMedication.category === 'Tablet'">tablet(s)</span>
                 <span v-if="selectedMedication.category === 'Injection'">injection(s)</span>
                 <span v-if="selectedMedication.category === 'Drop'">drop(s)</span>
-            </span>
+            </span><br>
+            <b><span v-if="selectedMedication.note">Note: {{ selectedMedication.note }}</span></b>
         </div>
         <template #footer>
             <div style = "text-align: center;">

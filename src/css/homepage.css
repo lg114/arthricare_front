@@ -41,12 +41,11 @@
 .last-medication{
     margin-bottom: 15vw;
 }
-.var-card{
+.var-chip{
     margin-right: 5vw;
     color:#006973;
-    height: 10vh;
-    --card-border-radius: 5px;
-    --card-outline-color: #006973;
+    height: 7vh;
+    width: 98vw;
 }
 .el-dialog__header{
     margin-right: 0px;
