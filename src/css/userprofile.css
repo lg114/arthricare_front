@@ -60,23 +60,46 @@ p{
     margin-top: 0px;
     margin-bottom: 50px;
 }
-.avatar{
-    margin-left: 37%;
-    margin-top: 10px;
-    margin-bottom: -20px;
-    --uploader-file-size: 100px;
-    --uploader-file-margin: 0;
-    --uploader-file-name-padding:0;
-    --uploader-file-close-icon-font-size:20px;
-    --uploader-file-cover-fit:cover;
-    --uploader-file-indicator-height:0px;
-    --uploader-action-background:#CFEEF5;
-    --uploader-action-icon-color:#006973;
+/* Avatar Upload */
+.avatarWrapper{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
 }
-.var-uploader__file-list {
-    width: 110px;
+.avatarLabel{
+    cursor: pointer;
+    display: block;
+    width: 120px;
+    height: 120px;
+    position: relative;
+}
+.avatar{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #CFEEF5;
+    background-size: cover;
+    background-position: center center;
+}
+.avatarLabel input[type="file"]{
+    position:absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+.plusIcon{
+    font-size:50px;
+    color:white;
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #CFEEF5;
 }
 .box{
     width: 365px;

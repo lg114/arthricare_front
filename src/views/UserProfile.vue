@@ -11,8 +11,6 @@
                 document.title = "User Profile | ArthriCare";
         },
         setup(){
-            const avatar = ref([]);
-            return {avatar}
         },
         data(){
             return{
@@ -24,7 +22,18 @@
                 drawer: ref(false),
                 showAction: ref(false), //Show actions of the fab
                 //For avatar upload
+                avatarData: null
             };
+        },
+        computed:{
+            avatarStyle(){
+                if(this.avatarData){
+                    return{
+                        backgroundImage: `url(${this.avatarData})`
+                    };
+                }
+                return {};
+            }
         },
         methods:{
             openDrawer() {
@@ -40,9 +49,16 @@
             toggleAction(){
                 this.showAction.value = !this.showAction.value
             },
-            handleAfterRead(avatar) { 
-            console.log(avatar)
-          }
+            previewAvatar(event){
+                const file = event.target.files[0];
+                if(file){
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        this.avatarData = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
         },
         components: {
             UserFilled,
@@ -65,15 +81,21 @@
         <el-container>
             <el-header class="header">
                 <Icon class="more" @click="drawer = true"><LineHorizontal320Filled /></Icon>
-                <Icon class="user"><Person20Filled /></Icon>
+                <!-- <Icon class="user"><Person20Filled /></Icon> -->
                 <b class="pageTitle">My Profile</b>
                 <router-link to="/EditProfile" style="color: white;">
                 <Icon class="edit"><Edit20Regular /></Icon>
                 </router-link>
             </el-header>
             <el-main class="main">
-                    <var-uploader class="avatar" v-model="avatar" @after-read="handleAfterRead" maxlength="1">
-                    </var-uploader>
+                <div class="avatarWrapper">
+                    <label class="avatarLabel">
+                        <div class="avatar" :style="avatarStyle">
+                            <div v-if="!avatarData" class="plusIcon">+</div>
+                        </div>
+                        <input type="file" @change="previewAvatar" style="display: none">
+                    </label>
+                </div>
                 <h2>{{ user.name }}</h2>
                 <p>Level {{ user.level }} | {{ user.points }} points</p>
                 <div class="box">
