@@ -27,9 +27,9 @@
     /* padding-right: 0px; */
 }
 .arrowBack{
-    /* position: absolute; */
-    left: 20px;
-    top: 2.5%;
+    position: absolute;
+    left: 5%;
+    top:2.5%;
     font-size: 30px;
     color: white;
 }
@@ -42,12 +42,14 @@
     border-radius: 50%;
     align-items: center;
     margin-left: 15%; 
+    margin-top: 10px;
 }
 .header_chatPartnerName{
     font-size: 20px;
     top: 2.5%;
     padding-left: 10px;
-    margin-top: 1.5%;
+    
+    margin-top: 15px;
 }
 #chat_background{
     width: 100%;
@@ -71,9 +73,10 @@
 }
 #messageMain{
     display: flex;
-    align-items: center;
+    width: 100%;
     flex-direction: column;
     overflow: scroll;
+    padding-bottom: 60px;
 }
 .messageDate{
     color: #949596;
@@ -81,23 +84,40 @@
     font-size: 15px;
 }
 p.text_from_me{
-    width: 265px;
+    
     border-radius: 10px;
     background-color: #CFEEF5;
-    margin-left: 80px;
     margin-top: 10px;
     margin-bottom: 2px;
-    text-align: left;
+    text-align: right;
     font-size: 18px;
     line-height: 22px;
     font-weight: lighter;
     padding: 10px;
 }
-.reply_from_chatPartner{
+.reply_from_me
+{
     display: flex;
+    width: 100%;
+    justify-content: flex-end;
     align-items: center;
     flex-direction: row;
-    margin-left: -40px;
+    margin-left: -15px;
+    
+}
+img.miniIcon_me{
+    height: 36px;
+    width: 36px;
+    padding-left: 5px;
+}
+
+.reply_from_chatPartner{
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+    margin-left: 15px;
 }
 img.miniIcon_chatPartner{
     height: 36px;
@@ -105,7 +125,6 @@ img.miniIcon_chatPartner{
     padding-right: 5px;
 }
 p.text_from_partner{
-    width: 265px;
     background-color: #E5E5E5;
     border-radius: 10px;
     margin-top: 10px;
@@ -128,13 +147,6 @@ p.text_from_partner{
 
     background-color: white;
     position:fixed;
-    box-shadow: inset 0 0 5px grey;
-}
-.chat_footer_icons{
-
-}
-.message_input_textField{
-
 }
 .camera_icon{
     font-size: 32px;
@@ -173,7 +185,7 @@ p.text_from_partner{
 
     position: absolute;
     bottom: 20%;
-    right: 0%;
+    right: 10px;
     z-index: 1;
 }
 input{
@@ -181,8 +193,8 @@ input{
     font-size: 16px;
     background-color: #E5E5E5;
     border-radius: 10px;
-    width: 254px;
     border: none;
+    width: 100%;
 }
 input:focus {
     border: 2px solid #55BDCA; 
@@ -195,10 +207,8 @@ div.enterMessageHere{
     right: 0%;
     z-index: 1;
     padding-bottom: 5px;
-    width: 70%;
-}
-input{
-    width: 100%;
+    padding-right: 10px;
+    width: 65%;
 }
 ::placeholder {
 	padding-left: 9px;

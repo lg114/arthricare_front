@@ -1,126 +1,116 @@
 <!-- Community Page -->
 <script>
     import { ref } from 'vue';
-    import { ThumbLike20Regular, LineHorizontal320Filled, CommentMultiple20Regular, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Filled,Pill28Filled, ChannelAdd20Regular  } from '@vicons/fluent'
+    import { ThumbLike20Regular, LineHorizontal320Filled, CommentMultiple20Regular, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Filled, Pill28Filled, ChannelAdd20Regular  } from '@vicons/fluent'
     import { Icon } from '@vicons/utils'
     import SideBarContent from '@/component/Sidebar.vue';
     import { UserFilled } from '@element-plus/icons-vue';
+    import axios from 'axios';
+
     export default{
         mounted() {
             document.title = "Community | ArthriCare";
+            this.fetchDataFromBackend();
         },
         setup(){
             const activeBottom = ref(3);
-            const avatar1 = ref()
-            const avatar2 = ref()
-            const avatar3 = ref()
-            const avatar4 = ref()
-            avatar1.value = require('@/assets/user_avatar.png')
-            avatar2.value = require('@/assets/friend_1.png')
-            avatar3.value = require('@/assets/friend_2.png')
-            avatar4.value = require('@/assets/friend_3.png')
             return {
-                avatar1,
-                avatar2,
-                avatar3,
-                avatar4,
                 activeBottom
             }
         },
         data(){
             return{
-                
                 activeSection: 'discussion_section',
                 user:{
                     name: 'Kris Wu',
                     level: '10',
                     points: '1000',
-                    avatar: '@/assets/useravatar.png' 
+                    avatar: require('@/assets/user_avatar.png')
                 },
                 posts:[
                     {
-                        id: 1,
-                        avatar: '@/assets/user_avatar.png',
+                        postId: 1,
+                        avatar: require('@/assets/friend_2.png'),
+                        userId: 'testID_1',
                         username: 'Adam',
-                        postedDateTime: '',
-                        timestamp: new Date(),
+                        postedDateTime: new Date("2023-09-20T15:25:00+10:00"), // September 20, 2023, 15:20:00 AEST
                         title: '21M diagnosed with Rheumatoid Arthritis',
                         content: "I'm a 21M who was recently diagnosed with Rheumatoid Arthritis by a GP. It was first assumed I had some form of vasculitis, but I failed to ask what exactly my blood test results had shown that had her determine RA. It's a long wait for a specialist, if I can get one, and I can't find much on this disease in people my age. It is also to my understanding that blood test don't always point to a definitive diagnosis. I've had problem beginning as early as 12 and they never went away. I finally ignored my fear of being regarded as another \"self diagnosing patient\"; by taking the years of documented evidence and my research that never stopped pointing to some form of arthritis, it was so relieving to hear I wasn't crazy after all, although it's almost created more questions like the likelihood of misdiagnosis. Unfortunately, my current answers anytime soon. Is anyone familiar with rheumatoid vasculitis of similar autoimmune disorder within my age group?",
                         expanded: false,
                         numberOfLikes: 17,
                         numberOfComments: 8,
+                        haveImage:true,
                         images: [
-                            { url: '@/assets/postImage1.png', alt: 'postImage1 for postID 1' },
-                            { url: '@/assets/postImage2.png', alt: 'postImage2 for postID 1' }, 
-                            { url: '@/assets/postImage3.png', alt: 'postImage3 for postID 1' },
-                            { url: '@/assets/postImage4.png', alt: 'postImage4 for postID 1' }
-                        ],
-                        comments: []
+                            { url: require('@/assets/postImage1.png'), alt: 'postImage1 for postID 1' },
+                            { url: require('@/assets/postImage2.png'), alt: 'postImage2 for postID 1' }, 
+                            { url: require('@/assets/postImage3.png'), alt: 'postImage3 for postID 1' },
+                            { url: require('@/assets/postImage4.png'), alt: 'postImage4 for postID 1' }
+                        ]
                     },
                     {
-                        id: 2,
-                        avatar: '@/assets/friend_2.png',
+                        postId: 2,
+                        avatar: require('@/assets/friend_4.png'),
+                        userId: 'testID_2',
                         username: 'Timothy',
-                        postedDateTime: '',
-                        timestamp: new Date(),
+                        postedDateTime: new Date("2023-09-20T09:30:00+10:00"), // September 20, 2023, 9:30:00 AEST
                         title: '“Morning” stiffness worse in the middle of the night?',
                         content: "While I am stiff for an hour or two in the morning, the stiffness seems much worse in the middle of the night or if I get up really early. Last night I almost bit it when I got up to go to the washroom because my brain headed in the direction of the bathroom but my hips and knees were locked and didn't want to move. Sometimes I walk like a penguin in the middle of the night (but not the cute ones!) due to feet and ankle stiffness but in the morning it isn't quite so bad. Anyone else find this?",
                         expanded: false,
                         numberOfLikes: 14,
                         numberOfComments: 8,
+                        haveImage:true,
                         images: [
-                            { url: '@/assets/postImage5.png', alt: 'postImage5 for postID 2' }, 
-                            { url: '@/assets/postImage6.png', alt: 'postImage6 for postID 2' },
-                            { url: '@/assets/postImage7.png', alt: 'postImage7 for postID 2' }
-                        ],
-                        comments: []
+                            { url: require('@/assets/postImage5.png'), alt: 'postImage5 for postID 2' }, 
+                            { url: require('@/assets/postImage6.png'), alt: 'postImage6 for postID 2' },
+                            { url: require('@/assets/postImage7.png'), alt: 'postImage7 for postID 2' }
+                        ]
                     }, 
                     {
-                        id: 3,
-                        avatar: '@/assets/user_avatar.png',
-                        username: 'Sarah',
-                        postedDateTime: '',
-                        timestamp: new Date(),
+                        postId: 3,
+                        avatar: require('@/assets/friend_3.png'),
+                        userId: 'testID_3',
+                        username: 'Tom',
+                        postedDateTime: new Date("2023-09-19T09:30:00+10:00"), // September 19, 2023, 9:30:00 AEST
                         title: 'When to resume mtx',
                         content: "I started mtx just over three weeks ago, took the first two weekly doses then got sick with Norovirus. Next dose was due on Saturday but pharmacist recommended not taking it until I'm 'feeling completely better.' Although the diarrhoea stopped by Thursday I still feel a bit washed out, shall I just take the next dose now I'm clear of the virus?",
                         expanded: false,
                         numberOfLikes: 3,
                         numberOfComments: 2,
+                        haveImage:true,
                         images: [
-                            { url: '@/assets/postImage8.png', alt: 'postImage6 for postID 3' },
-                            { url: '@/assets/postImage9.png', alt: 'postImage7 for postID 3' }
-                        ],
-                        comments: []
+                            { url: require('@/assets/postImage8.png'), alt: 'postImage6 for postID 3' },
+                            { url: require('@/assets/postImage6.png'), alt: 'postImage7 for postID 3' }
+                        ]
                     },
                     {
-                        id: 4,
-                        avatar: '@/assets/user_avatar.png',
+                        postId: 4,
+                        avatar: require('@/assets/friend_5.png'),
+                        userId: 'testID_4',
                         username: 'Anthony',
-                        postedDateTime: '',
-                        timestamp: new Date(),
+                        postedDateTime: new Date("2023-09-06T09:30:00+10:00"), // September 6, 2023, 9:30:00 AEST
                         title: 'This is a title for the General post',
                         content: "ghju fgufj fgrfd dfgv ed fgf f f gea.",
-                        expanded: false,
+                        expanded: true,
                         numberOfLikes: 8,
                         numberOfComments: 6,
+                        haveImage:true,
                         images: [
-                            { url: '@/assets/postImage1.png', alt: 'postImage1 for postID 4' }
-                        ],
-                        comments: []
+                            { url: require('@/assets/postImage1.png'), alt: 'postImage1 for postID 4' }
+                        ]
                     },
                     {
-                        id: 5,
-                        avatar: '@/assets/user_avatar.png',
+                        postId: 5,
+                        avatar: require('@/assets/friend_5.png'),
+                        userId: 'testID_5',
                         username: 'Anthony',
-                        postedDateTime: '',
-                        timestamp: new Date(),
+                        postedDateTime: new Date("2023-08-24T09:30:00+10:00"), // August 24, 2023, 9:30:00 AEST
                         title: 'This is a title for the News post',
-                        content: "ghju fgufj fgrfd dfgv ed fgf f f gea.",
-                        expanded: false,
+                        content: "The shortest content.",
+                        expanded: true,
                         numberOfLikes: 8,
-                        numberOfComments: 6,
-                        images: [],
-                        comments: []
+                        numberOfComments: 0,
+                        haveImage:false,
+                        images: []
                     }
                     // Add more posts here
                 ], 
@@ -140,27 +130,6 @@
             changeSection(sectionName) {
                 this.activeSection = sectionName;
             },
-            getTimeAgo(timestamp) {
-                // Implement the function to calculate time ago from the given timestamp
-                const currentTime = new Date();
-                const postTime = new Date(timestamp);
-
-                const timeDifference = currentTime - postTime;
-                const seconds = Math.floor(timeDifference / 1000);
-                const minutes = Math.floor(seconds / 60);
-                const hours = Math.floor(minutes / 60);
-                const days = Math.floor(hours / 24);
-
-                if (days > 0) {
-                    return days + 'd';
-                } else if (hours > 0) {
-                    return hours + 'h';
-                } else if (minutes > 0) {
-                    return minutes + 'm';
-                } else {
-                    return seconds + 's';
-                }
-            },
             // START: 3 methods for SeeMore buttons
             truncateContent(content) {
                 const sentences = content.split(" ");
@@ -172,7 +141,8 @@
                 post.expanded = !post.expanded;
             },
             goToPostDetail(postId) {
-                this.$router.push({ name: 'PostDetail', params: { id: postId } });
+                sessionStorage.setItem("postDetailInfoId",postId);
+                this.$router.push({ name: 'PostDetail'});
             },
             // END: 3 methods for SeeMore buttons
 
@@ -180,8 +150,8 @@
             showCommentInput(postId) {
                 this.showCommentInputId = postId;
             },
-            addComment(postId) {
-                const post = this.posts.find((p) => p.id === postId);
+            addComment(postid) {
+                const post = this.posts.find((p) => p.postId === postid);
                 post.comments.push({
                     username: this.user.name,
                     content: this.newComment,
@@ -200,9 +170,6 @@
                 else if(sectionID==="3"){
                     // Only display the posts with News section
                 }
-                else if(sectionID==="4"){
-                    // Only display the posts with Message section
-                }
             },
             // END: Filter the posts by a section
 
@@ -212,9 +179,85 @@
                 // The thumbUp icon when a user added 'a like' should be 'ThumbLike20Filled'
                 // The thumbUp icon when a user removed 'a like' should be 'ThumbLike20Regular'
             },
-            goToMessagePage(){
-                this.$router.push('/Message');
+            open_MyPosts(userId,userName){
+                const postUserInfor = {
+                    userId:userId,
+                    userName:userName
+                }
+                sessionStorage.setItem("postUserInfor",JSON.stringify(postUserInfor));
+                this.$router.push({ name: 'MyPosts'});
+            },
+
+            // START: Merging backend
+            async fetchDataFromBackend(){
+                try {
+                    const response = await axios.get('http://localhost:8181/ComityPost/getAllPost')
+
+                    const posts = response.data;
+
+                    if (posts.length !== 0) {
+                        // 显示加载的帖子
+                        for (const post of posts) {
+                            //console.log(post)
+                            this.makePost(post);
+                        }
+                    }
+                } catch (error) {
+                    console.error("Error fetching data:", error);
+                }
+            }, 
+            async makePost(post) {
+                const date = new Date(post.createdTime);
+                const formattedDate = date.toLocaleString();
+                // Await the result of makeImageArray(post)
+                const images = await this.makeImageArray(post);
+
+                const postData = {
+                    postId: post.postId,
+                    avatar: require('@/assets/user_avatar.png'),
+                    userId: post.userId,
+                    username: post.userName,
+                    postedDateTime: formattedDate,
+                    title: post.title,
+                    content: post.content,
+                    expanded: this.determinePostExpandOrNot(post.content),
+                    numberOfLikes: post.likeNum,
+                    numberOfComments: post.commentNum,
+                    haveImage:post.haveImage,
+                    images: images,
+                };
+
+                this.posts.push(postData);
+            },
+            determinePostExpandOrNot(content){
+                if(content.length > 100){
+                    return false;
+                }
+                return true;
+            },
+            async makeImageArray(post) {
+                if (!post.haveImage) {
+                    return [];
+                }
+                try {
+                    const { data: urls } = await axios.get(`http://localhost:8181/ComityPost/getPostImages?postId=${post.postId}`);
+                    const images = urls.map((url, index) => ({
+                        url: "http://localhost:8181/" + url,
+                        alt: `postImage${index + 1} for postID ${post.postId}`
+                    }));
+                    //console.log(images);
+                    return images;
+                } catch (error) {
+                    console.error("Error fetching image URLs:", error);
+                    return [];
+                }
+            },
+            incrementLikes(index)
+            {
+                this.posts[index].numberOfLikes += 1;
             }
+
+            // END: Merging backend
         },
 //============================== END: Unique Functions for Community Page ==============================//
         components: {
@@ -222,16 +265,51 @@
             SideBarContent,
             UserFilled,
             LineHorizontal320Filled,
-            Pill28Filled, ChannelAdd20Regular, 
+            Pill28Filled, 
+            ChannelAdd20Regular, 
             Home20Regular, 
             BriefcaseMedical20Regular, 
             Gift20Regular, 
             PeopleCommunity20Filled,
             ThumbLike20Regular,  // Default like button  // When user liked a post
             CommentMultiple20Regular // comment icon
-        }
+        },
+        computed: {
+            formattedPostTime() {
+                return this.posts.map((post) => {
+                const postDate = new Date(post.postedDateTime);
+                const now = new Date();
+                const timeDifference = now - postDate;
+                const oneWeekInMilliseconds = 7 * 24 * 60 * 60 * 1000; // One week in milliseconds
+
+                // If the time difference is more than a week, display the posted date
+                if (timeDifference > oneWeekInMilliseconds) {
+                    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                    //console.log(postDate.toLocaleDateString(undefined, options));
+                    return postDate.toLocaleDateString(undefined, options);
+                }
+
+                // Calculate the time units (e.g., seconds, minutes, hours, etc.)
+                const seconds = Math.floor(timeDifference / 1000);
+                const minutes = Math.floor(seconds / 60);
+                const hours = Math.floor(minutes / 60);
+                const days = Math.floor(hours / 24);
+
+                if (days > 0) {
+                    return `${days} d`;
+                } else if (hours > 0) {
+                    return `${hours} h`;
+                } else if (minutes > 0) {
+                    return `${minutes} m`;
+                } else {
+                    return `${seconds} s`;
+                }
+                });
+            },
+        },
     };
 </script>
+
 <template>
     <div class="container">
         <el-container>
@@ -245,41 +323,37 @@
                     <input type="radio" checked id="1" name="section" class="section" @click="changeSection('discussion_section')"><label for="1">Discussion</label>
                     <input type="radio" id="2" name="section" class="section" @click="changeSection('event_section')"><label for="2">Event</label>
                     <input type="radio" id="3" name="section" class="section" @click="changeSection('news_section')"><label for="3">News</label>
-                    <input type="radio" id="4" name="section" class="section" @click="goToMessagePage"><label for="4">Message</label>
                 </div>
 
                 <div v-if="activeSection === 'discussion_section'">
-                    <div v-for="post in posts" :key="post.id" class="postCard">
+                    <div v-for="(post, index) in posts" :key="post.id" class="postCard">
                         <div class="icon_name_time">
                             <!-- NOTE: the code below to display an image is a hardcode and shouldn'r be used. -->
-                            <img :src="avatar1" alt="avatar" class="avatar" />
+                            <img :src="post.avatar" alt="avatar" class="avatar" @click="open_MyPosts(post.userId,post.username)" />
                             <!-- NOTE: This code should work, but, for some reason, it's not working. <img :src="post.avatar" :alt="post.alt" />  -->
-                            <div class="username">{{ post.username }}</div>
-                            <div class="time-ago">{{ getTimeAgo(post.timestamp) }}</div>
+                            <div class="username" @click="open_MyPosts(post.userId,post.username)">{{ post.username }}</div>
+                            <div class="time-ago">{{ formattedPostTime[index] }}</div>
                         </div>
-                        <div class="content" @click="goToPostDetail(post.id)">
+                        <div class="content" @click="goToPostDetail(post.postId)">
                             <p class="postTitle">{{ post.title }}</p>
                             <p v-if="!post.expanded" class="content">{{ truncateContent(post.content) }}</p>
                             <p v-else class="content">{{ post.content }}</p>
-                            <button @click="goToPostDetail(post.id)" class="seeMoreButton">
+                            <button v-if="!post.expanded" @click="goToPostDetail(post.postId)" class="seeMoreButton">
                                 ... See more
                             </button><br>
-                            <div id="image-scroll-container">
+                            <div v-if="post.haveImage" class="image-scroll-container">
                                 <span v-for="(image, imageIndex) in post.images" :key="imageIndex">
-                                    <img src="@/assets/postImage3.png" :alt="image.alt" class="aImage"/> 
+                                    <img :src="image.url" :alt="image.alt" class="aImage"/> 
                                 </span>    
                             </div>
                         </div>
                         <div class="like_comment_section">
-                                <!-- Note for Don:  -->
+                            <div @click="incrementLikes(index)">
                                 <Icon class="thumbLike_icon"><ThumbLike20Regular /></Icon>
-                                <p class="numberOfLikes">{{ post.numberOfLikes }}</p>
-                                <Icon class="comment_icon" @click="showCommentInput(post.id)"><CommentMultiple20Regular /></Icon>
+                            </div>
+                            <p class="numberOfLikes">{{ post.numberOfLikes }}</p>
+                                <Icon class="comment_icon" @click="showCommentInput(post.postId)"><CommentMultiple20Regular /></Icon>
                                 <p class="numberOfComments">{{ post.numberOfComments }}</p>
-                                <div v-if="showCommentInputId === post.id">
-                                    <input v-model="newComment" placeholder="Enter your comment" />
-                                    <button @click="addComment(post.id)">Submit</button>
-                                </div>
                             </div>
                         <hr style="width: 100%;">
                     </div>
@@ -289,8 +363,7 @@
                         <Icon @click="scrollToTop"><ArrowCircleUpTwotone class="scrollToTopButton" /></Icon>
                     </div>
                     -->
-                </div> 
-                <!-- END: Discussion Section -->
+                </div> <!-- END: Discussion Section -->
 
                 <!-- START: Event Section -->
                 <!-- Note: At this moment, this section is just a placeholder. It's been hardcoded. -->
@@ -447,14 +520,5 @@
 <!--============================ END: The Side Menu Bar ============================-->        
     </div>
 </template>
-
-
-
-
-
-
-
-
-
 
 <style src="@/css/community.css" scoped></style>

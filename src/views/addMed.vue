@@ -750,7 +750,7 @@ export default {
 },
 
   mounted(){
-            document.title = 'Add Medication';
+            document.title = 'Add Medication | ArthriCare';
            // this.selectValue();
 
   

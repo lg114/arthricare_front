@@ -77,6 +77,7 @@
                 }
                 //testing
                 console.log("Medication List for selected date:", this.medicationList);
+                console.log (sessionStorage);
             },
             
             //Dialog

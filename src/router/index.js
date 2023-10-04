@@ -24,6 +24,7 @@ import AddPostPage from '@/views/AddPostView.vue';
 import PostDetailPage from '@/views/PostDetailView.vue';
 import MyPostsPage from '@/views/MyPostsView.vue';
 import AssessmentPage from '@/views/AssessmentView.vue';
+import addMedCopy from "@/views/addMedCopy.vue"
 
 
 const router  = createRouter({
@@ -54,7 +55,7 @@ const router  = createRouter({
             name: 'Home',
             component: HomePage,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
         {
@@ -62,7 +63,7 @@ const router  = createRouter({
             name: 'AddMed',
             component: AddMedPage,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
         {
@@ -70,7 +71,7 @@ const router  = createRouter({
             name: 'Menu',
             component: MenuPage,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
         {
@@ -78,7 +79,7 @@ const router  = createRouter({
             name: 'UserProfile',
             component: UserProfilePage,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
         {
@@ -86,7 +87,7 @@ const router  = createRouter({
             name: 'EditMed',
             component: EditMedPage,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
         {
@@ -94,7 +95,7 @@ const router  = createRouter({
             name: 'MyMeds',
             component: MyMedsPage,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
         {
@@ -102,7 +103,7 @@ const router  = createRouter({
             name: 'Rewards',
             component: RewardsPage,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
         {
@@ -201,7 +202,7 @@ const router  = createRouter({
 
 
         {
-            path: '/PostDetail/:id',
+            path: '/PostDetail',
             name: 'PostDetail',
             component: PostDetailPage,
             meta: {
@@ -217,9 +218,19 @@ const router  = createRouter({
             }
             
         },
+        {
+            path: '/addMedCopy',
+            name: 'addMedCopy',
+            component: addMedCopy,
+            meta: {
+                requiresAuth: true
+            }
+        }
         
     ]
 });
+
+
 
 // Router Guard 导航守卫
 

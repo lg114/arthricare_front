@@ -8,6 +8,14 @@
     color: #fff; 
     width:100%;
 }
+.cancelButton {
+    background-color: transparent;
+    color: #fff; /* Button text color */
+    border: none;
+    cursor: pointer;
+    font-size: 22px;
+    transition: background-color 0.3s ease; /* Add a smooth hover effect */
+}
 .postButton {
     background-color: transparent;
     color: #fff; /* Button text color */
@@ -16,8 +24,6 @@
     font-size: 22px;
     transition: background-color 0.3s ease; /* Add a smooth hover effect */
     position: relative;
-    top:3px;
-    left:280px;
   }
 .container{
     display: grid;
@@ -91,7 +97,7 @@ input[type="text"]:focus {
     width: 192px;
     height: 125px;
     display: block;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 10px;
 }
 .cancel_icon {
@@ -116,11 +122,23 @@ input[type="text"]:focus {
 .scrollable-container::-webkit-scrollbar {
     display: none;
 }
+.addPost_footer{
+    bottom: 0;
+    width: 100%; /* NOTE: Better to use '100%' or 'rem' ? */
+    white-space: nowrap;
+    position:fixed;
+}
 .image_icon{
     font-size: 30px;
     position: relative;
     bottom:10px;
     left:0;
     color:#006973;
+    padding: 5px;
+
+    position: absolute;
+    bottom: -0.8%;
+    left: 0%;
+    z-index: 1;
 } 
 /* END: Unique CSS for Add Post Page */
