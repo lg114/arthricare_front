@@ -23,9 +23,10 @@
                 medicationList: [],
                 //初始化选中日期
                 dialog: ref(false),
-                onTime: ref(false),
+                timeDialog: ref(false),
                 now: ref(false),
                 setTime: ref(false),
+                setTimeSelected: null,
             }
         },
         methods:{
@@ -67,38 +68,76 @@
                 console.log("Medication List for selected date:", this.medicationList);
             },
             formatTakeMedTime(takeMedTime) {
-                console.log("typeof takeMedTime:", typeof takeMedTime);
                 const takemedTimeString = String(takeMedTime);
-                console.log("typeof takeMedTime:", typeof takemedTimeString);
                 if (!takemedTimeString) {
                     return "No takemedtime available.";
                 }
 
                 const takeMedTimeArray = takemedTimeString.split(',').map(Number); // 将字符串分割并转换为数字数组
 
-                const [year, month, day, hour, minute, second] = takeMedTimeArray;
+                const [year, month, day, hour, minute] = takeMedTimeArray;
 
-                const formattedTime = `${year}-${month}-${day} ${hour}:${minute}:${second}`; // 格式化为字符串
+                const formattedTime = `${year}-${month}-${day} ${hour}:${minute}`; // 格式化为字符串
 
-                return `Takemedtime: ${formattedTime}`;
+                return `Take med time: ${formattedTime}`;
             },
             showMedicationDetails(medication) {
                 this.selectedMedication = medication;
-                this.$store.commit('reminder/SET_CURRENT_MEDICATION', this.selectedMedication);
+                this.$store.commit('reminder/SET_SELECTED_MEDICATION', this.selectedMedication);
                 this.dialog = true;
             },
             handleNow() {
                 console.log('Now button clicked');
-                this.$store.dispatch('reminder/takeMedicationNow');
-                this.dialog = false;
+                const currentTime = new Date();
+                const isoTime = currentTime.toISOString();
+                this.$store.dispatch('reminder/takeMedication', { date: isoTime })
+                    .then(() => {
+                        this.dialog = false;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
             },
             handleOnTime() {
-                this.dialog = false;
                 console.log('On Time button clicked');
+
+                const selectedDate = new Date(this.selectedDate);
+                const year = selectedDate.getFullYear();
+                const month = selectedDate.getMonth() + 1;
+                const day = selectedDate.getDate();
+
+                const remindertime = this.selectedMedication.time;
+                const [hour, minute] = remindertime.split(":").map(Number);
+
+                const combinedDateTime = new Date(year, month - 1, day, hour, minute);
+
+                const isoTime = combinedDateTime.toISOString();
+
+                this.$store.dispatch('reminder/takeMedication', { date: isoTime })
+                    .then(() => {
+                        this.dialog = false;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            },
+            openTimeDialog(){
+                this.timeDialog = true;
             },
             handleSetTime() {
-                this.dialog = false;
                 console.log('Set Time button clicked');
+                
+                const date = this.setTimeSelected;
+                const isoTime = date.toISOString();
+
+                this.$store.dispatch('reminder/takeMedication', { date: isoTime })
+                    .then(() => {
+                        this.timeDialog = false;
+                        this.dialog = false;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
             }
         },
         computed: {
@@ -150,6 +189,10 @@
                     <var-divider vertical/>
                     <var-chip size="large"  @click = "showMedicationDetails(medication)">
                         <var-ellipsis style="max-width: 98vw" :tooltip="false"><h4>{{ medication.name }}</h4></var-ellipsis>
+                        <template #right>
+                            <var-icon name="checkbox-marked-circle-outline" v-if="medication.alreadyTakeMedication === true"/>
+                            <var-icon name="radio-blank" v-if="medication.alreadyTakeMedication === false"/>
+                        </template>
                     </var-chip>
                 </div>
                 </template>
@@ -174,23 +217,26 @@
                 <span v-if="selectedMedication.category === 'Injection'">injection(s)</span>
                 <span v-if="selectedMedication.category === 'Drop'">drop(s)</span>
             </span><br>
-            <b><span v-if="selectedMedication.note">Note: {{ selectedMedication.note }}</span></b>
+            <b><span v-if="selectedMedication.note">Note: {{ selectedMedication.note }}</span></b><br>
+            <b><span v-if="selectedMedication.alreadyTakeMedication">{{ formatTakeMedTime(selectedMedication.takeMedTime) }}</span></b>
         </div>
         <template #footer>
             <div style = "text-align: center;">
                 <el-button color="#006973" @click="handleNow()" round>Now &#10004;</el-button>
                 <el-button color="#006973" @click="handleOnTime()" round>On Time &#10004;</el-button>
-                <el-button color="#006973" @click="handleSetTime()" round>Set Time &#10004;</el-button>
+                <el-button color="#006973" @click="openTimeDialog()" round>Set Time &#10004;</el-button>
             </div>
         </template>
     </el-dialog>
+
     <!-- time selector dialog -->
-    <el-dialog v-model="onTime" center align-center width="90%" round>
+    <el-dialog v-model="timeDialog" center align-center width="90%" round>
         <template #header>
             <span style="color: #006973; font-weight: bold; font-size: larger;">{{ selectedMedication.name }}</span>
         </template>
         <div style = "text-align: center; font-size: small; line-height: 2;">
-            <el-date-picker v-model = "value2" type="datetime" placeholder="Pick a date and time" format="YYYY/MM/DD HH:mm:ss"/>
+            <el-date-picker class = "timedialog" v-model = "setTimeSelected" type="datetime" placeholder="Pick a date and time" format="YYYY/MM/DD HH:mm:ss"/>
+            <el-button color="#006973" @click="handleSetTime()" round style="margin-top: 1vh;">Continue</el-button>
         </div>
     </el-dialog>
 
