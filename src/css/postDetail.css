@@ -164,7 +164,7 @@
     color: #949596;
     margin: 0px;
 }
-.postDetail_footer{
+#postDetail_footer{
     bottom: 0;
     height: 60px;
     width: 100%; /* NOTE: Better to use '100%' or 'rem' ? */

@@ -312,30 +312,20 @@
                             <button @click="goToPostDetail(post.postID)" class="seeMoreButton">
                                 ... See more
                             </button><br>
-                            <div class="image-scroll-container">
+                            <div  v-if="post.images && post.images.length" class="image-scroll-container">
                                 <span v-for="(image, imageIndex) in post.images" :key="imageIndex">
                                     <img :src="image.url" :alt="image.alt" class="aImage"/> 
                                 </span>    
                             </div>
                         </div>
-                        <div class="like_comment_section">
-                                <Icon class="thumbLike_icon"><ThumbLike20Regular /></Icon>
-                                <p class="numberOfLikes">{{ post.numberOfLikes }}</p>
-                                <Icon class="comment_icon" @click="showCommentInput(post.postID)"><CommentMultiple20Regular /></Icon>
-                                <p class="numberOfComments">{{ post.numberOfComments }}</p>
-                                <div v-if="showCommentInputId === post.postID">
-                                    <input v-model="newComment" placeholder="Enter your comment" />
-                                    <button @click="addComment(post.postID)">Submit</button>
-                                </div>
-                            </div>
+                        <div class="like_comment_section" @click="goToPostDetail(post.postID)">
+                            <Icon class="thumbLike_icon"><ThumbLike20Regular /></Icon>
+                            <p class="numberOfLikes">{{ post.numberOfLikes }}</p>
+                            <Icon class="comment_icon" @click="showCommentInput(post.postID)"><CommentMultiple20Regular /></Icon>
+                            <p class="numberOfComments">{{ post.numberOfComments }}</p>
+                        </div>
                         <hr style="width: 100%;">
                     </div>
-
-                    <!-- Note for Don: This is #4. The code below is to jump to the top of the page, but this function is not working. 
-                    <div class="scroll-to-top-container">
-                        <Icon @click="scrollToTop"><ArrowCircleUpTwotone class="scrollToTopButton" /></Icon>
-                    </div>
-                    -->
                 </div> <!-- END: Discussion Section -->
 
                 <!-- START: Event Section -->
