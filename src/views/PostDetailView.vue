@@ -61,8 +61,8 @@
                 done();
             },
             //Router
-            goBackTo_communityPage(){
-                this.$router.push('/Community');
+            goBack(){
+                this.$router.go(-1);
             },
             // START: Unique methods for Post Detail Page
             // Note for Don: Add a function to change the thumbUp icon evry time when a user clicks it
@@ -136,7 +136,7 @@
     <div class="container">
         <el-container>
             <el-header class="header">
-                <Icon class="arrowBack" @click="goBackTo_communityPage"><ChevronLeft20Filled /></Icon>
+                <Icon class="arrowBack" @click="goBack()"><ChevronLeft20Filled /></Icon>
                 <b class="pageTitle">Post Detail</b>
             </el-header>
         <el-main class="main">
