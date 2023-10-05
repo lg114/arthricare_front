@@ -291,7 +291,7 @@
     <el-drawer v-model="drawer" direction="ltr" size="70%" :show-close="false" style = " background-color: #006973;">
         <template #header>
             <div class = "topping">
-                <var-avatar :size = "100" bordered bordered-color="#FFFFFF" lazy error = "https://img.icons8.com/fluency-systems-regular/48/user--v1.png"/>
+                <var-avatar :size = "100" bordered bordered-color="#FFFFFF" lazy :src="require('@/assets/logo.png')"/>
             </div>
         </template>
         <div class = "middle">
