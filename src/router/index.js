@@ -24,6 +24,7 @@ import AddPostPage from '@/views/AddPostView.vue';
 import PostDetailPage from '@/views/PostDetailView.vue';
 import MyPostsPage from '@/views/MyPostsView.vue';
 import AssessmentPage from '@/views/AssessmentView.vue';
+import PrivacyPolicyPage from '@/views/privacyPolicy.vue';
 
 
 const router  = createRouter({
@@ -48,6 +49,11 @@ const router  = createRouter({
             path: '/Signup',
             name: 'Signup',
             component: SignUpPage,
+        },
+        {
+            path: '/PrivacyPolicy',
+            name: 'PrivacyPolicy',
+            component: PrivacyPolicyPage,
         },
         {
             path: '/Home',

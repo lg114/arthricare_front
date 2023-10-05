@@ -25,9 +25,13 @@
                       <span>© 2023 ArthriCare</span>
                   </div>
                   <div class = "divider-example-vertical-container">
-                      <span>Terms of use</span>
-                      <var-divider vertical />
-                      <span>Privacy policy</span>
+                        <router-link to = "/">
+                            <span>Terms of use</span>
+                        </router-link>
+                        <var-divider vertical />
+                        <router-link to = "/PrivacyPolicy">
+                            <span>Privacy policy</span>
+                        </router-link>
                   </div>
               </div>
           </transition>
