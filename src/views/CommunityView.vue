@@ -1,7 +1,7 @@
 <!-- Community Page -->
 <script>
     import { ref } from 'vue';
-    import { ThumbLike20Regular, LineHorizontal320Filled, CommentMultiple20Regular, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Filled, Pill28Filled, ChannelAdd20Regular  } from '@vicons/fluent'
+    import { Delete20Regular, ThumbLike20Regular, LineHorizontal320Filled, CommentMultiple20Regular, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Filled, Pill28Filled, ChannelAdd20Regular  } from '@vicons/fluent'
     import { Icon } from '@vicons/utils'
     import SideBarContent from '@/component/Sidebar.vue';
     import { UserFilled } from '@element-plus/icons-vue';
@@ -131,6 +131,14 @@
                 const truncated = sentences.slice(0, 22).join(" ");
                 return truncated;
             },
+            isitShortContent(content){
+                const sentences = content.split(" ");
+                const numberOfWords = sentences.length;
+                if(numberOfWords < 22){
+                    return true;
+                }
+                return false;
+            },
             togglePostExpansion(post) {
                 console.log('Toggling post expansion', post);
                 post.expanded = !post.expanded;
@@ -228,8 +236,15 @@
                     console.error("Error fetching image URLs:", error);
                     return [];
                 }
-            }
+            },
             // END: Merging backend
+            isItMyOwnPost(){
+                // return true if the post is the logged-in user's, so that the delete icon will be appeared
+                // return false if the post belongs to someone else, so that the 
+            },
+            deletePost(){
+                // add code here 
+            },
         },
 //============================== END: Unique Functions for Community Page ==============================//
         components: {
@@ -244,7 +259,8 @@
             Gift20Regular, 
             PeopleCommunity20Filled,
             ThumbLike20Regular,  // Default like button  // When user liked a post
-            CommentMultiple20Regular // comment icon
+            CommentMultiple20Regular, // comment icon
+            Delete20Regular
         },
         computed: {
             formattedPostTime() {
@@ -304,15 +320,16 @@
                             <!-- NOTE: This code should work, but, for some reason, it's not working. <img :src="post.avatar" :alt="post.alt" />  -->
                             <div class="username" @click="open_MyPosts(post.userID)">{{ post.username }}</div>
                             <div class="time-ago">{{ formattedPostTime[index] }}</div>
+                            <Icon v-if="isItMyOwnPost()==true" class="delete_post_icon" @click="deletePost()"><Delete20Regular /></Icon>
                         </div>
                         <div class="content" @click="goToPostDetail(post.postID)">
                             <p class="postTitle">{{ post.title }}</p>
                             <p v-if="!post.expanded" class="content">{{ truncateContent(post.content) }}</p>
                             <p v-else class="content">{{ post.content }}</p>
-                            <button @click="goToPostDetail(post.postID)" class="seeMoreButton">
+                            <button v-if="isitShortContent(post.content)==false" @click="goToPostDetail(post.postID)" class="seeMoreButton">
                                 ... See more
                             </button><br>
-                            <div  v-if="post.images && post.images.length" class="image-scroll-container">
+                            <div v-if="post.images && post.images.length" class="image-scroll-container">
                                 <span v-for="(image, imageIndex) in post.images" :key="imageIndex">
                                     <img :src="image.url" :alt="image.alt" class="aImage"/> 
                                 </span>    
@@ -365,7 +382,7 @@
                                 <h5 class="top-left">04. Sep. 2023</h5>
                                 <h4 class="bottom-center">Reducing opioid harm through regulatory changes - Information for consumers, patients and carers</h4>
                             </div>
-                        </div>    
+                        </div>
 
                     <h3 style="padding-top:15px;">Latest News</h3>
                     <div class="card_latestNews">
