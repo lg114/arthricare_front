@@ -254,7 +254,7 @@
         <el-container>
             <el-header class="header">
                 <Icon class="more" @click="drawer = true"><LineHorizontal320Filled /></Icon>
-                <Icon class="present"><Gift20Filled /></Icon>
+                <!-- <Icon class="present"><Gift20Filled /></Icon> -->
                 <b class="pageTitle"> Rewards</b>
             </el-header>
         </el-container>
