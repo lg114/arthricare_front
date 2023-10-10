@@ -67,13 +67,14 @@
         methods:{
 
         async setupUserProfileAndChatButton() {
+            console.log ("here is the post infor ID", this.postUserInforId)
             if (this.postUserInforId) {
                 const response = await axios.get(`http://localhost:8181/ComityPost/getUserProfileInfor?userId=${this.postUserInforId}`);
                 const userProfile = response.data;
                 this.user.name = this.postUserInforName;
                 this.selectedUser_postsPage.totalNumberOfPosts = userProfile.numPosts;
                 this.selectedUser_postsPage.totalNumberOfLikes = userProfile.numLikes;
-
+                this.selectedUser_postsPage.userID = this.postUserInforId;
                 if (this.loggedInUser.userId - this.postUserInforId === 0) {
                     this.chatButtonVisible = false; // Hide the chat button if the user IDs are the same
                 } else {
@@ -84,6 +85,8 @@
 
 
     async startMessaging(userFromId, userToId) {
+        console.log ("Here is the user from ID", userFromId)
+        console.log ("Here is the user to ID", userToId)
         try {
             const response = await axios.post('http://localhost:8181/ComityChat/createChatChannel', {
                 userFromId: userFromId,
@@ -185,7 +188,7 @@
                 post.expanded = !post.expanded;
             },
             goToPostDetail() {
-                this.$router.push('/PostDtail');
+                this.$router.push('/PostDetail');
             },
             // END: 3 methods for SeeMore buttons
             // Note for Don: Add a function which adds/remove a like, changes the status of the thumbUp icon.
@@ -268,7 +271,7 @@
                     <p>{{ selectedUser_postsPage.totalNumberOfLikes }}<span style="color:#949596;"> likes</span></p>
                 </div>
             </div>
-            <button v-show="chatButtonVisible" class="message_button" @click="startMessaging(selectedUser_postsPage.userID)">Message</button>
+            <button v-show="chatButtonVisible" class="message_button" @click="startMessaging(this.loggedInUser.userId,selectedUser_postsPage.userID )">Message</button>
 
             <hr style="width: 100%;">
 
