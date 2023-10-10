@@ -25,6 +25,7 @@ import PostDetailPage from '@/views/PostDetailView.vue';
 import MyPostsPage from '@/views/MyPostsView.vue';
 import AssessmentPage from '@/views/AssessmentView.vue';
 import NotFoundPage from '@/views/NotFoundPageView.vue';
+import AboutUsPage from '@/views/AboutUsView.vue';
 
 
 const router  = createRouter({
@@ -93,10 +94,7 @@ const router  = createRouter({
         {
             path: '/MyMeds',
             name: 'MyMeds',
-            component: MyMedsPage,
-            meta: {
-                requiresAuth: false
-            }
+            component: MyMedsPage
         },
         {
             path: '/Rewards',
@@ -109,10 +107,7 @@ const router  = createRouter({
         {
             path: '/Community',
             name: 'Community',
-            component: CommunityPage,
-            meta: {
-                requiresAuth: false
-            }
+            component: CommunityPage
         },
         {
             path: '/Education',
@@ -160,7 +155,6 @@ const router  = createRouter({
             }
         },
         {
-
             path: '/EditProfile',
             name: 'EditProfile',
             component: EditProfilePage,
@@ -191,6 +185,11 @@ const router  = createRouter({
             name: 'NotFoundPage',
             component: NotFoundPage
         },
+        {
+            path: '/AboutUs',
+            name: 'AboutUs',
+            component: AboutUsPage
+        }
     ]
 });
 

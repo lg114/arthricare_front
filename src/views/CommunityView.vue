@@ -238,12 +238,23 @@
                 }
             },
             // END: Merging backend
+
             isItMyOwnPost(){
                 // return true if the post is the logged-in user's, so that the delete icon will be appeared
                 // return false if the post belongs to someone else, so that the 
+                return true;  
             },
-            deletePost(){
-                // add code here 
+            deletePost(postid){
+                // Display an alert to ask the user if he/she really wants to delete it
+                if (confirm("Delete post?") == true) {
+                    for (let i=0; this.posts.length[i]; i++){
+                        if (postid==this.posts[i].postID){
+                            // Donovan's task: Detele the post from DB
+                        }
+                    }
+                } else {
+                    // Cancel the deteting process
+                }
             },
         },
 //============================== END: Unique Functions for Community Page ==============================//
@@ -312,6 +323,8 @@
                     <input type="radio" id="3" name="section" class="section" @click="changeSection('news_section')"><label for="3">News</label>
                 </div>
 
+                <p id="msg"></p>
+
                 <div v-if="activeSection === 'discussion_section'">
                     <div v-for="(post, index) in posts" :key="post.postID" class="postCard">
                         <div class="icon_name_time">
@@ -320,7 +333,7 @@
                             <!-- NOTE: This code should work, but, for some reason, it's not working. <img :src="post.avatar" :alt="post.alt" />  -->
                             <div class="username" @click="open_MyPosts(post.userID)">{{ post.username }}</div>
                             <div class="time-ago">{{ formattedPostTime[index] }}</div>
-                            <Icon v-if="isItMyOwnPost()==true" class="delete_post_icon" @click="deletePost()"><Delete20Regular /></Icon>
+                            <Icon v-if="isItMyOwnPost()==true" class="delete_post_icon" @click="deletePost(post.postID)"><Delete20Regular /></Icon>
                         </div>
                         <div class="content" @click="goToPostDetail(post.postID)">
                             <p class="postTitle">{{ post.title }}</p>
