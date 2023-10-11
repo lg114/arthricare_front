@@ -1,6 +1,6 @@
 <script setup>
    //import {ArrowLeftBold} from '@element-plus/icons-vue';
-  //  import {ArrowRightBold} from '@element-plus/icons-vue';
+   //import {ArrowRightBold} from '@element-plus/icons-vue';
    import red from "@/assets/capsulesred.png";
    import yellow from "@/assets/capsulesyellow.png";
    import green from "@/assets/capsulesgreen.png";
@@ -28,20 +28,21 @@
      <!-- <Icon @click="drawer = true"><MoreHorizFilled /></Icon> -->
      <p id = "title">My Meds</p>
    </div> 
-   
-
 
    <div id = container2>
-    <div class="ExperiedContainer">
-        <div class="ExperiedMedication">
+    <div class="ExpiredContainer">
+        <div class="ExpiredMedication">
           <p class="medication-word">Current Medication</p>
         </div>
+        
         <div class = "zeroObjAlert" v-if="store.state.unExperiedMedArray.length === 0">
+          <img src="@/assets/notification-bell.png" alt="Image" class="testImg">
           <p class="zeroObjAlertP">You haven't added any medication</p>
         </div >
         
-        <div class="unExperiedmed" v-for="(item, index) in store.state.unExperiedMedArray" :key="index">
-          <div class="medObject">
+        <div class="unExperiedmed" v-for="(item, index) in store.state.unExperiedMedArray" :key="index" data-type="0">
+          
+          <div class="medObject" @touchstart.capture="touchStart" @touchend.capture="touchEnd" @click="oneself">
            <div class="container-flex">
             <div class="imgSpace">
             <div class="Drug_picture">
@@ -50,6 +51,7 @@
               <img :src= imgArray[2] v-if="item.Category=='Injection'" alt="Icon" class="capsules_blue-img" /> 
               <img :src= imgArray[3] v-if="item.Category=='Drop'" alt="Icon" class="capsules_blue-img" /> 
             </div>
+
            </div>
             <div class="container-block">
               <div class="Drug_name">
@@ -61,24 +63,38 @@
             </div>
             <div class="arrow_button">
               <router-link :to="{ path: '/EditMed', query: { Index: index } }" @click="handleArrowButtonClick('unExperiedMedArray', index)">
-                <ChevronRight20Filled @click="disableASOption" class="arrowBtn_icon"/>
-               </router-link>
-        </div>
+                <ChevronRight20Filled @click="disableASOption"  class="arrowBtn_icon"/>
+              </router-link>
+            </div>
+           
           </div>
-        </div> 
+          <div class="removeBtn" @click="unExpiredRemove" :data-index="index">
+            <var-icon class="cross" name="dots-vertical" />
+            <p class="removeP">Edit</p>
+          </div>
+          <div class="removeBtn2" @click="stopMed(index)" :data-index="index">
+            <var-icon class="cross" name="pin-off" />
+            <p class="removeP">Stop</p>
+          </div>
+          <div class="removeBtn3" @click="unExpiredRemove" :data-index="index">
+            <var-icon class="cross" name="close-circle" />
+            <p class="removeP">Delete</p>
+          </div>
+         </div> 
         </div>
-        
+
       </div>
-      <div class="ExperiedContainer">
-        <div class="ExperiedMedication">
+      <div class="ExpiredContainer">
+        <div class="ExpiredMedication">
           <p class="medication-word">Past Medication</p>
         </div>
         <div class = "zeroObjAlert" v-if="store.state.ExperiedMedArray.length === 0">
+          <img src="@/assets/folder1.png" alt="Image" class="testImg">
           <p class="zeroObjAlertP">You don't have any past medication</p>
         </div >
 
-        <div class="Experiedmed" v-for="(item, index) in store.state.ExperiedMedArray" :key="index">
-          <div class="medObject">
+        <div class="Experiedmed" v-for="(item, index) in store.state.ExperiedMedArray" :key="index" data-type="0">
+          <div class="medObject" @touchstart.capture="touchStart" @touchend.capture="touchEnd" @click="oneself" >
             <div class="container-flex">
             <div class="imgSpace">
             <div class="Drug_picture">
@@ -98,16 +114,28 @@
               <ChevronLeft20Filled @click="disableASOption" class="arrowBtn_icon"/>
             </div>
             
-              <div class="arrow_button">
-                <router-link :to="{ path: '/EditMed', query: { Index: index } }" @click="handleArrowButtonClick('ExperiedMedArray', index)">
-                  <!-- <el-icon class="arrowBtn_icon"><ArrowRightBold/></el-icon> -->
-                  <ChevronRight20Filled @click="disableASOption" class="arrowBtn_icon"/>
-                </router-link>
-              
+            <div class="arrow_button">
+              <router-link :to="{ path: '/EditMed', query: { Index: index } }" @click="handleArrowButtonClick('ExperiedMedArray', index)">
+                <ChevronRight20Filled @click="disableASOption" class="arrowBtn_icon"/>
+              </router-link>
             </div>
+            </div>
+            <div class="removeBtn" @click="ExpiredRemove" :data-index="index">
+              <var-icon class="cross" name="close-circle" />
+              <p class="removeP">Edit</p>
+            </div>
+            <div class="removeBtn2" @click="ExpiredRemove" :data-index="index">
+              <var-icon class="cross" name="close-circle" />
+              <p class="removeP">Stop</p>
+            </div>
+            <div class="removeBtn3" @click="ExpiredRemove" :data-index="index">
+              <var-icon class="cross" name="close-circle" />
+              <p class="removeP">Delete</p>
+           </div>
           </div>
-          </div>
+       
         </div>
+     
       </div>
  </div>
  <var-bottom-navigation
@@ -155,6 +183,7 @@
                </var-link>
            </var-button>
        </var-fab>
+
 <el-drawer style="background-color: #006973;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
            <!--Action是模拟接口，与后端连接时更换-->
                <div class = "sidebar">
@@ -174,36 +203,50 @@
 
 <style  scoped>
 
-img{
+.testImg{
+   height:13vh;
+   width:13vh;
+   position:absolute;
+   left:0;
+   right:0;
+   margin:auto;
+  }
+  .cross{
+    height:12vh;
+    font-size:3vh;
+    position:relative;
+    bottom:0.5vh;
+
+  }
+
+  img{
       width: 12%;
       height:12%;
       margin-top:10px;
       margin-right:15px;
-
     }
-    .sidebar{
+  .sidebar{
     display: flex;
     align-items: center;
     flex-direction: column;
     padding: 20px;
   }
-
-.uploaded-avatar {
-        width: 100%;
-        height: 100%;
-}
-.defalut-avatar{
-    width: 70%;
-    height: 80%;
-}
-.menu-item{
-    margin-top: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff;
-}
+  .uploaded-avatar {
+          width: 100%;
+          height: 100%;
+  }
+  .defalut-avatar{
+      width: 70%;
+      height: 80%;
+  }
+  .menu-item{
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+  }
 .menu-icon{
     color: #ffffff;
     font-size: 20px;
@@ -250,23 +293,6 @@ img{
     text-decoration: none;
 }
     
-    .zeroObjAlert{
-      width:100%;
-      height:100%;
-      margin-left:5%;
-      background-color: white;
-    }
-
-    .zeroObjAlertP{
-      color:#55BBC9;
-      position: relative;
-      top:20%;
-      font-size:200%;
-      height:1000%;
-      text-align: center;
-      right:5%;
-
-    }
     .container{
       overflow-y: auto;
         display: flex;
@@ -277,10 +303,10 @@ img{
         overflow: auto;
         flex-direction: column;
         margin: 0 ;
+        overflow-x: hidden;
     }
 
     #container2{
-      overflow: auto;
         padding-left:auto;
         padding-right:auto;
         align-items: center;
@@ -292,7 +318,7 @@ img{
         display:inline-block;
         margin-bottom:5vh;
         position:relative;
-   
+        overflow: hidden;
     }
 
     #title{
@@ -331,9 +357,11 @@ img{
      } 
      .bottomButton{
       width: 90px;
-    padding-left:20px;
-    padding-right: 20px;
-}
+      padding:20px;
+      position:relative;
+      right:20%;
+  } 
+
 .footer{
     display: inline;
     position: fixed;
@@ -435,12 +463,13 @@ img{
     height: 100%;
     border: 2px solid #1b1919;
   }
-  .ExperiedContainer{
+  .ExpiredContainer{
     margin-top: 3%;
-    width: 100%;
+    width: 101%;
     overflow-y: auto;
+    overflow: hidden;
   }
-  .ExperiedMedication {
+  .ExpiredMedication {
     text-align: left;
     width: 96vw;
     height: 3.5vh;
@@ -453,6 +482,7 @@ img{
     background: rgb(248, 246, 246);
     border-radius: 8px;
     left:2vw;
+    margin-bottom:1vh;
   }
   .medication-word {
     padding:3%;
@@ -513,20 +543,20 @@ img{
     text-decoration: none;
 }
 .zeroObjAlert{
-    width:100%;
-    height:20%;
-    background-color:#f4f4f4;
+    width:95%;
+    height:20vh;
+    background-color:white;
     border-radius: 5px;
     align-items: center;
-    margin-left:5%;
     text-align: center;
-    border-bottom: 3px solid #DDDDDD;
+    justify-content: center;
+    margin-left:2.0%;
 }
 .zeroObjAlertP{
-    color:#006973;
+    color:#AAB8B9;
     position: relative;
-    top:20%;
-    font-size:200%;
+    top:14vh;
+    font-size:100%;
 }
 
 .container-flex{
@@ -585,7 +615,7 @@ img{
 }
 .medData-font{
     font-family: Myanmar Khyay;
-    font-size: 7%;
+    font-size: 90%;
     font-weight: 400;
     line-height: 28px;
     letter-spacing: 0em;
@@ -613,12 +643,82 @@ img{
 }
 .medObject{
         width:95vw;
-        height:11%;
+        height:9vh;
         padding:3%;
         border-bottom: 2px solid #f5f0f0;
+
      }
 
+    /* delete button*/
 
+  .unExperiedmed,.Experiedmed{
+    transition: all 0.2s;
+  }
+
+  .unExperiedmed[data-type="0"] {
+    transform: translate3d(0, 0, 0);
+  }
+
+  .Experiedmed[data-type="0"] {
+    transform: translate3d(0, 0, 0);
+  }
+
+  /* =1显示 */
+  .unExperiedmed[data-type="1"] {
+    transform: translate3d(-51vw, 0, 0);
+  }
+
+  .Experiedmed[data-type="1"] {
+    transform: translate3d(-51vw, 0, 0);
+  }
+  .removeBtn {
+    width: 17vw;
+    height:12.3vh;
+    background: #bdb4b4;
+    font-size: 50%;
+    color: #fff;
+    text-align: center;
+    position: absolute;
+    bottom:0;
+    right: -17vw;
+    text-align: center;
+    z-index:1;
+
+  }
+  .removeBtn2 {
+    width: 17vw;
+    height:12.3vh;
+    background: #e0d4cb;
+    font-size: 50%;
+    color: #fff;
+    text-align: center;
+    position: absolute;
+    bottom:0;
+    right: -34vw;
+    text-align: center;
+  }
+
+  .removeBtn3 {
+    width: 17vw;
+    height:12.3vh;
+    background: #e47b19;
+    font-size: 50%;
+    color: #fff;
+    text-align: center;
+    position: absolute;
+    bottom:0;
+    right: -51vw;
+    text-align: center;
+  }
+
+  .removeP{
+    position: relative;
+    bottom:5vh;
+    right: 0vw;
+    font-size:1vh;
+    color:white;
+    z-index:2;
+  }
 </style>
 
 <script>
@@ -627,9 +727,8 @@ import { mapGetters } from 'vuex';
 const port = 8181;
 const baseURL = `http://localhost:${port}`;
 
-
 export default {
-
+  name: "TheIndex",
   computed:{
     ...mapGetters('user', ['loggedInUser']),
     name(){
@@ -642,13 +741,88 @@ export default {
       MedicineArray: [],
       drawer: ref(false),
       showAction: ref(false),
-      imgArray:[bottle,tablet,injection,drop ,yellow,red
-      ,green,purple,orange,blue]
-
+      imgArray:[bottle,tablet,injection,drop ,yellow,red,green,purple,orange,blue],
+      isDragging: false,
+      showDiv: false,
+      startX: 0, 
+        endX: 0, 
+ 
     };
-},
+  },
   methods: {
+    stopMed(number){
+      let unExperiedmed = store.state.unExperiedMedArray[number];
+      store.state.unExperiedMedArray.splice(number, 1);
+      store.state.ExperiedMedArray.push(unExperiedmed);  
+      this.restSlide();
+      console.log("done")
+    },
+    oneself() {
+        if (this.checkSlide()) {
+          this.restSlide();
+        } else {
+          console.log("FFF");
+        }
+      },
+      
+      touchStart(e) {
+        this.startX = e.touches[0].clientX;
+      },
+      
+      touchEnd(e) {
+        let parentElement = e.currentTarget.parentElement; 
+        this.endX = e.changedTouches[0].clientX;
+        if (parentElement.dataset.type == 0 && this.startX - this.endX > 30) {
+          this.restSlide();
+          parentElement.dataset.type = 1;
+        }
+        
+        if (parentElement.dataset.type == 1 && this.startX - this.endX < -30) {
+          this.restSlide();
+          parentElement.dataset.type = 0;
+        }
+        this.startX = 0;
+        this.endX = 0;
+      },
+      
+      checkSlide() {
+        let listItems = document.querySelectorAll(".Experiedmed");
   
+        for (let i = 0; i < listItems.length; i++) {
+          if (listItems[i].dataset.type == 1) {
+            return true;
+          }
+        }
+        return false;
+      },
+    
+     
+      restSlide() {
+        let listItems = document.querySelectorAll(".unExperiedmed");
+       
+        for (let i = 0; i < listItems.length; i++) {
+          listItems[i].dataset.type = 0;
+        }
+      },
+     
+      unExpiredRemove(e) {
+        let index = e.currentTarget.dataset.index;
+        this.restSlide();
+        store.state.unExperiedMedArray.splice(index, 1);
+      },
+
+      ExpiredRemove(e) {
+        let index = e.currentTarget.dataset.index;
+        this.restSlide();
+        store.state.ExperiedMedArray.splice(index, 1);
+      },
+    
+///////////////////////////////////////////
+    changeShow(){
+      this.showDiv =! this.showDiv;
+      console.log(this.showDiv)
+    },
+
     fetchData() {
       axios.get(`${baseURL}/medications/findMedicationByUserId/${this.loggedInUser.userId}`)
         .then(response => response.data)
@@ -788,10 +962,15 @@ export default {
           const expiredMedicationTestData = {            
             medicationId:1,
             Category:"Pill",
-            MedName:"Aspirin",
+            MedName:"Aspirin1",
             date:"4/4"}
-            
 
+           const expiredMedicationTestData2= {            
+            medicationId:1,
+            Category:"Pill",
+            MedName:"Aspirin2",
+            date:"6/4"}
+            
           console.log(expiredMedicationTestData);
           console.log(unExpiredMedicationTestData);
           store.state.unExperiedMedArray.push(unExpiredMedicationTestData);
@@ -799,8 +978,8 @@ export default {
           store.state.unExperiedMedArray.push(unExpiredMedicationTestData3);
           store.state.unExperiedMedArray.push(unExpiredMedicationTestData4);
           store.state.ExperiedMedArray.push(expiredMedicationTestData);
-          store.state.ExperiedMedArray.push(expiredMedicationTestData);
-          store.state.ExperiedMedArray.push(expiredMedicationTestData);
+          store.state.ExperiedMedArray.push(expiredMedicationTestData2);
+          
           
           //this.fetchData();
     }

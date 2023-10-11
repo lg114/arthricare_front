@@ -42,8 +42,8 @@
 
       <div class="container-flex" style="margin-top:2vh;">
         <img class="starIcon" src= "@/assets/circle-star.png" alt="Image" id  = "medIcon">
-        <h1 style="margin-left:9%;">SUGGESTED VIDEO</h1>
-
+        <h1  v-if="VideoVisible">SUGGESTED VIDEO</h1>
+        <h1 v-if="ArticalVisible">SUGGESTED ARTICAL</h1>
       </div>
 
       <div v-if="VideoVisible" style=" align-items: center;">

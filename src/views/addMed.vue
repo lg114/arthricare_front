@@ -42,7 +42,7 @@
         <div class="container-block"  >
           <p id = "label" >Category *</p>
           <label for = "Category"></label>
-          <select style = " height: 48px;width:115% ; margin-right:5px ; padding-left: 13%;padding-top: 1%;padding-bottom: 1%" ref = "Category" name="Category" id="Category" class = "row-input" v-model="selectedCategory">
+          <select style = " height: 5.7vh;width:115% ; margin-right:5px ; padding-left: 13%; margin-top:3%" ref = "Category" name="Category" id="Category" class = "row-input" v-model="selectedCategory">
             <option value="" data-icon="@/assets/capsulesblue.png" alt="ArthriCare Logo" disabled selected>Select Category *</option>
             <option value="Pill" selected>Pill</option>
             <option value="Tablet">Tablet</option>
@@ -53,7 +53,7 @@
 
         <div class="container-block" style="margin-left:9% ;">
           <p id = "label">Coases *</p>
-          <input ref="Unit" style = "width:128% ; height: 66.4%;padding-left:12% " type="number" placeholder="Dosage"  />
+          <input ref="Unit" style = "width:128% ; height:5.7vh;padding-left:12% ;margin:0; margin-top:3%" type="number" placeholder="Dosage"  />
         </div>  
     
       </div>
@@ -85,6 +85,13 @@
 
       <div class = "container3">
         <h1>SET REMINDER</h1>
+        <p id = "label">Start Time *</p>
+        <div id = "date" >
+          <VueDatePicker1 ref = "StartDate" id="startDate"  v-model="selectedStartDate" :format="dateFormat"></VueDatePicker1>
+        </div>
+        
+        <p id = "label" style="margin-top: 7%;">End Time *</p>
+          <VueDatePicker2 ref = "EndDate" id="endDate" v-model="selectedEndDate" :format="dateFormat"></VueDatePicker2>
 
         <p id = "label" >Frequency *</p>
         <!-- <input ref="Frequency" id="input" type="text" placeholder="  " /> -->
@@ -94,10 +101,19 @@
            <option value="Once a Day">Once a day</option>
            <option value="Twice a Day">Twice a day</option>
            <option value="Three times a Day">Three times a day</option>
+           <option value="Every x day">Every x day</option>
+           <option value="Every x week">Every x week</option>
+           <option value="Every x month">Every x month</option>
           </select>
         </div>
+
+        <div v-if="selectedFrequency ==='Every x day'|| selectedFrequency ==='Every x week'|| selectedFrequency ==='Every x month' ">
+          <p id = "label" >Interval *</p>
+          <input v-model="Interval" ref="Interval" id="Interval" type="number" />
+        </div>
+
         <p id = "label" >Time *</p>
-        <div  v-if="selectedFrequency === 'Once a Day'">
+        <div  v-if="selectedFrequency === 'Once a Day'|| selectedFrequency ==='Every x day'|| selectedFrequency ==='Every x week'|| selectedFrequency ==='Every x month' ">
           <input type="time" v-model="timeInput1" />
         </div>
 
@@ -112,30 +128,6 @@
           <input type="time" v-model="timeInput3" />
         </div>
 
-        <p id = "label">Start Time *</p>
-        <div id = "date" >
-          <VueDatePicker1 ref = "StartDate" id="startDate"  v-model="selectedStartDate" :format="dateFormat"></VueDatePicker1>
-        </div>
-        
-        <p id = "label" style="margin-top: 7%;">End Time *</p>
-       
-          <VueDatePicker2 ref = "EndDate" id="endDate" v-model="selectedEndDate" :format="dateFormat"></VueDatePicker2>
-      
-
-        <!-- <div class="custom-dropdown">
-        <select>
-          <option value="option1">Option 1</option>
-          <option value="option2">Option 2</option>
-          <option value="option3">Option 3</option>
-        </select>
-      </div>
-       -->
-      
-
-        <!-- <p id = "label" style = "margin-top:15.5%">Add a note ? (0ptional)</p>
-        <div >
-          <textarea ref="Note" id = "textarea1" name = "Note" column="20" row="20"></textarea>
-        </div> -->
         <div class = "container-flex" style="margin-top:10%">   
       </div>   
         </div>  
@@ -153,6 +145,7 @@
 <style lang = "css" scoped> 
     .Frequency{
       width:107%;
+      height:5.7vh;
     }
 
 /* scoped src="@/style/addMed.css" */
@@ -199,7 +192,7 @@
 .row-input{
   color: black;
   background-color: white;
-  border: 1px solid #ccdde9;
+  border: 1px solid #d9dfe0;
   width: 100.5%;
   height: 20%;
   border-radius: 5px;
@@ -416,10 +409,8 @@ input{
   font-size:90%;   
   background-color: white;
   border:none; 
-  border : 1px solid #ccdde9;
+  border : 1px solid #d9dfe0;
   color: black;
-
-  margin-bottom:2%;
   margin-top:2%;
   padding:5%;
   border-radius: 5px;
@@ -465,14 +456,14 @@ input[type="time"] {
   }
 
 .selected-option {
-  width: 120%;
-  padding: 10px;
+  width: 100%;
+  padding: 3vh;
   background-color: #f4f4f4;
   border-radius: 5px;
   cursor: pointer;
   border: 1px solid white;
   color:#008866;
-  font-size:50%;
+  font-size:10%;
   letter-spacing:1px;
   position: relative;
   z-index: 3;
@@ -529,6 +520,7 @@ export default {
       timeInput2: this.getCurrentTime(),
       timeInput3: this.getCurrentTime(),
 
+      Interval:1,
       selectedDate: null, 
       counter: 0,
       selectedCategory: "Pill",
@@ -715,12 +707,14 @@ export default {
                 StartDate: this.selectedStartDate ,
                 EndDate: this.selectedEndDate,
                 Note: this.$refs.Note.value,
+                Interval: this.Interval,
                 timeInput1: this.timeInput1,
                 timeInput2: this.timeInput2,
                 timeInput3: this.timeInput3,
              }
            })
            console.log(this.timeInput1)
+           console.log(this.Interval + 'fffffff')
            console.log(this.selectedEndDate)
 
     }},

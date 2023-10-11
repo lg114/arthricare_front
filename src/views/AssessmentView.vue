@@ -16,14 +16,12 @@
       </router-link>  -->
       <div v-if="this.MARS==true || this.QuestionNumber > 10 || this.DASImg ===3 " >
         <ChevronLeft20Filled @click="disableASOption" class="backBtn"/>
-
         <!-- <var-icon @click="disableASOption" class="backBtn" name="chevron-left" :size="42" color="white"/> -->
       </div>
 
       <p id= "title">Assessment</p>
 
       <div id = container2>
-         
         
           <div class="QuestionContainer" v-if="this.MARS==false && this.DAS==false && this.QuestionNumber <= 10">
             <div class="abackground">
@@ -56,10 +54,10 @@
               <p :key="currentQuestion.id" class="questionText" >{{ currentQuestion.text }}</p>
             </transition>
 
-            <input type="radio" v-model="selectedOption" name= "option" id="Yes" value="Yes"/>
+            <input type="radio" v-model="selectedOption" @click="increment('A')"  name= "option" id="Yes" value="Yes"/>
             <label for="Yes">Yes</label>
             <br>
-            <input type="radio" v-model="selectedOption" name= "option" id="No" value="No"/>
+            <input type="radio" v-model="selectedOption" @click="increment('B')" name= "option" id="No" value="No"/>
             <label for="No">No</label>
           </div>
 
@@ -71,16 +69,15 @@
             <div v-if="this.DASImg == 2">
               <img src="@/assets/DAS4.png" alt="Image" class="DasImg">
             </div>
-
           </div>
 
-          
           <div class="QuestionContainer" v-if="this.QuestionNumber > 10 || this.DASImg ===3 ">
             <var-icon class= "circleIcon" name="check-circle-outline" />
             <h1 class="completedTitle">Assessment completed</h1> 
-            <p class="completedTitle2">Completion date</p> 
-            <p class="completedTitle3">{{this.selectedDate}}    {{this.selectedTime}}</p> 
-         
+            <p class="completedTitle2">Completion date :</p> 
+            <p class="completedTitle3">{{this.selectedDate}}    {{this.selectedTime}}  Yes:{{this.yesValue}}  No:{{this.noValue}}  </p> 
+            <p v-if="noValue <= 4 " class="completedTitle4">Classification: not adherent</p> 
+            <p v-if="noValue > 4 " class="completedTitle4">Classification: adherent</p> 
           </div>
 
           <button  v-if="this.MARS===true && this.QuestionNumber <= 10" class= "button" @click="nextQuestion">Next</button>
@@ -90,7 +87,6 @@
 </template>
 
 <style lang = "css" scoped>   
-
       .abackground{
         position:absolute;
         background:rgb(247, 244, 244) ;
@@ -154,6 +150,7 @@
       text-align: center;
       top:40vh;
     }
+
     .completedTitle3{
       color:#006973;
       font-size:100%;
@@ -164,6 +161,17 @@
       margin:auto;
       text-align: center;
       top:45vh;
+    }
+    .completedTitle4{
+      color:#006973;
+      font-size:130%;
+      font-family: system-ui;
+      position:absolute;
+      left:0;
+      right:0;
+      margin:auto;
+      text-align: center;
+      top:50vh;
     }
     .circleIcon{
       color:#006973;
@@ -414,13 +422,10 @@ export default {
   computed: {
     changeToTrue() {
       return this.$store.state.changeToTrue;
-      
-      
     },
     currentQuestion() {
       return this.questions[this.currentQuestionIndex];
     },
-    
   },
   data() {
     return {
@@ -444,14 +449,25 @@ export default {
       selectedOption: null,
       MARS: false,
       DAS: false,
-      DASImg:1
-
-      
+      DASImg:1,
+      yesValue:0,
+      noValue:0,
+      totalValue:0,
     };
     
   },
   
   methods: {
+    increment(button) {
+
+      if (button === 'A') {
+        this.yesValue += 1;
+      } else if (button === 'B') {
+        this.noValue += 1;
+      }
+      this.totalValue = this.yesValue + this.noValue;
+    },
+
     resetNumber(){
       this.QuestionNumber=1;
       this.DASImg=1;
@@ -463,6 +479,8 @@ export default {
       this.DAS = true;
     },
     disableASOption(){
+      this.yesValue = 0;
+      this.noValue = 0;
       this.MARS = false;
       this.DAS = false;
       this.resetNumber();

@@ -14,6 +14,7 @@ import EducationPage from '@/views/educationView.vue';
 import SearchPage from '@/views/searchView.vue';
 import AssessmentPage from '@/views/AssessmentView.vue';
 import MyMedtestPage from '@/views/MyMedtest.vue';
+import MyTestPage from '@/views/test1.vue';
 
 
 const router  = createRouter({
@@ -93,7 +94,11 @@ const router  = createRouter({
       path: '/MyMedtest',
       name: 'MyMedtest',
       component: MyMedtestPage,
-  }
+  },{
+    path: '/Test',
+    name: 'Test',
+    component: MyTestPage,
+}
     ]
 })
 

@@ -320,6 +320,7 @@ beforeCreate(){
             timeInput1: this.$route.query.timeInput1,
             timeInput2: this.$route.query.timeInput2,
             timeInput3: this.$route.query.timeInput3,
+            Interval : this.$route.query.Interval
           };   
           if(dataObject.MedName!=="" && dataObject.MedName!== undefined){
             console.log("FUnctino CALLED")

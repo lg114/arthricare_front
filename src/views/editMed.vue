@@ -6,130 +6,134 @@
 </script>
 
 <template>
-   <el-container class = "container">
-      
-    <div class = "container-flex" style="height:100% ; width:50% ;">
-        <router-link to = "/">
-          <ChevronLeft20Filled @click="disableASOption" class="backBtn"/>
-        </router-link> 
-        <p id= "title">Edit Medication</p>
-      </div>
-      
-     <div id = container2>
+  <el-container class = "container">
+     
+   <div class = "container-flex" style="height:100% ; width:50% ;">
+       <!-- <router-link to = "/">
+         <el-icon class = "backBtn"><ArrowLeftBold/></el-icon>
+       </router-link> -->
+     <router-link to = "/">
+       <ChevronLeft20Filled @click="disableASOption" class="backBtn"/>
+     </router-link> 
 
-      <div class = "container3">
-        <h1>MEDICATION DETAIL </h1>
-        <p id = "label" >Medication Name *</p>
-        <input ref="MedName" id="MedName" type="text" placeholder="Mecication Name" @keyup="processInput" @focus="toggleOptions"/>
-        <div  class="menu" v-if="this.Meds2!==null  && showMed">
-          <div ref="MedOption"  class="selected-option" v-for="item in Meds2" :key="item" @click="handleItemClick(item)">{{ item }}</div>
-        </div> 
+       <p id= "title">Edit Medication</p>
+     </div>
+     
+    <div id = container2>
 
-      <div class="container-flex" >
-        <div class="container-block"  >
-          <p id = "label" >Category *</p>
-          <label for = "Category"></label>
-          <select style = " height: 48px;width:115% ; margin-right:5px ; padding-left: 13%;padding-top: 1%;padding-bottom: 1%" ref = "Category" name="Category" id="Category" class = "row-input" v-model="selectedCategory">
-            <option value="" data-icon="@/assets/capsulesblue.png" alt="ArthriCare Logo" disabled selected>Select Category *</option>
-            <option value="Pill" selected>Pill</option>
-            <option value="Tablet">Tablet</option>
-            <option value="Injection">Injection</option>
-            <option value="Drop">Drop</option>
-          </select>
-        </div>
+     <div class = "container3">
+       <h1>MEDICATION DETAIL </h1>
 
-        <div class="container-block" style="margin-left:9% ;">
-          <p id = "label">Coases *</p>
-          <input ref="Unit" style = "width:128% ; height: 66.4%;padding-left:5% " type="number" placeholder="Dosage"  />
-        </div>  
-    
-      </div>
-
-        <p id = "label">Note (Optional)</p>
-        <input id="Note" ref="Note" type="text" placeholder="Note"  />
-      
+       <p id = "label" >Medication Name *</p>
+       <input ref="MedName" id="MedName" type="text" placeholder="Mecication Name" @keyup="processInput" @focus="toggleOptions"/>
+       
+       <div  class="menu" v-if="this.Meds2!==null  && showMed">
+         <div ref="MedOption"  class="selected-option" v-for="item in Meds2" :key="item" @click="handleItemClick(item)">{{ item }}</div>
+       </div> 
 
 
-        <!-- <p id = "label">Category *</p>
-        <div>
-          <b><label for = "Category"></label></b>
-          <select  ref = "Category" name="Category" id="Category" class = "row-input" v-model="selectedCategory">
+     <div class="container-flex" >
+       <div class="container-block"  >
+         <p id = "label" >Category *</p>
+         <label for = "Category"></label>
+         <select style = " height: 5.7vh;width:115% ; margin-right:5px ; padding-left: 13%; margin-top:3%" ref = "Category" name="Category" id="Category" class = "row-input" v-model="selectedCategory">
            <option value="" data-icon="@/assets/capsulesblue.png" alt="ArthriCare Logo" disabled selected>Select Category *</option>
            <option value="Pill" selected>Pill</option>
            <option value="Tablet">Tablet</option>
            <option value="Injection">Injection</option>
            <option value="Drop">Drop</option>
          </select>
-        </div> -->
-        <!-- <div class = "calculationPart">
-          <el-icon class = "decreaseButton" @click="decreaseCounter"><Minus/></el-icon>
-          <div ref = "Unit" class = "number">{{ counter }}</div>
-          <el-icon class = "increaseButton" @click="increaseCounter"><Plus/></el-icon>
-        </div> -->
-      </div>   
+       </div>
 
-      <div class = "container3">
-        <h1>SET REMINDER</h1>
-        <p id = "label" >Frequency *</p>
-        <!-- <input ref="Frequency" id="input" type="text" placeholder="  " /> -->
-        <div class="Frequency1">
-          <select  ref="Frequency" name="Frequency" id="Frequency" class ="row-input" v-model="selectedFrequency" style = "padding-left:5% ">
-           <option value="" disabled selected>Select Category</option>
-           <option value="Once a Day">Once a day</option>
-           <option value="Twice a Day">Twice a day</option>
-           <option value="Three times a Day">Three times a day</option>
-          </select>
-        </div>
-        <p id = "label" >Time *</p>
-        <div  v-if="selectedFrequency === 'Once a Day'">
-          <input type="time" v-model="timeInput1" />
-        </div>
+       <div class="container-block" style="margin-left:9% ;">
+         <p id = "label">Coases *</p>
+         <input ref="Unit" style = "width:128% ; height:5.7vh;padding-left:12% ;margin:0; margin-top:3%" type="number" placeholder="Dosage"  />
+       </div>  
+   
+     </div>
 
-        <div v-else-if="selectedFrequency === 'Twice a Day'">
-          <input type="time" v-model="timeInput1" />
-          <input type="time" v-model="timeInput2" />
-        </div>
+       <p id = "label">Note (Optional)</p>
+       <input id="Note" ref="Note" type="text" placeholder="Note"  />
+     
 
-        <div class="Frequency" v-else-if="selectedFrequency === 'Three times a Day'">
-          <input type="time" v-model="timeInput1" />
-          <input type="time" v-model="timeInput2" />
-          <input type="time" v-model="timeInput3" />
-        </div>
 
-        <p id = "label">Start Time *</p>
-        <div id = "date" >
-          <VueDatePicker1 ref = "StartDate" id="startDate"  v-model="selectedStartDate" :format="dateFormat"></VueDatePicker1>
-        </div>
-        
-        <p id = "label" style="margin-top: 7%;">End Time *</p>
-          <VueDatePicker2 ref = "EndDate" id="endDate" v-model="selectedEndDate" :format="dateFormat"></VueDatePicker2>
-      
-        <!-- <div class="custom-dropdown">
-        <select>
-          <option value="option1">Option 1</option>
-          <option value="option2">Option 2</option>
-          <option value="option3">Option 3</option>
+       <!-- <p id = "label">Category *</p>
+       <div>
+         <b><label for = "Category"></label></b>
+         <select  ref = "Category" name="Category" id="Category" class = "row-input" v-model="selectedCategory">
+          <option value="" data-icon="@/assets/capsulesblue.png" alt="ArthriCare Logo" disabled selected>Select Category *</option>
+          <option value="Pill" selected>Pill</option>
+          <option value="Tablet">Tablet</option>
+          <option value="Injection">Injection</option>
+          <option value="Drop">Drop</option>
         </select>
-      </div>
-       -->
+       </div> -->
+       <!-- <div class = "calculationPart">
+         <el-icon class = "decreaseButton" @click="decreaseCounter"><Minus/></el-icon>
+         <div ref = "Unit" class = "number">{{ counter }}</div>
+         <el-icon class = "increaseButton" @click="increaseCounter"><Plus/></el-icon>
+       </div> -->
 
-        <!-- <p id = "label" style = "margin-top:15.5%">Add a note ? (0ptional)</p>
-        <div >
-          <textarea ref="Note" id = "textarea1" name = "Note" column="20" row="20"></textarea>
-        </div> -->
-        <div class = "container-flex" style="margin-top:10%">   
-      </div>   
-        </div>  
-        <el-footer class >
-            <div class="buttons" >
-                 <el-button class = "login-button" @click = "ReplaceObjectIntoArray">Save</el-button> 
-            </div>
-         </el-footer> 
-        <!-- <date-picker v-model:value = "selectedDate"></date-picker> -->
-      </div>
+     </div>   
 
-    </el-container>
 
+     <div class = "container3">
+       <h1>SET REMINDER</h1>
+       <p id = "label">Start Time *</p>
+       <div id = "date" >
+         <VueDatePicker1 ref = "StartDate" id="startDate"  v-model="selectedStartDate" :format="dateFormat"></VueDatePicker1>
+       </div>
+       
+       <p id = "label" style="margin-top: 7%;">End Time *</p>
+         <VueDatePicker2 ref = "EndDate" id="endDate" v-model="selectedEndDate" :format="dateFormat"></VueDatePicker2>
+
+       <p id = "label" >Frequency *</p>
+       <!-- <input ref="Frequency" id="input" type="text" placeholder="  " /> -->
+       <div class="Frequency1">
+         <select  ref="Frequency" name="Frequency" id="Frequency" class ="row-input" v-model="selectedFrequency" style = "padding-left:5% ">
+          <option value="" disabled selected>Select Category</option>
+          <option value="Once a Day">Once a day</option>
+          <option value="Twice a Day">Twice a day</option>
+          <option value="Three times a Day">Three times a day</option>
+          <option value="Every x day">Every x day</option>
+          <option value="Every x week">Every x week</option>
+          <option value="Every x month">Every x month</option>
+         </select>
+       </div>
+
+       <div v-if="selectedFrequency ==='Every x day'|| selectedFrequency ==='Every x week'|| selectedFrequency ==='Every x month' ">
+         <p id = "label" >Interval *</p>
+         <input v-model="Interval" ref="Interval" id="Interval" type="number" />
+       </div>
+
+       <p id = "label" >Time *</p>
+       <div  v-if="selectedFrequency === 'Once a Day'|| selectedFrequency ==='Every x day'|| selectedFrequency ==='Every x week'|| selectedFrequency ==='Every x month' ">
+         <input type="time" v-model="timeInput1" />
+       </div>
+
+       <div v-else-if="selectedFrequency === 'Twice a Day'">
+         <input type="time" v-model="timeInput1" />
+         <input type="time" v-model="timeInput2" />
+       </div>
+
+       <div class="Frequency" v-else-if="selectedFrequency === 'Three times a Day'">
+         <input type="time" v-model="timeInput1" />
+         <input type="time" v-model="timeInput2" />
+         <input type="time" v-model="timeInput3" />
+       </div>
+
+       <div class = "container-flex" style="margin-top:10%">   
+     </div>   
+       </div>  
+       <el-footer class >
+           <div class="buttons" >
+                <el-button class = "login-button" @click = "ReplaceObjectIntoArray">Save</el-button> 
+           </div>
+        </el-footer> 
+       <!-- <date-picker v-model:value = "selectedDate"></date-picker> -->
+     </div>
+
+   </el-container>
 </template>
 
 <style lang = "css" scoped> 
@@ -482,6 +486,7 @@ export default {
   },
   data() {
     return {
+      Internal:0,
       date1: null,
       date2: null,
       counter: 0,
@@ -643,7 +648,9 @@ export default {
           this.timeInput1 = store.state.MedArray[arrayIndex].timeInput1,
           this.timeInput2 = store.state.MedArray[arrayIndex].timeInput2,
           this.timeInput3 = store.state.MedArray[arrayIndex].timeInput3;
+          this.Interval = store.state.MedArray[arrayIndex].Interval;
           console.log(store.state.MedArray[arrayIndex].timeInput1);
+          console.log(store.state.MedArray[arrayIndex].Interval + "gggggggggggggg");
         }else{
           console.log('Do not have this object in array')
         }
@@ -660,6 +667,7 @@ export default {
             StartDate:   this.selectedStartDate ,
             EndDate:  this.selectedEndDate ,
             Note:  this.$refs.Note.value ,
+            Interval: this.$refs.Interval.value,
             timeInput1 : this.timeInput1,
             timeInput2 : this.timeInput2,
             timeInput3 : this.timeInput3,
