@@ -4,10 +4,7 @@
   import store from "@/store";
   // import {Plus,Minus} from '@element-plus/icons-vue';
   import '@varlet/ui/es/button/style/index';
-  import { ChevronLeft20Filled, LineHorizontal320Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular,Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
-  import SideBarContent from '@/component/Sidebar.vue';
-  import { ref } from 'vue'
-  import { Icon } from '@vicons/utils';
+  import { ChevronLeft20Filled } from '@vicons/fluent'
 </script>
 
 <template>
@@ -19,17 +16,12 @@
       </router-link>  -->
       <div v-if="this.MARS==true || this.QuestionNumber > 10 || this.DASImg ===3 " >
         <ChevronLeft20Filled @click="disableASOption" class="backBtn"/>
-
         <!-- <var-icon @click="disableASOption" class="backBtn" name="chevron-left" :size="42" color="white"/> -->
       </div>
-      <div v-else>
-        <Icon  @click="drawer = true" class="backBtn" name="menu" :size="25" color="white"><LineHorizontal320Filled /></Icon>
-      </div>
 
-      <b id= "title">Assessment</b>
+      <p id= "title">Assessment</p>
 
       <div id = container2>
-         
         
           <div class="QuestionContainer" v-if="this.MARS==false && this.DAS==false && this.QuestionNumber <= 10">
             <div class="abackground">
@@ -62,10 +54,10 @@
               <p :key="currentQuestion.id" class="questionText" >{{ currentQuestion.text }}</p>
             </transition>
 
-            <input type="radio" v-model="selectedOption" name= "option" id="Yes" value="Yes"/>
+            <input type="radio" v-model="selectedOption" @click="increment('A')"  name= "option" id="Yes" value="Yes"/>
             <label for="Yes">Yes</label>
             <br>
-            <input type="radio" v-model="selectedOption" name= "option" id="No" value="No"/>
+            <input type="radio" v-model="selectedOption" @click="increment('B')" name= "option" id="No" value="No"/>
             <label for="No">No</label>
           </div>
 
@@ -77,85 +69,24 @@
             <div v-if="this.DASImg == 2">
               <img src="@/assets/DAS4.png" alt="Image" class="DasImg">
             </div>
-
           </div>
 
-          
           <div class="QuestionContainer" v-if="this.QuestionNumber > 10 || this.DASImg ===3 ">
             <var-icon class= "circleIcon" name="check-circle-outline" />
             <h1 class="completedTitle">Assessment completed</h1> 
-            <p class="completedTitle2">Completion date</p> 
-            <p class="completedTitle3">{{this.selectedDate}}    {{this.selectedTime}}</p> 
-         
+            <p class="completedTitle2">Completion date :</p> 
+            <p class="completedTitle3">{{this.selectedDate}}    {{this.selectedTime}}  Yes:{{this.yesValue}}  No:{{this.noValue}}  </p> 
+            <p v-if="noValue <= 4 " class="completedTitle4">Classification: not adherent</p> 
+            <p v-if="noValue > 4 " class="completedTitle4">Classification: adherent</p> 
           </div>
 
           <button  v-if="this.MARS===true && this.QuestionNumber <= 10" class= "button" @click="nextQuestion">Next</button>
           <button  v-if="this.DAS===true && this.DASImg <=2 " class= "button" @click="changeDASImg">Next</button>
       </div>
     </el-container>
-    <var-bottom-navigation
-            class="footer"
-            v-model:active="activeBottom"
-            border="true"
-            safe-area="true"
-            :fab-props="{color:'#55BDCA'}"
-        >
-            <var-link href="/#/Home" underline="none">
-            <var-bottom-navigation-item class="bottomButton" name="homeButton">
-                <Icon  style="font-size: 38px;"><Home20Regular /></Icon><br>
-                <span>Home</span>
-            </var-bottom-navigation-item>
-            </var-link>
-            <var-link href="/#/MyMeds" underline="none">
-            <var-bottom-navigation-item class="bottomButton" name="medsButton">
-                <Icon style="font-size: 38px;"><BriefcaseMedical20Regular /></Icon><br>
-                <span>My Meds</span>
-            </var-bottom-navigation-item>
-            </var-link>
-            <var-link href="/#/Rewards" underline="none">
-            <var-bottom-navigation-item class="bottomButton" name="rewardsButton">
-                <Icon style="font-size: 38px;"><Gift20Regular /></Icon><br>
-                <span>Rewards</span>
-            </var-bottom-navigation-item>
-            </var-link>
-            <var-link href="/#/Community" underline="none">
-            <var-bottom-navigation-item class="bottomButton" name="profileButton">
-                <Icon style="font-size: 38px;"><PeopleCommunity20Regular /></Icon><br>
-                <span>Community</span>
-            </var-bottom-navigation-item>    
-            </var-link>
-        </var-bottom-navigation>
-                        <!-- Fab button -->
-                        <var-fab v-model:active="showAction" style="margin-bottom: 100px;" color="#006973" inactive-icon-size="26px" active-icon-size="30px" elevation="5">
-            <var-button class="action" round color="#F27B42" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
-                <var-link href="/#/AddPost" text-color="white" text-size="25px">
-                <Icon><ChannelAdd20Regular /></Icon>
-            </var-link>
-            </var-button>
-            <var-button class="action" round color="#55BDCA" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
-                <var-link href="/#/AddMed" text-color="white" text-size="25px">
-                    <Icon><Pill28Filled /></Icon>
-                </var-link>
-            </var-button>
-        </var-fab>
-    <el-drawer style="background-color: #006973;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
-            <!--Action是模拟接口，与后端连接时更换-->
-                <div class = "sidebar">
-                    <el-upload action="" :show-file-list="false">
-                        <el-avatar :size="65">
-                            <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
-                                <template v-else>
-                                    <UserFilled class="defalut-avatar" />
-                                </template>
-                        </el-avatar>   
-                    </el-upload> 
-                </div>
-            <SideBarContent :imgUrl="imgUrl" />    
-        </el-drawer>
 </template>
 
 <style lang = "css" scoped>   
-
       .abackground{
         position:absolute;
         background:rgb(247, 244, 244) ;
@@ -219,6 +150,7 @@
       text-align: center;
       top:40vh;
     }
+
     .completedTitle3{
       color:#006973;
       font-size:100%;
@@ -229,6 +161,17 @@
       margin:auto;
       text-align: center;
       top:45vh;
+    }
+    .completedTitle4{
+      color:#006973;
+      font-size:130%;
+      font-family: system-ui;
+      position:absolute;
+      left:0;
+      right:0;
+      margin:auto;
+      text-align: center;
+      top:50vh;
     }
     .circleIcon{
       color:#006973;
@@ -241,7 +184,7 @@
       position:absolute;
       left:7%;
       top:3.8%;
-      font-size: 30px;
+      height:30px;
       color:white;
     }
     .image{
@@ -470,45 +413,19 @@ input{
     }
 
 
- /* footer */
- .bottomButton{
-        width: 90px;
-        padding-left:20px;
-        padding-right: 20px;
-    }
-    .footer{
-        display: inline;
-        position: fixed;
-        text-align: center;
-        bottom: 0;
-        height:80px;
-        --bottom-navigation-item-font-size: 13px;
-        --bottom-navigation-item-active-color: #646566;
-        white-space: nowrap;
-    }  
-    .addButton{
-        font-size: 35px;
-    }
 </style>
 
 <script>
 
 export default {
-  components: {
-    Icon,
-    SideBarContent,
-    Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular,Pill28Filled, ChannelAdd20Regular
-  },
+  components: {},
   computed: {
     changeToTrue() {
       return this.$store.state.changeToTrue;
-      
-      
     },
     currentQuestion() {
       return this.questions[this.currentQuestionIndex];
     },
-    
   },
   data() {
     return {
@@ -533,20 +450,24 @@ export default {
       MARS: false,
       DAS: false,
       DASImg:1,
-      drawer: ref(false),
-
-      
+      yesValue:0,
+      noValue:0,
+      totalValue:0,
     };
     
   },
   
   methods: {
-    openDrawer() {
-            this.drawer = true;
-            },
-            beforeDrawerClose(done) {
-                done();
-            },
+    increment(button) {
+
+      if (button === 'A') {
+        this.yesValue += 1;
+      } else if (button === 'B') {
+        this.noValue += 1;
+      }
+      this.totalValue = this.yesValue + this.noValue;
+    },
+
     resetNumber(){
       this.QuestionNumber=1;
       this.DASImg=1;
@@ -558,6 +479,8 @@ export default {
       this.DAS = true;
     },
     disableASOption(){
+      this.yesValue = 0;
+      this.noValue = 0;
       this.MARS = false;
       this.DAS = false;
       this.resetNumber();
@@ -596,7 +519,7 @@ export default {
   
 },
   mounted(){
-            document.title = 'Assessment | ArthriCare'
+            document.title = 'Add Medication'
 
         },
         setup(){

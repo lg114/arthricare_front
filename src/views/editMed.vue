@@ -1,159 +1,150 @@
 <!--Welcome Page -->
-<!--Welcome Page -->
-<!--Welcome Page -->
-<!--Welcome Page -->
 <script setup>
-
   import store from "@/store";
-  import axios from 'axios';
   // import {Plus,Minus} from '@element-plus/icons-vue';
-  
+  import { ChevronLeft20Filled } from '@vicons/fluent'
 </script>
 
 <template>
-   <el-container class = "container">
-      
-    <div class = "container-flex" style="height:100% ; width:50% ;">
-        <router-link to = "/MyMeds">
-          <var-icon class="backBtn" name="chevron-left" :size="42" color="white"/>
-        </router-link> 
-        <p id= "title">Edit Medication</p>
-      </div>
-      
-     <div id = container2>
+  <el-container class = "container">
+     
+   <div class = "container-flex" style="height:100% ; width:50% ;">
+       <!-- <router-link to = "/">
+         <el-icon class = "backBtn"><ArrowLeftBold/></el-icon>
+       </router-link> -->
+     <router-link to = "/">
+       <ChevronLeft20Filled @click="disableASOption" class="backBtn"/>
+     </router-link> 
 
-      <div class = "container3">
-        <h1>MEDICATION DETAIL </h1>
-        <p id = "label" >Medication Name *</p>
-        <input ref="MedName" id="MedName" type="text" placeholder="Mecication Name" @keyup="processInput" @focus="toggleOptions"/>
-        
-        <div  class="menu" v-if="this.Meds2!==null  && showMed">
-          <div ref="MedOption"  class="selected-option" v-for="item in Meds2" :key="item" @click="handleItemClick(item)">{{ item }}</div>
-        </div> 
+       <p id= "title">Edit Medication</p>
+     </div>
+     
+    <div id = container2>
 
+     <div class = "container3">
+       <h1>MEDICATION DETAIL </h1>
 
-
-      <div class="container-flex" >
-        <div class="container-block"  >
-          <p id = "label" >Category *</p>
-          <label for = "Category"></label>
-          <select style = " height: 48px;width:115% ; margin-right:5px ; padding-left: 13%;padding-top: 1%;padding-bottom: 1%" ref = "Category" name="Category" id="Category" class = "row-input" v-model="selectedCategory">
-            <option value="" data-icon="@/assets/capsulesblue.png" alt="ArthriCare Logo" disabled selected>Select Category *</option>
-            <option value="Pill" selected>Pill</option>
-            <option value="Tablet">Tablet</option>
-            <option value="Injection">Injection</option>
-            <option value="Drop">Drop</option>
-          </select>
-        </div>
-
-        <div class="container-block" style="margin-left:9% ;">
-          <p id = "label">Coases *</p>
-          <input ref="Unit" style = "width:128% ; height: 66.4%;padding-left:5% " type="number" placeholder="Dosage"  />
-        </div>  
-    
-      </div>
-
-        <p id = "label">Note (Optional)</p>
-        <input id="Note" ref="Note" type="text" placeholder="Note"  />
-      
+       <p id = "label" >Medication Name *</p>
+       <input ref="MedName" id="MedName" type="text" placeholder="Mecication Name" @keyup="processInput" @focus="toggleOptions"/>
+       
+       <div  class="menu" v-if="this.Meds2!==null  && showMed">
+         <div ref="MedOption"  class="selected-option" v-for="item in Meds2" :key="item" @click="handleItemClick(item)">{{ item }}</div>
+       </div> 
 
 
-        <!-- <p id = "label">Category *</p>
-        <div>
-          <b><label for = "Category"></label></b>
-          <select  ref = "Category" name="Category" id="Category" class = "row-input" v-model="selectedCategory">
+     <div class="container-flex" >
+       <div class="container-block"  >
+         <p id = "label" >Category *</p>
+         <label for = "Category"></label>
+         <select style = " height: 5.7vh;width:115% ; margin-right:5px ; padding-left: 13%; margin-top:3%" ref = "Category" name="Category" id="Category" class = "row-input" v-model="selectedCategory">
            <option value="" data-icon="@/assets/capsulesblue.png" alt="ArthriCare Logo" disabled selected>Select Category *</option>
            <option value="Pill" selected>Pill</option>
            <option value="Tablet">Tablet</option>
            <option value="Injection">Injection</option>
            <option value="Drop">Drop</option>
          </select>
-        </div> -->
-        <!-- <div class = "calculationPart">
-          <el-icon class = "decreaseButton" @click="decreaseCounter"><Minus/></el-icon>
-          <div ref = "Unit" class = "number">{{ counter }}</div>
-          <el-icon class = "increaseButton" @click="increaseCounter"><Plus/></el-icon>
-        </div> -->
+       </div>
 
-      </div>   
+       <div class="container-block" style="margin-left:9% ;">
+         <p id = "label">Coases *</p>
+         <input ref="Unit" style = "width:128% ; height:5.7vh;padding-left:12% ;margin:0; margin-top:3%" type="number" placeholder="Dosage"  />
+       </div>  
+   
+     </div>
+
+       <p id = "label">Note (Optional)</p>
+       <input id="Note" ref="Note" type="text" placeholder="Note"  />
+     
 
 
-      <div class = "container3">
-        <h1>SET REMINDER</h1>
-
-        <p id = "label" >Frequency *</p>
-        <!-- <input ref="Frequency" id="input" type="text" placeholder="  " /> -->
-        <div class="Frequency1">
-          <select  ref="Frequency" name="Frequency" id="Frequency" class ="row-input" v-model="selectedFrequency" style = "padding-left:5% ">
-           <option value="" disabled selected>Select Category</option>
-           <option value="Once a Day">Once a day</option>
-           <option value="Twice a Day">Twice a day</option>
-           <option value="Three times a Day">Three times a day</option>
-          </select>
-        </div>
-        <p id = "label" >Time *</p>
-        <div  v-if="selectedFrequency === 'Once a Day'">
-          <input type="time" v-model="timeInput1" />
-        </div>
-
-        <div v-else-if="selectedFrequency === 'Twice a Day'">
-          <input type="time" v-model="timeInput1" />
-          <input type="time" v-model="timeInput2" />
-        </div>
-
-        <div class="Frequency" v-else-if="selectedFrequency === 'Three times a Day'">
-          <input type="time" v-model="timeInput1" />
-          <input type="time" v-model="timeInput2" />
-          <input type="time" v-model="timeInput3" />
-        </div>
-
-        <p id = "label">Start Time *</p>
-        <div id = "date" >
-          <VueDatePicker1 ref = "StartDate" id="startDate"  v-model="selectedStartDate" :format="dateFormat"></VueDatePicker1>
-        </div>
-        
-        <p id = "label" style="margin-top: 7%;">End Time *</p>
-       
-          <VueDatePicker2 ref = "EndDate" id="endDate" v-model="selectedEndDate" :format="dateFormat"></VueDatePicker2>
-      
-
-        <!-- <div class="custom-dropdown">
-        <select>
-          <option value="option1">Option 1</option>
-          <option value="option2">Option 2</option>
-          <option value="option3">Option 3</option>
+       <!-- <p id = "label">Category *</p>
+       <div>
+         <b><label for = "Category"></label></b>
+         <select  ref = "Category" name="Category" id="Category" class = "row-input" v-model="selectedCategory">
+          <option value="" data-icon="@/assets/capsulesblue.png" alt="ArthriCare Logo" disabled selected>Select Category *</option>
+          <option value="Pill" selected>Pill</option>
+          <option value="Tablet">Tablet</option>
+          <option value="Injection">Injection</option>
+          <option value="Drop">Drop</option>
         </select>
-      </div>
-       -->
-      
+       </div> -->
+       <!-- <div class = "calculationPart">
+         <el-icon class = "decreaseButton" @click="decreaseCounter"><Minus/></el-icon>
+         <div ref = "Unit" class = "number">{{ counter }}</div>
+         <el-icon class = "increaseButton" @click="increaseCounter"><Plus/></el-icon>
+       </div> -->
 
-        <!-- <p id = "label" style = "margin-top:15.5%">Add a note ? (0ptional)</p>
-        <div >
-          <textarea ref="Note" id = "textarea1" name = "Note" column="20" row="20"></textarea>
-        </div> -->
-        <div class = "container-flex" style="margin-top:10%">   
-      </div>   
-        </div>  
-        <el-footer class >
-            <div class="buttons" >
-                 <el-button class = "login-button" @click = "updateMedication">Save</el-button> 
-                 <el-button class = "delete-button" @click = "ReplaceObjectIntoArray">Delete</el-button> 
-            </div>
-         </el-footer> 
-        <!-- <date-picker v-model:value = "selectedDate"></date-picker> -->
-      </div>
+     </div>   
 
-    </el-container>
+
+     <div class = "container3">
+       <h1>SET REMINDER</h1>
+       <p id = "label">Start Time *</p>
+       <div id = "date" >
+         <VueDatePicker1 ref = "StartDate" id="startDate"  v-model="selectedStartDate" :format="dateFormat"></VueDatePicker1>
+       </div>
+       
+       <p id = "label" style="margin-top: 7%;">End Time *</p>
+         <VueDatePicker2 ref = "EndDate" id="endDate" v-model="selectedEndDate" :format="dateFormat"></VueDatePicker2>
+
+       <p id = "label" >Frequency *</p>
+       <!-- <input ref="Frequency" id="input" type="text" placeholder="  " /> -->
+       <div class="Frequency1">
+         <select  ref="Frequency" name="Frequency" id="Frequency" class ="row-input" v-model="selectedFrequency" style = "padding-left:5% ">
+          <option value="" disabled selected>Select Category</option>
+          <option value="Once a Day">Once a day</option>
+          <option value="Twice a Day">Twice a day</option>
+          <option value="Three times a Day">Three times a day</option>
+          <option value="Every x day">Every x day</option>
+          <option value="Every x week">Every x week</option>
+          <option value="Every x month">Every x month</option>
+         </select>
+       </div>
+
+       <div v-if="selectedFrequency ==='Every x day'|| selectedFrequency ==='Every x week'|| selectedFrequency ==='Every x month' ">
+         <p id = "label" >Interval *</p>
+         <input v-model="Interval" ref="Interval" id="Interval" type="number" />
+       </div>
+
+       <p id = "label" >Time *</p>
+       <div  v-if="selectedFrequency === 'Once a Day'|| selectedFrequency ==='Every x day'|| selectedFrequency ==='Every x week'|| selectedFrequency ==='Every x month' ">
+         <input type="time" v-model="timeInput1" />
+       </div>
+
+       <div v-else-if="selectedFrequency === 'Twice a Day'">
+         <input type="time" v-model="timeInput1" />
+         <input type="time" v-model="timeInput2" />
+       </div>
+
+       <div class="Frequency" v-else-if="selectedFrequency === 'Three times a Day'">
+         <input type="time" v-model="timeInput1" />
+         <input type="time" v-model="timeInput2" />
+         <input type="time" v-model="timeInput3" />
+       </div>
+
+       <div class = "container-flex" style="margin-top:10%">   
+     </div>   
+       </div>  
+       <el-footer class >
+           <div class="buttons" >
+                <el-button class = "login-button" @click = "ReplaceObjectIntoArray">Save</el-button> 
+           </div>
+        </el-footer> 
+       <!-- <date-picker v-model:value = "selectedDate"></date-picker> -->
+     </div>
+
+   </el-container>
 </template>
 
 <style lang = "css" scoped> 
+
  .Frequency{
       width:107%;
     }
 
 /* scoped src="@/style/addMed.css" */
     h1{
-      color:#55BBC9;
+      color:#006973;
       font-size:17px;
       font-family: system-ui;
     }
@@ -221,32 +212,6 @@ select{
   display:inline-block;
   width:40%;
   
-}
-
-.BellBtn{
-  font-size: 30px;
-  color: #1890FF;
-  position:relative;
-  margin-left:60%;
-  size:40%;
-}
-
-.note{
-  position:relative;
-  width:130px ; 
-  height:30px;
-  top:7%;
-  left:2%;
-  font-size:110%;
-  border-radius:10px 10px 10px 10px;
-  background-color:#56569D;
-  text-align: center;
-  color:white;
-  cursor: pointer;
-  
-}
-.note:hover{
-  background-color: grey;
 }
 
 #date{
@@ -444,11 +409,12 @@ input[type="time"] {
   border-bottom: 1px solid #b5b7c2;
   }
 
-    .backBtn{
+  .backBtn{
     color:#FFFFFF;
     position:relative;
-    right:150%;
-    top:30%;
+    right:15vw;
+    top:2.5vh;
+    height:30px;
     }
 
 .menu {
@@ -496,21 +462,6 @@ input[type="time"] {
   transition: background-color 0.5s, color 0.5s;
   }
 
-  .delete-button{
-    position: relative;
-    display: inline-block;
-    padding: 10px 20px;
-    margin-left:2.5%;
-    color: white;
-    background-color: #FF5449;
-    width: 95%;
-    height: 350%;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    font-weight: 700;
-    font-size:17px;
-  }
-
 option {
   padding-left: 20px;
   background-image: url("@/assets/capsulesblue.png");
@@ -522,12 +473,10 @@ import VueDatePicker1 from '@vuepic/vue-datepicker';
 import VueDatePicker2 from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import {ref} from 'vue';
-import { mapGetters } from 'vuex';
 
 export default {
   components: { VueDatePicker1 , VueDatePicker2},
   computed: {
-    ...mapGetters('user', ['loggedInUser']),
     changeToTrue() {
       return this.$store.state.changeToTrue;
     },
@@ -537,6 +486,7 @@ export default {
   },
   data() {
     return {
+      Internal:0,
       date1: null,
       date2: null,
       counter: 0,
@@ -698,7 +648,9 @@ export default {
           this.timeInput1 = store.state.MedArray[arrayIndex].timeInput1,
           this.timeInput2 = store.state.MedArray[arrayIndex].timeInput2,
           this.timeInput3 = store.state.MedArray[arrayIndex].timeInput3;
+          this.Interval = store.state.MedArray[arrayIndex].Interval;
           console.log(store.state.MedArray[arrayIndex].timeInput1);
+          console.log(store.state.MedArray[arrayIndex].Interval + "gggggggggggggg");
         }else{
           console.log('Do not have this object in array')
         }
@@ -715,6 +667,7 @@ export default {
             StartDate:   this.selectedStartDate ,
             EndDate:  this.selectedEndDate ,
             Note:  this.$refs.Note.value ,
+            Interval: this.$refs.Interval.value,
             timeInput1 : this.timeInput1,
             timeInput2 : this.timeInput2,
             timeInput3 : this.timeInput3,
@@ -727,146 +680,12 @@ export default {
           
            })
           
-    },
-
-    parseTimestampToDateString(timestamp) {
-        
-        const date = new Date(timestamp);
-        
-        // 将日期加一天
-        date.setDate(date.getDate() + 1);
-
-        // 将日期对象转换为字符串
-        return date.toISOString().slice(0, 10);
-    },
-
-
-    populateFormWithMedicationDetails(medicationDetails) {
-      /*var dosageUnit = parseFloat(medicationDetails.dosageUnit);
-      if (!(dosageUnit % 1 !== 0)) {
-        dosageUnit = dosageUnit.toFixed(1);
-      }*/
-      console.log("Medication Details:", medicationDetails);
-      this.$refs.MedName.value = medicationDetails.medicationName;
-      this.selectedCategory = medicationDetails.medicationCategory;
-      this.selectedFrequency = medicationDetails.frequency;
-      this.$refs.Unit.value = medicationDetails.dosageUnit;
-      this.selectedStartDate = this.parseTimestampToDateString(medicationDetails.startDate);
-      this.selectedEndDate = this.parseTimestampToDateString(medicationDetails.endDate);
-      console.log(this.parseTimestampToDateString(medicationDetails.startDate))
-      this.$refs.Note.value = medicationDetails.note;
-
-      this.getReminderTime()
-    },
-
-
-    getReminderTime() {
-      axios.get(`http://localhost:8181/reminders/findUniqueReminderTimeByMedicationId/${this.medicationId}`) 
-        .then(response => {
-          if (response.status === 200) {
-            return response.data;
-          } else {
-            throw new Error("Failed to fetch medication details.");
-          }
-        })
-        .then(timeList => {
-            console.log(timeList);
-            for (let i = 0; i < timeList.length; i++) {
-            this[`timeInput${i + 1}`] = timeList[i];
-          }
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    },
-
-    getReminderTimes() {
-      this.reminderTimes = []; // Clear the timeInputs array
-    if (this.selectedFrequency === 'Once a Day') {
-      this.reminderTimes.push(this.timeInput1);
-    } else if (this.selectedFrequency === 'Twice a Day') {
-      this.reminderTimes.push(this.timeInput1, this.timeInput2);
-    } else if (this.selectedFrequency === 'Three times a Day') {
-      this.reminderTimes.push(this.timeInput1, this.timeInput2, this.timeInput3);
     }
-      console.log(this.timeInputs);
-    },
-
-    getFrequencyPickerCount(frequency) {
-      switch (frequency) {
-        case "Once a Day":
-          return 1;
-        case "Twice a Day":
-          return 2;
-        case "Three times a Day":
-          return 3;
-        // Add more cases as needed for other frequency options
-        default:
-          return 1; // Default to 1 time picker if frequency is not recognized
-      }
-    },
-    fetchMedicationDetailsAndPopulateForm() {
-      axios.get (`http://localhost:8181/medications/${this.medicationId}`) 
-        .then(response => {
-          if (response.status === 200 ){
-            return response.data;
-          } else {
-            throw new Error("Failed to fetch medication details.");
-          }
-        })
-        .then(data => {
-          this.populateFormWithMedicationDetails(data);   
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    },
-
-    updateMedication() {
-      this.getReminderTimes();
-      // Get updated values from the form fields
-      var data = {
-        userId: this.loggedInUser.userId,
-        medicationId: this.medicationId,
-        medicationName: this.$refs.MedName.value,
-        medicationCategory: this.selectedCategory,
-        frequency: this.selectedFrequency,
-        dosageUnit: this.$refs.Unit.value,
-        startDate: this.selectedStartDate,
-        endDate: this.selectedEndDate,
-        note: this.$refs.Note.value,
-        reminderTimes: JSON.stringify(this.reminderTimes),
-      };
-      console.log(data);
-      // Make a PUT request to update the medication
-      
-      axios.put(`http://localhost:8181/medications/updateMedication`, data, {
-        headers: {
-          "Content-Type": "application/json",
-        }
-      })
-        .then(response => {
-          if (response.status === 200) {
-            sessionStorage.removeItem('medicationId');
-            // Redirect to home page after successful update
-            this.$router.push('/MyMeds');
-          } else {
-            
-            console.log ('error making put request')
-          }
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    },
-
-
   },
  
   mounted(){
-            document.title = 'Edit Med | ArthriCare',
-            this.medicationId = sessionStorage.getItem('medicationId');
-            this.fetchMedicationDetailsAndPopulateForm();
+            document.title = 'Sign Up | ArthriCare',
+            this.EditInputValue();
         },
         
         setup(){
