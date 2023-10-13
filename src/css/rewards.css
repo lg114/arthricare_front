@@ -145,21 +145,22 @@ p{
 }
 .box{
     width: 90%;
-    height: 110px;
+    box-sizing: border-box;
+    overflow: auto;
     background-color: #CFEEF5;
     border-radius: 10px;
-    box-shadow: 2px 2px 2px rgb(83, 83, 83);
     margin:auto;
 }
 .boxTitle{
     padding-left: 15px;
 }
 .collectionImage{
-    width: 90px;
-    height: 60px;
+    width: 100x;
+    height: 70px;
     margin-left: 10px;
     margin-right: 10px;
     margin-top: 10px;
+    margin-bottom: 10px;
     border-radius: 10px;
     float: left;
 }
@@ -284,7 +285,6 @@ p{
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 4px 8px gray;
     transition: box-shadow 0.2s ease;
 }
 .task-container{

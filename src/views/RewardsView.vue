@@ -1,7 +1,7 @@
 <!--Rewards Page -->
 <script>
     import { ref, reactive, computed } from 'vue';
-    import { LineHorizontal320Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Filled, PeopleCommunity20Regular, AddCircle20Regular,Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
+    import { LineHorizontal320Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Filled, PeopleCommunity20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
     import { Icon } from '@vicons/utils';
     import SideBarContent from '@/component/Sidebar.vue';
     import { UserFilled } from '@element-plus/icons-vue';
@@ -243,7 +243,7 @@
             Gift20Filled, 
             PeopleCommunity20Regular,
             UserFilled,
-            AddCircle20Regular,
+            // AddCircle20Regular,
             SideBarContent
         }
     };
@@ -301,13 +301,15 @@
                         <h2 class="puzzleTitle">{{ puzzle.title }} ({{ puzzle.completed }}/{{ puzzle.total }})</h2>
                         <var-button style="background-color: #55BDCA; color: white;" @click="collectPuzzle">Collect one puzzle</var-button><br><br>
                         <img :src="puzzle.url" :alt="puzzle" class="puzzleImage" :fit="contain"/><br><br>
+                        <var-link to="/userprofile" underline="none" style="display: block;">
                         <div class="box">
                             <text class="collectionTitle">My Collection</text><br>
-                            <img src="@/assets/pic_1.jpg" class="collectionImage" :fit="cover"/>
-                            <img src="@/assets/pic_2.jpg" class="collectionImage" :fit="cover"/>
-                            <img src="@/assets/pic_3.png" class="collectionImage" :fit="cover"/>
-                            <Icon class="add"><AddCircle20Regular /></Icon>
+                            <img src="@/assets/puzzleImage/puzzle1_completed.jpg" class="collectionImage" :fit="cover"/>
+                            <!-- <img src="@/assets/pic_2.jpg" class="collectionImage" :fit="cover"/>
+                            <img src="@/assets/pic_3.png" class="collectionImage" :fit="cover"/> -->
+                            <!-- <Icon class="add"><AddCircle20Regular /></Icon> -->
                         </div>
+                        </var-link>
                     </var-tab-item>
                     <var-tab-item>
                         <el-row class="main-row" justify="center">

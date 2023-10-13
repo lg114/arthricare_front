@@ -1,7 +1,7 @@
 <!--Edit Profile Page -->
 <script>
     import { reactive } from 'vue';
-    import { ChevronLeft20Filled, Edit20Filled } from '@vicons/fluent'; //, MedicationOutlined, CardGiftcardOutlined, HomeRound, AccountCircleOutlined, AddCircleFilled
+    import { ChevronLeft20Filled } from '@vicons/fluent'; //, MedicationOutlined, CardGiftcardOutlined, HomeRound, AccountCircleOutlined, AddCircleFilled
     import { Icon } from '@vicons/utils';
     import { ElMessage } from 'element-plus';
     import axios from 'axios';
@@ -91,7 +91,6 @@
         components: {
             Icon,
             ChevronLeft20Filled, 
-            Edit20Filled,
         }
     };
 </script>
@@ -102,7 +101,6 @@
                 <router-link to="/UserProfile">
                 <Icon class="back"><ChevronLeft20Filled /></Icon>
                 </router-link>
-                <Icon class="titleIcon"><Edit20Filled /></Icon>
                 <b class="pageTitle">Edit Profile</b>
             </el-header>
             <el-main class="main">
@@ -153,7 +151,7 @@
                 </div>
                 <var-divider />
                 <div>
-                    <!-- Delete account function needs to be added in back-end -->
+                    <!-- Delete account function needs to be added in backend 后端需要添加删除账号功能 -->
                     <var-button block color="#FF5449" text-color="#FFFFFF" class="buttons" @click="show = true">DELETE ACCOUNT</var-button>
                     
                 </div>

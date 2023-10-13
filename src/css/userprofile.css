@@ -102,18 +102,28 @@ p{
     background-color: #CFEEF5;
 }
 .box{
-    width: 365px;
-    height: 110px;
+    width: 380px;
     background-color: #CFEEF5;
     border-radius: 10px;
-    box-shadow: 2px 2px 2px rgb(83, 83, 83);
-    margin-bottom: 20px;
-    padding-top: 10px;
+    box-sizing: border-box;
+    overflow: auto;
 
 }
+.puzzleTitle{
+    color:#006973;
+    padding-left: 10px;
+    margin-bottom: 5px;
+    font-weight: 400;
+}
+.puzzleImg{
+    max-width: 95%;
+    margin: 10px;
+    border-radius: 10px;
+    height: auto;
+}
 .boxTitle{
-    padding-left: 15px;
-    color: #006973;
+    margin-top: 10px;
+    color: #F27B42;
     font-weight: 800;
 }
 .collectionImage{
@@ -124,14 +134,19 @@ p{
     border-radius: 10px;
 }
 .friend_avatar{
-    width: 50px;
-    height: 50px;
+    width: 55px;
+    height: 55px;
     margin-left: 10px;
+    margin-right: 5px;
     float:left;
 }
-.postText{
-    padding-left: 15px;
-    color: #006973;
+/* Education components */
+.educationContainerWrapper {
+    display: flex; /* 使用 Flex 布局 */
+    justify-content: space-between; /* 在容器内均匀分布子元素，水平并列排列 */
+    align-items: center; /* 垂直居中子元素 */
+}
+.educationButtonGroup{
 }
 .add{
     float: right;
