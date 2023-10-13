@@ -325,6 +325,7 @@
 
                 <p id="msg"></p>
 
+                <!-- START: Discussion Section -->
                 <div v-if="activeSection === 'discussion_section'">
                     <div v-for="(post, index) in posts" :key="post.postID" class="postCard">
                         <div class="icon_name_time">
@@ -356,7 +357,8 @@
                         </div>
                         <hr style="width: 100%;">
                     </div>
-                </div> <!-- END: Discussion Section -->
+                </div> 
+                <!-- END: Discussion Section -->
 
                 <!-- START: Event Section -->
                 <!-- Note: At this moment, this section is just a placeholder. It's been hardcoded. -->
