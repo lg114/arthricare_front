@@ -61,8 +61,8 @@
                 done();
             },
             //Router
-            goBackTo_communityPage(){
-                this.$router.push('/Community');
+            goBack(){
+                this.$router.go(-1);
             },
             // START: Unique methods for Post Detail Page
             // Note for Don: Add a function to change the thumbUp icon evry time when a user clicks it
@@ -82,6 +82,10 @@
             open_MyPosts(userID){
                 this.$router.push({ name: 'MyPosts', params: { id: userID } });
             },
+            displayCommentField(){
+                var commentField = document.getElementById("postDetail_footer");
+                commentField.style.display = "block";
+            }
         },
         components: {
             Icon,
@@ -132,7 +136,7 @@
     <div class="container">
         <el-container>
             <el-header class="header">
-                <Icon class="arrowBack" @click="goBackTo_communityPage"><ChevronLeft20Filled /></Icon>
+                <Icon class="arrowBack" @click="goBack()"><ChevronLeft20Filled /></Icon>
                 <b class="pageTitle">Post Detail</b>
             </el-header>
         <el-main class="main">
@@ -160,7 +164,7 @@
                                 <Icon class="thumbLike_icon"><ThumbLike20Filled /></Icon>
                             </span>
                             <p class="numberOfLikes">{{ selectedPost ? selectedPost.numberOfLikes : '' }}</p>
-                            <Icon class="comment_icon" @click="showCommentInput"><CommentMultiple20Regular /></Icon>
+                            <Icon class="comment_icon" @click="displayCommentField"><CommentMultiple20Regular /></Icon>
                             <p class="numberOfComments">{{ totalNumberOfComments }}</p>
                             <div v-if="showCommentInputForm">
                                 <input v-model="newComment" placeholder="Enter your comment" />
@@ -180,9 +184,9 @@
                     <hr style="width: 100%">
                 </div>
 
-                <div class="postDetail_footer">
+                <div id="postDetail_footer" style="display: none;">
                     <div>
-                        <Icon class="image_icon"><Image20Filled /></Icon> <!-- NOTE: put @click="" inside the icon tag-->
+                        <Icon class="image_icon"><Image20Filled /></Icon>
                     </div>
                     <div>
                         <div class="enterCommentHere">

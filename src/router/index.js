@@ -24,6 +24,8 @@ import AddPostPage from '@/views/AddPostView.vue';
 import PostDetailPage from '@/views/PostDetailView.vue';
 import MyPostsPage from '@/views/MyPostsView.vue';
 import AssessmentPage from '@/views/AssessmentView.vue';
+import NotFoundPage from '@/views/NotFoundPageView.vue';
+import AboutUsPage from '@/views/AboutUsView.vue';
 
 
 const router  = createRouter({
@@ -92,10 +94,7 @@ const router  = createRouter({
         {
             path: '/MyMeds',
             name: 'MyMeds',
-            component: MyMedsPage,
-            meta: {
-                requiresAuth: false
-            }
+            component: MyMedsPage
         },
         {
             path: '/Rewards',
@@ -108,104 +107,69 @@ const router  = createRouter({
         {
             path: '/Community',
             name: 'Community',
-            component: CommunityPage,
-            meta: {
-                requiresAuth: true
-            }
+            component: CommunityPage
         },
-
         {
-
             path: '/Education',
             name: 'Education',
             component: EducationPage,
-
-
         },
-
-
-
         {
-
             path: '/Message',
             name: 'Message',
             component: MessagePage,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
-
         {
-
             path: '/SearchArticle',
             name: 'SearchArticle',
             component: SearchPage,
-
-
         },
-
-
         {
-
             path: '/Chat',
             name: 'Chat',
             component: ChatPage,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
-
         {
-
             path: '/EducationArticle',
             name: 'EducationArticle',
             component: EducationArticlePage,
-
-
-
         },
         {
 
             path: '/EducationVideo',
             name: 'EducationVideo',
             component: EducationVideoPage,
-
-
-
         },
-
         {
-
             path: '/AddPost',
             name: 'AddPost',
             component: AddPostPage,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
-
         {
-
             path: '/EditProfile',
             name: 'EditProfile',
             component: EditProfilePage,
-
-
         },
-        
         {
           path: '/Assessment',
           name: 'Assessment',
           component: AssessmentPage,
-      },
-
-
+        },
         {
             path: '/PostDetail/:id',
             name: 'PostDetail',
             component: PostDetailPage,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
         {
@@ -213,11 +177,19 @@ const router  = createRouter({
             name: 'MyPosts',
             component: MyPostsPage,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
-            
         },
-        
+        {
+            path: '/:pathMatch(.*)*',
+            name: 'NotFoundPage',
+            component: NotFoundPage
+        },
+        {
+            path: '/AboutUs',
+            name: 'AboutUs',
+            component: AboutUsPage
+        }
     ]
 });
 

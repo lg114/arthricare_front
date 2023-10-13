@@ -8,7 +8,7 @@
     
     export default{
         mounted() {
-                document.title = "User Profile | ArthriCare";
+            document.title = "User Profile | ArthriCare";
         },
         setup(){
         },

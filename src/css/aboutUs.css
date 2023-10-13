@@ -1,0 +1,94 @@
+/* CSS for About Us Page */
+
+/* SATRT: Common Components */
+.header{
+    display: flex;
+    align-items: center;
+    color: white;
+    text-align: center;
+    margin-right: 100px;
+    height: 60px;
+}
+.more{
+    position: absolute;
+    left: 5%;
+    top:2.5%;
+    font-size: 30px;
+    color: white;
+}
+.pageTitle{
+    position:absolute;
+    left: 35%;
+    font-size: 20px;
+    white-space: nowrap;
+}
+.container{
+    display: grid;
+    flex-direction: row;
+    place-items: center;
+    height: 100vh;
+    background-color: #006973;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.main{
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    padding-bottom: 80px;
+    background-color: #CFEEF5;
+    overflow-x: hidden;
+    overflow-y:scroll;
+}
+.sidebar{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+}
+.uploaded-avatar {
+    width: 100%;
+    height: 100%;
+}
+.defalut-avatar{
+    width: 70%;
+    height: 80%;
+}
+/* END: Common Components */
+
+/* SATRT: Unique CSS for About Us */
+h1{
+    font-size: 29px;
+    line-height: 50px;
+    letter-spacing: 3px;
+    color:#185B8B;
+    position: relative;
+    display: inline-block;
+}
+h3{
+    width:328px;
+    color:#185B8B;
+    position: relative;
+    display: inline-block;
+}
+.whiteCircle{
+    background-color: white;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    filter: blur(5px);
+    
+}
+.largeLogo{
+    height: 181px;
+    width: 189px;
+}
+.footerLogo{
+    height: 57px;
+    width: 59.6px;
+}
+.footerWhiteCircle{
+    height: 90px;
+    width: 90px;
+}
+/* END: Unique CSS for About Us */

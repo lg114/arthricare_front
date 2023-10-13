@@ -148,9 +148,8 @@
                 // The thumbUp icon when a user added 'a like' should be 'ThumbLike20Filled'
                 // The thumbUp icon when a user removed 'a like' should be 'ThumbLike20Regular'
             },
-            goback_previousPage(){
-                // Use window.history to navigate back
-                window.history.back();
+            goBack(){
+                this.$router.go(-1);
             },
         },
 //============================== END: Unique Functions for MyPosts Page ==============================//
@@ -210,7 +209,7 @@
 <template>
     <div class="container">
         <el-header class="header">
-            <Icon class="arrowBack" @click="goback_previousPage()"><ChevronLeft20Filled /></Icon>
+            <Icon class="arrowBack" @click="goBack()"><ChevronLeft20Filled /></Icon>
             <b class="pageTitle">{{ selectedUser_postsPage.name }}'s Posts</b> 
         </el-header>
 

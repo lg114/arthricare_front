@@ -214,10 +214,6 @@
 
             },
 */
-            //Router
-            goToUserProfile(){
-                this.$router.push('/UserProfile');
-            },
             shortenMessage(latestMassege){
                 // Shorten the whole message
                 const sentences = latestMassege.split(" ");
