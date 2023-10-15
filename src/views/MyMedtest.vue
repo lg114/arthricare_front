@@ -71,7 +71,9 @@
            
           </div>
           <div class="removeBtn" @click="unExpiredRemove" :data-index="index">
-            <Edit @click="disableASOption"  class="cross"/>
+            <router-link :to="{ path: '/EditMed', query: { Index: index } }">
+              <Edit @click="disableASOption"  class="cross"/>
+            </router-link>
             <p class="removeP">Edit</p>
           </div>
           <div class="removeBtn2" @click="stopMed(index)" :data-index="index">
@@ -219,6 +221,8 @@
     position:relative;
     bottom:0.5vh;
     margin-top:4vh;
+    color:white;
+    
   }
 
   img{
@@ -490,7 +494,7 @@
     padding:3%;
     padding-top:5%;
     margin: 0;
-    font-size: 14px;
+    font-size: 2vh;
     line-height: 20px;
     text-align: left;
     color: #006973;
@@ -947,7 +951,7 @@ export default {
          const unExpiredMedicationTestData2 = {            
             medicationId:3,
             Category:"Pill",
-            MedName:"aoehfoaehfoaehf",
+            MedName:"grandonamo",
             date:"Today 10:00"}
             const unExpiredMedicationTestData3 = {            
             medicationId:4,
