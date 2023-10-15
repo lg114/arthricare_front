@@ -6,6 +6,7 @@
     import { CastForEducationFilled } from '@vicons/material';
     import { Icon } from '@vicons/utils';
     import HorizontalCalendar from '@/component/calendar.vue';
+    import Discussion from '@/component/post.vue';
     import { mapGetters, mapActions, mapMutations } from 'vuex';
     
     export default{
@@ -164,6 +165,7 @@
             UserProfileAlt,
             CastForEducationFilled,
             HorizontalCalendar,
+            Discussion,
             ChannelAdd20Regular,
             Pill28Filled,
         }
@@ -202,6 +204,8 @@
                         </div>
                 </template>
             </el-scrollbar>
+            <hr style="width: 90%; background-color:#E5E5E5; border: none; height:1px;">
+            <Discussion />
         </el-main>
     </el-container>
     <el-dialog  v-model = "dialog" center align-center width="90%" round>
@@ -303,9 +307,21 @@
             </div>
             <div class = "icon-text-container">
                 <div class="icon-container">
+                    <Icon><UserProfileAlt/></Icon>
+                </div>
+                <p>Message</p>
+            </div>
+            <div class = "icon-text-container">
+                <div class="icon-container">
                     <Icon><CastForEducationFilled/></Icon>
                 </div>
                 <p>Education</p>
+            </div>
+            <div class = "icon-text-container">
+                <div class = "icon-container">
+
+                </div>
+                <p>Assessment</p>
             </div>
         </div>
         <template #footer>
