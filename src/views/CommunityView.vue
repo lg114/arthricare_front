@@ -244,18 +244,32 @@
                 // return false if the post belongs to someone else, so that the 
                 return true;  
             },
-            deletePost(postid){
-                // Display an alert to ask the user if he/she really wants to delete it
-                if (confirm("Delete post?") == true) {
-                    for (let i=0; this.posts.length[i]; i++){
-                        if (postid==this.posts[i].postID){
-                            // Donovan's task: Detele the post from DB
-                        }
+            deletePost(postId) {
+                // Display a confirmation dialog to confirm post deletion
+                if (confirm("Delete post?") === true) {
+                    for (let i = 0; i < this.posts.length; i++) {
+                    if (postId === this.posts[i].postID) {
+                        // Send a DELETE request to the backend to delete the post
+                        axios.delete(`http://localhost:8080/ComityPost/deletePost?postId=${postId}`)
+                        .then(() => {
+                            // Handle the response 
+                            console.log("Post deleted successfully");
+                        })
+                        .catch(error => {
+                            // Handle errors here (e.g., show an error message)
+                            console.error("Error deleting post:", error);
+                        });
+
+                        // Remove the deleted post from the Vue data
+                        this.posts.splice(i, 1);
+                        break; // Exit the loop since the post has been found and deleted
+                    }
                     }
                 } else {
-                    // Cancel the deteting process
+                    // Cancel the deleting process
                 }
-            },
+             },
+
         },
 //============================== END: Unique Functions for Community Page ==============================//
         components: {
