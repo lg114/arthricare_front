@@ -64,7 +64,7 @@
 
         if (userProfileInfo) {
             const userProfileId = userProfileInfo.userId;
-            const response = await axios.get(`/ComityPost/getUserProfileInfor?userId=${userProfileId}`);
+            const response = axios.get('http://localhost:8080/ComityPost/getUserProfileInfor?userId=' + userProfileId)
             const userProfile = response.data;
 
             this.user.name = userProfileInfo.userName;
@@ -85,7 +85,7 @@
 
     async startMessaging(userFromId, userToId) {
         try {
-            const response = await axios.post('http://localhost:8080/ComityChat/createChatChannel', {
+            const response = await axios.post('http://localhost:8181/ComityChat/createChatChannel', {
                 userFromId: userFromId,
                 userToId: userToId
             });
@@ -105,7 +105,7 @@
 
     async loadUserPosts(userId) {
         try {
-            const response = await axios.get('http://localhost:8080/ComityPost/getUserPosts', {
+            const response = await axios.get('http://localhost:8181/ComityPost/getUserPosts', {
                 params: {
                 userId: userId, // Add the userId as a query parameter
                 },
@@ -118,9 +118,7 @@
             console.error('Error loading user posts:', error);
         }
     },
-
-
-            
+          
             openDrawer() {
                 this.drawer = true;
             },
