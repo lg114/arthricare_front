@@ -66,8 +66,11 @@
                     reader.readAsDataURL(file);
                 }
             },
-            previewPuzzle(){
+            previewPuzzle1(){
                 ImagePreview(this.puzzle.url)
+            },
+            previewPuzzle2(){
+                ImagePreview("https://cdn.britannica.com/78/43678-050-F4DC8D93/Starry-Night-canvas-Vincent-van-Gogh-New-1889.jpg")
             }
         },
         components: {
@@ -206,10 +209,10 @@
                     <div style="overflow: hidden; text-align: center;">
                     
                     <span class="puzzleTitle">{{ puzzle.title }}</span>
-                    <img :src="puzzle.url" @click="previewPuzzle" class="puzzleImg"/>
+                    <img :src="puzzle.url" @click="previewPuzzle1" class="puzzleImg"/>
                     <var-divider></var-divider>
-                    <span class="puzzleTitle">{{ puzzle.title }}</span>
-                    <img :src="puzzle.url" @click="previewPuzzle" class="puzzleImg"/>
+                    <span class="puzzleTitle">The Starry Night</span>
+                    <img src="https://cdn.britannica.com/78/43678-050-F4DC8D93/Starry-Night-canvas-Vincent-van-Gogh-New-1889.jpg" @click="previewPuzzle2" class="puzzleImg"/>
                 </div>
                     <!-- <var-row :gutter="[10,10]" justify="space-around" style="margin-bottom: 5px">
                     <var-col :span="8">

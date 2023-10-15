@@ -305,6 +305,7 @@
                         <div class="box">
                             <text class="collectionTitle">My Collection</text><br>
                             <img src="@/assets/puzzleImage/puzzle1_completed.jpg" class="collectionImage" :fit="cover"/>
+                            <img src="https://cdn.britannica.com/78/43678-050-F4DC8D93/Starry-Night-canvas-Vincent-van-Gogh-New-1889.jpg" class="collectionImage" :fit="cover"/>
                             <!-- <img src="@/assets/pic_2.jpg" class="collectionImage" :fit="cover"/>
                             <img src="@/assets/pic_3.png" class="collectionImage" :fit="cover"/> -->
                             <!-- <Icon class="add"><AddCircle20Regular /></Icon> -->
