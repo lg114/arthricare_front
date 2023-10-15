@@ -1,5 +1,20 @@
 <template>
-    <vue-hash-calendar class = "calendar" lang="EN" :scroll-change-date="true" :show-week-view="true" :show-today-button="true" picker-type="date"  :show-arrow="true" :theme-color="themeColor" format="MM DD,YY at hh:mm F" @change="handleChange">
+    <vue-hash-calendar class = "calendar" lang="EN" show-arrow :scroll-change-date="true" :show-week-view="true" :show-today-button="true" picker-type="date" :theme-color="themeColor" format="MM DD,YY at hh:mm F" @change="handleChange">
+        <template v-slot:week="scope">
+            <div class = "week">
+                <span style="font-weight: bold;">{{ `${scope?.week}` }}</span>
+            </div>
+        </template>
+        <template v-slot:day="scope">
+            <div class = "date">
+                <span style="font-weight: bold;">{{ scope?.date?.day }}</span>
+            </div>
+        </template>
+        <template #arrow="scope">
+            <div class = "arrow">
+                {{ scope?.isShowWeek ? '&darr;' : '&uarr;' }}
+            </div>
+        </template>
     </vue-hash-calendar>
 </template>
 
@@ -14,9 +29,8 @@
       mounted() {
           this.themeColor = ref({
               'main-color': '#006973',
-              'main-font-color': '#01385C',
+              'main-font-color': '#006973',
               'bg-color': 'white',
-              // 'disabled-font-color': 'yellow'
           });
       },
 
@@ -61,6 +75,16 @@
 
 <style scoped>
   .calendar{
+    font-size: 4vw;
     font-weight: bold;
   }
+  .week{
+    font-size: 4vw;
+  }
+  .date{
+        font-size: 4vw;
+    }
+.arrow{
+    color: #006973;
+}
 </style>

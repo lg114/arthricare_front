@@ -5,6 +5,7 @@
     import { Icon } from '@vicons/utils'
     import SideBarContent from '@/component/Sidebar.vue';
     import { UserFilled } from '@element-plus/icons-vue';
+    import { ImagePreview } from '@varlet/ui'
     
     export default{
         mounted() {
@@ -16,12 +17,14 @@
             return{
                 user:{
                     name: 'Username',
-                    level: '10',
-                    points: '1000'
+                    email: 'arthricare@example.com',
+                    age: '26',
+                    height: '185cm',
+                    weight: '70kg',
                 },
                 puzzle:{
                     url: require("@/assets/puzzleImage/puzzle1_completed.jpg"),
-                    title: 'The Starry Night',
+                    title: 'Italian Landscape with Girl Milking a Goat',
                 },
                 drawer: ref(false),
                 showAction: ref(false), //Show actions of the fab
@@ -62,6 +65,9 @@
                     };
                     reader.readAsDataURL(file);
                 }
+            },
+            previewPuzzle(){
+                ImagePreview(this.puzzle.url)
             }
         },
         components: {
@@ -93,6 +99,8 @@
                 </router-link>
             </el-header>
             <el-main class="main">
+                <var-sticky>
+                    <div style="background-color: white;">
                 <div class="avatarWrapper">
                     <!-- NEED TO BE CONNECTED TO THE BACKEND
                          AVATAR IMAGE VARIABLE IS IN THE SCRIPT {avatarData}
@@ -107,7 +115,40 @@
                     </label>
                 </div>
                 <h2 style="margin-top: 5px;">{{ user.name }}</h2>
-                <p>Level {{ user.level }} | {{ user.points }} points</p>
+                <p>{{ user.email }}</p>
+                <div style="background-color: #CFEEF5; border-radius: 10px; box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);">
+                <var-row :gutter="[10,10]" justify="center" style="margin-top: -20px;">
+                    <var-col :span="7">
+                        <div class="itemValue">{{ user.age }}</div>
+                    </var-col>
+                    <var-divider vertical="ture" />
+                    <var-col :span="7" justify="center">
+                        <div class="itemValue">{{ user.height }}</div>
+                    </var-col>
+                    <var-divider vertical="ture" />
+                    <var-col :span="7" justify="flex-end">
+                        <div class="itemValue">{{ user.weight }}</div>
+                    </var-col>
+                </var-row>
+                <var-row :gutter="[10,8]" justify="center">
+                    <var-col :span="7" justify="flex-start">
+                        <div class="item">Age</div>
+                    </var-col>
+                    <var-divider vertical="ture" />
+                    <var-col :span="7" justify="center">
+                        <div class="item">Height</div>
+                    </var-col>
+                    <var-divider vertical="ture" />
+                    <var-col :span="7" justify="flex-end">
+                        <div class="item">Weight</div>
+                    </var-col>
+                </var-row>
+                </div>
+                <br>
+                <var-divider description="My Puzzles" style="--divider-text-color: #006973; font-size: larger;" />
+
+                </div>
+            </var-sticky>
                 <!-- <div class="box"> -->
                     <!-- JUST PLACEHOLDER 无需连接后端 -->
                     <!-- <span class="boxTitle">My Education</span><br><br>
@@ -160,12 +201,40 @@
                         </var-link>
                     </var-row>
                 </div> -->
-                <div class="box">
-                    <h2 class="boxTitle">My Puzzles</h2>
-                    <var-divider style="--divider-color: white" />
+                <!-- <div class="box"> -->
+                    <!-- <h2 class="boxTitle">My Puzzles</h2> -->
+                    <div style="overflow: hidden; text-align: center;">
+                    
                     <span class="puzzleTitle">{{ puzzle.title }}</span>
-                    <img :src="puzzle.url" class="puzzleImg"/>
+                    <img :src="puzzle.url" @click="previewPuzzle" class="puzzleImg"/>
+                    <var-divider></var-divider>
+                    <span class="puzzleTitle">{{ puzzle.title }}</span>
+                    <img :src="puzzle.url" @click="previewPuzzle" class="puzzleImg"/>
                 </div>
+                    <!-- <var-row :gutter="[10,10]" justify="space-around" style="margin-bottom: 5px">
+                    <var-col :span="8">
+                        <img :src="puzzle.url" @click="previewPuzzle" class="puzzleImg"/>
+                    </var-col>
+                    <var-col :span="8">
+                        <img :src="puzzle.url" @click="previewPuzzle" class="puzzleImg"/>
+                    </var-col>
+                    <var-col :span="8">
+                        <img :src="puzzle.url" @click="previewPuzzle" class="puzzleImg"/>
+                    </var-col>
+                </var-row>
+                <var-row :gutter="[10,10]" justify="space-around">
+                    <var-col :span="8">
+                        <img :src="puzzle.url" @click="previewPuzzle" class="puzzleImg"/>
+                    </var-col>
+                    <var-col :span="8">
+                        <img :src="puzzle.url" @click="previewPuzzle" class="puzzleImg"/>
+                    </var-col>
+                    <var-col :span="8">
+                        <img :src="puzzle.url" @click="previewPuzzle" class="puzzleImg"/>
+                    </var-col>
+                </var-row> -->
+                    
+                <!-- </div> -->
                     <!-- NEED TO BE CONNECTED TO THE BACKEND
                          USER'S COMPLETED PUZZLE PICTURES
                          需要连接后端

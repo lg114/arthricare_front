@@ -125,7 +125,6 @@ p{
     text-align: center;
     border-radius: 10px;
     background-color: #CFEEF5;
-    overflow-y: auto;
 }
 .tabItems{
     display: flex;
@@ -137,10 +136,10 @@ p{
     font-weight: bold;
 }
 .puzzleImage{
-    width: 300px;
+    width: 90%;
     height: 250px;
     border-radius: 10px;
-    border: 5px solid #006973;
+    border: 3px solid #006973;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 .box{
@@ -150,6 +149,8 @@ p{
     background-color: #CFEEF5;
     border-radius: 10px;
     margin:auto;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    margin-bottom: 10px;
 }
 .boxTitle{
     padding-left: 15px;
@@ -286,6 +287,7 @@ p{
     justify-content: center;
     align-items: center;
     transition: box-shadow 0.2s ease;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 .task-container{
     border-radius: 10px;

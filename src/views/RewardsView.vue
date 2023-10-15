@@ -77,7 +77,7 @@
                 },
                 puzzle:{
                     url: require("@/assets/puzzleImage/puzzle1_initial.jpg"),
-                    title: 'The Starry Night',
+                    title: 'Italian Landscape with Girl Milking a Goat',
                     completed: 0,
                     total: 35,
                 },
@@ -299,7 +299,7 @@
                 <var-tabs-items class="tabItems" v-model:active="active">
                     <var-tab-item>
                         <h2 class="puzzleTitle">{{ puzzle.title }} ({{ puzzle.completed }}/{{ puzzle.total }})</h2>
-                        <var-button style="background-color: #55BDCA; color: white;" @click="collectPuzzle">Collect one puzzle</var-button><br><br>
+                        <!-- <var-button style="background-color: #55BDCA; color: white;" @click="collectPuzzle">Collect one puzzle</var-button><br><br> -->
                         <img :src="puzzle.url" :alt="puzzle" class="puzzleImage" :fit="contain"/><br><br>
                         <var-link to="/userprofile" underline="none" style="display: block;">
                         <div class="box">

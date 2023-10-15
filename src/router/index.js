@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-import { ElMessage } from 'element-plus';
-import store from '@/store';
+// import { ElMessage } from 'element-plus';
+// import store from '@/store';
 import WelcomePage from '@/views/WelcomeView.vue';
 import LoginPage from '@/views/LoginView.vue';
 import SignUpPage from '@/views/SignupView.vue';
@@ -26,6 +26,7 @@ import MyPostsPage from '@/views/MyPostsView.vue';
 import AssessmentPage from '@/views/AssessmentView.vue';
 import NotFoundPage from '@/views/NotFoundPageView.vue';
 import AboutUsPage from '@/views/AboutUsView.vue';
+import PrivacyPolicyPage from '@/views/privacyPolicy.vue';
 
 
 const router  = createRouter({
@@ -189,7 +190,12 @@ const router  = createRouter({
             path: '/AboutUs',
             name: 'AboutUs',
             component: AboutUsPage
-        }
+        },
+        {
+            path: '/PrivacyPolicy',
+            name: 'PrivacyPolicy',
+            component: PrivacyPolicyPage,
+        },
     ]
 });
 
@@ -197,18 +203,18 @@ const router  = createRouter({
 
 // Router Guard 导航守卫
 
-router.beforeEach((to, from, next) => {
-    if (to.matched.some(record => record.meta.requiresAuth)) {
-        if (store.getters['user/isLoggedIn']) {
-          next(); // 已登录，继续访问
-        } else {
-            ElMessage.warning("You haven't logged in.");
-            next({ name: 'Welcome' }); // 重定向到欢迎页面
-        }
-      } else {
-        next(); // 不需要身份验证的路由，直接继续访问
-    }
-});
+// router.beforeEach((to, from, next) => {
+//     if (to.matched.some(record => record.meta.requiresAuth)) {
+//         if (store.getters['user/isLoggedIn']) {
+//           next(); // 已登录，继续访问
+//         } else {
+//             ElMessage.warning("You haven't logged in.");
+//             next({ name: 'Welcome' }); // 重定向到欢迎页面
+//         }
+//       } else {
+//         next(); // 不需要身份验证的路由，直接继续访问
+//     }
+// });
 
 
 

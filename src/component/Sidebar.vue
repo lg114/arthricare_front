@@ -90,7 +90,12 @@
         flex-direction: column;
         padding: 20px;
     }
-
+    .divider-example-vertical-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #333;
+}
     .menu-item{
         margin-top: 30px;
         display: flex;

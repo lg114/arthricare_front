@@ -1,40 +1,117 @@
-/* Homepage Css */
-/* -------------------------------- Base Layout -----------------------------------------------*/
 .container{
-    display: grid;
-    flex-direction: column;
-    justify-content: center;
-    height: 100vh;
-    background-color: #006973;
+    height: 100%;
 }
-.content-container{
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    overflow-y: auto;
-}
-/* -------------------------------- Base Layout -----------------------------------------------*/
-
-/* -------------------------------- Component Layout ------------------------------------------*/
 .header{
-    height: 60px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #006973;
+    color: #FFFFFF;
+    height: 80px;
+}
+.header-icon{
+    font-size: 25px;
+    position: absolute;
+    left: 5%;
+    font-weight: bold;
+}
+.header-icon2{
+    font-size: 25px;
+    position: absolute;
+    right: 5%;
+}
+.username{
+    font-weight: bold;
 }
 .main{
-    background-color: #ffffff;
+    --el-main-padding: 0;
+    background-color: #ffffff;  /* for the arrow's color of the calendar */
+    margin-bottom: 55px;
+}
+
+.divider{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    --divider-color: #006973;
+    text-align: center;
+    margin-top: 5vw;
+}
+.last-medication{
+    margin-bottom: 15vw;
+}
+.var-chip{
+    margin-right: 5vw;
+    color:#006973;
+    height: 7vh;
+    width: 98vw;
+}
+.el-dialog__header{
+    margin-right: 0px;
+    background-color: #006973;
+    color: #FFFFFF;
+}
+@media screen and (min-width: 380px){
+    .header{
+
+    }
+}
+@media screen and (min-width: 768px){
+    .header{
+        height: 10vh;
+    }
+    .username{
+        font-size: 25px;
+    }
+}
+
+
+
+.topping{
+    color:#FFFFFF;
+    font-weight: bold;
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex: 1;
-    width: 100vw;
-    height: 100%;
-    overflow-y: auto;
-    --el-main-padding: 0px;
 }
-/* -------------------------------- Component Layout -------------------------------------------*/
+.var-avatar{
+    position: relative;
+    top: 5vh;
+}
+.middle{
+    color:#FFFFFF;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+}
+.middle p{
+    margin-bottom: 20px;
+    text-align: center;
+}
+.icon-container {
+    display: inline-block;
+    margin-right: 50px; 
+}
+.icon-text-container {
+    display: flex;
+    align-items: center;
+    padding-inline: 5px;
+    justify-content: center;
+}
 
-/* -------------------------------- Footer -----------------------------------------------------*/
-.bottomButton{  
-    width: 90px;
+.bottom{
+    color:#FFFFFF;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+}
+.bottom p {
+    margin-bottom: 20px;
+}
+
+.bottomButton{
     padding-left:20px;
     padding-right: 20px;
 }
@@ -48,54 +125,6 @@
     --bottom-navigation-item-active-color: #55BDCA;
     white-space: nowrap;
 }  
-/* -------------------------------- Footer -----------------------------------------------------*/
-
-/* -------------------------------- Header -----------------------------------------------------*/
-.userbtn{
-    position: absolute;
-    left:5%;
-    top:1.5%;
-    font-size: 30px;
-    color: white;
+.addButton{
+    font-size: 35px;
 }
-.username{
-    position: relative;
-    top: 20px;
-    left: 45px;
-    color: #ffffff;
-    font-weight: 600;
-    font-size: 16px;
-}
-.more{
-    position: absolute;
-    left:20px;
-    top:15px;
-    font-size: 30px;
-    color: white;
-}
-/* -------------------------------- Header ------------------------------------------------------*/
-.sidebar{
-    margin-top: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff;
-}
-.uploaded-avatar {
-    width: 100%;
-    height: 100%;
-}
-.defalut-avatar{
-    width: 70%;
-    height: 80%;
-}
-
-/* -------------------------------- Small Screen -----------------------------------------------*/
-@media screen and (max-width: 400px) {
-    .content-container{
-        overflow-y: auto;
-        overflow-x: auto;
-    }
-}
-/* -------------------------------- Small Screen ------------------------------------------------*/

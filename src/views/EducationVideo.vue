@@ -1,7 +1,7 @@
 <!--Education Video Page -->
 <script>
     import { ref } from 'vue';
-    import { ChevronLeft20Filled, BookOpen20Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular, CommentMultiple20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
+    import { ChevronLeft20Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular, CommentMultiple20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
     import { ThumbUpAltOutlined } from '@vicons/material'
     import { Icon } from '@vicons/utils'
 
@@ -55,7 +55,6 @@
             Pill28Filled, ChannelAdd20Regular,
             Home20Regular, 
             BriefcaseMedical20Regular,
-            BookOpen20Filled,
             Gift20Regular, 
             PeopleCommunity20Regular, 
             ThumbUpAltOutlined,
@@ -71,8 +70,6 @@
                 <router-link to="/education">
                 <Icon class="back"><ChevronLeft20Filled /></Icon>
                 </router-link>
-                <Icon class="titleIcon"><BookOpen20Filled /></Icon>
-                <b class="pageTitle">Education</b>
             </el-header>
             <el-main class="main">
                 <h1 class="articleTitle">{{ selectedVideo.title }}</h1>
