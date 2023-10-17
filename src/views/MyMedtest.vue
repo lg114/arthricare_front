@@ -9,17 +9,18 @@
    import orange from "@/assets/capsulesorange.png";
    import bottle from "@/assets/pills-bottle.png";
    import tablet from "@/assets/capsules.png";
+   import DoubleArrow from "@/assets/previous3.png";
    import injection from "@/assets/injection.png";
    import drop from "@/assets/drop.png";
    import store from "@/store";
    import { ref } from 'vue';
-  import { LineHorizontal320Filled, Home20Regular, BriefcaseMedical20Filled, Gift20Regular, PeopleCommunity20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent';
-  import SideBarContent from '@/component/Sidebar.vue';
-    import { Icon } from '@vicons/utils';
-    import { ChevronRight20Filled} from '@vicons/fluent';
-    import { Error,TrashCan,Edit} from '@vicons/carbon';
+   import { LineHorizontal320Filled, Home20Regular, BriefcaseMedical20Filled, Gift20Regular, PeopleCommunity20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent';
+   import SideBarContent from '@/component/Sidebar.vue';
+   import { Icon } from '@vicons/utils';
+  //  import { ChevronRight20Filled} from '@vicons/fluent';
+   import { Error,TrashCan,Edit} from '@vicons/carbon';
+   import { Dialog } from '@varlet/ui'
 
-    const active = ref(1);
 </script>
 
 <template>
@@ -63,32 +64,34 @@
                 <p class="medData-font">{{ item.date }}</p>
               </div>
             </div>
-            <div class="arrow_button">
+             <!-- <div class="arrow_button">
               <router-link :to="{ path: '/EditMed', query: { Index: index } }" @click="handleArrowButtonClick('unExperiedMedArray', index)">
-                <ChevronRight20Filled @click="disableASOption"  class="arrowBtn_icon"/>
+                <ChevronRight20Filled class="arrowBtn_icon"/>
               </router-link>
-            </div>
+            </div>  -->
+
+            <img :src="DoubleArrow" alt="Icon" class="doubleArrow" /> 
            
           </div>
-          <div class="removeBtn" @click="unExpiredRemove" :data-index="index">
+          <div class="removeBtn" :data-index="index">
             <router-link :to="{ path: '/EditMed', query: { Index: index } }">
-              <Edit @click="disableASOption"  class="cross"/>
+              <Edit  class="cross"/>
             </router-link>
             <p class="removeP">Edit</p>
           </div>
           <div class="removeBtn2" @click="stopMed(index)" :data-index="index">
-            <TrashCan @click="disableASOption"  class="cross"/>
+            <TrashCan  class="cross"/>
             <p class="removeP">Stop</p>
           </div>
           <div class="removeBtn3" @click="unExpiredRemove" :data-index="index">
-            <Error @click="disableASOption"  class="cross"/>
+            <Error  class="cross"/>
             <p class="removeP">Delete</p>
           </div>
          </div> 
         </div>
 
       </div>
-      <div class="ExpiredContainer">
+      <div class="ExpiredContainer" style="margin-bottom:4vh;">
         <div class="ExpiredMedication">
           <p class="medication-word">Past Medication</p>
         </div>
@@ -115,25 +118,30 @@
               <div class="Drug_data">
                 <p class="medData-font">{{ item.date }}</p>
               </div>
-              <ChevronLeft20Filled @click="disableASOption" class="arrowBtn_icon"/>
+              <ChevronLeft20Filled  class="arrowBtn_icon"/>
             </div>
             
-            <div class="arrow_button">
+            <!-- <div class="arrow_button">
               <router-link :to="{ path: '/EditMed', query: { Index: index } }" @click="handleArrowButtonClick('ExperiedMedArray', index)">
-                <ChevronRight20Filled @click="disableASOption" class="arrowBtn_icon"/>
+                <ChevronRight20Filled  class="arrowBtn_icon"/>
               </router-link>
-            </div>
+            </div> -->
+
+            <img :src="DoubleArrow" alt="Icon" class="doubleArrow" /> 
+
+            <!-- ///////////////////////////////// -->
             </div>
             <div class="removeBtn" @click="ExpiredRemove" :data-index="index">
-              <Edit @click="disableASOption"  class="cross"/>
+              <Edit  class="cross"/>
               <p class="removeP">Edit</p>
+              
             </div>
             <div class="removeBtn2" @click="ExpiredRemove" :data-index="index">
-              <Error @click="disableASOption"  class="cross"/>
+              <Error  class="cross"/>
               <p class="removeP">Stop</p>
             </div>
-            <div class="removeBtn3" @click="ExpiredRemove" :data-index="index">
-              <TrashCan @click="disableASOption"  class="cross"/>
+            <div class="removeBtn3"  @click="ExpiredRemove" :data-index="index">
+              <TrashCan  class="cross"/>
               <p class="removeP">Delete</p>
            </div>
           </div>
@@ -207,6 +215,13 @@
 
 <style  scoped>
 
+  .doubleArrow{
+    width:2vh;
+    height:2vh;
+    position: relative;
+    left:15vw;
+    bottom:3%;
+  }
 .testImg{
    height:13vh;
    width:13vh;
@@ -222,7 +237,6 @@
     bottom:0.5vh;
     margin-top:4vh;
     color:white;
-    
   }
 
   img{
@@ -231,6 +245,7 @@
       margin-top:10px;
       margin-right:15px;
     }
+
   .sidebar{
     display: flex;
     align-items: center;
@@ -325,6 +340,7 @@
         margin-bottom:5vh;
         position:relative;
         overflow: hidden;
+        overflow-y: auto;
     }
 
     #title{
@@ -739,7 +755,8 @@ export default {
     ...mapGetters('user', ['loggedInUser']),
     name(){
       return store.state.navigation
-    }
+    },
+
   },
 
   data() {
@@ -751,18 +768,17 @@ export default {
       isDragging: false,
       showDiv: false,
       startX: 0, 
-        endX: 0, 
- 
+      endX: 0, 
+      dialog:null,
+      actions : {
+        confirm: () => this.dialogYes(),
+        cancel: () => this.dialogNo(),
+        close: () => console.log("close"),
+      }
     };
   },
   methods: {
-    stopMed(number){
-      let unExperiedmed = store.state.unExperiedMedArray[number];
-      store.state.unExperiedMedArray.splice(number, 1);
-      store.state.ExperiedMedArray.push(unExperiedmed);  
-      this.restSlide();
-      console.log("done")
-    },
+    
     oneself() {
         if (this.checkSlide()) {
           this.restSlide();
@@ -810,18 +826,71 @@ export default {
           listItems[i].dataset.type = 0;
         }
       },
+
+      stopMed(number){
+        let unExperiedmed = store.state.unExperiedMedArray[number];
+        this.createStopAction().then(() =>{
+        if(this.dialog==true){
+        store.state.unExperiedMedArray.splice(number, 1);
+        store.state.ExperiedMedArray.push(unExperiedmed);  
+        this.restSlide();
+        console.log("done")
+      }else{
+        console.log("NoNo")
+      }
+      })},
      
       unExpiredRemove(e) {
         let index = e.currentTarget.dataset.index;
         this.restSlide();
-        store.state.unExperiedMedArray.splice(index, 1);
-      },
+        this.createDeleteAction().then(() =>{
+        if(this.dialog==true){
+          store.state.unExperiedMedArray.splice(index, 1);
+        this.dialog = null
+      }else{
+        console.log("NO")
+      }
+      })},
+      
 
       ExpiredRemove(e) {
         let index = e.currentTarget.dataset.index;
         this.restSlide();
+        this.createDeleteAction().then(() =>{
+        if(this.dialog==true){
         store.state.ExperiedMedArray.splice(index, 1);
+        this.dialog = null
+      }else{
+        console.log("NO")
+      }
+      })},
+
+      dialogYes(){
+        this.dialog = true;
+        console.log("True")
       },
+
+      dialogNo(){
+        this.dialog = false;
+        console.log(this.dialog + "fffff");
+      },
+
+      async createStopAction() {
+      this.actions[await Dialog({
+           title: 'Stop Medication',
+           message: 'Do you want to stop medication ?',
+           confirmButtonText: "Yes",
+           cancelButtonText: "No",
+         })]()
+    },
+    async createDeleteAction() {
+      this.actions[await Dialog({
+           title: 'Stop Medication',
+           message: 'Do you want to Delete medication ?',
+           confirmButtonText: "Yes",
+           cancelButtonText: "No",
+         })]()
+    },
     
 ///////////////////////////////////////////
     changeShow(){
@@ -940,6 +1009,7 @@ export default {
   },
       
   mounted(){
+   
           document.title = "User Profile | ArthriCare";
           this.clearMedArray();
 
