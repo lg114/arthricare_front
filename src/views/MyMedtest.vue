@@ -742,6 +742,32 @@
     z-index:2;
   }
 </style>
+<style>
+ .var-button__content{
+    font-size:20px;
+    
+  }
+  :root {
+  --font-size-xs: 10px;
+  --font-size-sm: 12px;
+  --font-size-md: 20px;
+  --font-size-lg: 20px;
+  --icon-size-xs: 16px;
+  --icon-size-sm: 18px;
+  --icon-size-md: 20px;
+  --icon-size-lg: 22px;
+  --color-body: #fff;
+  --color-text: #333;
+  --color-primary: #3a7afe;
+  --color-info: #00afef;
+  --color-success: #00c48f;
+  --color-warning: #ff9f00;
+  --color-danger: #f44336;
+  --color-disabled: #e0e0e0;
+  --color-text-disabled: #aaa;
+  --cubic-bezier: cubic-bezier(0.25, 0.8, 0.5, 1);
+}
+</style>
 
 <script>
 import axios from 'axios';
@@ -879,16 +905,28 @@ export default {
       this.actions[await Dialog({
            title: 'Stop Medication',
            message: 'Do you want to stop medication ?',
+           width:"40vh",
            confirmButtonText: "Yes",
            cancelButtonText: "No",
+           confirmButtonTextColor:"white",
+           canelButtonTextColor:"white",
+           confirmButtonColor:"#2979ff",
+           cancelButtonColor:"#bdb3b3",
+           fontSize:"300"
          })]()
     },
     async createDeleteAction() {
       this.actions[await Dialog({
-           title: 'Stop Medication',
+           title: 'Delete Medication',
            message: 'Do you want to Delete medication ?',
+           width:"40vh",
+           dialogTitleFontSize:"30px",
            confirmButtonText: "Yes",
            cancelButtonText: "No",
+           confirmButtonTextColor:"white",
+           canelButtonTextColor:"red",
+           confirmButtonColor:"#2979ff",
+           cancelButtonColor:"#bdb3b3"
          })]()
     },
     
