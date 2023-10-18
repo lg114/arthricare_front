@@ -1,7 +1,7 @@
 <!-- Community Page -->
 <script>
     import { ref } from 'vue';
-    import { Delete20Regular, ThumbLike20Regular, LineHorizontal320Filled, CommentMultiple20Regular, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Filled, Pill28Filled, ChannelAdd20Regular  } from '@vicons/fluent'
+    import { ThumbLike20Regular, LineHorizontal320Filled, CommentMultiple20Regular, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Filled, Pill28Filled, ChannelAdd20Regular  } from '@vicons/fluent'
     import { Icon } from '@vicons/utils'
     import SideBarContent from '@/component/Sidebar.vue';
     import { UserFilled } from '@element-plus/icons-vue';
@@ -29,9 +29,9 @@
                 },
                 posts:[
                     {
-                        postID: 1,
+                        postId: 1,
                         avatar: require('@/assets/friend_2.png'),
-                        userID: 'testID_1',
+                        userId: 'testID_1',
                         username: 'Adam',
                         postedDateTime: new Date("2023-09-20T15:25:00+10:00"), // September 20, 2023, 15:20:00 AEST
                         title: '21M diagnosed with Rheumatoid Arthritis',
@@ -39,6 +39,7 @@
                         expanded: false,
                         numberOfLikes: 17,
                         numberOfComments: 8,
+                        haveImage:true,
                         images: [
                             { url: require('@/assets/postImage1.png'), alt: 'postImage1 for postID 1' },
                             { url: require('@/assets/postImage2.png'), alt: 'postImage2 for postID 1' }, 
@@ -47,9 +48,9 @@
                         ]
                     },
                     {
-                        postID: 2,
+                        postId: 2,
                         avatar: require('@/assets/friend_4.png'),
-                        userID: 'testID_2',
+                        userId: 'testID_2',
                         username: 'Timothy',
                         postedDateTime: new Date("2023-09-20T09:30:00+10:00"), // September 20, 2023, 9:30:00 AEST
                         title: '“Morning” stiffness worse in the middle of the night?',
@@ -57,6 +58,7 @@
                         expanded: false,
                         numberOfLikes: 14,
                         numberOfComments: 8,
+                        haveImage:true,
                         images: [
                             { url: require('@/assets/postImage5.png'), alt: 'postImage5 for postID 2' }, 
                             { url: require('@/assets/postImage6.png'), alt: 'postImage6 for postID 2' },
@@ -64,9 +66,9 @@
                         ]
                     }, 
                     {
-                        postID: 3,
+                        postId: 3,
                         avatar: require('@/assets/friend_3.png'),
-                        userID: 'testID_3',
+                        userId: 'testID_3',
                         username: 'Tom',
                         postedDateTime: new Date("2023-09-19T09:30:00+10:00"), // September 19, 2023, 9:30:00 AEST
                         title: 'When to resume mtx',
@@ -74,37 +76,40 @@
                         expanded: false,
                         numberOfLikes: 3,
                         numberOfComments: 2,
+                        haveImage:true,
                         images: [
                             { url: require('@/assets/postImage8.png'), alt: 'postImage6 for postID 3' },
                             { url: require('@/assets/postImage6.png'), alt: 'postImage7 for postID 3' }
                         ]
                     },
                     {
-                        postID: 4,
+                        postId: 4,
                         avatar: require('@/assets/friend_5.png'),
-                        userID: 'testID_4',
+                        userId: 'testID_4',
                         username: 'Anthony',
                         postedDateTime: new Date("2023-09-06T09:30:00+10:00"), // September 6, 2023, 9:30:00 AEST
                         title: 'This is a title for the General post',
                         content: "ghju fgufj fgrfd dfgv ed fgf f f gea.",
-                        expanded: false,
+                        expanded: true,
                         numberOfLikes: 8,
                         numberOfComments: 6,
+                        haveImage:true,
                         images: [
                             { url: require('@/assets/postImage1.png'), alt: 'postImage1 for postID 4' }
                         ]
                     },
                     {
-                        postID: 5,
+                        postId: 5,
                         avatar: require('@/assets/friend_5.png'),
-                        userID: 'testID_5',
+                        userId: 'testID_5',
                         username: 'Anthony',
                         postedDateTime: new Date("2023-08-24T09:30:00+10:00"), // August 24, 2023, 9:30:00 AEST
                         title: 'This is a title for the News post',
                         content: "The shortest content.",
-                        expanded: false,
+                        expanded: true,
                         numberOfLikes: 8,
                         numberOfComments: 0,
+                        haveImage:false,
                         images: []
                     }
                     // Add more posts here
@@ -131,29 +136,22 @@
                 const truncated = sentences.slice(0, 22).join(" ");
                 return truncated;
             },
-            isitShortContent(content){
-                const sentences = content.split(" ");
-                const numberOfWords = sentences.length;
-                if(numberOfWords < 22){
-                    return true;
-                }
-                return false;
-            },
             togglePostExpansion(post) {
                 console.log('Toggling post expansion', post);
                 post.expanded = !post.expanded;
             },
-            goToPostDetail(postID) {
-                this.$router.push({ name: 'PostDetail', params: { id: postID } });
+            goToPostDetail(postId) {
+                sessionStorage.setItem("postDetailInfoId",postId);
+                this.$router.push({ name: 'PostDetail'});
             },
             // END: 3 methods for SeeMore buttons
 
             // START: 2 methods to add a comment
-            showCommentInput(postID) {
-                this.showCommentInputId = postID;
+            showCommentInput(postId) {
+                this.showCommentInputId = postId;
             },
             addComment(postid) {
-                const post = this.posts.find((p) => p.postID === postid);
+                const post = this.posts.find((p) => p.postId === postid);
                 post.comments.push({
                     username: this.user.name,
                     content: this.newComment,
@@ -162,14 +160,32 @@
             },
             // END: 2 methods to add a comment
 
+            // SATR: Filter the posts by a section
+            filterBysection(sectionID){
+                if(sectionID==="1"){
+                    // Only display the posts with Discussion section
+                }else if(sectionID==="2"){
+                    // Only display the posts with Event section
+                }
+                else if(sectionID==="3"){
+                    // Only display the posts with News section
+                }
+            },
+            // END: Filter the posts by a section
+
             // Note for Don: Add a function which adds/remove a like, changes the status of the thumbUp icon.
             toggleLike(){
                 // Add or remove a like
                 // The thumbUp icon when a user added 'a like' should be 'ThumbLike20Filled'
                 // The thumbUp icon when a user removed 'a like' should be 'ThumbLike20Regular'
             },
-            open_MyPosts(userID){
-                this.$router.push({ name: 'MyPosts', params: { id: userID } });
+            open_MyPosts(userId,userName){
+                const postUserInfor = {
+                    userId:userId,
+                    userName:userName
+                }
+                sessionStorage.setItem("postUserInfor",JSON.stringify(postUserInfor));
+                this.$router.push({ name: 'MyPosts'});
             },
 
             // START: Merging backend
@@ -182,6 +198,7 @@
                     if (posts.length !== 0) {
                         // 显示加载的帖子
                         for (const post of posts) {
+                            //console.log(post)
                             this.makePost(post);
                         }
                     }
@@ -192,27 +209,25 @@
             async makePost(post) {
                 const date = new Date(post.createdTime);
                 const formattedDate = date.toLocaleString();
-                
                 // Await the result of makeImageArray(post)
                 const images = await this.makeImageArray(post);
 
                 const postData = {
-                    id: post.postId,
+                    postId: post.postId,
                     avatar: require('@/assets/user_avatar.png'),
-                    username: post.username,
-                    postedDateTime: '',
-                    timestamp: formattedDate,
+                    userId: post.userId,
+                    username: post.userName,
+                    postedDateTime: formattedDate,
                     title: post.title,
                     content: post.content,
                     expanded: this.determinePostExpandOrNot(post.content),
                     numberOfLikes: post.likeNum,
                     numberOfComments: post.commentNum,
+                    haveImage:post.haveImage,
                     images: images,
-                    comments: []
                 };
 
                 this.posts.push(postData);
-                //console.log(post);
             },
             determinePostExpandOrNot(content){
                 if(content.length > 100){
@@ -237,39 +252,12 @@
                     return [];
                 }
             },
+            incrementLikes(index)
+            {
+                this.posts[index].numberOfLikes += 1;
+            }
+
             // END: Merging backend
-
-            isItMyOwnPost(){
-                // return true if the post is the logged-in user's, so that the delete icon will be appeared
-                // return false if the post belongs to someone else, so that the 
-                return true;  
-            },
-            deletePost(postId) {
-                // Display a confirmation dialog to confirm post deletion
-                if (confirm("Delete post?") === true) {
-                    for (let i = 0; i < this.posts.length; i++) {
-                    if (postId === this.posts[i].postID) {
-                        // Send a DELETE request to the backend to delete the post
-                        axios.delete(`http://localhost:8080/ComityPost/deletePost?postId=${postId}`)
-                        .then(() => {
-                            // Handle the response 
-                            console.log("Post deleted successfully");
-                        })
-                        .catch(error => {
-                            // Handle errors here (e.g., show an error message)
-                            console.error("Error deleting post:", error);
-                        });
-
-                        // Remove the deleted post from the Vue data
-                        this.posts.splice(i, 1);
-                        break; // Exit the loop since the post has been found and deleted
-                    }
-                    }
-                } else {
-                    // Cancel the deleting process
-                }
-             },
-
         },
 //============================== END: Unique Functions for Community Page ==============================//
         components: {
@@ -284,8 +272,7 @@
             Gift20Regular, 
             PeopleCommunity20Filled,
             ThumbLike20Regular,  // Default like button  // When user liked a post
-            CommentMultiple20Regular, // comment icon
-            Delete20Regular
+            CommentMultiple20Regular // comment icon
         },
         computed: {
             formattedPostTime() {
@@ -298,6 +285,7 @@
                 // If the time difference is more than a week, display the posted date
                 if (timeDifference > oneWeekInMilliseconds) {
                     const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                    //console.log(postDate.toLocaleDateString(undefined, options));
                     return postDate.toLocaleDateString(undefined, options);
                 }
 
@@ -337,59 +325,62 @@
                     <input type="radio" id="3" name="section" class="section" @click="changeSection('news_section')"><label for="3">News</label>
                 </div>
 
-                <p id="msg"></p>
-
-                <!-- START: Discussion Section -->
                 <div v-if="activeSection === 'discussion_section'">
-                    <div v-for="(post, index) in posts" :key="post.postID" class="postCard">
+                    <div v-for="(post, index) in posts" :key="post.id" class="postCard">
                         <div class="icon_name_time">
                             <!-- NOTE: the code below to display an image is a hardcode and shouldn'r be used. -->
-                            <img :src="post.avatar" alt="avatar" class="avatar" @click="open_MyPosts(post.userID)" />
+                            <img :src="post.avatar" alt="avatar" class="avatar" @click="open_MyPosts(post.userId,post.username)" />
                             <!-- NOTE: This code should work, but, for some reason, it's not working. <img :src="post.avatar" :alt="post.alt" />  -->
-                            <div class="username" @click="open_MyPosts(post.userID)">{{ post.username }}</div>
+                            <div class="username" @click="open_MyPosts(post.userId,post.username)">{{ post.username }}</div>
                             <div class="time-ago">{{ formattedPostTime[index] }}</div>
-                            <Icon v-if="isItMyOwnPost()==true" class="delete_post_icon" @click="deletePost(post.postID)"><Delete20Regular /></Icon>
                         </div>
-                        <div class="content" @click="goToPostDetail(post.postID)">
+                        <div class="content" @click="goToPostDetail(post.postId)">
                             <p class="postTitle">{{ post.title }}</p>
                             <p v-if="!post.expanded" class="content">{{ truncateContent(post.content) }}</p>
                             <p v-else class="content">{{ post.content }}</p>
-                            <button v-if="isitShortContent(post.content)==false" @click="goToPostDetail(post.postID)" class="seeMoreButton">
+                            <button v-if="!post.expanded" @click="goToPostDetail(post.postId)" class="seeMoreButton">
                                 ... See more
                             </button><br>
-                            <div v-if="post.images && post.images.length" class="image-scroll-container">
+                            <div v-if="post.haveImage" class="image-scroll-container">
                                 <span v-for="(image, imageIndex) in post.images" :key="imageIndex">
                                     <img :src="image.url" :alt="image.alt" class="aImage"/> 
                                 </span>    
                             </div>
                         </div>
-                        <div class="like_comment_section" @click="goToPostDetail(post.postID)">
-                            <Icon class="thumbLike_icon"><ThumbLike20Regular /></Icon>
+                        <div class="like_comment_section">
+                            <div @click="incrementLikes(index)">
+                                <Icon class="thumbLike_icon"><ThumbLike20Regular /></Icon>
+                            </div>
                             <p class="numberOfLikes">{{ post.numberOfLikes }}</p>
-                            <Icon class="comment_icon" @click="showCommentInput(post.postID)"><CommentMultiple20Regular /></Icon>
-                            <p class="numberOfComments">{{ post.numberOfComments }}</p>
-                        </div>
+                                <Icon class="comment_icon" @click="showCommentInput(post.postId)"><CommentMultiple20Regular /></Icon>
+                                <p class="numberOfComments">{{ post.numberOfComments }}</p>
+                            </div>
                         <hr style="width: 100%;">
                     </div>
-                </div> 
-                <!-- END: Discussion Section -->
+
+                    <!-- Note for Don: This is #4. The code below is to jump to the top of the page, but this function is not working. 
+                    <div class="scroll-to-top-container">
+                        <Icon @click="scrollToTop"><ArrowCircleUpTwotone class="scrollToTopButton" /></Icon>
+                    </div>
+                    -->
+                </div> <!-- END: Discussion Section -->
 
                 <!-- START: Event Section -->
                 <!-- Note: At this moment, this section is just a placeholder. It's been hardcoded. -->
                 <div v-if="activeSection === 'event_section'">
                     <h3>Upcoming Events</h3>
                     <div class="card_event">
-                        <img src="@/assets/communityPage_event_1.jpg" alt="1st event" class="event" />
+                        <img src="@/assets/communityPage_event_1.png" alt="1st event" class="event" />
                         <h5 class="event-date">15. Apr. 2023</h5>
                         <a href="https://events.arthritis.org/index.cfm?fuseaction=donorDrive.event&eventID=1479" target="_blank" class="eventLink">2023 Walk to CURE Arthritis - Savannah, GA</a>
                     </div>
                     <div class="card_event">
-                        <img src="@/assets/communityPage_event_2.jpg" alt="2nd event" class="event" />
+                        <img src="@/assets/communityPage_event_2.png" alt="2nd event" class="event" />
                         <h5 class="event-date">22. Apr. 2023</h5>
                         <a href="https://events.arthritis.org/index.cfm?fuseaction=donorDrive.event&eventID=1466" target="_blank" class="eventLink">2023 Walk to CURE Juvenile Arthritis - Bloomington, MN</a>
                     </div>
                     <div class="card_event">
-                        <img src="@/assets/communityPage_event_1.jpg" alt="3rd event" class="event" />
+                        <img src="@/assets/communityPage_event_1.png" alt="3rd event" class="event" />
                         <h5 class="event-date">22. Apr. 2023</h5>
                         <a href="https://events.arthritis.org/index.cfm?fuseaction=donorDrive.event&eventID=1480" target="_blank" class="eventLink">2023 Walk to CURE Arthritis - Jacksonville, FL</a>
                     </div>
@@ -402,16 +393,16 @@
                     <h3>Trending News</h3>
                         <div class="trendingNews-scroll-container">
                             <div class="card_TrendingNews">
-                                <img src="@/assets/communityPage_NewsSection_1.jpg" alt="1st Treanding News" />
+                                <img src="@/assets/communityPage_NewsSection_1.png" alt="1st Treanding News" />
                                 <h5 class="top-left">05. Sep. 2023</h5>
                                 <h4 class="bottom-center">Australians 'in the dark' with arthritis: one of our most prevalent and costly diseases</h4>
                             </div>
                             <div class="card_TrendingNews">
-                                <img src="@/assets/communityPage_NewsSection_5.jpg" alt="2nd Treanding News" />
+                                <img src="@/assets/communityPage_NewsSection_5.png" alt="2nd Treanding News" />
                                 <h5 class="top-left">04. Sep. 2023</h5>
                                 <h4 class="bottom-center">Reducing opioid harm through regulatory changes - Information for consumers, patients and carers</h4>
                             </div>
-                        </div>
+                        </div>    
 
                     <h3 style="padding-top:15px;">Latest News</h3>
                     <div class="card_latestNews">
@@ -420,7 +411,7 @@
                             <h5 class="latestNews-date">06. Sep. 2023</h5>
                         </div>
                         <div class="latestNews_img">
-                            <img src="@/assets/communityPage_NewsSection_2.jpg" alt="1st Today's News" class="latestNews" />
+                            <img src="@/assets/communityPage_NewsSection_2.png" alt="1st Today's News" class="latestNews" />
                         </div>
                     </div>
                     <hr class="latestNews">
@@ -430,7 +421,7 @@
                             <h5 class="latestNews-date">01. Sep. 2023</h5>
                         </div>
                         <div class="latestNews_img">
-                            <img src="@/assets/communityPage_NewsSection_3.jpg" alt="2nd Today's News" class="latestNews" />
+                            <img src="@/assets/communityPage_NewsSection_3.png" alt="2nd Today's News" class="latestNews" />
                         </div>
                     </div>
                     <hr class="latestNews">
@@ -440,7 +431,7 @@
                             <h5 class="latestNews-date">25. Aug. 2023</h5>
                         </div>
                         <div class="latestNews_img">
-                            <img src="@/assets/communityPage_NewsSection_4.jpg" alt="3rd Today's News" class="latestNews" />
+                            <img src="@/assets/communityPage_NewsSection_4.png" alt="3rd Today's News" class="latestNews" />
                         </div>
                     </div>
                     <hr class="latestNews">
@@ -450,7 +441,7 @@
                             <h5 class="latestNews-date">23. Aug. 2023</h5>
                         </div>
                         <div class="latestNews_img">
-                            <img src="@/assets/communityPage_NewsSection_6.jpg" alt="4th Today's News" class="latestNews" />
+                            <img src="@/assets/communityPage_NewsSection_6.png" alt="4th Today's News" class="latestNews" />
                         </div>
                     </div>
                     <hr class="latestNews">

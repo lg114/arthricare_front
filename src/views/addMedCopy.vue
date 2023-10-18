@@ -55,82 +55,28 @@
         </div>  
     
       </div>
-
         <p id = "label">Note (Optional)</p>
         <input id="Note" ref="Note" type="text" placeholder="Note"  />
-      
-
-
-        <!-- <p id = "label">Category *</p>
-        <div>
-          <b><label for = "Category"></label></b>
-          <select  ref = "Category" name="Category" id="Category" class = "row-input" v-model="selectedCategory">
-           <option value="" data-icon="@/assets/capsulesblue.png" alt="ArthriCare Logo" disabled selected>Select Category *</option>
-           <option value="Pill" selected>Pill</option>
-           <option value="Tablet">Tablet</option>
-           <option value="Injection">Injection</option>
-           <option value="Drop">Drop</option>
-         </select>
-        </div> -->
-        <!-- <div class = "calculationPart">
-          <el-icon class = "decreaseButton" @click="decreaseCounter"><Minus/></el-icon>
-          <div ref = "Unit" class = "number">{{ counter }}</div>
-          <el-icon class = "increaseButton" @click="increaseCounter"><Plus/></el-icon>
-        </div> -->
-
       </div>   
 
 
       <div class = "container3">
         <h1>SET REMINDER</h1>
-        <p id = "label" >Frequency *</p>
-        <!-- <input ref="Frequency" id="input" type="text" placeholder="  " /> -->
-        <div class="Frequency1">
-          <select  ref="Frequency" name="Frequency" id="Frequency" class ="row-input" v-model="selectedFrequency" style = "padding-left:5% ">
-           <option value="" disabled selected>Select Category</option>
-           <option value="Once a Day">Daily medication</option>
-           <option value="Twice a Day">Intermittent medication</option>
-          </select>
+        <div>
+          <var-space :size="[20, 20]">
+            <var-button>Every X Days</var-button>
+            <var-button>Every X Weeks</var-button>
+            <var-button>Every X Months</var-button>
+            <var-button>Specific Days</var-button>
+          </var-space>
         </div>
-
-        <div id = "date" >
-          <MyDatePicker></MyDatePicker>
-        </div>
-        <div v-if="selectedFrequency ==='Every x day'|| selectedFrequency ==='Every x week'|| selectedFrequency ==='Every x month' ">
-          <p id = "label" >Interval *</p>
-          <input v-model="Interval" ref="Interval" id="Interval" type="number" />
-        </div>
-
-        <p id = "label" >Time *</p>
-        <TimePickerGroup></TimePickerGroup>
-
         <p id = "label">Start Time *</p>
         <div id = "date" >
           <VueDatePicker1 ref = "StartDate" id="startDate"  v-model="selectedStartDate" :format="dateFormat"></VueDatePicker1>
         </div>
-        
         <p id = "label" style="margin-top: 7%;">End Time *</p>
-       
-          <VueDatePicker2 ref = "EndDate" id="endDate" v-model="selectedEndDate" :format="dateFormat"></VueDatePicker2>
-      
-
-        <!-- <div class="custom-dropdown">
-        <select>
-          <option value="option1">Option 1</option>
-          <option value="option2">Option 2</option>
-          <option value="option3">Option 3</option>
-        </select>
-      </div>
-       -->
-      
-
-        <!-- <p id = "label" style = "margin-top:15.5%">Add a note ? (0ptional)</p>
-        <div >
-          <textarea ref="Note" id = "textarea1" name = "Note" column="20" row="20"></textarea>
-        </div> -->
-        <div class = "container-flex" style="margin-top:10%">   
-      </div>   
-        </div>  
+          <VueDatePicker2 ref = "EndDate" id="endDate" v-model="selectedEndDate" :format="dateFormat"></VueDatePicker2> 
+      </div>  
         <el-footer class >
             <div class="buttons" >
                  <el-button class = "login-button" @click = "medicineData">ADD</el-button> 
@@ -198,10 +144,11 @@
   padding-left: 2%;
   outline: none;
   font-size:100%;
+  margin-top:3%;
   position:relative;
   z-index: 1;
-  padding-bottom:6px;
-  padding-top:6px;
+  padding-bottom:5%;
+  padding-top:5%;
 }
 select{
   appearance: none;
@@ -498,14 +445,17 @@ option {
 </style>
 
 <script>
-import MyDatePicker from "@/component/addMedPage/DailyDatePicker.vue";
-import TimePickerGroup from "@/component/addMedPage/timePickerGroup.vue";
+import VueDatePicker1 from '@vuepic/vue-datepicker';
+import VueDatePicker2 from '@vuepic/vue-datepicker';
+import axios from 'axios';
+import { mapGetters } from 'vuex';
+
 // import DatePicker from 'vue-datepicker-next';
 // import 'vue-datepicker-next/index.css';
 // import 'vue-datepicker-next/locale/es';
 
 export default {
-  components: {MyDatePicker,TimePickerGroup},
+  components: { VueDatePicker1 , VueDatePicker2},
   computed: {
     ...mapGetters('user', ['loggedInUser']),
     changeToTrue() {

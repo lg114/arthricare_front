@@ -74,6 +74,7 @@
                     console.error('Chat channel information not found in session storage');
                     return;
                 }
+                this.showUserName();
             },
 
             initWebSocket() {
@@ -237,17 +238,15 @@
 </script>
 <template>
     <div class="container">
-        <el-container>
             <el-header class="header">
                     <Icon class="arrowBack" @click="goBack_messagePage()"><ArrowBackFilled /></Icon>
                     <img :src="avatar5" alt="avatar" class="header_avatar" />
-                    <b class="header_chatPartnerName">userName</b> <!-- NOTE: I guess'Timothy' should come from the session info? -->
+                    <b class="header_chatPartnerName">{{ this.chatPartnerName }}</b> <!-- NOTE: I guess'Timothy' should come from the session info? -->
             </el-header>
-            <el-main class="main">
                 <div id="chat_background">
                     <div id="messageTop">
                         <img :src="avatar5" alt="avatar" id="messageTop_avatar" />
-                        <b id="messageTop_partnerName">userName</b> <!-- NOTE: I guess'Timothy' should come from the session info? -->
+                        <b id="messageTop_partnerName">{{ this.chatPartnerName }}</b> <!-- NOTE: I guess'Timothy' should come from the session info? -->
                     </div>
                     
                     <!-- NOTE: This section needs to be updated by using for-loop to display the chat history in DB -->
@@ -255,22 +254,16 @@
                         <!-- Display existing messages from chat history using v-for -->
                         <div v-for="message in chatHistory" :key="message.timestamp">
                             <!--<p class="messageDate">{{ formatDateAndTime(message.timestamp) }}</p>-->
-                            <p v-if="message.sender === myMessageId" class="text_from_me">{{ message.content }}</p>
+                            <div v-if="message.sender === myMessageId" class="reply_from_me" >
+                                <p class="text_from_me">{{ message.content }}</p>
+                                <img :src="avatar4" alt="avatar" class="miniIcon_me" />
+                            </div>
                             <div v-else class="reply_from_chatPartner">
                                 <img :src="avatar5" alt="avatar" class="miniIcon_chatPartner" />
                                 <p class="text_from_partner">{{ message.content }}</p>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- NOTE: -->
-                    <p style="margin: 50px; margin-top: 100px; text-align: center; color: red;"> 
-            
-                        Change text's background as relative to the length of the word
-                        NOTE: Run the page on smartphone and see if a keyboard comes up when a user. 
-                        The backend for this page is ready, but it hasn't been marged yet.
-
-                    </p>
                 </div>
 
                 <div class="chat_footer">
@@ -289,8 +282,6 @@
                         </div>
                     </div>
                 </div>
-            </el-main> 
-        </el-container>
     </div>
 </template>
 
