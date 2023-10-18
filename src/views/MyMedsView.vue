@@ -378,22 +378,23 @@
         font-family: custom;
      } 
      .bottomButton{
-      width: 90px;
-      padding:20px;
-      position:relative;
-      right:20%;
-  } 
-
-.footer{
-    display: inline;
-    position: fixed;
-    text-align: center;
-    bottom: 0;
-    height:80px;
-    --bottom-navigation-item-font-size: 13px;
-    --bottom-navigation-item-active-color: #55BDCA;
-    white-space: nowrap;
-}  
+        width: 90px;
+        padding-left:20px;
+        padding-right: 20px;
+    }
+    .footer{
+        display: inline;
+        position: fixed;
+        text-align: center;
+        bottom: 0;
+        height:80px;
+        --bottom-navigation-item-font-size: 13px;
+        --bottom-navigation-item-active-color: #646566;
+        white-space: nowrap;
+    }  
+    .addButton{
+        font-size: 35px;
+    }
 
 /* MyMeds Page Css */
 /* Header */

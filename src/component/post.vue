@@ -53,7 +53,7 @@
             CommentMultiple20Regular // comment icon
         },
         mounted() {
-            this.fetchDataFromBackend();
+            //this.fetchDataFromBackend();
         },
         setup(){
             const activeBottom = ref(3);
@@ -89,67 +89,67 @@
                             { url: require('@/assets/postImage4.png'), alt: 'postImage4 for postID 1' }
                         ]
                     },
-                    {
-                        postID: 2,
-                        avatar: require('@/assets/friend_4.png'),
-                        userID: 'testID_2',
-                        username: 'Timothy',
-                        postedDateTime: new Date("2023-09-20T09:30:00+10:00"), // September 20, 2023, 9:30:00 AEST
-                        title: '“Morning” stiffness worse in the middle of the night?',
-                        content: "While I am stiff for an hour or two in the morning, the stiffness seems much worse in the middle of the night or if I get up really early. Last night I almost bit it when I got up to go to the washroom because my brain headed in the direction of the bathroom but my hips and knees were locked and didn't want to move. Sometimes I walk like a penguin in the middle of the night (but not the cute ones!) due to feet and ankle stiffness but in the morning it isn't quite so bad. Anyone else find this?",
-                        expanded: false,
-                        numberOfLikes: 14,
-                        numberOfComments: 8,
-                        images: [
-                            { url: require('@/assets/postImage5.png'), alt: 'postImage5 for postID 2' }, 
-                            { url: require('@/assets/postImage6.png'), alt: 'postImage6 for postID 2' },
-                            { url: require('@/assets/postImage7.png'), alt: 'postImage7 for postID 2' }
-                        ]
-                    }, 
-                    {
-                        postID: 3,
-                        avatar: require('@/assets/friend_3.png'),
-                        userID: 'testID_3',
-                        username: 'Tom',
-                        postedDateTime: new Date("2023-09-19T09:30:00+10:00"), // September 19, 2023, 9:30:00 AEST
-                        title: 'When to resume mtx',
-                        content: "I started mtx just over three weeks ago, took the first two weekly doses then got sick with Norovirus. Next dose was due on Saturday but pharmacist recommended not taking it until I'm 'feeling completely better.' Although the diarrhoea stopped by Thursday I still feel a bit washed out, shall I just take the next dose now I'm clear of the virus?",
-                        expanded: false,
-                        numberOfLikes: 3,
-                        numberOfComments: 2,
-                        images: [
-                            { url: require('@/assets/postImage8.png'), alt: 'postImage6 for postID 3' },
-                            { url: require('@/assets/postImage6.png'), alt: 'postImage7 for postID 3' }
-                        ]
-                    },
-                    {
-                        postID: 4,
-                        avatar: require('@/assets/friend_5.png'),
-                        userID: 'testID_4',
-                        username: 'Anthony',
-                        postedDateTime: new Date("2023-09-06T09:30:00+10:00"), // September 6, 2023, 9:30:00 AEST
-                        title: 'This is a title for the General post',
-                        content: "ghju fgufj fgrfd dfgv ed fgf f f gea.",
-                        expanded: false,
-                        numberOfLikes: 8,
-                        numberOfComments: 6,
-                        images: [
-                            { url: require('@/assets/postImage1.png'), alt: 'postImage1 for postID 4' }
-                        ]
-                    },
-                    {
-                        postID: 5,
-                        avatar: require('@/assets/friend_5.png'),
-                        userID: 'testID_5',
-                        username: 'Anthony',
-                        postedDateTime: new Date("2023-08-24T09:30:00+10:00"), // August 24, 2023, 9:30:00 AEST
-                        title: 'This is a title for the News post',
-                        content: "The shortest content.",
-                        expanded: false,
-                        numberOfLikes: 8,
-                        numberOfComments: 0,
-                        images: []
-                    }
+                    // {
+                    //     postID: 2,
+                    //     avatar: require('@/assets/friend_4.png'),
+                    //     userID: 'testID_2',
+                    //     username: 'Timothy',
+                    //     postedDateTime: new Date("2023-09-20T09:30:00+10:00"), // September 20, 2023, 9:30:00 AEST
+                    //     title: '“Morning” stiffness worse in the middle of the night?',
+                    //     content: "While I am stiff for an hour or two in the morning, the stiffness seems much worse in the middle of the night or if I get up really early. Last night I almost bit it when I got up to go to the washroom because my brain headed in the direction of the bathroom but my hips and knees were locked and didn't want to move. Sometimes I walk like a penguin in the middle of the night (but not the cute ones!) due to feet and ankle stiffness but in the morning it isn't quite so bad. Anyone else find this?",
+                    //     expanded: false,
+                    //     numberOfLikes: 14,
+                    //     numberOfComments: 8,
+                    //     images: [
+                    //         { url: require('@/assets/postImage5.png'), alt: 'postImage5 for postID 2' }, 
+                    //         { url: require('@/assets/postImage6.png'), alt: 'postImage6 for postID 2' },
+                    //         { url: require('@/assets/postImage7.png'), alt: 'postImage7 for postID 2' }
+                    //     ]
+                    // }, 
+                    // {
+                    //     postID: 3,
+                    //     avatar: require('@/assets/friend_3.png'),
+                    //     userID: 'testID_3',
+                    //     username: 'Tom',
+                    //     postedDateTime: new Date("2023-09-19T09:30:00+10:00"), // September 19, 2023, 9:30:00 AEST
+                    //     title: 'When to resume mtx',
+                    //     content: "I started mtx just over three weeks ago, took the first two weekly doses then got sick with Norovirus. Next dose was due on Saturday but pharmacist recommended not taking it until I'm 'feeling completely better.' Although the diarrhoea stopped by Thursday I still feel a bit washed out, shall I just take the next dose now I'm clear of the virus?",
+                    //     expanded: false,
+                    //     numberOfLikes: 3,
+                    //     numberOfComments: 2,
+                    //     images: [
+                    //         { url: require('@/assets/postImage8.png'), alt: 'postImage6 for postID 3' },
+                    //         { url: require('@/assets/postImage6.png'), alt: 'postImage7 for postID 3' }
+                    //     ]
+                    // },
+                    // {
+                    //     postID: 4,
+                    //     avatar: require('@/assets/friend_5.png'),
+                    //     userID: 'testID_4',
+                    //     username: 'Anthony',
+                    //     postedDateTime: new Date("2023-09-06T09:30:00+10:00"), // September 6, 2023, 9:30:00 AEST
+                    //     title: 'This is a title for the General post',
+                    //     content: "ghju fgufj fgrfd dfgv ed fgf f f gea.",
+                    //     expanded: false,
+                    //     numberOfLikes: 8,
+                    //     numberOfComments: 6,
+                    //     images: [
+                    //         { url: require('@/assets/postImage1.png'), alt: 'postImage1 for postID 4' }
+                    //     ]
+                    // },
+                    // {
+                    //     postID: 5,
+                    //     avatar: require('@/assets/friend_5.png'),
+                    //     userID: 'testID_5',
+                    //     username: 'Anthony',
+                    //     postedDateTime: new Date("2023-08-24T09:30:00+10:00"), // August 24, 2023, 9:30:00 AEST
+                    //     title: 'This is a title for the News post',
+                    //     content: "The shortest content.",
+                    //     expanded: false,
+                    //     numberOfLikes: 8,
+                    //     numberOfComments: 0,
+                    //     images: []
+                    // }
                     // Add more posts here
                 ],
                 formattedPostTime: [],

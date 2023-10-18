@@ -199,8 +199,9 @@
                         </div>
                 </template>
             </el-scrollbar>
-            <Discussion />
             <hr style="width: 90%; background-color:#E5E5E5; border: none; height:1px;">
+            <Discussion />
+            
         </el-main>
     </el-container>
     <el-dialog  v-model = "dialog" center align-center width="90%" round>
