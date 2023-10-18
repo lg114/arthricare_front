@@ -1,14 +1,13 @@
 <!--Home Page-->
 <script>
-    import { ref,reactive} from 'vue';
-    import { UserFilled } from '@element-plus/icons-vue';
-    import { LineHorizontal320Filled, Home20Filled, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
+    import { ref } from 'vue';
+    import { Home20Filled, PeopleCommunity20Regular, LineHorizontal320Filled, BriefcaseMedical20Regular, Gift20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent';
     import { Icon } from '@vicons/utils';
     import HorizontalCalendar from '@/component/calendar.vue';
-    import SideBarContent from '@/component/Sidebar.vue';
-    import MedicationDialog from '@/component/MedicationDialog.vue';
-    import { mapGetters, mapActions } from 'vuex';
-
+    import Discussion from '@/component/post.vue';
+    import { mapGetters, mapActions, mapMutations } from 'vuex';
+    import SidebarContent from '@/component/Sidebar.vue';
+    
     export default{
         mounted(){
             //title
@@ -17,222 +16,229 @@
             const today = new Date(); 
             this.onDateSelected(today);
         },
-        setup(){
-            const active = ref(0);
-            return {active};
-        },
         data(){
             return{
-                //用户数据
-                user: reactive({
-                        name: "",
-                        email: "",
-                        AvatarUrl: "",
-                    }),
-                //sidebar
-                drawer: false,
+                drawer: ref(false),
                 //初始化存放当天需要服用的药物列表
                 medicationList: [],
                 //初始化选中日期
-                selectedDate: null,
-                //药物弹窗
-                dialogVisible: ref(false),
-                dialogTitle:'',
-                //popup dialog
-                takenMedTime: null,
-                medicationTime: null, //Timepicker中用户设置的将会吃药的时间
-                selectedMedication: {}, //存储用户当前选择的药物
-                showTimePicker: false, //timepicker
-                showAction: ref(false), //Show actions of the fab
-                showOverlay: ref(false) //Show overlay when click the fab
-            };
+                dialog: ref(false),
+                timeDialog: ref(false),
+                now: ref(false),
+                setTime: ref(false),
+                setTimeSelected: null,
+            }
         },
-        //get user information from store
-        computed: {
-            ...mapGetters('user', ['loggedInUser'])
-        },
-        
         methods:{
-            //Drawer
-            beforeDrawerClose(done){
-                done();
-            },
-
+            ...mapMutations('reminder', ['SET_SELECTED_DATE']),
             ...mapActions('reminder', ['fetchRemindersFromBackend']),
 
+            // side bar goes to profile page
+            goToUserProfile(){
+                this.$router.push('/UserProfile');
+            },
+            gotoMsg(){
+                this.$router.push('/Message');
+            // side bar log out
+            },
+            async logout(){
+                this.$store.dispatch('user/logout');
+            },
             //Calendar (父组件中的处理选定日期的方法)
             async onDateSelected(selectedDate){
                 //存储选定的日期
                 this.selectedDate = selectedDate; 
+                this.SET_SELECTED_DATE(selectedDate);
                 console.log('Selected date:', selectedDate);
                 //假设medicationList是从后端获取的当天药物数据的数组
-                this.medicationList = await this.fetchRemindersFromBackend(selectedDate);
+                const medicationList = await this.fetchRemindersFromBackend(selectedDate);
                 //然后从早到晚排序 sorting
-                if (this.medicationList) {
-                    this.medicationList.sort((a, b) => {
-                        const timeA = new Date(a.time);
-                        const timeB = new Date(b.time);
-                        return timeA > timeB;
-                    });
-                }
+                this.medicationList.sort((a, b) => {
+                    const timeA = a.time.split(":").map(Number);
+                    const timeB = b.time.split(":").map(Number);
+
+                    if (timeA[0] !== timeB[0]) {
+                        return timeA[0] - timeB[0];
+                    }
+
+                    return timeA[1] - timeB[1];
+                });
+                this.medicationList = medicationList;
                 //testing
                 console.log("Medication List for selected date:", this.medicationList);
-                console.log (sessionStorage);
             },
-            
-            //Dialog
-            onShowMedicationPopup(medication) {
-                //构建弹窗标题，显示药物的名称和时间
-                this.dialogTitle = `${medication.name} - ${medication.time}`;
-                //将药物信息传递给弹窗组件
-                this.selectedMedication = medication ;
-                this.dialogVisible = true;
-            },
+            formatTakeMedTime(takeMedTime) {
+                const takemedTimeString = String(takeMedTime);
+                if (!takemedTimeString) {
+                    return "No takemedtime available.";
+                }
 
-            //on time button
-            onTime(){
-                if (!this.selectedMedication){
-                    // 如果没有选定药物对象，则无法执行按时服药的操作
-                    return;
-                }
-                console.log("On Time button clicked");
-                console.log("Medication Object:", this.selectedMedication);
-                
-                // TODO: 在这里执行按时服药的逻辑，例如更新药物的状态和时间
-                this.selectedMedication.takenMedTime = this.selectedMedication.time;
-                console.log("Medication has been taken in ", this.selectedMedication.takenMedTime);
-                this.dialogVisible = false;
+                const takeMedTimeArray = takemedTimeString.split(',').map(Number); // 将字符串分割并转换为数字数组
+
+                const [year, month, day, hour, minute] = takeMedTimeArray;
+
+                const formattedTime = `${year}-${month}-${day} ${hour}:${minute}`; // 格式化为字符串
+
+                return `Take med time: ${formattedTime}`;
             },
-            //Now button
-            nowTime(){
-                if (!this.selectedMedication){
-                    // 如果没有选定药物对象，则无法执行按时服药的操作
-                    return;
-                }
-                console.log("Now Time button clicked");
-                console.log("Medication Object:", this.selectedMedication);
-                
+            showMedicationDetails(medication) {
+                this.selectedMedication = medication;
+                this.$store.commit('reminder/SET_SELECTED_MEDICATION', this.selectedMedication);
+                this.dialog = true;
+            },
+            handleNow() {
+                console.log('Now button clicked');
                 const currentTime = new Date();
-                const currentHour = currentTime.getHours();
-                const currentMinute = currentTime.getMinutes();
-                const formattedTime = `${currentHour}:${currentMinute}`;
+                const isoTime = currentTime.toISOString();
+                this.$store.dispatch('reminder/takeMedication', { date: isoTime })
+                    .then(() => {
+                        this.dialog = false;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            },
+            handleOnTime() {
+                console.log('On Time button clicked');
 
-                this.selectedMedication.takenMedTime = formattedTime;
-                console.log("Medication has been taken in ", this.selectedMedication.takenMedTime);
-                this.dialogVisible = false;
-            },
-            //set time button
-            setTime(medication){
-                if (!this.selectedMedication){
-                    // 如果没有选定药物对象，则无法执行按时服药的操作
-                    return;
-                }
-                console.log("Set Reminder button clicked");
-                console.log("Medication:", medication);
-                // 设置弹窗标题，显示药物的名称
-                this.dialogTitle = this.selectedMedication.name;
-                // 打开弹窗，显示时间选择器
-                this.showTimePicker = true;
-            },
+                const selectedDate = new Date(this.selectedDate);
+                const year = selectedDate.getFullYear();
+                const month = selectedDate.getMonth() + 1;
+                const day = selectedDate.getDate();
 
-            //选择timepicker
-            onTimePickerConfirm() {
-                console.log("Selected time:", this.medicationTime);
+                const remindertime = this.selectedMedication.time;
+                const [hour, minute] = remindertime.split(":").map(Number);
 
-                const currentHour = this.medicationTime.getHours();
-                const currentMinute = this.medicationTime.getMinutes();
-                const formattedTime = `${currentHour}:${currentMinute}`;
+                const combinedDateTime = new Date(year, month - 1, day, hour, minute);
 
-                //将时间保存到药物对象中
-                this.selectedMedication.takenMedTime = formattedTime;
-                console.log("Medication has been taken in ", this.selectedMedication.takenMedTime);
-                this.showTimePicker = false;
-                this.dialogVisible = false;
+                const isoTime = combinedDateTime.toISOString();
+
+                this.$store.dispatch('reminder/takeMedication', { date: isoTime })
+                    .then(() => {
+                        this.dialog = false;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
             },
-            //取消选择timepicker
-            onTimePickerCancel() {
-                // 用户取消选择时间，关闭MessageBox
-                this.showTimePicker = false;
-                this.dialogVisible = false;
+            openTimeDialog(){
+                this.timeDialog = true;
             },
-            //关闭timePicker
-            onTimePickerClose() {
-                // MessageBox关闭时，重置时间选择器并关闭MessageBox
-                this.medicationTime = null;
-                this.showTimePicker = false;
-                this.dialogVisible = false;
+            handleSetTime() {
+                console.log('Set Time button clicked');
+                
+                const date = this.setTimeSelected;
+                const isoTime = date.toISOString();
+
+                this.$store.dispatch('reminder/takeMedication', { date: isoTime })
+                    .then(() => {
+                        this.timeDialog = false;
+                        this.dialog = false;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        },
+        computed: {
+            ...mapGetters('user', ['loggedInUser']),
+            selectedDate(){
+                return this.$store.state.reminder.selectedDate;
             },
-            //When clicking fab, show actions
-            toggleAction(){
-                this.showAction.value = !this.showAction.value
+            formattedDate(){
+                const date = new Date(this.selectedDate);
+                const options = { month: 'long', day: 'numeric' };
+                const formattedDate = date.toLocaleDateString('en-US', options);
+                return formattedDate;
             }
         },
         components:{
-            UserFilled,
-            LineHorizontal320Filled, 
-            Home20Filled, 
+            Icon,
+            LineHorizontal320Filled,
             BriefcaseMedical20Regular, 
             Gift20Regular, 
-            PeopleCommunity20Regular,
-            Icon,
             HorizontalCalendar,
-            SideBarContent,
-            MedicationDialog,
+            Discussion,
+            ChannelAdd20Regular,
             Pill28Filled,
-            ChannelAdd20Regular
+            Home20Filled, PeopleCommunity20Regular,
+            SidebarContent
+        }
     }
-};
 </script>
-
 <template>
     <el-container class = "container">
         <el-header class = "header">
             <Icon class="header-icon" @click="drawer = true"><LineHorizontal320Filled /></Icon>
             <var-ellipsis style="max-width: 270px" :tooltip="false">            
-                <span class = "username">Welcome, {{ loggedInUser && loggedInUser.name ? loggedInUser.name : 'Guest' }}</span>
+                <span class = "username">Welcome to ArthriCare, {{ loggedInUser && loggedInUser.name ? loggedInUser.name : 'Guest' }}</span>
             </var-ellipsis>
             <var-icon class = "header-icon2" name="message-text-outline" @click="gotoMsg"/>
         </el-header>    
         <el-main class = "main">
             <div class = "calendar">
                 <HorizontalCalendar @date-selected="onDateSelected" />
-                <!-------------------------------------------------MedicationDialog---------------------------------------------->
+            </div>
+            <el-scrollbar max-height="30vh" always>
                 <template v-if = "medicationList && medicationList.length > 0">
-                    <MedicationDialog :medicationList="medicationList" :selectedMedication="selectedMedication" :takenMedTime="selectedMedication.takenMedTime"  v-if="medicationList && medicationList.length > 0" @show-medication-popup="onShowMedicationPopup"/>
+                <div :class="['divider', {'last-medication': index === medicationList.length - 1}]" v-for = "(medication, index) in medicationList" :key = "medication.reminderId">
+                    <span style = "width: 30vw; color: #006973; font-weight: bold;">{{ medication.time }}</span>
+                    <var-divider vertical/>
+                    <var-chip size="large"  @click = "showMedicationDetails(medication)">
+                        <var-ellipsis style="max-width: 98vw" :tooltip="false"><h4>{{ medication.name }}</h4></var-ellipsis>
+                        <template #right>
+                            <var-icon name="checkbox-marked-circle-outline" v-if="medication.alreadyTakeMedication === true"/>
+                            <var-icon name="radio-blank" v-if="medication.alreadyTakeMedication === false"/>
+                        </template>
+                    </var-chip>
+                </div>
                 </template>
                 <template v-else>
-                    <div style = "text-align: center; padding: 20px; color:#006973; font-size: larger;">
-                        <p><b>No meds on today...</b></p>
-                    </div>
+                        <div style = "text-align: center; padding: 20px; color:#006973; font-size: larger;">
+                            <p><b>No meds on this date.</b></p>
+                        </div>
                 </template>
-                <!-------------------------------- Dialog -------------------------------->
-                <el-dialog  v-model = "dialogVisible" :title="dialogTitle" center align-center width="90%" round>
-                    <template #header>
-                        <span style="color: #006973; font-weight: bold; font-size: larger;">{{ dialogTitle }}</span>
-                    </template>
-                    <div style = "text-align: center;">
-                        <el-button type="primary" @click="onTime(medication)" round>On Time</el-button>
-                        <el-button type="primary" @click="nowTime(medication)" round>Now</el-button>
-                        <el-button type="primary" @click="setTime(selectedMedication)" round>Set Time</el-button>
-                    </div>
-                </el-dialog>
-                <!------------------------ Dialog for medication time picker ----------------->
-                <el-dialog v-model="showTimePicker" title="Set Time" @close="onTimePickerClose" center align-center width="90%">
-                    <template #header>
-                        <span style="color: #006973; font-weight: bold; font-size: larger;">{{ dialogTitle }}</span>
-                    </template>
-                    <div style = "text-align: center;">
-                        <el-time-picker  v-if="showTimePicker" v-model="medicationTime" placeholder="Select time" format="HH:mm"></el-time-picker>                        
-                    </div>
-                    <template v-slot:footer>
-                        <el-button @click="onTimePickerCancel" round>Cancel</el-button>
-                        <el-button type="primary" @click="onTimePickerConfirm" round>Confirm</el-button>
-                    </template>
-                </el-dialog>
-                <!-------------------------------------------------MedicationDialog---------------------------------------------->
-            </el-main>
-            
-        </el-container>
+            </el-scrollbar>
+            <Discussion />
+            <hr style="width: 90%; background-color:#E5E5E5; border: none; height:1px;">
+        </el-main>
+    </el-container>
+    <el-dialog  v-model = "dialog" center align-center width="90%" round>
+        <template #header>
+            <span style="color: #006973; font-weight: bold; font-size: larger;">{{ selectedMedication.name }}</span>
+        </template>
+        <div style = "text-align: center; font-size: small; line-height: 2;">
+            <span>Scheduled for {{ selectedMedication.time}}, {{ formattedDate }}</span><br>
+            <span>Medication category: {{ selectedMedication.category}}</span><br>
+            <span>Take {{ selectedMedication.dosageUnit }}
+                <span v-if="selectedMedication.category === 'Pill'">pill(s)</span>
+                <span v-if="selectedMedication.category === 'Tablet'">tablet(s)</span>
+                <span v-if="selectedMedication.category === 'Injection'">injection(s)</span>
+                <span v-if="selectedMedication.category === 'Drop'">drop(s)</span>
+            </span><br>
+            <b><span v-if="selectedMedication.note">Note: {{ selectedMedication.note }}</span></b><br>
+            <b><span v-if="selectedMedication.alreadyTakeMedication">{{ formatTakeMedTime(selectedMedication.takeMedTime) }}</span></b>
+        </div>
+        <template #footer>
+            <div style = "text-align: center;">
+                <el-button color="#006973" @click="handleNow()" round>Now &#10004;</el-button>
+                <el-button color="#006973" @click="handleOnTime()" round>On Time &#10004;</el-button>
+                <el-button color="#006973" @click="openTimeDialog()" round>Set Time &#10004;</el-button>
+            </div>
+        </template>
+    </el-dialog>
+
+    <!-- time selector dialog -->
+    <el-dialog v-model="timeDialog" center align-center width="90%" round>
+        <template #header>
+            <span style="color: #006973; font-weight: bold; font-size: larger;">{{ selectedMedication.name }}</span>
+        </template>
+        <div style = "text-align: center; font-size: small; line-height: 2;">
+            <el-date-picker class = "timedialog" v-model = "setTimeSelected" type="datetime" placeholder="Pick a date and time" format="YYYY/MM/DD HH:mm:ss"/>
+            <el-button color="#006973" @click="handleSetTime()" round style="margin-top: 1vh;">Continue</el-button>
+        </div>
+    </el-dialog>
+
         <var-bottom-navigation
             class="footer"
             v-model:active="active"
@@ -286,18 +292,10 @@
         <el-drawer style="background-color: #006973;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
             <!--Action是模拟接口，与后端连接时更换-->
                 <div class = "sidebar">
-                    <el-upload action="" :show-file-list="false">
-                        <el-avatar :size="65">
-                            <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
-                                <template v-else>
-                                    <UserFilled class="defalut-avatar" />
-                                </template>
-                        </el-avatar>   
-                    </el-upload> 
+                    <var-avatar :size = "100" bordered bordered-color="#FFFFFF" lazy :src="require('@/assets/logo.png')"/>
                 </div>
-            <SideBarContent :imgUrl="imgUrl" />    
+            <SidebarContent :imgUrl="imgUrl" />    
         </el-drawer>
-    </div>
 </template>
 
 <!-- the following is all css-->
