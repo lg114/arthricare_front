@@ -500,6 +500,8 @@ option {
 <script>
 import MyDatePicker from "@/component/addMedPage/DailyDatePicker.vue";
 import TimePickerGroup from "@/component/addMedPage/timePickerGroup.vue";
+import axios from 'axios';
+import { mapGetters } from 'vuex';
 // import DatePicker from 'vue-datepicker-next';
 // import 'vue-datepicker-next/index.css';
 // import 'vue-datepicker-next/locale/es';
