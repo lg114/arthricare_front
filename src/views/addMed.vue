@@ -83,32 +83,26 @@
 
       <div class = "container3">
         <h1>SET REMINDER</h1>
-
         <p id = "label" >Frequency *</p>
         <!-- <input ref="Frequency" id="input" type="text" placeholder="  " /> -->
         <div class="Frequency1">
           <select  ref="Frequency" name="Frequency" id="Frequency" class ="row-input" v-model="selectedFrequency" style = "padding-left:5% ">
            <option value="" disabled selected>Select Category</option>
-           <option value="Once a Day">Once a day</option>
-           <option value="Twice a Day">Twice a day</option>
-           <option value="Three times a Day">Three times a day</option>
+           <option value="Once a Day">Daily medication</option>
+           <option value="Twice a Day">Intermittent medication</option>
           </select>
         </div>
+
+        <div id = "date" >
+          <MyDatePicker></MyDatePicker>
+        </div>
+        <div v-if="selectedFrequency ==='Every x day'|| selectedFrequency ==='Every x week'|| selectedFrequency ==='Every x month' ">
+          <p id = "label" >Interval *</p>
+          <input v-model="Interval" ref="Interval" id="Interval" type="number" />
+        </div>
+
         <p id = "label" >Time *</p>
-        <div  v-if="selectedFrequency === 'Once a Day'">
-          <input type="time" v-model="timeInput1" />
-        </div>
-
-        <div v-else-if="selectedFrequency === 'Twice a Day'">
-          <input type="time" v-model="timeInput1" />
-          <input type="time" v-model="timeInput2" />
-        </div>
-
-        <div class="Frequency" v-else-if="selectedFrequency === 'Three times a Day'">
-          <input type="time" v-model="timeInput1" />
-          <input type="time" v-model="timeInput2" />
-          <input type="time" v-model="timeInput3" />
-        </div>
+        <TimePickerGroup></TimePickerGroup>
 
         <p id = "label">Start Time *</p>
         <div id = "date" >
@@ -204,11 +198,10 @@
   padding-left: 2%;
   outline: none;
   font-size:100%;
-  margin-top:3%;
   position:relative;
   z-index: 1;
-  padding-bottom:5%;
-  padding-top:5%;
+  padding-bottom:6px;
+  padding-top:6px;
 }
 select{
   appearance: none;
@@ -505,17 +498,14 @@ option {
 </style>
 
 <script>
-import VueDatePicker1 from '@vuepic/vue-datepicker';
-import VueDatePicker2 from '@vuepic/vue-datepicker';
-import axios from 'axios';
-import { mapGetters } from 'vuex';
-
+import MyDatePicker from "@/component/addMedPage/DailyDatePicker.vue";
+import TimePickerGroup from "@/component/addMedPage/timePickerGroup.vue";
 // import DatePicker from 'vue-datepicker-next';
 // import 'vue-datepicker-next/index.css';
 // import 'vue-datepicker-next/locale/es';
 
 export default {
-  components: { VueDatePicker1 , VueDatePicker2},
+  components: {MyDatePicker,TimePickerGroup},
   computed: {
     ...mapGetters('user', ['loggedInUser']),
     changeToTrue() {

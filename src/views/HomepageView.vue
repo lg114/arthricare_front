@@ -185,13 +185,16 @@
 </script>
 
 <template>
-    <div class = "container">
-        <el-container class = "content-container">
-            <el-header class = "header">
-                <Icon class="more" @click="drawer = true"><LineHorizontal320Filled /></Icon>
-                <span class = "username">Welcome to ArthriCare, {{ loggedInUser ? loggedInUser.name : 'Guest' }}</span>
-            </el-header>
-            <el-main class = "main">
+    <el-container class = "container">
+        <el-header class = "header">
+            <Icon class="header-icon" @click="drawer = true"><LineHorizontal320Filled /></Icon>
+            <var-ellipsis style="max-width: 270px" :tooltip="false">            
+                <span class = "username">Welcome, {{ loggedInUser && loggedInUser.name ? loggedInUser.name : 'Guest' }}</span>
+            </var-ellipsis>
+            <var-icon class = "header-icon2" name="message-text-outline" @click="gotoMsg"/>
+        </el-header>    
+        <el-main class = "main">
+            <div class = "calendar">
                 <HorizontalCalendar @date-selected="onDateSelected" />
                 <!-------------------------------------------------MedicationDialog---------------------------------------------->
                 <template v-if = "medicationList && medicationList.length > 0">
@@ -228,7 +231,7 @@
                 </el-dialog>
                 <!-------------------------------------------------MedicationDialog---------------------------------------------->
             </el-main>
-
+            
         </el-container>
         <var-bottom-navigation
             class="footer"
