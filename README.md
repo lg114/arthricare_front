@@ -1,9 +1,30 @@
-# Arthricare Web Application
+# Welcome to ArthriCare!
 
-## Summary
-ArthriCare is an interactive web application to help arthritis patients manage their medication and health.<br>
-Here is the front-end team repository.<br>
-Coding languages: HTML & JAVASCRIPT & VUE
+This is a web application to help arthritis patients manage their medication and health on mobile devices.
+
+<img src="https://github.com/lg114/arthricare_front/assets/92200217/4c25d8f3-88d2-43c9-b65b-1cf6c795c2ca" width="500"/><br>
+
+## About
+The application aims to provide patients with a user-friendly platform that enables them to track their medications, access educational resources, and connect with other patients.<br>
+Our team’s motivation for creating this app was to provide a convenient way for arthritis patients to better manage their medications and stay on top of their health.
+
+## Language & Framework Used 
+- Vue.js (https://vuejs.org/)
+- Element Plus (https://element-plus.org/en-US/)
+- Varlet (https://varlet.gitee.io/varlet-ui/?ref=madewithvuejs.com#/en-US/index)
+
+## Build Status
+The current version of ArthriCare works properly with functions like creating and taking medicine, collecting puzzles, sharing in the community, etc. More functions would be developed in the future.
+
+## Features
+- Medication tracking
+- Educational resources access
+- Community communication
+- Puzzle collection
+
+## Code Examples
+<img src="https://github.com/lg114/arthricare_front/assets/92200217/d66576da-0a0d-4a6d-96e0-ba579d7f1e07" width="500"/>
+<img src="https://github.com/lg114/arthricare_front/assets/92200217/f50074e1-262c-4099-b66e-933576fde486" width="500"/><br>
 
 ## Dependencies
 ### Main Dependencies
@@ -24,8 +45,6 @@ Coding languages: HTML & JAVASCRIPT & VUE
 8. unplugin-auto-import v0.16.3
 9. unplugin-vue-components v0.24.1
 
-## Website
-(https://arthricare.netlify.app/#/)
 
 ## Project setup
 ### Prepare your environment
