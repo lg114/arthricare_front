@@ -1,3 +1,9 @@
+<!--daily data picker component-->
+<!--
+    Author: zhenxi zhang
+    Student number: 6062027
+    Date: 2023/10/20  
+-->
 <template>
     <p id="label">Start Time *</p>
     <VueDatePicker v-model="StartDate" :enable-time-picker="false" auto-apply partial-flow :flow="['calendar']" :format="formatStartDate" ref="StartTimeDatePicker">
@@ -9,13 +15,12 @@
     <VueDatePicker v-model="EndDate" :enable-time-picker="false" range fixed-start :clearable="false" :format="formatEndDate" @update:model-value="handleDate" ref="EndTimeDatePicker">
       <template #left-sidebar="props" >
         <button class="custom-button" @click="addDaysToCurrentDate(props,1)">+ 1 Day</button>
-        <button class="custom-button" @click="addDaysToCurrentDate(props,3)">+ 3 Days</button>
+        <button class="custom-button" @click="addDaysToCurrentDate(props,7)">+ 7 Days</button>
         <button class="custom-button" @click="addWeeksToCurrentDate(props,1)">+ 1 Week</button>
-        <button class="custom-button" @click="addWeeksToCurrentDate(props,2)">+ 2 Weeks</button>
+        <button class="custom-button" @click="addWeeksToCurrentDate(props,4)">+ 4 Weeks</button>
         <button class="custom-button" @click="addMonthsToCurrentDate(props,1)">+ 1 Month</button>
         <button class="custom-button" @click="addMonthsToCurrentDate(props,6)">+ 6 Months</button>
         <button class="custom-button" @click="addYearsToCurrentDate(props,1)">+ 1 Year</button>
-        <button class="custom-button" @click="addYearsToCurrentDate(props,2)">+ 2 Years</button>
         <button class="custom-ClearButton" @click="clearCalendar(props)">Clear</button>
       </template>
       <template #action-preview="{ value }">
@@ -25,23 +30,30 @@
 </template>
 
 <script setup>
-import { ref, watch} from 'vue';
+import { ref, watch, defineEmits} from 'vue';
 import { addDays, addWeeks, addMonths, addYears } from 'date-fns';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 
+const emits = defineEmits(["update:start-date", "update:end-date"]);
 
 const StartDate = ref();
 const EndDate = ref();
 const StartTimeDatePicker = ref();
 const EndTimeDatePicker = ref();
 const formattedOutput = ref();
+const perferUnit = ref();
 
 watch(StartDate, (newStartDate) => {
   if(newStartDate !== null) {
     EndDate.value = [newStartDate, ];
   }
   StartTimeDatePicker.value.closeMenu();
+  emits('update:start-date', newStartDate);
+});
+
+watch(EndDate, newEndDate => {
+  emits('update:end-date', newEndDate);
 });
 
 const addDaysToCurrentDate = (props,daysToAdd) => {
@@ -54,7 +66,7 @@ const addDaysToCurrentDate = (props,daysToAdd) => {
   {
     props.modelValue.value[1] = addDays(props.modelValue.value[0], daysToAdd)
   }
-
+  perferUnit.value = "day";
 }
 const addWeeksToCurrentDate = (props,daysToAdd) => {
   if(props.modelValue.value[1])
@@ -65,7 +77,7 @@ const addWeeksToCurrentDate = (props,daysToAdd) => {
   {
     props.modelValue.value[1] = addWeeks(props.modelValue.value[0], daysToAdd);
   }
-
+  perferUnit.value = "week";
 }
 const addMonthsToCurrentDate = (props,daysToAdd) => {
   if(props.modelValue.value[1])
@@ -76,7 +88,7 @@ const addMonthsToCurrentDate = (props,daysToAdd) => {
   {
     props.modelValue.value[1] = addMonths(props.modelValue.value[0], daysToAdd);
   }
-
+  perferUnit.value = "month";
 }
 const addYearsToCurrentDate = (props,daysToAdd) => {
   if(props.modelValue.value[1])
@@ -87,7 +99,7 @@ const addYearsToCurrentDate = (props,daysToAdd) => {
   {
     props.modelValue.value[1] = addYears(props.modelValue.value[0], daysToAdd);
   }
-
+  perferUnit.value = "year";
 }
 
 const clearCalendar = (props) => {
@@ -99,6 +111,7 @@ const clearCalendar = (props) => {
     {
       props.modelValue.value[1] = props.modelValue.value[0]
     }
+    perferUnit.value = "day";
 };
 
 const getDate = (SelectedDate) => {
@@ -128,18 +141,25 @@ const getDate = (SelectedDate) => {
 
           const dateOutput = `${day1}/${month1}/${year1} - ${day2}/${month2}/${year2}`;
           
-          if (diffInDays < 7) {
-              formattedOutput.value = dateOutput+`, ${Math.abs(diffInDays)} day(s)`;
-          } else if (diffInDays < 30) {
-              const weeks = Math.round(diffInDays / 7);
-              formattedOutput.value = dateOutput+`, ${weeks} week(s)`;
-          } else if (diffInDays < 365) {
-              const months = Math.round(diffInDays / 30);
-              formattedOutput.value = dateOutput+`, ${months} month(s)`;
-          } else {
-              const years = Math.round(diffInDays / 365);
-              formattedOutput.value = dateOutput+`, ${years} year(s)`;
-          } 
+          if(perferUnit.value == "day")
+          {
+            formattedOutput.value = dateOutput+`, ${Math.abs(diffInDays)} day(s)`;
+          }else if(perferUnit.value == "week")
+          {
+            const weeks = Math.round(diffInDays / 7);
+            formattedOutput.value = dateOutput+`, ${weeks} week(s)`;
+          }else if(perferUnit.value == "month")
+          {
+            const months = Math.round(diffInDays / 30);
+            formattedOutput.value = dateOutput+`, ${months} month(s)`;
+          }else if(perferUnit.value == "year")
+          {
+            const years = Math.round(diffInDays / 365);
+            formattedOutput.value = dateOutput+`, ${years} year(s)`;
+          }else
+          {
+            formattedOutput.value = dateOutput+`, ${Math.abs(diffInDays)} day(s)`;
+          }
       }
       else
       {
@@ -243,13 +263,13 @@ const handleDate = (modelDate) => {
 #label{   
   width:95%;
   font-weight:600;
-  font-size: 85%;
+  font-size: 16px;
   color:  #787885;
   text-align: left;
   margin-bottom:0%;
   margin-top:4%;
-  margin-bottom: 1%;
-  font-family: system-ui;
+  margin-bottom: 3px;
+  font-family: Roboto;
   margin-left:8px;
 }
 
@@ -258,6 +278,11 @@ const handleDate = (modelDate) => {
 <style>
   .dp__pointer.dp__input_readonly.dp__input.dp__input_icon_pad.dp__input_reg {
     padding-right: 0px;
+  }
+
+  .dp__theme_light
+  {
+    --dp-border-color:#555;
   }
 </style>
 

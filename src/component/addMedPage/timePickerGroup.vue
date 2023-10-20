@@ -1,4 +1,9 @@
-<!-- TimePickerGroup.vue -->
+<!--time picker group component-->
+<!--
+    Author: zhenxi zhang
+    Student number: 6062027
+    Date: 2023/10/20  
+-->
 <template>
     <div class="time-picker-wrapper">
         <el-time-picker 
@@ -6,7 +11,7 @@
             :key="index"
             v-model="timePickers[index]" 
             format="HH:mm"
-            style="width: 32%;"
+            style="width: 32%;height: 37.6px;"
             :clearable="false">
         </el-time-picker>
       
@@ -29,9 +34,9 @@
 
 
   
-  <script>
-  import { ElTimePicker,} from 'element-plus';
-  export default {
+<script>
+import { ElTimePicker,} from 'element-plus';
+export default {
     components: {
       'el-time-picker': ElTimePicker,
     },
@@ -39,6 +44,14 @@
       return {
         timePickers: [null]
       };
+    },
+    watch: {
+      timePickers: {
+        handler(newVal) {
+          this.$emit('update-time-pickers', newVal);
+        },
+        deep: true
+      }
     },
     methods: {
       addTimePicker() {
@@ -48,8 +61,9 @@
         this.timePickers.pop();
       }
     }
-  }
-  </script>
+}
+</script>
+
   
   <style scoped>
     .time-picker-wrapper {
@@ -60,7 +74,6 @@
         gap: 6px;
         
     }
-
 
     .add-icon {
         cursor: pointer;

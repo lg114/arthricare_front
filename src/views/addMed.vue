@@ -1,11 +1,18 @@
-<!--Welcome Page -->
-<!--Welcome Page -->
+<!--add medication Page-->
+<!--
+    Author: zhenxi zhang, jihao li
+    Student number: 6062027
+    Date: 2023/10/20  
+-->
 <script setup>
   // import {ArrowLeftBold} from '@element-plus/icons-vue';
   //import store from "@/store";
   // import {Plus,Minus} from '@element-plus/icons-vue';
   import '@varlet/ui/es/button/style/index';
- 
+  //import injection from "@/assets/injection.png";
+  //import drop from "@/assets/drop.png";
+  //import pill from "@/assets/pill.png";
+  //import tablet from "@/assets/capsules.png";
   
 </script>
 
@@ -29,8 +36,8 @@
         <h1>MEDICATION DETAIL </h1>
 
         <p id = "label" >Medication Name *</p>
-        <input ref="MedName" id="MedName" type="text" placeholder="Mecication Name" @keyup="processInput" @focus="toggleOptions"/>
-        
+
+        <AutoComplete @med-selected="onMedSelected"></AutoComplete>
         <div  class="menu" v-if="this.Meds2!==null  && showMed">
           <div ref="MedOption"  class="selected-option" v-for="item in Meds2" :key="item" @click="handleItemClick(item)">{{ item }}</div>
         </div> 
@@ -40,44 +47,17 @@
         <div class="container-block"  >
           <p id = "label" >Category *</p>
           <label for = "Category"></label>
-          <select style = " height: 48px;width:115% ; margin-right:5px ; padding-left: 13%;padding-top: 1%;padding-bottom: 1%" ref = "Category" name="Category" id="Category" class = "row-input" v-model="selectedCategory">
-            <option value="" data-icon="@/assets/capsulesblue.png" alt="ArthriCare Logo" disabled selected>Select Category *</option>
-            <option value="Pill" selected>Pill</option>
-            <option value="Tablet">Tablet</option>
-            <option value="Injection">Injection</option>
-            <option value="Drop">Drop</option>
-          </select>
+          <SelectWithImage @category-selected = "onCategorySelected"></SelectWithImage>
         </div>
 
-        <div class="container-block" style="margin-left:9% ;">
+        <div class="container-block">
           <p id = "label">Doses *</p>
-          <input ref="Unit" style = "width:128% ; height: 66.4%;padding-left:12% " type="number" placeholder="Dosage"  />
+          <el-input v-model="dosage" placeholder="Please Input" type = "number"/>
         </div>  
     
       </div>
-
         <p id = "label">Note (Optional)</p>
-        <input id="Note" ref="Note" type="text" placeholder="Note"  />
-      
-
-
-        <!-- <p id = "label">Category *</p>
-        <div>
-          <b><label for = "Category"></label></b>
-          <select  ref = "Category" name="Category" id="Category" class = "row-input" v-model="selectedCategory">
-           <option value="" data-icon="@/assets/capsulesblue.png" alt="ArthriCare Logo" disabled selected>Select Category *</option>
-           <option value="Pill" selected>Pill</option>
-           <option value="Tablet">Tablet</option>
-           <option value="Injection">Injection</option>
-           <option value="Drop">Drop</option>
-         </select>
-        </div> -->
-        <!-- <div class = "calculationPart">
-          <el-icon class = "decreaseButton" @click="decreaseCounter"><Minus/></el-icon>
-          <div ref = "Unit" class = "number">{{ counter }}</div>
-          <el-icon class = "increaseButton" @click="increaseCounter"><Plus/></el-icon>
-        </div> -->
-
+            <el-input v-model="note" placeholder="Please Input" />
       </div>   
 
 
@@ -85,52 +65,23 @@
         <h1>SET REMINDER</h1>
         <p id = "label" >Frequency *</p>
         <!-- <input ref="Frequency" id="input" type="text" placeholder="  " /> -->
-        <div class="Frequency1">
-          <select  ref="Frequency" name="Frequency" id="Frequency" class ="row-input" v-model="selectedFrequency" style = "padding-left:5% ">
-           <option value="" disabled selected>Select Category</option>
-           <option value="Once a Day">Daily medication</option>
-           <option value="Twice a Day">Intermittent medication</option>
-          </select>
-        </div>
+        <var-select variant="outlined"  v-model="selectedFrequency" class = "frenquency-select">
+          <var-option label="Daily medication" />
+          <var-option label="Intermittent medication" />
+          <var-option label="Only as needed" />
+        </var-select>
 
-        <div id = "date" >
-          <MyDatePicker></MyDatePicker>
-        </div>
-        <div v-if="selectedFrequency ==='Every x day'|| selectedFrequency ==='Every x week'|| selectedFrequency ==='Every x month' ">
-          <p id = "label" >Interval *</p>
-          <input v-model="Interval" ref="Interval" id="Interval" type="number" />
+        <div id="date">
+            <DailyDatePicker v-if="selectedFrequency === 'Daily medication'"
+              @update:start-date="handleStartDate"
+              @update:end-date="handleEndDate">
+            </DailyDatePicker>
+            <IntermittentDatePicker v-else-if="selectedFrequency === 'Intermittent medication'"></IntermittentDatePicker>
         </div>
 
         <p id = "label" >Time *</p>
-        <TimePickerGroup></TimePickerGroup>
-
-        <p id = "label">Start Time *</p>
-        <div id = "date" >
-          <VueDatePicker1 ref = "StartDate" id="startDate"  v-model="selectedStartDate" :format="dateFormat"></VueDatePicker1>
-        </div>
-        
-        <p id = "label" style="margin-top: 7%;">End Time *</p>
-       
-          <VueDatePicker2 ref = "EndDate" id="endDate" v-model="selectedEndDate" :format="dateFormat"></VueDatePicker2>
-      
-
-        <!-- <div class="custom-dropdown">
-        <select>
-          <option value="option1">Option 1</option>
-          <option value="option2">Option 2</option>
-          <option value="option3">Option 3</option>
-        </select>
-      </div>
-       -->
-      
-
-        <!-- <p id = "label" style = "margin-top:15.5%">Add a note ? (0ptional)</p>
-        <div >
-          <textarea ref="Note" id = "textarea1" name = "Note" column="20" row="20"></textarea>
-        </div> -->
-        <div class = "container-flex" style="margin-top:10%">   
-      </div>   
-        </div>  
+        <TimePickerGroup @update-time-pickers="handleTimePickersUpdate"></TimePickerGroup>
+ 
         <el-footer class >
             <div class="buttons" >
                  <el-button class = "login-button" @click = "medicineData">ADD</el-button> 
@@ -138,11 +89,20 @@
          </el-footer> 
         <!-- <date-picker v-model:value = "selectedDate"></date-picker> -->
       </div>
-
+    </div>
     </el-container>
 </template>
 
 <style lang = "css" scoped> 
+
+.frenquency-select
+{
+   --field-decorator-outlined-normal-padding-top: 6px;
+    --field-decorator-outlined-normal-padding-bottom: 6px;
+    --field-decorator-outlined-normal-padding-right: 11px;
+    --field-decorator-outlined-normal-padding-left: 11px;
+    --field-decorator-blur-color:#555;
+}
     .Frequency{
       width:107%;
     }
@@ -208,12 +168,15 @@ select{
 }
 .container-flex{
   display:flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
   z-index: 1;
 }
 
 .container-block{
   display:inline-block;
-  width:40%;
+  width:50%;
   
 }
 
@@ -395,7 +358,7 @@ text-align: center;
   font-size: 85%;
   color:  #787885;
   text-align: left;
-  margin-bottom:0%;
+  margin-bottom:3px;
   margin-top:4%;
   font-family: system-ui;
   margin-left:8px;
@@ -409,9 +372,6 @@ input{
   border:none; 
   border : 1px solid #ccdde9;
   color: black;
-
-  margin-bottom:2%;
-  margin-top:2%;
   padding:5%;
   border-radius: 5px;
   font-family: system-ui;
@@ -497,17 +457,43 @@ option {
   }
 </style>
 
+<style>
+  .el-input__inner {
+    padding: 6px 0px;
+    font-family: Roboto;
+    font-size: 16px;
+    ;
+  }
+  .el-input
+  {
+    --el-input-height:37.6px;
+    --el-input-border-color:#555;
+  }
+</style>
+
 <script>
-import MyDatePicker from "@/component/addMedPage/DailyDatePicker.vue";
-import TimePickerGroup from "@/component/addMedPage/timePickerGroup.vue";
+import DailyDatePicker from "@/component/addMedPage/DailyDatePicker.vue";
+import TimePickerGroup from "@/component/addMedPage/TimePickerGroup.vue";
+import IntermittentDatePicker from "@/component/addMedPage/IntermittentDatePicker.vue";
+import SelectWithImage from "@/component/addMedPage/SelectWithImage.vue";
+import AutoComplete from "@/component/addMedPage/AutoComplete.vue";
 import axios from 'axios';
 import { mapGetters } from 'vuex';
-// import DatePicker from 'vue-datepicker-next';
-// import 'vue-datepicker-next/index.css';
-// import 'vue-datepicker-next/locale/es';
+import { ref } from 'vue'
+
+
+const dosage = ref();
+const note = ref();
+const selectedFrequency = ref("Daily medication");
+const medName = ref();
+const category = ref();
+const TimeData = ref([]);
+const StartDate = ref();
+const EndDate = ref([]);
 
 export default {
-  components: {MyDatePicker,TimePickerGroup},
+  components: {DailyDatePicker,IntermittentDatePicker,
+               TimePickerGroup,SelectWithImage,AutoComplete},
   computed: {
     ...mapGetters('user', ['loggedInUser']),
     changeToTrue() {
@@ -515,214 +501,46 @@ export default {
     },
     
   },
-  data() {
-    return {
-      timeInput1: this.getCurrentTime(),
-      timeInput2: this.getCurrentTime(),
-      timeInput3: this.getCurrentTime(),
-
-      selectedDate: null, 
-      counter: 0,
-      selectedCategory: "Pill",
-      selectedFrequency:  "Once a Day",
-      selectedStartDate: this.getCurrentDate(),
-      selectedEndDate: this.getCurrentDate(),
-
-      dateFormat: 'yyyy-MM-dd',
-      Meds : ["Abatacept","Adalimumab",
-      "Allopurinol",
-      "Ambrisentan",
-      "Anakinra",
-      "Anifrolumab",
-      "Apremilast",
-      "Azathioprine",
-      "Baricitinib",
-      "Biosimilars",
-      "Bisphosphonates (Oral)",
-      "Bisphosphonates (Intravenous/IV)",
-      "Bosentan",
-      "Cannabinoids - Medicinal Cannabis",
-      "Certolizumab",
-      "Colchicine",
-      "Ciclosporin",
-      "Cyclophosphamide",
-      "Denosumab",
-      "Duloxetine",
-      "Etanercept",
-      "Febuxostat",
-      "Glucosamine",
-      "Golimumab",
-      "Goserelin",
-      "Guselkumab",
-      "Hyaluronic Acid",
-      "Hydroxychloroquine",
-      "Iloprost",
-      "Infliximab",
-      "Ixekizumab",
-      "IV Immunuglobulin",
-      "Leflunomide",
-      "Methotrexate",
-      "Self-Injecting Methotrexate for the Treatment of Arthritis",
-      "Mycophenolate",
-      "NSAIDs",
-      "Opioids",
-      "Paracetamol",
-      "Prednisolone",
-      "Pregabalin",
-      "Probenecid",
-      "Raloxifene",
-      "Rituximab",
-      "Romosozumab",
-      "Secukinumab",
-      "Sulfasalazine",
-      "Tacrolimus",
-      "Teriparatide",
-      "Tocilizumab",
-      "Tofacitinib",
-      "Ustekinumab",
-      "Upadacitinib"],
-      Meds2:[],
-
-      //always empty
-      Meds3:[],
-
-      category: [
-        { id: 1, title: 'Pill' },
-        { id: 2, title: 'Tablet' },
-        { id: 3, title: 'Injection' },
-        { id: 4, title: 'Drop' }
-      ],
-      Med: [
-        { id: 1, meds: 'Mg' },
-        { id: 2, meds: 'Bottle'}
-      ],
-      selectedMed: null,
-      showMed: false,
-
-    };
-    
-  },
   
   methods: {
+    onMedSelected(selectedValue) {
+      medName.value = selectedValue;
 
-    increaseCounter() {
-        this.counter++;
-    },
-    decreaseCounter() {
-      if(this.counter == 0){
-        this.counter += 0
-      }else{
-        this.counter--;
-      }
     },
 
-    // fliter letter
-    filterWordsByLetter(wordsArray, letter) {
-      const lowercaseLetter = letter.toLowerCase();
-      const filteredWords = wordsArray.filter(word => word.toLowerCase().startsWith(lowercaseLetter));
-      return filteredWords;
-   },
-   showResult(){
-    if(this.$refs.MedName.value === ""){
-      this.Meds2 =this.Meds3;
-      console.log(this.Meds2);
-    }else{
-      const filteredWordsStartingWithLetters = this.filterWordsByLetter(this.Meds, this.$refs.MedName.value);
-      this.Meds2 = filteredWordsStartingWithLetters;
-      console.log(this.Meds2);
-    }
-  }
-   ,
-   getResult(){
-    const filteredWordsStartingWithLetters = this.filterWordsByLetter(this.words, this.$refs.MedName.value);
-    return filteredWordsStartingWithLetters;
-   },
-   processInput(event) {
-     if (event.keyCode !== 13) {
-        this.showResult();
+    onCategorySelected(selectedValue) {
+      category.value = selectedValue;
 
-         }
-      },
-      
-      //show Med in list
-    handleItemClick(Med) {
-      this.selectedMed = Med;
-      this.showMed = false;
-      this.$refs.MedName.value = Med;
-      this.$refs.MedName.blur();
-      this.Meds2=this.getResult;
-      console.log(Med);
     },
 
-
-    
-    toggleOptions() {
-      this.$refs.MedName.focus();
-      this.showMed = !this.showMed;
+    handleTimePickersUpdate(newTimePickers) {
+      TimeData.value = newTimePickers;
     },
 
-    getCurrentTime() {
-      const now = new Date();
-      const formattedTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      console.log(formattedTime);
-      return formattedTime;
+    handleStartDate(newStartDate) {
+      StartDate.value = newStartDate; // 或其他你想做的操作
     },
-
-    getCurrentDate() {
-      const now = new Date();
-      const formattedTime = now.toISOString().slice(0, 10);
-      console.log(formattedTime);
-      return formattedTime;
-    },
-
-    getReminderTimes() {
-      this.timeInputs = []; // Clear the timeInputs array
-    if (this.selectedFrequency === 'Once a Day') {
-      this.timeInputs.push(this.timeInput1);
-    } else if (this.selectedFrequency === 'Twice a Day') {
-      this.timeInputs.push(this.timeInput1, this.timeInput2);
-    } else if (this.selectedFrequency === 'Three times a Day') {
-      this.timeInputs.push(this.timeInput1, this.timeInput2, this.timeInput3);
-    }
-      console.log(this.timeInputs);
+    handleEndDate(newEndDate) {
+      EndDate.value = newEndDate; // 或其他你想做的操作
     },
 
     // New function for medicineData
   medicineData() {
-  this.getReminderTimes();
-  const reminderTimes = [];
-
-    // Now call this.$nextTick() after updating the array
-  this.$nextTick(() => {
-    if (this.$refs.timePicker1) {
-      reminderTimes.push(this.$refs.timePicker1.value);
-    }
-    if (this.$refs.timePicker2) {
-      reminderTimes.push(this.$refs.timePicker2.value);
-    }
-    if (this.$refs.timePicker3) {
-      reminderTimes.push(this.$refs.timePicker3.value);
-    }
-    
-    console.log ('TING TING IS HERE',this.loggedInUser);
-   
-
-/////////////////////////////////////////////////////////////
     const dataObject = {
       userId: this.loggedInUser.userId,
-      medicationName: this.$refs.MedName.value,
-      medicationCategory: this.selectedCategory,
-      frequency: this.selectedFrequency,
-      dosageUnit: this.$refs.Unit.value,
-      startDate: this.selectedStartDate,
-      endDate: this.selectedEndDate,
-      note: this.$refs.Note.value,
-      reminderTimes: JSON.stringify(this.timeInputs),
+      medicationName: medName.value,
+      medicationCategory: category.value,
+      frequency: selectedFrequency.value,
+      dosageUnit: dosage.value,
+      startDate: StartDate.value,
+      endDate: EndDate.value,
+      note: note.value,
+      reminderTimes: JSON.stringify(TimeData.value),
     };
 
     console.log(dataObject)
 
-    const backendurl = 'http://localhost:8181/medications/create';
+    const backendurl = '//http://localhost:8181/medications/create';
     
     axios
       .post(backendurl, dataObject)
@@ -733,19 +551,16 @@ export default {
       .catch((error) => {
         console.log('Data sending failed', error);
       });
-  }); // Here
-}, //
+  }, //
 
- watch: {
-    selectedFrequency: 'getReminderTimes',
-  },
+
 },
 
   mounted(){
             document.title = 'Add Medication | ArthriCare';
            // this.selectValue();
 
-  
+                console.log(this.loggedInUser.userId);
         },
         setup(){
         
