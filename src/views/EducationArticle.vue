@@ -1,4 +1,7 @@
 <!--Education Post Page -->
+<!-- Author: Tianyi Hu
+Student number: 6774179
+Date: 2023/10/20 -->
 <script>
     import { ref } from 'vue';
     import { ChevronLeft20Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular, CommentMultiple20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
