@@ -1,3 +1,8 @@
+<!--   
+    Author: Lin Gan
+    Student number: 6502933
+    Date: 2023/10/20 
+-->
 <template>
     <vue-hash-calendar class = "calendar" lang="EN" show-arrow :scroll-change-date="true" :show-week-view="true" :show-today-button="true" picker-type="date" :theme-color="themeColor" format="MM DD,YY at hh:mm F" @change="handleChange">
         <template v-slot:week="scope">
