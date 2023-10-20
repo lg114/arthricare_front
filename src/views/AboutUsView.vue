@@ -1,7 +1,8 @@
 <!-- About Us Page -->
 <script>
     import { ref } from 'vue';
-    import { LineHorizontal320Filled } from '@vicons/fluent'
+    import { LineHorizontal320Filled, DocumentPill20Regular, FolderPerson20Regular, PeopleCommunity20Filled,
+        Notepad20Regular } from '@vicons/fluent'
     import { Icon } from '@vicons/utils'
     import SideBarContent from '@/component/Sidebar.vue';
 
@@ -33,14 +34,32 @@
                 done();
             },
             /* START: Unique Methods of About Us */
-
+            goTo_MyMeds() {
+                this.$router.push('/MyMeds');
+            },
+            goTo_Education() {
+                this.$router.push('/Education');
+            },
+            goTo_Home() {
+                this.$router.push('/Home');
+            },
+            goTo_Community() {
+                this.$router.push('/Community');
+            },
+            goTo_SignUp() {
+                this.$router.push('/Signup');
+            },
             /* END: Unique Methods of About Us */
         },
 //============================== END: Unique Functions for Community Page ==============================//
         components: {
             Icon,
             SideBarContent,
-            LineHorizontal320Filled
+            LineHorizontal320Filled,
+            DocumentPill20Regular,
+            FolderPerson20Regular,
+            PeopleCommunity20Filled,
+            Notepad20Regular
         },
         computed: {
            
@@ -56,19 +75,67 @@
                 <b class="pageTitle">About Us</b>
             </el-header>
 
-            <el-main class="main">
-                <div>
-                    <span class="whiteCircle" style="height:185px; width:185px; top:-60px; left:-100px;"></span>
-                    <span class="whiteCircle" style="height:372px; width:372px; top:-70px; left:110px;"></span>
-                    <span class="whiteCircle" style="height:263px; width:263px; top:-30px; left:-90px;"></span>
-                    
-                    <h1 style="top:-860px; left:10px;">Empowering Joints <br>Rewarding Lives </h1>
-                    <h3 style="top:-860px; left:10px;">Your path to Pain-Free Living!</h3>
-                    <img src="@/assets/logo.png" alt="largeLogo" class="largeLogo"> 
-
-
+            <el-main class="main">   
+                <div class="background">
+                    <span class="whiteCircle" style="height:185px; width:185px;"></span>
+                    <span class="whiteCircle" style="height:372px; width:372px;"></span>
+                    <span class="whiteCircle" style="height:263px; width:263px;"></span>
                 </div>
+                
+                <div class="content">
+                    <h1>Empowering Joints<br>Rewarding Lives </h1>
+                    <h3>Your path to Pain-Free Living!</h3>
+                    <img src="@/assets/logo.png" alt="largeLogo" class="largeLogo"> 
+                    <p class="miniTitle">Why ArthriCare?</p>
+                    <p>We support arthritis patients in managing their medication and health effectively. Our mission is to provide a user-friendly and comprehensive tool that empowers patients to take control of their well-being and connect with a supportive community.</p>
+
+                    <div class="fourMainFeatures">
+                        <div class="twoFeatures">
+                            <div class="whiteBackground">
+                                <Icon class="fourIcons" @click="goTo_MyMeds()"><DocumentPill20Regular /></Icon>
+                                <p class="feature">Medication<br>Tracking</p>
+                            </div>
+                            <div class="whiteBackground">
+                                <Icon class="fourIcons" @click="goTo_Education()"><Notepad20Regular /></Icon>
+                                <p class="feature">Eucational<br>Resource</p>
+                            </div>
+                        </div>
+                        <div class="twoFeatures">
+                            <div class="whiteBackground">
+                                <Icon class="fourIcons" @click="goTo_Home()"><FolderPerson20Regular /></Icon>
+                                <p class="feature">Personalised<br>Insights</p>
+                            </div>
+                            <div class="whiteBackground">
+                                <Icon id="comunityIcon" @click="goTo_Community()"><PeopleCommunity20Filled /></Icon>
+                                <p class="feature">Community<br>Support</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="parent_doctors">
+                        <img src="@/assets/doctor_female.png" alt="female doctor" id="img_doctor_female">
+                        <img src="@/assets/doctor_male.png" alt="male doctor" id="img_doctor_male">
+
+                        <div class="child_fadedBox"></div>
+                    </div>
+
+            
+                </div>
+                
+                    
             </el-main> 
+            <div class="footer_aboutUs">
+                <h1 style="color:white; letter-spacing: 2px;">Get started with<br>ArthriCare today</h1>
+                <button class="button_signUp" @click="goTo_SignUp()">SINGN UP</button>
+
+                <h5>QUICK LINKS</h5>
+                <h5>OUR SERVICES</h5>
+                <h5>CONTACT US</h5>
+                <h5>FOLLOW</h5>
+
+                <img src="@/assets/logo.png" alt="largeLogo" class="footerLogo"> 
+                <p>@2023 ArthriCare</p>
+            </div>
         </el-container>
 
 <!--============================ START: The Side Menu Bar ============================-->               

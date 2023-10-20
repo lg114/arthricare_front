@@ -59,25 +59,31 @@
 /* SATRT: Unique CSS for About Us */
 h1{
     font-size: 29px;
-    line-height: 50px;
-    letter-spacing: 3px;
+    letter-spacing: 150.2%;
     color:#185B8B;
-    position: relative;
-    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 h3{
     width:328px;
     color:#185B8B;
-    position: relative;
-    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+p.miniTitle{
+    color: #006973;
+    font-size: 16px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+p{
+    margin-left: 10px;
+    margin-right: 10px;
 }
 .whiteCircle{
     background-color: white;
     border-radius: 50%;
-    display: inline-block;
-    position: relative;
     filter: blur(5px);
-    
 }
 .largeLogo{
     height: 181px;
@@ -90,5 +96,88 @@ h3{
 .footerWhiteCircle{
     height: 90px;
     width: 90px;
+}
+div.whiteBackground{
+    background-color: white;
+    border-radius: 50%;
+    height: 160px;
+    width: 160px;
+    box-shadow: 1px 2px 2px #c7c8ca;
+    text-align: center;
+    margin: 10px;
+    margin-bottom: 20px;
+}
+p.feature{
+    color: #006973;
+    font-size: 14px;
+    margin: 0px;
+    line-height:21px;
+}
+.fourIcons{
+    font-size: 84px;
+    color: #55BBC9;
+    padding-top: 15px;
+    padding-bottom: 3px;
+    margin: 0px;
+}
+#comunityIcon{
+    font-size: 77px;
+    color: #55BBC9;
+    margin: 0px;
+    padding-top: 15px;
+    padding-bottom: 3px;
+}
+.fourMainFeatures{
+    display: flex;
+}
+#img_doctor_female{
+    height: 185px;
+    width: 160px;
+}
+#img_doctor_male{
+    height: 195px;
+    width: 165px;
+}
+.fadedBox{
+    height: 120px;
+    width: 425px;
+    background-color: #d57b0d;
+    box-shadow: 0px 0px 20px 20px #d57b0d; 
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.footer_aboutUs{
+    width: 390px;
+    background-color: #006973;
+    color: white;
+    place-items: center;
+    text-align: center;
+}
+.button_signUp{
+    color:white;
+    background-color: #55BDCA;
+    height: 44px;
+    border-radius: 10px;
+    border: none;
+    margin-top:5%;
+    margin-left:2.5%;
+    width:80%;
+    margin-bottom: 10px;
+    font-size:17px;
+}
+.parent_doctors{
+    position: relative;
+    margin-top: 20px;
+}
+.child_fadedBox{
+    position: absolute;
+    top: 200px;
+
+    height: 20px;
+    width: 390px;
+    background-color: #CFEEF5;
+    box-shadow: 0px 0px 45px 45px #CFEEF5; 
+    margin-left: 10px;
+    margin-right: 10px;
 }
 /* END: Unique CSS for About Us */
