@@ -1,3 +1,8 @@
+<!--   
+    Author: Lin Gan
+    Student number: 6502933
+    Date: 2023/10/20 
+-->
 <template>
     <div style="padding: 20px;"> 
         <div v-if="activeSection === 'discussion_section'">

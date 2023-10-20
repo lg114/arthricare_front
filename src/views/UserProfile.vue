@@ -1,4 +1,7 @@
 <!--User Profile Page -->
+<!-- Author: Tianyi Hu
+Student number: 6774179
+Date: 2023/10/20 -->
 <script>
     import { ref } from 'vue';
     import { LineHorizontal320Filled,Pill28Filled, ChannelAdd20Regular, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular, Edit20Regular, Camera20Filled } from '@vicons/fluent'

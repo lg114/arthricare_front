@@ -1,4 +1,9 @@
 <!--Welcome Page -->
+<!--
+    Author: Lin Gan
+    Student number: 6502933
+    Date: 2023/10/20  
+-->
 <template>
   <el-container class = "container">
       <el-header>

@@ -1,4 +1,7 @@
 <!--Rewards Page -->
+<!-- Author: Tianyi Hu, Zhenxi Zhang
+Student number: 6774179, 6062027
+Date: 2023/10/20 -->
 <script>
     import { ref, reactive, computed } from 'vue';
     import { LineHorizontal320Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Filled, PeopleCommunity20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'

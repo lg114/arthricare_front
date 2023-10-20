@@ -1,4 +1,9 @@
 <!--Resetpassword Page -->
+<!--
+    Author: Lin Gan
+    Student number: 6502933
+    Date: 2023/10/20  
+-->
 <script>
     import { ref } from 'vue';
     import store from '@/store';

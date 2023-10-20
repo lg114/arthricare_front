@@ -1,3 +1,8 @@
+<!--
+    Name: Jihao Li
+    Student number: 7025300
+    Date: 2023/10/20
+-->
 <script setup>
    //import {ArrowLeftBold} from '@element-plus/icons-vue';
    //import {ArrowRightBold} from '@element-plus/icons-vue';

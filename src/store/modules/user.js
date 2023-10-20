@@ -1,3 +1,6 @@
+//  Author: Lin Gan
+//  Student number: 6502933
+//  Date: 2023/10/20 
 // store/user.js
 import axios from 'axios';
 import router from '@/router';
