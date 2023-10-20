@@ -1,4 +1,12 @@
-/* CSS for MyPosts Page */
+/* CSS for MyPosts Page 
+
+<!--
+    Author:  Sara Kurachi
+    Student number: 7028970
+    Date: 2023/10/20  
+-->
+
+*/
 .header{
     display: flex;
     align-items: center;
@@ -91,9 +99,6 @@
 .right_div{
     margin-left: 20px;
     width:177px;
-}
-.left_div{
-    
 }
 .large_avatar{
     width: 170px;
