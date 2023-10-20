@@ -1,4 +1,9 @@
 <!--Home Page-->
+<!--
+    Author: Lin Gan
+    Student number: 6502933
+    Date: 2023/10/20  
+-->
 <script>
     import { ref } from 'vue';
     import { Home20Filled, PeopleCommunity20Regular, LineHorizontal320Filled, BriefcaseMedical20Regular, Gift20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent';
