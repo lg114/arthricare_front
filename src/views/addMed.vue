@@ -51,7 +51,7 @@
         </div>
 
         <div class="container-block">
-          <p id = "label">Doses *</p>
+          <p id = "label">Dosage *</p>
           <el-input v-model="dosage" placeholder="Please Input" type = "number"/>
         </div>  
     
@@ -76,7 +76,10 @@
               @update:start-date="handleStartDate"
               @update:end-date="handleEndDate">
             </DailyDatePicker>
-            <IntermittentDatePicker v-else-if="selectedFrequency === 'Intermittent medication'"></IntermittentDatePicker>
+            <IntermittentDatePicker v-else-if="selectedFrequency === 'Intermittent medication'"
+              @update:start-date="handleStartDate"
+              @update:end-date="handleEndDate">
+              </IntermittentDatePicker>
         </div>
 
         <p id = "label" >Time *</p>
@@ -84,7 +87,15 @@
  
         <el-footer class >
             <div class="buttons" >
-                 <el-button class = "login-button" @click = "medicineData">ADD</el-button> 
+              <var-button 
+                class = "login-button"
+                type="success" 
+                block 
+                @click="saveMedData"
+              >
+                Save
+              </var-button>
+              
             </div>
          </el-footer> 
         <!-- <date-picker v-model:value = "selectedDate"></date-picker> -->
@@ -111,7 +122,7 @@
     h1{
       color:#55BBC9;
       font-size:17px;
-      font-family: system-ui;
+      font-family: Roboto;
     }
     .container3{
       border: 1px solid #eceff1;
@@ -355,12 +366,12 @@ text-align: center;
 #label{   
   width:95%;
   font-weight:600;
-  font-size: 85%;
+  font-size: 16px;
   color:  #787885;
   text-align: left;
   margin-bottom:3px;
   margin-top:4%;
-  font-family: system-ui;
+  font-family: Roboto;
   margin-left:8px;
   }
 
@@ -455,6 +466,7 @@ option {
   background-image: url("@/assets/capsulesblue.png");
   background-repeat: no-repeat;
   }
+
 </style>
 
 <style>
@@ -469,6 +481,11 @@ option {
     --el-input-height:37.6px;
     --el-input-border-color:#555;
   }
+
+  .var-button__content
+  {
+    justify-content: center;
+  }
 </style>
 
 <script>
@@ -480,16 +497,25 @@ import AutoComplete from "@/component/addMedPage/AutoComplete.vue";
 import axios from 'axios';
 import { mapGetters } from 'vuex';
 import { ref } from 'vue'
+import { format } from 'date-fns';
+import { Snackbar } from '@varlet/ui'
+import { StyleProvider } from '@varlet/ui'
+
 
 
 const dosage = ref();
 const note = ref();
 const selectedFrequency = ref("Daily medication");
 const medName = ref();
-const category = ref();
+const category = ref("Pill");
 const TimeData = ref([]);
 const StartDate = ref();
 const EndDate = ref([]);
+const EndDateSingle = ref();
+
+const largeSnackBar = {
+  '--snackbar-width': '512px'
+}
 
 export default {
   components: {DailyDatePicker,IntermittentDatePicker,
@@ -503,6 +529,23 @@ export default {
   },
   
   methods: {
+
+    createSnackbar(type) {
+      Snackbar[type]("Medication save")
+      if (type === 'loading') {
+        setTimeout(() => {
+          Snackbar.success("加载成功")
+        }, 2000)
+      }
+    },
+    formatDate(dateString) {
+      return format(new Date(dateString), "yyyy-MM-dd"); 
+    },
+
+    formatTime(dateString) {
+      return format(new Date(dateString), 'HH:mm'); 
+    },
+
     onMedSelected(selectedValue) {
       medName.value = selectedValue;
 
@@ -524,33 +567,88 @@ export default {
       EndDate.value = newEndDate; // 或其他你想做的操作
     },
 
+    getEndDate()
+    {
+        if(selectedFrequency.value == "Daily medication"||selectedFrequency.value == "Intermittent medication")
+        {
+            EndDateSingle.value = EndDate.value[EndDate.value.length-1];
+        }
+    },
+
+    formatArray()
+    {
+      EndDate.value = EndDate.value.map(date => this.formatDate(date));
+      TimeData.value = TimeData.value.map(date => this.formatTime(date));
+    },
+
+    checkBeforeSave()
+    {
+      StyleProvider(largeSnackBar)
+      if(medName.value == null)
+      {
+        Snackbar['warning']("The medication name has not been entered.")
+        return false;
+      }
+      else if(dosage.value == null||dosage.value=="")
+      {
+        Snackbar['warning']("The medication dosage has not been entered.")
+        return false;
+      }
+      else if(StartDate.value == null)
+      {
+        Snackbar['warning']("The start date for taking the medication has not been selected.")
+        return false;
+      }
+      else if(EndDate.value.length <= 1)
+      {
+        Snackbar['warning']("The end date for taking the medication has not been selected.")
+        return false;
+      }
+      else if(TimeData.value.includes(null)||TimeData.value.length==0)
+      {
+        Snackbar['warning']("The time for taking the medication has not been setted.")
+        return false;
+      }
+
+      return true;
+    },
     // New function for medicineData
-  medicineData() {
-    const dataObject = {
-      userId: this.loggedInUser.userId,
-      medicationName: medName.value,
-      medicationCategory: category.value,
-      frequency: selectedFrequency.value,
-      dosageUnit: dosage.value,
-      startDate: StartDate.value,
-      endDate: EndDate.value,
-      note: note.value,
-      reminderTimes: JSON.stringify(TimeData.value),
-    };
+    saveMedData() {
 
-    console.log(dataObject)
+      if(this.checkBeforeSave())
+      {
+        this.getEndDate();
+        this.formatArray();
+        const dataObject = {
+          userId: this.loggedInUser.userId,
+          medicationName: medName.value,
+          medicationCategory: category.value,
+          frequency: selectedFrequency.value,
+          dosageUnit: dosage.value,
+          startDate: this.formatDate(StartDate.value),
+          endDate: this.formatDate(EndDateSingle.value),
+          note: note.value,
+          reminderDate: JSON.stringify(EndDate.value),
+          reminderTimes: JSON.stringify(TimeData.value),
+        };
 
-    const backendurl = '//http://localhost:8181/medications/create';
-    
-    axios
-      .post(backendurl, dataObject)
-      .then((response) => {
-        console.log('Data sent successfully', response);
-        this.$router.push({path: '/Home'})
-      })
-      .catch((error) => {
-        console.log('Data sending failed', error);
-      });
+        console.log(dataObject)
+
+        const backendurl = 'http://localhost:8181/medications/create';
+        
+        axios
+          .post(backendurl, dataObject)
+          .then((response) => {
+            console.log('Data sent successfully', response);
+            this.$router.push({path: '/Home'})
+            Snackbar['success']("Medication save")
+          })
+          .catch((error) => {
+            console.log('Data sending failed', error);
+            Snackbar['error']("Medication save fail")
+          });
+          }
+
   }, //
 
 

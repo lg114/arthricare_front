@@ -12,7 +12,10 @@
       </template>
     </VueDatePicker>
     <p id="label">End Time *</p>
-    <VueDatePicker v-model="EndDate" :enable-time-picker="false" range fixed-start :clearable="false" :format="formatEndDate" @update:model-value="handleDate" ref="EndTimeDatePicker">
+    <VueDatePicker v-model="EndDate" :enable-time-picker="false" range fixed-start :clearable="false" 
+                   :format="formatEndDate" @update:model-value="handleDate" ref="EndTimeDatePicker"
+                   :disabled="shouldBeDisabled"
+                   :disabled-dates="disabledDates">
       <template #left-sidebar="props" >
         <button class="custom-button" @click="addDaysToCurrentDate(props,1)">+ 1 Day</button>
         <button class="custom-button" @click="addDaysToCurrentDate(props,7)">+ 7 Days</button>
@@ -30,7 +33,7 @@
 </template>
 
 <script setup>
-import { ref, watch, defineEmits} from 'vue';
+import { ref, watch, defineEmits,computed} from 'vue';
 import { addDays, addWeeks, addMonths, addYears } from 'date-fns';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
@@ -216,6 +219,23 @@ const handleDate = (modelDate) => {
   }
   
 }
+
+const shouldBeDisabled = computed(() => StartDate.value == null);
+
+const disabledDates = computed(() => {
+  if(StartDate.value)
+  {
+    const today = StartDate.value;
+    today.setHours(0, 0, 0, 0); // 设置时间为午夜，这样你可以确保比较只基于日期
+
+    return (date) => {
+      const inputDate = new Date(date);
+      inputDate.setHours(0, 0, 0, 0); // 同样设置为午夜进行比较
+      return inputDate < today; // 如果给定日期在今天之前，返回true，表示该日期是禁用的
+    };
+  }
+  return new Date();
+});
 
 
 </script>

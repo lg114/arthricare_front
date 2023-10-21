@@ -98,6 +98,7 @@
                 this.$store.dispatch('reminder/takeMedication', { date: isoTime })
                     .then(() => {
                         this.dialog = false;
+                        this.selectedMedication.alreadyTakeMedication = true;
                     })
                     .catch(error => {
                         console.error('Error:', error);
@@ -121,6 +122,7 @@
                 this.$store.dispatch('reminder/takeMedication', { date: isoTime })
                     .then(() => {
                         this.dialog = false;
+                        this.selectedMedication.alreadyTakeMedication = true;
                     })
                     .catch(error => {
                         console.error('Error:', error);
@@ -139,6 +141,7 @@
                     .then(() => {
                         this.timeDialog = false;
                         this.dialog = false;
+                        this.selectedMedication.alreadyTakeMedication = true;
                     })
                     .catch(error => {
                         console.error('Error:', error);
