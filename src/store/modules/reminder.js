@@ -3,6 +3,7 @@
 //  Date: 2023/10/20 
 
 import axios from 'axios';
+import { Snackbar } from '@varlet/ui';
 
 const state = {
     reminders : null, //the state of the drug reminder
@@ -98,6 +99,7 @@ const actions = {
                 });
 
                 commit('SET_SELECTED_MEDICATION', null);
+                Snackbar.success('Take medicine successfully');
             } else {
                 console.log('No medication selected');
             }
