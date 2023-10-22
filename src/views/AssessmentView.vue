@@ -1,8 +1,5 @@
-<!--
-    Name: Jihao Li
-    Student number: 7025300
-    Date: 2023/10/20
--->
+<!--Welcome Page -->
+<!--Welcome Page -->
 <script setup>
   import store from "@/store";
   // import {Plus,Minus} from '@element-plus/icons-vue';
@@ -50,6 +47,7 @@
             <p class="searchItem">Suppport</p>
             <p class="searchItem">Procedure</p> -->
 
+            
             <transition name="slide" mode="out-in" >
               <h1 :key="currentQuestion.id" >Q{{this.QuestionNumber}}</h1>
             </transition>
@@ -57,11 +55,25 @@
               <p :key="currentQuestion.id" class="questionText" >{{ currentQuestion.text }}</p>
             </transition>
 
-            <input type="radio" v-model="selectedOption" @click="increment('A')"  name= "option" id="Yes" value="Yes"/>
-            <label for="Yes">Yes</label>
+            <div class="container-flex">
+              <transition name="slide" mode="out-in" >
+                <input  :key="currentQuestion.id" type="radio" v-model="selectedOption" @click="increment('A')"  name= "option" id="Yes" value="Yes"/>
+              </transition>
+              <transition name="slide" mode="out-in" >
+                <p :key="currentQuestion.id" for="Yes" class="label">Yes</p>
+              </transition>
+            </div>
+           
             <br>
-            <input type="radio" v-model="selectedOption" @click="increment('B')" name= "option" id="No" value="No"/>
-            <label for="No">No</label>
+            <div class="container-flex">
+              <transition name="slide" mode="out-in" >
+                <input :key="currentQuestion.id" type="radio" v-model="selectedOption" @click="increment('B')" name= "option" id="No" value="No"/>
+              </transition>
+        
+              <transition name="slide" mode="out-in" >
+                <p :key="currentQuestion.id" class="label" for="No">No</p>
+              </transition>
+            </div>
           </div>
 
           <!-- DAS-28 questions -->
@@ -78,7 +90,10 @@
             <var-icon class= "circleIcon" name="check-circle-outline" />
             <h1 class="completedTitle">Assessment completed</h1> 
             <p class="completedTitle2">Completion date :</p> 
-            <p class="completedTitle3">{{this.selectedDate}}    {{this.selectedTime}}  Yes:{{this.yesValue}}  No:{{this.noValue}}  </p> 
+            <p class="completedTitle3">{{this.selectedDate}}    {{this.selectedTime}}  </p>
+          
+            <br>
+            <p class="completedTitle5">Yes:{{this.yesValue}}  No:{{this.noValue}}  </p> 
             <p v-if="noValue <= 4 " class="completedTitle4">Classification: not adherent</p> 
             <p v-if="noValue > 4 " class="completedTitle4">Classification: adherent</p> 
           </div>
@@ -165,6 +180,19 @@
       text-align: center;
       top:45vh;
     }
+
+    .completedTitle5{
+      color:#006973;
+      font-size:100%;
+      font-family: system-ui;
+      position:absolute;
+      left:0;
+      right:0;
+      margin:auto;
+      text-align: center;
+      top:50vh;
+    }
+    
     .completedTitle4{
       color:#006973;
       font-size:130%;
@@ -174,7 +202,7 @@
       right:0;
       margin:auto;
       text-align: center;
-      top:50vh;
+      top:55vh;
     }
     .circleIcon{
       color:#006973;
@@ -225,13 +253,15 @@
    border: 2px solid #006973;
   }
 
-  label{
+  .label{
     position:relative;
+    width:20vw;
     font-size:140%;
     color:#006973;
     font-weight: bold;
     position:relative;
-    bottom:0.6%;
+    bottom:0%;
+    
     }
   .button{
       background: #FFFFFF;
@@ -321,7 +351,7 @@
 
 .container-flex{
   display:flex;
-  height:15vh;
+  height:5vh;
   z-index: 1;
 }
 
@@ -405,9 +435,8 @@ input{
     width:20vw;
     margin:0;
     padding:0;
-    margin-top:2vh;
+    margin-top:2.6vh;
     margin-left:5%;
-    margin-bottom:5% ;
   }
 
   input:focus{ 
