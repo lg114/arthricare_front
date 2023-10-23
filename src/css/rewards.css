@@ -105,7 +105,7 @@ p{
 .progressBar{
     margin: auto;
     width: 95%;
-    --progress-linear-border-radius: 7px;
+    --progress-linear-border-radius: 10px;
     --progress-label-color:#006973;
 }
 .percentageProgress{
@@ -179,6 +179,35 @@ p{
     align-items: center;
     flex-direction: column;
     padding: 20px;
+}
+/* Vouchers */
+.vouchers{
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 15px;
+    --card-border-radius:10px;
+}
+#voucher1{
+    --card-background: linear-gradient(90deg, rgba(180,58,132,1) 0%, rgba(191,29,253,1) 100%);
+    --card-title-color:white;
+    --card-subtitle-color:white;
+    --card-subtitle-font-size:20px;
+    --card-description-color:white;
+}
+#voucher2{
+    --card-background: linear-gradient(90deg, rgba(68,180,58,1) 0%, rgba(29,224,253,1) 100%);
+    --card-title-color:white;
+    --card-subtitle-color:white;
+    --card-subtitle-font-size:20px;
+    --card-description-color:white;
+}
+#voucher3{
+    --card-background: linear-gradient(90deg, rgba(250,253,0,1) 0%, rgba(253,184,29,1) 100%);
+    --card-title-color:#006973;
+    --card-subtitle-color:#006973;
+    --card-subtitle-font-size:20px;
+    --card-description-color:#006973;
+    margin-bottom: 10px;
 }
 /* footer */
 .bottomButton{

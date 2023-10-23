@@ -273,7 +273,7 @@ Date: 2023/10/20 -->
                     <div class="progressBar" id="progressBar">
                         <var-progress
                         :value="calculatedPercentage"
-                        line-width="15"
+                        line-width="20"
                         color="linear-gradient(135deg, #FFA174 0%, #D04300 100%)"
                         track-color="#CFEEF5"
                         label  
@@ -347,8 +347,31 @@ Date: 2023/10/20 -->
                         </el-col>
                     </el-row>
                     </var-tab-item>
-                    <var-tab-item>
-                        To Be Determined
+                    <var-tab-item >
+                        <var-card
+                        class="vouchers"
+                        id="voucher1"
+                        :elevation="2"
+                        title="Chemist Warehouse"
+                        subtitle="-5%"
+                        description="Applied to first purchase"
+                        />
+                        <var-card
+                        class="vouchers"
+                        id="voucher2"
+                        :elevation="2"
+                        title="Woolworths"
+                        subtitle="$20"
+                        description="Applied to first purchase"
+                        />
+                        <var-card
+                        class="vouchers"
+                        id="voucher3"
+                        :elevation="2"
+                        title="Priceline Pharmacy"
+                        subtitle="-8%"
+                        description="Applied to first purchase"
+                        />
                     </var-tab-item>
                 </var-tabs-items>
             </el-main>
