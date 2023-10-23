@@ -77,17 +77,17 @@
 
             <el-main class="main">   
                 <div class="background">
-                    <span class="whiteCircle" style="height:185px; width:185px;"></span>
-                    <span class="whiteCircle" style="height:372px; width:372px;"></span>
-                    <span class="whiteCircle" style="height:263px; width:263px;"></span>
+                    <div class="whiteCircle_S" style="position: absolute; top:-90px; left:-80px;"></div>
+                    <div class="whiteCircle_L" style="position: absolute; top:105px; left:50px;"></div>
+                    <img src="@/assets/logo_rectangle.png" alt="largeLogo" class="largeLogo" style="position: absolute; top:210px; left:110px;"> 
+                    <div class="whiteCircle_M" style="position: absolute; top:510px; left:-70px;"></div>
                 </div>
                 
                 <div class="content">
-                    <h1>Empowering Joints<br>Rewarding Lives </h1>
-                    <h3>Your path to Pain-Free Living!</h3>
-                    <img src="@/assets/logo.png" alt="largeLogo" class="largeLogo"> 
+                    <h1 id="EmpoweringJoints" style="color: #006973;">Empowering Joints<br>Rewarding Lives </h1>
+                    <h3 style="color: #38404C;">Your path to Pain-Free Living!</h3>
                     <p class="miniTitle">Why ArthriCare?</p>
-                    <p>We support arthritis patients in managing their medication and health effectively. Our mission is to provide a user-friendly and comprehensive tool that empowers patients to take control of their well-being and connect with a supportive community.</p>
+                    <p id="content_whyArthriCare">We support arthritis patients in managing their medication and health effectively. Our mission is to provide a user-friendly and comprehensive tool that empowers patients to take control of their well-being and connect with a supportive community.</p>
 
                     <div class="fourMainFeatures">
                         <div class="twoFeatures">
@@ -121,20 +121,17 @@
 
             
                 </div>
-                
-                    
-            </el-main> 
+            </el-main>
+             
             <div class="footer_aboutUs">
-                <h1 style="color:white; letter-spacing: 2px;">Get started with<br>ArthriCare today</h1>
-                <button class="button_signUp" @click="goTo_SignUp()">SINGN UP</button>
+                <h1 id="GetStartedWith">Get started with<br>ArthriCare today</h1>
+                <button class="button_signUp" @click="goTo_SignUp()">SIGN UP</button>
 
-                <h5>QUICK LINKS</h5>
-                <h5>OUR SERVICES</h5>
-                <h5>CONTACT US</h5>
-                <h5>FOLLOW</h5>
+                <p id="contactUs">CONTACT US</p>
+                <a href="mailto:arthricare@gmail.com">arthricare@gmail.com</a><br>
 
-                <img src="@/assets/logo.png" alt="largeLogo" class="footerLogo"> 
-                <p>@2023 ArthriCare</p>
+                <img src="@/assets/logo.png" alt="footerLogo" class="footerLogo"> 
+                <p class="name">© 2023 ArthriCare</p>
             </div>
         </el-container>
 
