@@ -4,7 +4,9 @@
   import store from "@/store";
   // import {Plus,Minus} from '@element-plus/icons-vue';
   import '@varlet/ui/es/button/style/index';
-  import { ChevronLeft20Filled } from '@vicons/fluent'
+  import { ChevronLeft20Filled ,LineHorizontal320Filled} from '@vicons/fluent';
+  import SideBarContent from '@/component/Sidebar.vue';
+  import { ref } from 'vue';
 </script>
 
 <template>
@@ -18,17 +20,15 @@
         <ChevronLeft20Filled @click="disableASOption" class="backBtn"/>
         <!-- <var-icon @click="disableASOption" class="backBtn" name="chevron-left" :size="42" color="white"/> -->
       </div>
-
-      <p id= "title">Assessment</p>
+      <Icon class="more" @click="drawer = true"><LineHorizontal320Filled /></Icon>
+        <p id= "title">Assessment</p>
 
       <div id = container2>
-        
           <div class="QuestionContainer" v-if="this.MARS==false && this.DAS==false && this.QuestionNumber <= 10">
             <div class="abackground">
           </div>
             <img src="@/assets/test.png" alt="Image" class="testImg">
             <p class="title1" >Select your assessment</p>
-
             <div ref="MARS" class="assessmentContainer" @click="selectMars">
               <p class="assessmentTitle" >MARS</p>
               <img src="@/assets/MARS.png" alt="Image" class="image">
@@ -39,7 +39,6 @@
               <img src="@/assets/DAS-28.png" alt="Image" class="image">
             </div>
           </div>
-
            <!-- MARS questions -->
           <div class="QuestionContainer" v-if="this.MARS===true && this.QuestionNumber <= 10">
             <!-- <p style="margin-top:25%" class="searchItem">Health</p>
@@ -100,11 +99,33 @@
 
           <button  v-if="this.MARS===true && this.QuestionNumber <= 10" class= "button" @click="nextQuestion">Next</button>
           <button  v-if="this.DAS===true && this.DASImg <=2 " class= "button" @click="changeDASImg">Next</button>
+          <el-drawer style="background-color: #006973;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
+            <!--Action是模拟接口，与后端连接时更换-->
+                <div class = "sidebar">
+                    <el-upload action="" :show-file-list="false">
+                        <el-avatar :size="65">
+                            <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
+                                <template v-else>
+                                    <UserFilled class="defalut-avatar" />
+                                </template>
+                        </el-avatar>   
+                    </el-upload> 
+                </div>
+            <SideBarContent :imgUrl="imgUrl" />    
+        </el-drawer> 
       </div>
     </el-container>
 </template>
 
 <style lang = "css" scoped>   
+
+    .more{
+      position: absolute;
+      width:3vh;
+      left: 5%;
+      top:4%;
+      color: white;
+    }
       .abackground{
         position:absolute;
         background:rgb(247, 244, 244) ;
@@ -450,7 +471,9 @@ input{
 <script>
 
 export default {
-  components: {},
+  components: {
+    LineHorizontal320Filled
+  },
   computed: {
     changeToTrue() {
       return this.$store.state.changeToTrue;
@@ -485,11 +508,18 @@ export default {
       yesValue:0,
       noValue:0,
       totalValue:0,
+      drawer: ref(false),
     };
     
   },
   
   methods: {
+    openDrawer() {
+            this.drawer = true;
+            },
+    beforeDrawerClose(done) {
+                done();
+            },
     increment(button) {
 
       if (button === 'A') {
