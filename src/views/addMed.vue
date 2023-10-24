@@ -38,9 +38,6 @@
         <p id = "label" >Medication Name *</p>
 
         <AutoComplete @med-selected="onMedSelected"></AutoComplete>
-        <div  class="menu" v-if="this.Meds2!==null  && showMed">
-          <div ref="MedOption"  class="selected-option" v-for="item in Meds2" :key="item" @click="handleItemClick(item)">{{ item }}</div>
-        </div> 
 
 
       <div class="container-flex" >
@@ -74,16 +71,21 @@
         <div id="date">
             <DailyDatePicker v-if="selectedFrequency === 'Daily medication'"
               @update:start-date="handleStartDate"
-              @update:end-date="handleEndDate">
+              @update:end-date="handleEndDate"
+              @update:duration = "handleduration">
             </DailyDatePicker>
             <IntermittentDatePicker v-else-if="selectedFrequency === 'Intermittent medication'"
               @update:start-date="handleStartDate"
-              @update:end-date="handleEndDate">
+              @update:end-date="handleEndDate"
+              @update:duration = "handleduration">
               </IntermittentDatePicker>
         </div>
 
-        <p id = "label" >Time *</p>
-        <TimePickerGroup @update-time-pickers="handleTimePickersUpdate"></TimePickerGroup>
+        <p id = "label" v-if="selectedFrequency !== 'Only as needed'">Time *</p>
+        <TimePickerGroup 
+          v-if="selectedFrequency !== 'Only as needed'"
+          @update-time-pickers="handleTimePickersUpdate">
+        </TimePickerGroup>
  
         <el-footer class >
             <div class="buttons" >
@@ -367,7 +369,7 @@ text-align: center;
   width:95%;
   font-weight:600;
   font-size: 16px;
-  color:  #787885;
+  color:  #01385C;
   text-align: left;
   margin-bottom:3px;
   margin-top:4%;
@@ -504,14 +506,15 @@ import { StyleProvider } from '@varlet/ui'
 
 
 const dosage = ref();
-const note = ref();
+const note = ref("");
 const selectedFrequency = ref("Daily medication");
 const medName = ref();
 const category = ref("Pill");
-const TimeData = ref([]);
+const TimeData = ref([new Date().setHours(8, 0, 0, 0)]);
 const StartDate = ref();
 const EndDate = ref([]);
 const EndDateSingle = ref();
+const duration = ref();
 
 const largeSnackBar = {
   '--snackbar-width': '512px'
@@ -566,6 +569,9 @@ export default {
     handleEndDate(newEndDate) {
       EndDate.value = newEndDate; // 或其他你想做的操作
     },
+    handleduration(newDuration){
+      duration.value = newDuration;
+    },
 
     getEndDate()
     {
@@ -606,6 +612,8 @@ export default {
       }
       else if(TimeData.value.includes(null)||TimeData.value.length==0)
       {
+        console.log(TimeData.value.includes(null));
+        console.log(TimeData.value);
         Snackbar['warning']("The time for taking the medication has not been setted.")
         return false;
       }
@@ -615,7 +623,7 @@ export default {
     // New function for medicineData
     saveMedData() {
 
-      if(this.checkBeforeSave())
+      if(this.checkBeforeSave()&&selectedFrequency.value!="Only as needed")
       {
         this.getEndDate();
         this.formatArray();
@@ -628,12 +636,13 @@ export default {
           startDate: this.formatDate(StartDate.value),
           endDate: this.formatDate(EndDateSingle.value),
           note: note.value,
+          duration:duration.value,
           reminderDate: JSON.stringify(EndDate.value),
           reminderTimes: JSON.stringify(TimeData.value),
         };
 
         console.log(dataObject)
-
+        
         const backendurl = 'http://localhost:8181/medications/create';
         
         axios

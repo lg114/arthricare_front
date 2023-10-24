@@ -5,7 +5,7 @@
     Date: 2023/10/20  
 -->
 <template>
-    <var-select variant="outlined" v-model="selectedValue" class="selectControler">
+    <var-select variant="outlined" v-model="selectedValue" readonly class="selectControler">
         <template #default>
         <var-option label="Pill">
             <var-image class="selected-icon" :src="pill"></var-image>
@@ -38,22 +38,31 @@
 
 
 <script setup>
-import { ref, watch, defineEmits,} from 'vue';
+import { ref, watch,defineProps,defineExpose} from 'vue';
 import injection from "@/assets/injection.png";
 import drop from "@/assets/drop.png";
 import pill from "@/assets/capsules.png";
 import tablet from "@/assets/pill.png";
 
-const emit = defineEmits(['category-selected']);
-const selectedValue = ref("Pill");
 
-
-// Watch for changes in selectedValue and emit those changes
-watch(selectedValue, (newValue) => {
-  emit('category-selected', newValue);
+const selectedValue = ref(props.CategoryFromParent);
+const props = defineProps({
+  CategoryFromParent: {
+    type: String,
+    default: 'Pill'
+  },
 });
 
+function fetchData()
+{
+    return selectedValue.value;
+}
+defineExpose({ fetchData });
 
+watch(() => props.CategoryFromParent, (newValue) => {
+        console.log("Category watch: "+newValue);
+        selectedValue.value = newValue;
+      });
 </script>
 
 

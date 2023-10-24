@@ -12,6 +12,8 @@ import store from './store';
 import VueHashCalendar from 'vue3-hash-calendar';
 import 'vue3-hash-calendar/es/index.css';
 import '@varlet/ui/es/button/style/index';
+import { MotionPlugin } from '@vueuse/motion'
+
 
 const app = createApp(App);
 
@@ -22,5 +24,5 @@ app.use(router);
 app.use(store); 
 app.use(Varlet);
 app.use(VueHashCalendar);
-
+app.use(MotionPlugin)
 app.mount('#app');

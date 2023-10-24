@@ -1,156 +1,133 @@
+<!--add medication Page-->
 <!--
-    Name: Jihao Li
-    Student number: 7025300
-    Date: 2023/10/20
+    Author: zhenxi zhang, jihao li
+    Student number: 6062027
+    Date: 2023/10/20  
 -->
 <script setup>
-  import store from "@/store";
+  // import {ArrowLeftBold} from '@element-plus/icons-vue';
+  //import store from "@/store";
   // import {Plus,Minus} from '@element-plus/icons-vue';
-  import { ChevronLeft20Filled } from '@vicons/fluent'
+  import '@varlet/ui/es/button/style/index';
+  //import injection from "@/assets/injection.png";
+  //import drop from "@/assets/drop.png";
+  //import pill from "@/assets/pill.png";
+  //import tablet from "@/assets/capsules.png";
+  
 </script>
 
 <template>
-  <el-container class = "container">
-     
-   <div class = "container-flex" style="height:100% ; width:50% ;">
-       <!-- <router-link to = "/">
-         <el-icon class = "backBtn"><ArrowLeftBold/></el-icon>
-       </router-link> -->
-     <router-link to = "/">
-       <ChevronLeft20Filled @click="disableASOption" class="backBtn"/>
-     </router-link> 
+   <el-container class = "container">
+      
+    <div class = "container-flex" style="height:100% ; width:50% ;">
+        <!-- <router-link to = "/">
+          <el-icon class = "backBtn"><ArrowLeftBolkBd/></el-icon>
+        </router-link> -->
+      <router-link to = "/MyMeds">
+        <var-icon class="backBtn" name="chevron-left" :size="42" color="white"/>
+      </router-link> 
 
-       <p id= "title">Edit Medication</p>
-     </div>
-     
-    <div id = container2>
+        <p id= "title">Edit Medication</p>
+      </div>
+      
+     <div id = container2>
 
-     <div class = "container3">
-       <h1>MEDICATION DETAIL </h1>
+      <div class = "container3">
+        <h1>MEDICATION DETAIL </h1>
 
-       <p id = "label" >Medication Name *</p>
-       <input ref="MedName" id="MedName" type="text" placeholder="Mecication Name" @keyup="processInput" @focus="toggleOptions"/>
-       
-       <div  class="menu" v-if="this.Meds2!==null  && showMed">
-         <div ref="MedOption"  class="selected-option" v-for="item in Meds2" :key="item" @click="handleItemClick(item)">{{ item }}</div>
-       </div> 
+        <p id = "label" >Medication Name *</p>
+
+        <var-input variant="outlined"  readonly v-model="medName" />
 
 
-     <div class="container-flex" >
-       <div class="container-block"  >
-         <p id = "label" >Category *</p>
-         <label for = "Category"></label>
-         <select style = " height: 5.7vh;width:115% ; margin-right:5px ; padding-left: 13%; margin-top:3%" ref = "Category" name="Category" id="Category" class = "row-input" v-model="selectedCategory">
-           <option value="" data-icon="@/assets/capsulesblue.png" alt="ArthriCare Logo" disabled selected>Select Category *</option>
-           <option value="Pill" selected>Pill</option>
-           <option value="Tablet">Tablet</option>
-           <option value="Injection">Injection</option>
-           <option value="Drop">Drop</option>
-         </select>
-       </div>
+      <div class="container-flex" >
+        <div class="container-block"  >
+          <p id = "label" >Category *</p>
+          <label for = "Category"></label>
+          <SelectWithImage :CategoryFromParent="category" ref="categoryComponent"></SelectWithImage>
+        </div>
 
-       <div class="container-block" style="margin-left:9% ;">
-         <p id = "label">Coases *</p>
-         <input ref="Unit" style = "width:128% ; height:5.7vh;padding-left:12% ;margin:0; margin-top:3%" type="number" placeholder="Dosage"  />
-       </div>  
-   
-     </div>
-
-       <p id = "label">Note (Optional)</p>
-       <input id="Note" ref="Note" type="text" placeholder="Note"  />
-     
+        <div class="container-block">
+          <p id = "label">Dosage *</p>
+          <el-input v-model="dosage" placeholder="Please Input" type = "number"/>
+        </div>  
+    
+      </div>
+        <p id = "label">Note (Optional)</p>
+            <el-input v-model="note" placeholder="Please Input" />
+      </div>   
 
 
-       <!-- <p id = "label">Category *</p>
-       <div>
-         <b><label for = "Category"></label></b>
-         <select  ref = "Category" name="Category" id="Category" class = "row-input" v-model="selectedCategory">
-          <option value="" data-icon="@/assets/capsulesblue.png" alt="ArthriCare Logo" disabled selected>Select Category *</option>
-          <option value="Pill" selected>Pill</option>
-          <option value="Tablet">Tablet</option>
-          <option value="Injection">Injection</option>
-          <option value="Drop">Drop</option>
-        </select>
-       </div> -->
-       <!-- <div class = "calculationPart">
-         <el-icon class = "decreaseButton" @click="decreaseCounter"><Minus/></el-icon>
-         <div ref = "Unit" class = "number">{{ counter }}</div>
-         <el-icon class = "increaseButton" @click="increaseCounter"><Plus/></el-icon>
-       </div> -->
+      <div class = "container3">
+        <h1>SET REMINDER</h1>
+        <p id = "label" >Frequency *</p>
+        <!-- <input ref="Frequency" id="input" type="text" placeholder="  " /> -->
+        <var-select variant="outlined"  v-model="selectedFrequency" readonly class = "frenquency-select">
+          <var-option label="Daily medication" />
+          <var-option label="Intermittent medication" />
+          <var-option label="Only as needed" />
+        </var-select>
 
-     </div>   
+        <div id="date">
+            <DailyDatePicker v-if="selectedFrequency === 'Daily medication'"
+              ref="EndDateComp"
+              :StartDateFromParent = "StartDate"
+              :EndDateFromParent = "EndDateSingle"
+              :Duration = "duration">
+            </DailyDatePicker>
+            <IntermittentDatePicker v-else-if="selectedFrequency === 'Intermittent medication'"
+              ref="EndDateComp"
+              :StartDateFromParent = "StartDate"
+              :EndDateFromParent = "EndDate"
+              :Duration = "duration">
+              </IntermittentDatePicker>
+        </div>
 
-
-     <div class = "container3">
-       <h1>SET REMINDER</h1>
-       <p id = "label">Start Time *</p>
-       <div id = "date" >
-         <VueDatePicker1 ref = "StartDate" id="startDate"  v-model="selectedStartDate" :format="dateFormat"></VueDatePicker1>
-       </div>
-       
-       <p id = "label" style="margin-top: 7%;">End Time *</p>
-         <VueDatePicker2 ref = "EndDate" id="endDate" v-model="selectedEndDate" :format="dateFormat"></VueDatePicker2>
-
-       <p id = "label" >Frequency *</p>
-       <!-- <input ref="Frequency" id="input" type="text" placeholder="  " /> -->
-       <div class="Frequency1">
-         <select  ref="Frequency" name="Frequency" id="Frequency" class ="row-input" v-model="selectedFrequency" style = "padding-left:5% ">
-          <option value="" disabled selected>Select Category</option>
-          <option value="Once a Day">Once a day</option>
-          <option value="Twice a Day">Twice a day</option>
-          <option value="Three times a Day">Three times a day</option>
-          <option value="Every x day">Every x day</option>
-          <option value="Every x week">Every x week</option>
-          <option value="Every x month">Every x month</option>
-         </select>
-       </div>
-
-       <div v-if="selectedFrequency ==='Every x day'|| selectedFrequency ==='Every x week'|| selectedFrequency ==='Every x month' ">
-         <p id = "label" >Interval *</p>
-         <input v-model="Interval" ref="Interval" id="Interval" type="number" />
-       </div>
-
-       <p id = "label" >Time *</p>
-       <div  v-if="selectedFrequency === 'Once a Day'|| selectedFrequency ==='Every x day'|| selectedFrequency ==='Every x week'|| selectedFrequency ==='Every x month' ">
-         <input type="time" v-model="timeInput1" />
-       </div>
-
-       <div v-else-if="selectedFrequency === 'Twice a Day'">
-         <input type="time" v-model="timeInput1" />
-         <input type="time" v-model="timeInput2" />
-       </div>
-
-       <div class="Frequency" v-else-if="selectedFrequency === 'Three times a Day'">
-         <input type="time" v-model="timeInput1" />
-         <input type="time" v-model="timeInput2" />
-         <input type="time" v-model="timeInput3" />
-       </div>
-
-       <div class = "container-flex" style="margin-top:10%">   
-     </div>   
-       </div>  
-       <el-footer class >
-           <div class="buttons" >
-                <el-button class = "login-button" @click = "ReplaceObjectIntoArray">Save</el-button> 
-           </div>
-        </el-footer> 
-       <!-- <date-picker v-model:value = "selectedDate"></date-picker> -->
-     </div>
-
-   </el-container>
+        <p id = "label" v-if="selectedFrequency !== 'Only as needed'">Time *</p>
+        <TimePickerGroup 
+          v-if="selectedFrequency !== 'Only as needed'"
+          ref="TimePickerComp"
+          :TimeArrayFromParent = "TimeDataFromBackend">
+        </TimePickerGroup>
+ 
+        <el-footer class >
+            <div class="buttons" >
+              <var-button 
+                class = "login-button"
+                type="success" 
+                block 
+                @click="saveMedData()"
+              >
+                Save
+              </var-button>
+              
+            </div>
+         </el-footer> 
+        <!-- <date-picker v-model:value = "selectedDate"></date-picker> -->
+      </div>
+    </div>
+    </el-container>
 </template>
 
 <style lang = "css" scoped> 
 
- .Frequency{
+.frenquency-select
+{
+   --field-decorator-outlined-normal-padding-top: 6px;
+    --field-decorator-outlined-normal-padding-bottom: 6px;
+    --field-decorator-outlined-normal-padding-right: 11px;
+    --field-decorator-outlined-normal-padding-left: 11px;
+    --field-decorator-blur-color:#555;
+}
+    .Frequency{
       width:107%;
     }
 
 /* scoped src="@/style/addMed.css" */
     h1{
-      color:#006973;
+      color:#55BBC9;
       font-size:17px;
-      font-family: system-ui;
+      font-family: Roboto;
     }
     .container3{
       border: 1px solid #eceff1;
@@ -159,7 +136,6 @@
       margin:5%;
       background-color: #ffffff;
       padding-bottom:5%;
-
     }
     .calculationPart{
       display:flex;
@@ -198,24 +174,52 @@
   padding-left: 2%;
   outline: none;
   font-size:100%;
-  margin-top:3%;
   position:relative;
   z-index: 1;
-  padding-bottom:5%;
-  padding-top:5%;
+  padding-bottom:6px;
+  padding-top:6px;
 }
 select{
   appearance: none;
 }
 .container-flex{
   display:flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
   z-index: 1;
 }
 
 .container-block{
   display:inline-block;
-  width:40%;
+  width:50%;
   
+}
+
+.BellBtn{
+  font-size: 30px;
+  color: #1890FF;
+  position:relative;
+  margin-left:60%;
+  size:40%;
+}
+
+.note{
+  position:relative;
+  width:130px ; 
+  height:30px;
+  top:7%;
+  left:2%;
+  font-size:110%;
+  border-radius:10px 10px 10px 10px;
+  background-color:#56569D;
+  text-align: center;
+  color:white;
+  cursor: pointer;
+  
+}
+.note:hover{
+  background-color: grey;
 }
 
 #date{
@@ -360,19 +364,19 @@ text-align: center;
   color:#FFFFFF;
   font-family: system-ui;
   top:13%;
-  width:100%;
+  width:150%;
   padding-top:6.5%;
   }
 
 #label{   
   width:95%;
   font-weight:600;
-  font-size: 85%;
+  font-size: 16px;
   color:  #787885;
   text-align: left;
-  margin-bottom:0%;
+  margin-bottom:3px;
   margin-top:4%;
-  font-family: system-ui;
+  font-family: Roboto;
   margin-left:8px;
   }
 
@@ -384,9 +388,6 @@ input{
   border:none; 
   border : 1px solid #ccdde9;
   color: black;
-
-  margin-bottom:2%;
-  margin-top:2%;
   padding:5%;
   border-radius: 5px;
   font-family: system-ui;
@@ -395,7 +396,7 @@ input{
 
 input[type="time"] {
   width:30%;
-  height:40px;
+  height:50px;
   padding:2%;
   padding-left:3%;
   font-size:100%;
@@ -416,9 +417,8 @@ input[type="time"] {
   .backBtn{
     color:#FFFFFF;
     position:relative;
-    right:15vw;
-    top:2.5vh;
-    height:30px;
+    right:150%;
+    top:30%;
     }
 
 .menu {
@@ -471,264 +471,246 @@ option {
   background-image: url("@/assets/capsulesblue.png");
   background-repeat: no-repeat;
   }
+
 </style>
+
+<style>
+  .el-input__inner {
+    padding: 6px 0px;
+    font-family: Roboto;
+    font-size: 16px;
+    ;
+  }
+  .el-input
+  {
+    --el-input-height:37.6px;
+    --el-input-border-color:#555;
+  }
+
+  .var-button__content
+  {
+    justify-content: center;
+  }
+</style>
+
 <script>
-import VueDatePicker1 from '@vuepic/vue-datepicker';
-import VueDatePicker2 from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
-import {ref} from 'vue';
+import DailyDatePicker from "@/component/editMedPage/DailyDatePicker.vue";
+import TimePickerGroup from "@/component/editMedPage/TimePickerGroup.vue";
+import IntermittentDatePicker from "@/component/editMedPage/IntermittentDatePicker.vue";
+import SelectWithImage from "@/component/editMedPage/SelectWithImage.vue";
+import axios from 'axios';
+import { mapGetters } from 'vuex';
+import { ref } from 'vue'
+import { format } from 'date-fns';
+import { Snackbar } from '@varlet/ui'
+import { StyleProvider } from '@varlet/ui'
+
+const port = 8181;
+const baseURL = `http://localhost:${port}`;
+const medicationId = ref();
+const dosage = ref();
+const note = ref();
+const selectedFrequency = ref("Daily medication");
+const medName = ref();
+const category = ref();
+const TimeDataFromChild = ref([]);
+const TimeDataFromBackend = ref([]);
+const StartDate = ref();
+const EndDate = ref([]);
+const EndDateSingle = ref();
+const duration = ref();
+const categoryComponent = ref();
+const EndDateComp = ref();
+const TimePickerComp = ref();
+
+const largeSnackBar = {
+  '--snackbar-width': '512px'
+}
 
 export default {
-  components: { VueDatePicker1 , VueDatePicker2},
+  components: {DailyDatePicker,IntermittentDatePicker,
+               TimePickerGroup,SelectWithImage},
   computed: {
+    ...mapGetters('user', ['loggedInUser']),
     changeToTrue() {
-      return this.$store.state.changeToTrue;
+      return this.$store.changeToTrue;
     },
-  },
-  created(){
-    console.log(this.$route.query.Index)
-  },
-  data() {
-    return {
-      Internal:0,
-      date1: null,
-      date2: null,
-      counter: 0,
-      selectedCategory: null,
-      selectedFrequency: null,
-      dateFormat: 'yyyy-MM-dd',
-
-      selectedStartDate: null,
-      selectedEndDate: null,
-
-      timeInput1: this.getCurrentTime(),
-      timeInput2: this.getCurrentTime(),
-      timeInput3: this.getCurrentTime(),
-      Meds : ["Abatacept",
-      "Adalimumab",
-      "Allopurinol",
-      "Ambrisentan",
-      "Anakinra",
-      "Anifrolumab",
-      "Apremilast",
-      "Azathioprine",
-      "Baricitinib",
-      "Biosimilars",
-      "Bisphosphonates (Oral)",
-      "Bisphosphonates (Intravenous/IV)",
-      "Bosentan",
-      "Cannabinoids - Medicinal Cannabis",
-      "Certolizumab",
-      "Colchicine",
-      "Ciclosporin",
-      "Cyclophosphamide",
-      "Denosumab",
-      "Duloxetine",
-      "Etanercept",
-      "Febuxostat",
-      "Glucosamine",
-      "Golimumab",
-      "Goserelin",
-      "Guselkumab",
-      "Hyaluronic Acid",
-      "Hydroxychloroquine",
-      "Iloprost",
-      "Infliximab",
-      "Ixekizumab",
-      "IV Immunuglobulin",
-      "Leflunomide",
-      "Methotrexate",
-      "Self-Injecting Methotrexate for the Treatment of Arthritis",
-      "Mycophenolate",
-      "NSAIDs",
-      "Opioids",
-      "Paracetamol",
-      "Prednisolone",
-      "Pregabalin",
-      "Probenecid",
-      "Raloxifene",
-      "Rituximab",
-      "Romosozumab",
-      "Secukinumab",
-      "Sulfasalazine",
-      "Tacrolimus",
-      "Teriparatide",
-      "Tocilizumab",
-      "Tofacitinib",
-      "Ustekinumab",
-      "Upadacitinib"],
-        Meds2:[],
-        Meds3:[],
-    
-
-      category: [
-        { id: 1, title: 'Pill' },
-        { id: 2, title: 'Tablet' },
-        { id: 3, title: 'Injection' },
-        { id: 4, title: 'Drop' }
-      ],
-      Med: [
-        { id: 1, meds: 'Mg' },
-        { id: 2, meds: 'Bottle'}
-      ],
-      selectedMed: null,
-      showMed: false,
-
-    };
     
   },
   
   methods: {
-    getCurrentTime() {
-      const now = new Date();
-      const formattedTime = now.toISOString().slice(11, 16);
-      console.log(formattedTime);
-      return formattedTime;
-    },
-    increaseCounter() {
-        this.counter++;
-    },
-    decreaseCounter() {
-      if(this.counter == 0){
-        this.counter += 0
-      }else{
-        this.counter--;
+
+    createSnackbar(type) {
+      Snackbar[type]("Medication save")
+      if (type === 'loading') {
+        setTimeout(() => {
+          Snackbar.success("加载成功")
+        }, 2000)
       }
     },
-   
-    filterWordsByLetter(wordsArray, letter) {
-      const lowercaseLetter = letter.toLowerCase();
-      const filteredWords = wordsArray.filter(word => word.toLowerCase().startsWith(lowercaseLetter));
-      return filteredWords;
-   },
-   showResult(){
-    if(this.$refs.MedName.value === ""){
-      this.Meds2 =this.Meds3;
-      console.log(this.Meds2);
-    }else{
-      const filteredWordsStartingWithLetters = this.filterWordsByLetter(this.Meds, this.$refs.MedName.value);
-      this.Meds2 = filteredWordsStartingWithLetters;
-      console.log(this.Meds2);
-    }
-  }
-   ,
-   getResult(){
-    const filteredWordsStartingWithLetters = this.filterWordsByLetter(this.words, this.$refs.MedName.value);
-    return filteredWordsStartingWithLetters;
-   },
-   processInput(event) {
-     if (event.keyCode !== 13) {
-        this.showResult();
-
-         }
-      },
-    handleItemClick(Med) {
-      this.selectedMed = Med;
-      this.showMed = false;
-      this.$refs.MedName.value = Med;
-      this.$refs.MedName.blur();
-      this.Meds2=this.getResult;
-      console.log(Med);
-
-    },
-    
-    toggleOptions() {
-      this.showMed = !this.showMed;
-      this.$refs.MedName.focus();
+    formatDate(dateString) {
+      return format(new Date(dateString), "yyyy-MM-dd"); 
     },
 
-    EditInputValue(){
-      store.commit('changeToTrue');
-      const arrayIndex = parseInt(this.$route.query.Index, 10);
-      if (store.state.MedArray[arrayIndex]!== null) {
-          console.log(arrayIndex);
-          this.$refs.MedName.value = store.state.MedArray[arrayIndex].MedName,
-          this.selectedCategory = store.state.MedArray[arrayIndex].Category,
-          this.selectedFrequency = store.state.MedArray[arrayIndex].Frequency,
-          this.$refs.Unit.value = store.state.MedArray[arrayIndex].Unit,
-          this.selectedStartDate = store.state.MedArray[arrayIndex].StartDate,
-          this.selectedEndDate = store.state.MedArray[arrayIndex].EndDate,
-          this.$refs.Note.value = store.state.MedArray[arrayIndex].Note,
-          this.timeInput1 = store.state.MedArray[arrayIndex].timeInput1,
-          this.timeInput2 = store.state.MedArray[arrayIndex].timeInput2,
-          this.timeInput3 = store.state.MedArray[arrayIndex].timeInput3;
-          this.Interval = store.state.MedArray[arrayIndex].Interval;
-          console.log(store.state.MedArray[arrayIndex].timeInput1);
-          console.log(store.state.MedArray[arrayIndex].Interval + "gggggggggggggg");
-        }else{
-          console.log('Do not have this object in array')
+    formatTime(dateString) {
+      return format(new Date(dateString), 'HH:mm'); 
+    },
+
+    getEndDate()
+    {
+        if(selectedFrequency.value == "Daily medication"||selectedFrequency.value == "Intermittent medication")
+        {
+            const EndDateArray = EndDateComp.value.fetchData();
+            EndDateSingle.value = EndDateArray[EndDateArray.length-1];
         }
     },
 
-    ReplaceObjectIntoArray(){
-      
-      const arrayIndex = parseInt(this.$route.query.Index, 10);
-      const dataObject = {
-            MedName: this.$refs.MedName.value,
-            Category:  this.selectedCategory,
-            Frequency: this.selectedFrequency,
-            Unit: this.$refs.Unit.value,
-            StartDate:   this.selectedStartDate ,
-            EndDate:  this.selectedEndDate ,
-            Note:  this.$refs.Note.value ,
-            Interval: this.$refs.Interval.value,
-            timeInput1 : this.timeInput1,
-            timeInput2 : this.timeInput2,
-            timeInput3 : this.timeInput3,
+    formatArray()
+    {
+      const EndDateArray = EndDateComp.value.fetchData();
+      EndDate.value = EndDateArray.map(date => this.formatDate(date));
+
+      const TimeDataArray = TimePickerComp.value.fetchData();
+      TimeDataFromChild.value = TimeDataArray.map(date => this.formatTime(date));
+    },
+
+    checkBeforeSave()
+    {
+      StyleProvider(largeSnackBar)
+      if(medName.value == null)
+      {
+        Snackbar['warning']("The medication name has not been entered.")
+        return false;
+      }
+      else if(dosage.value == null||dosage.value=="")
+      {
+        Snackbar['warning']("The medication dosage has not been entered.")
+        return false;
+      }
+      else if(StartDate.value == null)
+      {
+        Snackbar['warning']("The start date for taking the medication has not been selected.")
+        return false;
+      }
+      else if(EndDate.value.length <= 1)
+      {
+        Snackbar['warning']("The end date for taking the medication has not been selected.")
+        return false;
+      }
+      else if(TimeDataFromChild.value.includes(null)||TimeDataFromChild.value.length==0)
+      {
+        Snackbar['warning']("The time for taking the medication has not been setted.")
+        return false;
+      }
+
+      return true;
+    },
+    // New function for medicineData
+    saveMedData() {
+      this.getEndDate();
+      this.formatArray();
+      if(this.checkBeforeSave()&&selectedFrequency.value!="Only as needed")
+      {
+        const dataObject = {
+          userId: this.loggedInUser.userId,
+          medicationId:medicationId.value,
+          medicationName: medName.value,
+          medicationCategory: categoryComponent.value.fetchData(),
+          frequency: selectedFrequency.value,
+          dosageUnit: dosage.value,
+          startDate: this.formatDate(StartDate.value),
+          endDate: this.formatDate(EndDateSingle.value),
+          note: note.value,
+          duration:EndDateComp.value.fetchDurationData(),
+          reminderDate: JSON.stringify(EndDate.value),
+          reminderTimes: JSON.stringify(TimeDataFromChild.value),
+        };
+
+        console.log(dataObject)
+        
+        const backendurl = 'http://localhost:8181/medications/updateMedication';
+        
+        axios
+          .put(backendurl, dataObject)
+          .then((response) => {
+            console.log('Data sent successfully', response);
+            //this.$router.push({path: '/Home'})
+            Snackbar['success']("Medication edit success")
+          })
+          .catch((error) => {
+            console.log('Data sending failed', error);
+            Snackbar['error']("Medication save fail")
+          });
           }
-            store.state.MedArray[arrayIndex] = dataObject;
-            console.log(store.state.MedArray[0].MedName)
-            console.log(store.state.MedArray[arrayIndex].MedName)
-            this.$router.push({
-              path: '/MyMeds',
-          
-           })
-          
-    }
-  },
- 
+
+  }, 
+  
+    showMedData(medicationId){
+      TimeDataFromBackend.value.length = 0;
+      EndDate.value.length = 0;
+      axios.get(`${baseURL}/medications/${medicationId}`)
+        .then(response => {
+            if (response.status === 200) {
+                console.log(response.data);
+                medName.value = response.data.medicationName;
+                dosage.value = response.data.dosageUnit;
+                note.value = response.data.note;
+                category.value = response.data.medicationCategory;
+                selectedFrequency.value = response.data.frequency;
+                StartDate.value = response.data.startDate;
+                EndDateSingle.value = response.data.endDate;
+                duration.value = response.data.duration;
+
+                if(selectedFrequency.value == "Intermittent medication")
+                {
+                  const DateArray = JSON.parse(response.data.reminderDate);
+                  DateArray.forEach(dateStr => {
+                    // 分解日期字符串
+                    const [year, month, day] = dateStr.split('-').map(num => parseInt(num, 10));
+                    // 创建新的日期对象
+                    // 注意：月份在 JavaScript Date 对象中是从0开始的，所以我们需要减去1
+                    const date = new Date(year, month - 1, day);
+                    EndDate.value.push(date);
+                  });
+                }
+
+                const timeArray = JSON.parse(response.data.reminderTimes);
+                console.log("timeArrat"+timeArray);
+                timeArray.forEach(time => {
+                  const [hours, minutes] = time.split(":");
+                  
+                  // 使用当天的日期并设置提供的小时和分钟
+                  const date = new Date();
+                  date.setHours(parseInt(hours, 10));
+                  date.setMinutes(parseInt(minutes, 10));
+
+                  TimeDataFromBackend.value.push(date);
+                });
+                                
+            } else {
+                console.error('Error fetching medication:', response.status, response.statusText);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching medication:', error.message);
+            return null;
+        });
+
+
+    },
+
+
+},
+
   mounted(){
-            document.title = 'Sign Up | ArthriCare',
-            this.EditInputValue();
+            document.title = 'Edit Medication | ArthriCare';
+           // this.selectValue();
+            medicationId.value = parseInt(this.$route.query.Index, 10);
+            this.showMedData(medicationId.value);
         },
-        
         setup(){
-            const name = ref('');
-            const selectedAge = ref('');
-            const gender = ref('');
-            const selectedWeight = ref('');
-            const email = ref('');
-            const password = ref('');
-
-            const generateAgeOptions = (start, end) => {
-            const options = [];
-            for (let i = start; i <= end; i++) {
-                options.push(i.toString());
-            }
-            return options;
-            };
-
-            const generateWeightOptions = (start, end) => {
-            const options = [];
-            for (let i = start; i <= end; i++) {
-                options.push(i.toString());
-            }
-            return options;
-            };
-
-            return {
-              name,
-              selectedAge,
-              gender,
-              selectedWeight,
-              email,
-              password,
-              ageOptions: generateAgeOptions(10, 100),
-              weightOptions: generateWeightOptions(35, 200),
-            };
-        }
         
+        }
 }
-
 
 </script>
