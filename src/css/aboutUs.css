@@ -48,38 +48,6 @@
 /* END: Common Components */
 
 /* SATRT: Unique CSS for About Us */
-/* START: Background design */
-.background{
-    width:390px;
-    position: relative;
-    z-index: 1;
-}
-.whiteCircle_S{
-    height:185px; 
-    width:185px;
-    background-color: white;
-    border-radius: 50%;
-    filter: blur(5px);
-}
-.whiteCircle_M{
-    height:275px; 
-    width:275px;
-    background-color: white;
-    border-radius: 50%;
-    filter: blur(5px);
-}
-.whiteCircle_L{
-    height:390px; 
-    width:390px;
-    background-color: white;
-    border-radius: 50%;
-    filter: blur(5px);
-}
-.largeLogo{
-    height: 190px;
-    object-fit: cover;
-}
-/* END: Background design */
 .main{
     justify-content: center;
     align-items: center;
@@ -187,6 +155,38 @@ p.feature{
     color: #38404C;
     margin-top: 0px;
 }
+/* START: Background design */
+.background{
+    width:390px;
+    position: relative;
+    z-index: 1;
+}
+.whiteCircle_S{
+    height:185px; 
+    width:185px;
+    background-color: white;
+    border-radius: 50%;
+    filter: blur(5px);
+}
+.whiteCircle_M{
+    height:275px; 
+    width:275px;
+    background-color: white;
+    border-radius: 50%;
+    filter: blur(5px);
+}
+.whiteCircle_L{
+    height:390px; 
+    width:390px;
+    background-color: white;
+    border-radius: 50%;
+    filter: blur(5px);
+}
+.largeLogo{
+    height: 190px;
+    object-fit: cover;
+}
+/* END: Background design */
 
 /*  START: Footer */
 div.footer_aboutUs{
