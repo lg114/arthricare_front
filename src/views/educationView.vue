@@ -15,7 +15,7 @@
   
 </script>
 
-//A page used to recommend articles or videos to users just a place holder .
+<!-- a page to introduct some artical or video to user, totally a placeholder-->
 <template>
    <el-container class = "container">
       
