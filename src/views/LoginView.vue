@@ -3,7 +3,8 @@
     Author: Lin Gan
     Student number: 6502933
     Date: 2023/10/20
-    Description: The script section imports the necessary modules and initializes the reactive variables for email, password, and showPassword, which manages the visibility of the password field. 
+    Description: 
+    The script section imports the necessary modules and initializes the reactive variables for email, password, and showPassword, which manages the visibility of the password field. 
     It also includes the handleLogin method responsible for attempting the user login by dispatching the user/loginUser action from the store.
     In the template section, a form for user login is defined, including input fields for email and password. 
     It also provides validation rules for the email field, ensuring that it is not empty and follows a valid email format. The password field has an option to toggle between displaying or hiding the password.
