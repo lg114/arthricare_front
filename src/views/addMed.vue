@@ -35,7 +35,7 @@
       <div class = "container3">
         <h1>MEDICATION DETAIL </h1>
 
-<!-- From here to the end of template, are the input bar. user can input the medication information they need to record.-->
+<!-- From here to the end of template, are the input bars user can input the medication information that they want to record.-->
         <p id = "label" >Medication Name *</p>
 
         <AutoComplete @med-selected="onMedSelected"></AutoComplete>
@@ -490,7 +490,7 @@ option {
 </style>
 
 <script>
-    // The plugin is imported from here, including time picker, date picker, and array in vuex.
+   // The plugin is imported from here, including time picker, date picker, and array in vuex.
 import DailyDatePicker from "@/component/addMedPage/DailyDatePicker.vue";
 import TimePickerGroup from "@/component/addMedPage/TimePickerGroup.vue";
 import IntermittentDatePicker from "@/component/addMedPage/IntermittentDatePicker.vue";
@@ -504,7 +504,7 @@ import { Snackbar } from '@varlet/ui'
 import { StyleProvider } from '@varlet/ui'
 
 
-// some constants
+<!--some constants-->
 const dosage = ref();
 const note = ref();
 const selectedFrequency = ref("Daily medication");
