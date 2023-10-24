@@ -3,7 +3,7 @@
     Author: Lin Gan
     Student number: 6502933
     Date: 2023/10/20  
- --- Description: In the script section, necessary Vue components and libraries are imported, and various variables and methods are defined.
+    Description: In the script section, necessary Vue components and libraries are imported, and various variables and methods are defined.
     These include methods for handling user-selected dates, formatting time, displaying medication details, etc.
     In the template section, the layout structure of the page is defined, including the top navigation bar, the calendar component,
     the medication reminder list, the discussion component, etc.
