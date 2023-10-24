@@ -2,6 +2,10 @@
 <!-- Author: Tianyi Hu
 Student number: 6774179
 Date: 2023/10/20 -->
+
+<!-- This is education article page, can be accessed from the Education page.
+    At this moment it's just placeholders.
+-->
 <script>
     import { ref } from 'vue';
     import { ChevronLeft20Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular, CommentMultiple20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
@@ -53,7 +57,6 @@ Date: 2023/10/20 -->
         },
         components: {
             ChevronLeft20Filled, 
-            // Add20Filled, 
             Home20Regular, 
             BriefcaseMedical20Regular,
             Gift20Regular, 
@@ -123,11 +126,6 @@ Date: 2023/10/20 -->
                 <span>Community</span>
             </var-bottom-navigation-item>    
             </var-link>
-            <!-- <template #fab>
-                <var-link href="/#/AddMed" style="color: white;">
-            <Icon class="addButton"><Add20Filled /></Icon>
-            </var-link>
-            </template> -->
         </var-bottom-navigation>
                 <!-- Fab button -->
                 <var-fab v-model:active="showAction" style="margin-bottom: 100px;" color="#006973" inactive-icon-size="26px" active-icon-size="30px" elevation="5">

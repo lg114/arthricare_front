@@ -1,7 +1,15 @@
 //  Author: Lin Gan
 //  Student number: 6502933
 //  Date: 2023/10/20 
-// store/user.js
+//  store/user.js
+//  Description:
+//  The state object maintains the state of the currently logged-in user.
+//  The mutations object includes mutation functions for setting the logged-in user and clearing the logged-in user.
+//  The getters object defines getter functions to check if a user is logged in and to retrieve the logged-in user's information from the state.
+//  The actions object contains asynchronous actions for user authentication, including login, registration, password reset, and logout.
+//  The isValidEmail function performs email format validation using a regular expression.
+
+//Error handling is implemented using try-catch blocks, with appropriate error messages logged to the console and displayed using the Snackbar component.
 import axios from 'axios';
 import router from '@/router';
 import { Snackbar } from '@varlet/ui';

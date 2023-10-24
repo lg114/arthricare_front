@@ -119,7 +119,7 @@ Date: 2023/10/20 -->
                         .then(response => {
                         var userScore = response.data;
                         this.user.points = userScore;
-                        // 计算用户等级
+                        // Calculate user's level
                         var userLevel = Math.floor(userScore / 100);
                         this.user.level = userLevel;
                         this.user.pointsNoLevel = userScore - userLevel*100;
@@ -128,7 +128,6 @@ Date: 2023/10/20 -->
                         console.log('Error fetching user information:', error);
                         });
                     } else {
-                    // 如果用户未登录，可以根据需求进行逻辑处理，如跳转到登录页面
                     window.location.href = 'index.html';
                     }
                 }else
@@ -246,7 +245,6 @@ Date: 2023/10/20 -->
             Gift20Filled, 
             PeopleCommunity20Regular,
             UserFilled,
-            // AddCircle20Regular,
             SideBarContent
         }
     };
@@ -257,11 +255,11 @@ Date: 2023/10/20 -->
         <el-container>
             <el-header class="header">
                 <Icon class="more" @click="drawer = true"><LineHorizontal320Filled /></Icon>
-                <!-- <Icon class="present"><Gift20Filled /></Icon> -->
                 <b class="pageTitle"> Rewards</b>
             </el-header>
         </el-container>
         <el-main class="main">
+            <!-- This section shows user's stastics - current points, level, progress -->
                 <div class="topBox" id="topBox">
                     <text class="boxTitle">Current Points</text>
                     <div class="pointBox" id="pointBox">
@@ -273,7 +271,7 @@ Date: 2023/10/20 -->
                     <div class="progressBar" id="progressBar">
                         <var-progress
                         :value="calculatedPercentage"
-                        line-width="15"
+                        line-width="20"
                         color="linear-gradient(135deg, #FFA174 0%, #D04300 100%)"
                         track-color="#CFEEF5"
                         label  
@@ -286,6 +284,7 @@ Date: 2023/10/20 -->
                     </div>
                 </div>
 
+                <!-- This section contains 3 parts, puzzles, tasks, and vouchers -->
                 <var-tabs
                 class="tabs"
                 elevation
@@ -300,21 +299,21 @@ Date: 2023/10/20 -->
                 <var-tab>Vouchers</var-tab>
                 </var-tabs>
                 <var-tabs-items class="tabItems" v-model:active="active">
+                    <!-- The puzzle will automatically adds a piece after the user completes certain tasks -->
                     <var-tab-item>
                         <h2 class="puzzleTitle">{{ puzzle.title }} ({{ puzzle.completed }}/{{ puzzle.total }})</h2>
-                        <!-- <var-button style="background-color: #55BDCA; color: white;" @click="collectPuzzle">Collect one puzzle</var-button><br><br> -->
                         <img :src="puzzle.url" :alt="puzzle" class="puzzleImage" :fit="contain"/><br><br>
                         <var-link to="/userprofile" underline="none" style="display: block;">
+                            <!-- By clicking the My Collection section, it will jump to User Profile page showing all the puzzles the user has completed -->
                         <div class="box">
                             <text class="collectionTitle">My Collection</text><br>
                             <img src="@/assets/puzzleImage/puzzle1_completed.jpg" class="collectionImage" :fit="cover"/>
                             <img src="https://cdn.britannica.com/78/43678-050-F4DC8D93/Starry-Night-canvas-Vincent-van-Gogh-New-1889.jpg" class="collectionImage" :fit="cover"/>
-                            <!-- <img src="@/assets/pic_2.jpg" class="collectionImage" :fit="cover"/>
-                            <img src="@/assets/pic_3.png" class="collectionImage" :fit="cover"/> -->
-                            <!-- <Icon class="add"><AddCircle20Regular /></Icon> -->
                         </div>
                         </var-link>
                     </var-tab-item>
+                    <!-- This is task section. If user meets the requirements of tasks, the user will be able to click the button to complete tasks.
+                         And the user will gain points and pieces of puzzles -->
                     <var-tab-item>
                         <el-row class="main-row" justify="center">
                     <el-col class="main-col">
@@ -347,11 +346,38 @@ Date: 2023/10/20 -->
                         </el-col>
                     </el-row>
                     </var-tab-item>
-                    <var-tab-item>
-                        To Be Determined
+                    <!-- This is voucher section. At this moment it's just placeholders and isn't functional -->
+                    <var-tab-item >
+                        <var-card
+                        class="vouchers"
+                        id="voucher1"
+                        :elevation="2"
+                        title="Chemist Warehouse"
+                        subtitle="-5%"
+                        description="Applied to first purchase"
+                        />
+                        <var-card
+                        class="vouchers"
+                        id="voucher2"
+                        :elevation="2"
+                        title="Woolworths"
+                        subtitle="$20"
+                        description="Applied to first purchase"
+                        />
+                        <var-card
+                        class="vouchers"
+                        id="voucher3"
+                        :elevation="2"
+                        title="Priceline Pharmacy"
+                        subtitle="-8%"
+                        description="Applied to first purchase"
+                        />
                     </var-tab-item>
                 </var-tabs-items>
             </el-main>
+            <!-- The bottom navigation contains 4 sections, Homepage, My Meds, Rewards, and Community. 
+                If it's at the corresponding page, the button will turns green. 
+                If the current page doesn't belong to any of them, none of the 4 buttons will light up. -->
             <var-bottom-navigation
             class="footer"
             v-model:active="activeBottom"
@@ -384,7 +410,7 @@ Date: 2023/10/20 -->
             </var-bottom-navigation-item>    
             </var-link>
         </var-bottom-navigation>
-                        <!-- Fab button -->
+                        <!-- This is the fab button, contains 2 actions, add a new medication, and add a new post -->
                         <var-fab v-model:active="showAction" style="margin-bottom: 100px;" color="#006973" inactive-icon-size="26px" active-icon-size="30px" elevation="5">
             <var-button class="action" round color="#F27B42" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
                 <var-link href="/#/AddPost" text-color="white" text-size="25px">
@@ -398,7 +424,6 @@ Date: 2023/10/20 -->
             </var-button>
         </var-fab>
         <el-drawer style="background-color: #006973;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
-            <!--Action是模拟接口，与后端连接时更换-->
                 <div class = "sidebar">
                     <el-upload action="" :show-file-list="false">
                         <el-avatar :size="65">

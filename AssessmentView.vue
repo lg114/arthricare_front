@@ -9,7 +9,6 @@
   import { ref } from 'vue';
 </script>
 
-// the view to test the user's current medication status through questions. Some divs with v-if may change depending on the size of the index of the question.
 <template>
 
    <el-container  class = "container">
@@ -476,7 +475,6 @@ export default {
     LineHorizontal320Filled
   },
   computed: {
-    // some function to determine the status of quesiton, not important.
     changeToTrue() {
       return this.$store.state.changeToTrue;
     },
@@ -486,7 +484,6 @@ export default {
   },
   data() {
     return {
-      // Current time and question.
       selectedDate: this.getCurrentDate(),
       selectedTime: this.getCurrentTime(),
       transitionName: 'slide-left',
@@ -517,8 +514,6 @@ export default {
   },
   
   methods: {
-
-     // Some functions are used to record the index of the current issue and adjust the index, such as resetting the index of the issue every time a button is clicked.
     openDrawer() {
             this.drawer = true;
             },
@@ -571,8 +566,6 @@ export default {
       this.currentQuestionIndex = (this.currentQuestionIndex + 1) % this.questions.length;
       }
     },
-
-    //get currnet date
     getCurrentDate() {
       const now = new Date();
       const formattedTime = now.toISOString().slice(0, 10);

@@ -1,4 +1,8 @@
 <!--Edit Profile Page -->
+<!-- Author: Tianyi Hu
+Student number: 6774179
+Date: 2023/10/20 -->
+
 <script>
     import { reactive } from 'vue';
     import { ChevronLeft20Filled } from '@vicons/fluent'; //, MedicationOutlined, CardGiftcardOutlined, HomeRound, AccountCircleOutlined, AddCircleFilled

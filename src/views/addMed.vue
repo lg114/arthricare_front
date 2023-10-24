@@ -35,11 +35,12 @@
       <div class = "container3">
         <h1>MEDICATION DETAIL </h1>
 
+<!-- From here to the end of template, are the input bars user can input the medication information that they want to record.-->
         <p id = "label" >Medication Name *</p>
 
         <AutoComplete @med-selected="onMedSelected"></AutoComplete>
 
-
+    
       <div class="container-flex" >
         <div class="container-block"  >
           <p id = "label" >Category *</p>
@@ -491,6 +492,7 @@ option {
 </style>
 
 <script>
+   // The plugin is imported from here, including time picker, date picker, and array in vuex.
 import DailyDatePicker from "@/component/addMedPage/DailyDatePicker.vue";
 import TimePickerGroup from "@/component/addMedPage/TimePickerGroup.vue";
 import IntermittentDatePicker from "@/component/addMedPage/IntermittentDatePicker.vue";
@@ -504,7 +506,7 @@ import { Snackbar } from '@varlet/ui'
 import { StyleProvider } from '@varlet/ui'
 
 
-
+// Some constants
 const dosage = ref();
 const note = ref("");
 const selectedFrequency = ref("Daily medication");
@@ -541,6 +543,8 @@ export default {
         }, 2000)
       }
     },
+
+      // define the format of data and time
     formatDate(dateString) {
       return format(new Date(dateString), "yyyy-MM-dd"); 
     },
@@ -549,9 +553,10 @@ export default {
       return format(new Date(dateString), 'HH:mm'); 
     },
 
+
+    // get input of user from input bar
     onMedSelected(selectedValue) {
       medName.value = selectedValue;
-
     },
 
     onCategorySelected(selectedValue) {
@@ -559,15 +564,16 @@ export default {
 
     },
 
+    // set the data of time and date
     handleTimePickersUpdate(newTimePickers) {
       TimeData.value = newTimePickers;
     },
 
     handleStartDate(newStartDate) {
-      StartDate.value = newStartDate; // 或其他你想做的操作
+      StartDate.value = newStartDate; // 或其他你想做的操作 tingting
     },
     handleEndDate(newEndDate) {
-      EndDate.value = newEndDate; // 或其他你想做的操作
+      EndDate.value = newEndDate; // 或其他你想做的操作 tingting
     },
     handleduration(newDuration){
       duration.value = newDuration;
@@ -587,6 +593,7 @@ export default {
       TimeData.value = TimeData.value.map(date => this.formatTime(date));
     },
 
+      // a function that used to check if there are some non-optional bars are null
     checkBeforeSave()
     {
       StyleProvider(largeSnackBar)
@@ -620,7 +627,7 @@ export default {
 
       return true;
     },
-    // New function for medicineData
+    // New function for medicineData,used to generate a medication object using the value in input bar.      
     saveMedData() {
 
       if(this.checkBeforeSave()&&selectedFrequency.value!="Only as needed")

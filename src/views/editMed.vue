@@ -16,6 +16,7 @@
   
 </script>
 
+ <!-- This view is used to edit the information about medication. -->
 <template>
    <el-container class = "container">
       
