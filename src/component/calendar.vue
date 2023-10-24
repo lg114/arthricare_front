@@ -1,7 +1,14 @@
 <!--   
     Author: Lin Gan
     Student number: 6502933
-    Date: 2023/10/20 
+    Date: 2023/10/20
+    Description:
+    The component utilizes the vue-hash-calendar component to display a horizontal calendar with specific features and functionalities.
+    The themeColor is used to define the color scheme for the calendar component. It is set based on the mounted lifecycle hook, utilizing the ref function from Vue.
+    The selectedDate variable is used to store the currently selected date in the calendar.
+    The handleChange method is triggered when a date is selected in the calendar. It parses the selected date, formats it into a standard format, and emits an event called 'date-selected' with the parsed date as its payload.
+    The parsing of the selected date involves separating the date and time parts, extracting the necessary components (month, day, year, time, meridiem), and converting the time to a 24-hour format if it is in PM.
+    The formatted date is logged to the console, and the parsed date is emitted using the this.$emit method.
 -->
 <template>
     <vue-hash-calendar class = "calendar" lang="EN" show-arrow :scroll-change-date="true" :show-week-view="true" :show-today-button="true" picker-type="date" :theme-color="themeColor" format="MM DD,YY at hh:mm F" @change="handleChange">
