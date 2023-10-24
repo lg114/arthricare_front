@@ -35,7 +35,7 @@
       <div class = "container3">
         <h1>MEDICATION DETAIL </h1>
 
-// From here to the end of template, are the input bar. user can input the medication information they need to record.
+<!-- From here to the end of template, are the input bar. user can input the medication information they need to record.-->
         <p id = "label" >Medication Name *</p>
 
         <AutoComplete @med-selected="onMedSelected"></AutoComplete>
