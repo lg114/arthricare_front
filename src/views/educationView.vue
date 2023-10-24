@@ -15,6 +15,7 @@
   
 </script>
 
+//A page used to recommend articles or videos to users just a place holder .
 <template>
    <el-container class = "container">
       
