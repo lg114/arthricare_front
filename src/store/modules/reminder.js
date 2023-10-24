@@ -1,6 +1,15 @@
 //  Author: Lin Gan
 //  Student number: 6502933
 //  Date: 2023/10/20 
+//  Description:
+//  The state object maintains the state of the drug reminders, the selected date, and the selected medication.
+//  The mutations object includes mutation functions for setting reminders, adding a new reminder, editing an existing reminder, setting the selected date, and setting the selected medication.
+//  The getters object defines a getter function to retrieve the reminders and the logged-in user's information from the state.
+//  The actions object contains asynchronous actions for fetching reminders from the backend based on the selected date and taking medication, which involves updating the takeMedTime and setting the medication as taken.
+//  The actions use Axios to make HTTP requests to the backend API for fetching and updating reminders.
+//  Error handling is implemented using try-catch blocks, with appropriate error messages logged to the console.
+//  Snackbar components are used to display success and error messages to the user.
+//  The module is configured as namespaced, ensuring it can be registered under a specific namespace in the Vuex store.
 
 import axios from 'axios';
 import { Snackbar } from '@varlet/ui';

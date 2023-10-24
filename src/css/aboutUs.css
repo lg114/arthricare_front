@@ -31,15 +31,6 @@
     overflow-y: auto;
     overflow-x: hidden;
 }
-.main{
-    justify-content: center;
-    align-items: center;
-    height: 90vh;
-    padding-bottom: 80px;
-    background-color: #CFEEF5;
-    overflow-x: hidden;
-    overflow-y:scroll;
-}
 .sidebar{
     display: flex;
     align-items: center;
@@ -57,38 +48,188 @@
 /* END: Common Components */
 
 /* SATRT: Unique CSS for About Us */
-h1{
+.main{
+    justify-content: center;
+    align-items: center;
+    height: 110vh;
+    padding-bottom: 80px;
+    background-color: #CFEEF5;
+    overflow-x: hidden;
+    overflow-y:scroll;
+    width: 390px;
+}
+#EmpoweringJoints{
     font-size: 29px;
-    line-height: 50px;
-    letter-spacing: 3px;
+    letter-spacing: 150.2%;
     color:#185B8B;
-    position: relative;
-    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 h3{
     width:328px;
     color:#185B8B;
-    position: relative;
-    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
 }
-.whiteCircle{
-    background-color: white;
-    border-radius: 50%;
-    display: inline-block;
-    position: relative;
-    filter: blur(5px);
-    
+p.miniTitle{
+    color: #006973;
+    font-size: 16px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 400px;
+    margin-bottom: 7px;
 }
-.largeLogo{
-    height: 181px;
-    width: 189px;
-}
-.footerLogo{
-    height: 57px;
-    width: 59.6px;
+p{
+    margin-left: 10px;
+    margin-right: 10px;
 }
 .footerWhiteCircle{
     height: 90px;
     width: 90px;
 }
+div.whiteBackground{
+    background-color: white;
+    border-radius: 50%;
+    height: 160px;
+    width: 160px;
+    box-shadow: 1px 2px 2px #c7c8ca;
+    text-align: center;
+    margin: 10px;
+    margin-bottom: 20px;
+}
+p.feature{
+    color: #006973;
+    font-size: 14px;
+    margin: 0px;
+    line-height:21px;
+}
+.fourIcons{
+    font-size: 84px;
+    color: #55BBC9;
+    padding-top: 15px;
+    padding-bottom: 3px;
+    margin: 0px;
+}
+#comunityIcon{
+    font-size: 77px;
+    color: #55BBC9;
+    margin: 0px;
+    padding-top: 15px;
+    padding-bottom: 3px;
+}
+.fourMainFeatures{
+    display: flex;
+}
+#img_doctor_female{
+    height: 185px;
+    width: 160px;
+}
+#img_doctor_male{
+    height: 195px;
+    width: 165px;
+}
+.parent_doctors{
+    position: relative;
+    margin-top: 20px;
+}
+.child_fadedBox{
+    position: absolute;
+    top: 200px;
+
+    height: 20px;
+    width: 390px;
+    background-color: #CFEEF5;
+    box-shadow: 0px 0px 45px 45px #CFEEF5; 
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.content{
+    z-index: 2;
+    position: relative;
+    top:-20px;
+    left: 0px;
+}
+#content_whyArthriCare{
+    margin-bottom: 35px;
+    font-size: 20px;
+    color: #38404C;
+    margin-top: 0px;
+}
+/* START: Background design */
+.background{
+    width:390px;
+    position: relative;
+    z-index: 1;
+}
+.whiteCircle_S{
+    height:185px; 
+    width:185px;
+    background-color: white;
+    border-radius: 50%;
+    filter: blur(5px);
+}
+.whiteCircle_M{
+    height:275px; 
+    width:275px;
+    background-color: white;
+    border-radius: 50%;
+    filter: blur(5px);
+}
+.whiteCircle_L{
+    height:390px; 
+    width:390px;
+    background-color: white;
+    border-radius: 50%;
+    filter: blur(5px);
+}
+.largeLogo{
+    height: 190px;
+    object-fit: cover;
+}
+/* END: Background design */
+
+/*  START: Footer */
+div.footer_aboutUs{
+    width: 390px;
+    background-color: #006973;
+    color: white;
+    place-items: center;
+    text-align: center;
+}
+#GetStartedWith{
+    color:white; 
+    letter-spacing: 2px;
+}
+.button_signUp{
+    color:white;
+    background-color: #55BDCA;
+    height: 48px;
+    border-radius: 5px;
+    border: none;
+    width:80%;
+    font-size:16px;
+}
+#contactUs{
+    margin: 0px;
+    margin-top: 60px;
+    font-size:16px;
+}
+a{
+    color:white;
+}
+.footerLogo{
+    height: 57px;
+    width: 59.6px;
+    margin-top: 60px;
+    margin-bottom: 5px;
+}
+.name{
+    font-size: .75rem;
+    color: rgba(217,217,227,.8);
+    line-height: 1.5rem;
+    margin-top: 0px;
+    margin-bottom: 20px;
+}
+/*  END: Footer */
+
 /* END: Unique CSS for About Us */

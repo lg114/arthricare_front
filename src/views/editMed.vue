@@ -9,6 +9,7 @@
   import { ChevronLeft20Filled } from '@vicons/fluent'
 </script>
 
+ <!-- This view is used to edit the information about medication. -->
 <template>
   <el-container class = "container">
      
@@ -472,7 +473,10 @@ option {
   background-repeat: no-repeat;
   }
 </style>
+
+
 <script>
+// some datepicker or time picker.
 import VueDatePicker1 from '@vuepic/vue-datepicker';
 import VueDatePicker2 from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
@@ -504,7 +508,9 @@ export default {
       timeInput1: this.getCurrentTime(),
       timeInput2: this.getCurrentTime(),
       timeInput3: this.getCurrentTime(),
-      Meds : ["Abatacept",
+        <!-- array to save the name of medication-->
+      Meds : [
+       "Abatacept",
       "Adalimumab",
       "Allopurinol",
       "Ambrisentan",
@@ -579,12 +585,15 @@ export default {
   },
   
   methods: {
+      <!-- the function to get the current time.-->
     getCurrentTime() {
       const now = new Date();
       const formattedTime = now.toISOString().slice(11, 16);
       console.log(formattedTime);
       return formattedTime;
     },
+
+      // useless.
     increaseCounter() {
         this.counter++;
     },
@@ -595,7 +604,9 @@ export default {
         this.counter--;
       }
     },
-   
+
+
+      // the function to automatically search for medication name by first few letters. from here to line 649
     filterWordsByLetter(wordsArray, letter) {
       const lowercaseLetter = letter.toLowerCase();
       const filteredWords = wordsArray.filter(word => word.toLowerCase().startsWith(lowercaseLetter));
@@ -637,6 +648,7 @@ export default {
       this.$refs.MedName.focus();
     },
 
+      // the function to get the data of medication that user want to edit and show them in input bar. 
     EditInputValue(){
       store.commit('changeToTrue');
       const arrayIndex = parseInt(this.$route.query.Index, 10);
@@ -660,8 +672,8 @@ export default {
         }
     },
 
+      // the function to create a new medication object using the user input and take the place of old medication object. 
     ReplaceObjectIntoArray(){
-      
       const arrayIndex = parseInt(this.$route.query.Index, 10);
       const dataObject = {
             MedName: this.$refs.MedName.value,
