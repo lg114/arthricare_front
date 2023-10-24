@@ -9,7 +9,7 @@
 //  The actions object contains asynchronous actions for user authentication, including login, registration, password reset, and logout.
 //  The isValidEmail function performs email format validation using a regular expression.
 
-Error handling is implemented using try-catch blocks, with appropriate error messages logged to the console and displayed using the Snackbar component.
+//Error handling is implemented using try-catch blocks, with appropriate error messages logged to the console and displayed using the Snackbar component.
 import axios from 'axios';
 import router from '@/router';
 import { Snackbar } from '@varlet/ui';

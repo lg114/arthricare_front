@@ -504,7 +504,7 @@ import { Snackbar } from '@varlet/ui'
 import { StyleProvider } from '@varlet/ui'
 
 
-<!--some constants-->
+// Some constants
 const dosage = ref();
 const note = ref();
 const selectedFrequency = ref("Daily medication");

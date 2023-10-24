@@ -508,7 +508,7 @@ export default {
       timeInput1: this.getCurrentTime(),
       timeInput2: this.getCurrentTime(),
       timeInput3: this.getCurrentTime(),
-        <!-- array to save the name of medication-->
+        // array to save the name of medication
       Meds : [
        "Abatacept",
       "Adalimumab",
@@ -585,7 +585,7 @@ export default {
   },
   
   methods: {
-      <!-- the function to get the current time.-->
+      // The function to get the current time.
     getCurrentTime() {
       const now = new Date();
       const formattedTime = now.toISOString().slice(11, 16);
