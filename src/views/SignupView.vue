@@ -1,7 +1,16 @@
 <!--
     Author: Lin Gan
     Student number: 6502933
-    Date: 2023/10/20  
+    Date: 2023/10/20
+    Description: 
+    The setup function initializes reactive variables for the current step and form data. 
+    It also defines methods for handling navigation between steps (prevStep and nextStep), continuing to the next step (continueToNextStep), and updating form data (updateFormData).
+    The script imports components for each step of the signup process (signupStep1 through signupStep6) and also imports necessary modules and libraries.
+    The prevStep function is responsible for navigating to the previous step during the signup process.
+    The nextStep function allows the user to proceed to the next step during the signup process.
+    The continueToNextStep function handles the final step of the signup process, where it checks whether the form data is valid and dispatches the user/registerUser action to register the user using the provided information.
+    It also displays error messages using a Snackbar component if necessary form fields are not filled.
+    The updateFormData function is used to update the form data based on the input from each step of the signup process.
 -->
 <template>
   <component :is="currentStep" :formData="formData" @updateFormData="updateFormData" @prevStep="prevStep" @nextStep="nextStep" @continueToNextStep="continueToNextStep" />
