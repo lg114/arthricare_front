@@ -1,332 +1,129 @@
-<!--Signup Page -->
-<script>
-    import { reactive} from 'vue';
-    import { ArrowLeftBold } from '@element-plus/icons-vue';
-    import { ElMessage } from 'element-plus';
-
-    export default{
-        //title
-        mounted(){
-            document.title = 'Sign Up | ArthriCare';
-        },
-        setup(){
-            //set up register data
-            const registerForm = reactive({
-                name: '',
-                gender: '',
-                email: '',
-                password: '',
-                weight: '',
-                age: '',
-            });
-
-            //submit register form
-            const submitRegisterForm = () => {
-                try{
-                    //validate the form
-                    if(registerForm.email === '' || registerForm.password === ''){
-                        //if the validation failed
-                        ElMessage.error('Please enter a valid email address or password');
-                    }else{
-                        //data need to send
-                        //const dataToSend = {
-                            //name: registerForm.name,
-                            //gender: registerForm.gender,
-                            //email: registerForm.email,
-                            //password: registerForm.password,
-                            //weight: registerForm.weight,
-                            //age: registerForm.age,
-                        //};
-
-                        //send requeset
-                        //axios.post('api/signup', dataToSend)
-                            //.then(response => {
-                                console.log('Sign up successful');
-                                //register successful, leave all blank
-                                ElMessage.success('Registration success');
-                                registerForm.email = '';
-                                registerForm.gender = '';
-                                registerForm.name = '';
-                                registerForm.password = '';
-                                registerForm.weight = '';
-                                registerForm.age = '';
-                            //.catch(error => {
-                                //console.error('Sign up failed', error);
-                                //ElMessage.error("Invalid email or password");
-                            //});
-                    }
-                }catch(error){
-                    console.error("Registration failed!", error);
-                }
-            };
-
-            //age selection
-            const generateAgeOptions = (start, end) => {
-                const options = [];
-                for (let i = start; i <= end; i++) {
-                    options.push(i.toString());
-                }
-                return options;
-            };
-
-            //weight selection
-            const generateWeightOptions = (start, end) => {
-                const options = [];
-                for (let i = start; i <= end; i++) {
-                    options.push(i.toString());
-                }
-                return options;
-            };
-
-            return {
-            registerForm,
-            submitRegisterForm,
-            ageOptions: generateAgeOptions(10, 100),
-            weightOptions: generateWeightOptions(35, 200),
-            };
-        },
-
-        components:{
-            ArrowLeftBold,
-        }
-    };
-</script>
 <template>
-    <div class = "container">
-        <el-container class = "content-container">
-            <el-main style = "height: 100%; width: 100%;">
-                    <div class = "input-container">
-                        <router-link to = "/">
-                            <el-icon class = "backBtn"><ArrowLeftBold /></el-icon>
-                        </router-link>
-                            <h2>Sign Up</h2>
-                            <form>
-                                <div class = "input-row">
-                                    <b><label for = "name">Name:</label></b>
-                                    <input id = "name" type="text" class = "input" placeholder="Please enter your full name" v-model="registerForm.name"/>
-                                </div>
-                                
-                                <div class = "input-row">
-                                    <b><label for = "age">Age:</label></b>
-                                    <select name="age" id="age" class="row-input" v-model="registerForm.age">
-                                        <option value="" disabled selected>Select Age</option>
-                                        <option v-for="age in ageOptions" :value="age" :key="age">{{ age }}</option>
-                                    </select>
-                                </div>
-                                
-                                <div class = "input-row">
-                                    <b><label for = "gender">Gender:</label></b>
-                                    <select name="gender" id="gender" class = "row-input" v-model="registerForm.gender">
-                                        <option value="" disabled selected>Select Gender</option>
-                                        <option value="male">Male</option>
-                                        <option value="female">Female</option>
-                                    </select>
-                                </div>
-                                
-                                <div class = "input-row">
-                                    <b><label for = "weight">Weight:</label></b>
-                                    <select name = "weight" id = "weight" class = "row-input" v-model = "registerForm.weight">
-                                        <option value="" disabled selected>Select Weight</option>
-                                        <option v-for="weight in weightOptions" :value="weight" :key="weight">{{ weight }} kg</option>
-                                    </select>   
-                                </div>
-                                
-                                <div class = "input-row">
-                                    <b><label for = "email">Email:</label></b>
-                                    <input id = "email" type="email" class = "input" placeholder="Please enter your email" v-model="registerForm.email" required/>
-                                </div>
-
-                                <div class = "input-row">
-                                    <b><label for = "password">Password:</label></b>
-                                    <input id = "password" type="password" class = "input" placeholder="Please enter your password" v-model="registerForm.password" required/>
-                                </div>                                
-                            </form>
-                    </div>
-            </el-main>
-            <el-footer>
-                <div class="buttons">
-                    <el-button class = "login-button" @click = "submitRegisterForm">SIGN UP</el-button> 
-                </div>
-            </el-footer>
-        </el-container>
-    </div>
+  <component :is="currentStep" :formData="formData" @updateFormData="updateFormData" @prevStep="prevStep" @nextStep="nextStep" @continueToNextStep="continueToNextStep" />
 </template>
+<script>
+  import signupStep1 from '@/component/signup/signupStep1.vue';
+  import signupStep2 from '@/component/signup/signupStep2.vue';
+  import signupStep3 from '@/component/signup/signupStep3.vue';
+  import signupStep4 from '@/component/signup/signupStep4.vue';
+  import signupStep5 from '@/component/signup/signupStep5.vue';
+  import signupStep6 from '@/component/signup/signupStep6.vue';
+    
+  import { Snackbar } from '@varlet/ui';
+  import { ref } from 'vue';
+  import { useRouter } from 'vue-router';
+  import store from '@/store';
 
+  export default {
+    mounted() {
+        document.title = 'Sign Up | ArthriCare';
+    },
+    components: {
+        signupStep1,
+        signupStep2,
+        signupStep3,
+        signupStep4,
+        signupStep5,
+        signupStep6
+    },
+    setup() {
+        const router = useRouter();
+        const currentStep = ref('signupStep1');
+        const formData = ref({
+            email: '',
+            password: '',
+            name: '',
+            age: '',
+            gender: '',
+            weight: '',
+            height: '',
+            weightUnit: '',
+            heightUnit: '',
+        });
 
+        const prevStep = () => {
+            const step = currentStep.value;
+            if(step === 'signupStep1'){
+                router.push('/');
+            }else if(step === 'signupStep2'){
+                currentStep.value = 'signupStep1';
+            }else if(step === 'signupStep3'){
+                currentStep.value = 'signupStep2';
+            }else if(step === 'signupStep4'){
+                currentStep.value = 'signupStep3';
+            }else if(step === 'signupStep5'){
+                currentStep.value = 'signupStep4';
+            }else if(step === 'signupStep6'){
+                currentStep.value = 'signupStep5'
+            }
+        };
 
-<!-- the following is all css-->
-<style scoped>
-    /* -------------------------------- Base Layout -----------------------------------------------*/
-    .container{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background-color: #1890FF;
-        overflow: hidden;
-    }
-    .content-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        max-width: 600px;
-        width: 100%;
-    }
-    /* -------------------------------- Base Layout -----------------------------------------------*/
+        const nextStep = () => {
+            const step = currentStep.value;
+            if(step === 'signupStep1'){
+                currentStep.value = 'signupStep2';
+            }else if(step === 'signupStep2'){
+                currentStep.value = 'signupStep3';
+            }else if(step === 'signupStep3'){
+                currentStep.value = 'signupStep4';
+            }else if(step === 'signupStep4'){
+                currentStep.value = 'signupStep5';
+            }else if(step === 'signupStep5'){
+                currentStep.value = 'signupStep6';
+            }
+        };
 
-    /* -------------------------------- Back Button -----------------------------------------------*/
-    .backBtn{
-        margin: -170px;
-        font-size: 30px;
-        color:#ffffff;
-        position: sticky;
-        top: 30px;
-    }
-    /* -------------------------------- Back Button -----------------------------------------------*/
+        const continueToNextStep = async () => {
+            const step = currentStep.value;
+            if(step === 'signupStep1'){
+                currentStep.value = 'signupStep2';
+            }else if(step === 'signupStep2'){
+                currentStep.value = 'signupStep3';
+            }else if(step === 'signupStep3'){
+                currentStep.value = 'signupStep4';
+            }else if(step === 'signupStep4'){
+                currentStep.value = 'signupStep5';
+            }else if(step === 'signupStep5'){
+                currentStep.value = 'signupStep6';
+            } else if (step === 'signupStep6') {
+                if (formData.value.email === '' && formData.value.password === '') {
+                    Snackbar.error('Please fill in both email and password');
+                } else if (formData.value.password === '') {
+                    Snackbar.error('Please fill in your password');
+                } else if (formData.value.email === '') {
+                    Snackbar.error('Please fill in your email');
+                } else {
+                    try {
+                        await store.dispatch('user/registerUser', {
+                            email: formData.value.email,
+                            password: formData.value.password,
+                            name: formData.value.name,
+                            age: formData.value.age,
+                            gender: formData.value.gender,
+                            weight: formData.value.weight,
+                            height: formData.value.height,
+                            weightUnit: formData.value.weightUnit,
+                            heightUnit: formData.value.heightUnit,
+                        });
+                    } catch (error) {
+                        console.log('Sign up error:', error);
+                    }
+                }
+            }
+        };
 
-    /* -------------------------------- Component -------------------------------------------------*/
-    .input-container{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        color:#FFFFFF;
-        margin-bottom: 100px;
-        text-align: left;
-    }
-    .input{
-        color: white;
-        background-color: #1890FF;
-        border: 2px solid white;
-        width: 300px;
-        height: 40px;
-        border-radius: 10px;
-        margin-top: 10px;
-        padding-left: 10px;
-        outline: none;
-    }
-    .label-container{
-        margin-right: 10px;
-    }
-    .input-row{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        outline: none;
-        text-align: left;
-        justify-content: center;
-        margin: 8px;
-    }
-    .row-input{
-        color: white;
-        background-color: #1890FF;
-        border: 2px solid white;
-        width: 317px;
-        height: 45px;
-        border-radius: 10px;
-        margin: 3.5px;
-        padding-left: 10px;
-        outline: none;
-    }
-    /* -------------------------------- Component -------------------------------------------------*/
+        const updateFormData = (data) => {
+            formData.value = { ...formData.value, ...data };
+        };
 
-    /* -------------------------------- Small Screen -------------------------------------------*/
-    @media screen and (max-width: 400px) {
-        .container{
-            overflow-y: auto;
-        }
-        .input-row{
-            width: 100%;
-        }
-        
-        .input{
-            width: 300px;
-            height: 25px;
-        }
-        .row-input{
-            width: 318px;
-            height: 32px;
-        }
-        
-        .backBtn{
-            font-size: 30px;
-            margin: -170px;
-            margin-top: 60px;
-            color:#ffffff;
-        }
-
-        .buttons{
-            bottom: 10px;
-            left: 50%;
-            margin-left: 8px;
-            transform: translateX(-50%);
-        }
-        .login-button{
-            width: 100%;
-            height: 63px;
-        }
-        .login-button::before{
-            width: 2px;
-        }
+        return {
+            currentStep,
+            formData,
+            prevStep,
+            nextStep,
+            continueToNextStep,
+            updateFormData
+        };
     }
-    /* -------------------------------- Small Screen -------------------------------------------*/
-    /* placeholder */
-    ::placeholder{
-        color: #FFFFFF;
-    }
-    /* -------------------------------- Buttons -------------------------------------------------*/
-    .buttons{
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
-    .login-button{
-        width: 319px;
-        height: 63px;
-        margin-bottom: 10px;
-        border-radius: 10px;
-        font-weight: 700;
-        background: #FFFFFF;
-        color: #1890FF;
-        position: relative;
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: transparent;
-        color: white;
-        border: 2px solid white;
-        transition: background-color 0.5s, color 0.5s;
-    }
-
-    .login-button:hover{
-        background-color: #FFFFFF;
-        color: #1890FF;
-        transform: translateZ(10px);
-    }
-
-    .login-button::before{
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 0;
-        height: 100%;
-        background-color: #FFFFFF;
-        transition: width 0.3s;
-        z-index: -1;
-    }
-
-    .login-button:hover{
-        background-color: #FFFFFF;
-        color: #1890FF;
-        border-radius: 10px;
-    }
-
-    .login-button:hover::before{
-        width: 100%;
-        border-radius: 10px;
-    }
-    /* -------------------------------- Buttons -------------------------------------------------*/
-</style>
+  };
+</script>

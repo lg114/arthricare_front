@@ -1,27 +1,590 @@
-<!--Add Med Page -->
+<!--Welcome Page -->
+<!--Welcome Page -->
 <script setup>
-  import {ArrowLeftBold} from '@element-plus/icons-vue';
+  // import {ArrowLeftBold} from '@element-plus/icons-vue';
+  import store from "@/store";
+  // import {Plus,Minus} from '@element-plus/icons-vue';
+  import '@varlet/ui/es/button/style/index';
+  
+  import { ChevronLeft20Filled } from '@vicons/fluent'
+ 
   
 </script>
+
+<template>
+   <el-container class = "container">
+      
+    <div class = "container-flex" style="height:100% ; width:50% ;">
+        <!-- <router-link to = "/">
+          <el-icon class = "backBtn"><ArrowLeftBold/></el-icon>
+        </router-link> -->
+      <router-link to = "/">
+        <ChevronLeft20Filled @click="disableASOption" class="backBtn"/>
+      </router-link> 
+
+        <p id= "title">Add Medication</p>
+      </div>
+      
+     <div id = container2>
+
+      <div class = "container3">
+        <h1>MEDICATION DETAIL </h1>
+
+        <p id = "label" >Medication Name *</p>
+        <input ref="MedName" id="MedName" type="text" placeholder="Mecication Name" @keyup="processInput" @focus="toggleOptions"/>
+        
+        <div  class="menu" v-if="this.Meds2!==null  && showMed">
+          <div ref="MedOption"  class="selected-option" v-for="item in Meds2" :key="item" @click="handleItemClick(item)">{{ item }}</div>
+        </div> 
+
+
+      <div class="container-flex" >
+        <div class="container-block"  >
+          <p id = "label" >Category *</p>
+          <label for = "Category"></label>
+          <select style = " height: 5.7vh;width:115% ; margin-right:5px ; padding-left: 13%; margin-top:3%" ref = "Category" name="Category" id="Category" class = "row-input" v-model="selectedCategory">
+            <option value="" data-icon="@/assets/capsulesblue.png" alt="ArthriCare Logo" disabled selected>Select Category *</option>
+            <option value="Pill" selected>Pill</option>
+            <option value="Tablet">Tablet</option>
+            <option value="Injection">Injection</option>
+            <option value="Drop">Drop</option>
+          </select>
+        </div>
+
+        <div class="container-block" style="margin-left:9% ;">
+          <p id = "label">Coases *</p>
+          <input ref="Unit" style = "width:128% ; height:5.7vh;padding-left:12% ;margin:0; margin-top:3%" type="number" placeholder="Dosage"  />
+        </div>  
+    
+      </div>
+
+        <p id = "label">Note (Optional)</p>
+        <input id="Note" ref="Note" type="text" placeholder="Note"  />
+      
+
+
+        <!-- <p id = "label">Category *</p>
+        <div>
+          <b><label for = "Category"></label></b>
+          <select  ref = "Category" name="Category" id="Category" class = "row-input" v-model="selectedCategory">
+           <option value="" data-icon="@/assets/capsulesblue.png" alt="ArthriCare Logo" disabled selected>Select Category *</option>
+           <option value="Pill" selected>Pill</option>
+           <option value="Tablet">Tablet</option>
+           <option value="Injection">Injection</option>
+           <option value="Drop">Drop</option>
+         </select>
+        </div> -->
+        <!-- <div class = "calculationPart">
+          <el-icon class = "decreaseButton" @click="decreaseCounter"><Minus/></el-icon>
+          <div ref = "Unit" class = "number">{{ counter }}</div>
+          <el-icon class = "increaseButton" @click="increaseCounter"><Plus/></el-icon>
+        </div> -->
+
+      </div>   
+
+
+      <div class = "container3">
+        <h1>SET REMINDER</h1>
+        <p id = "label">Start Time *</p>
+        <div id = "date" >
+          <VueDatePicker1 ref = "StartDate" id="startDate"  v-model="selectedStartDate" :format="dateFormat"></VueDatePicker1>
+        </div>
+        
+        <p id = "label" style="margin-top: 7%;">End Time *</p>
+          <VueDatePicker2 ref = "EndDate" id="endDate" v-model="selectedEndDate" :format="dateFormat"></VueDatePicker2>
+
+        <p id = "label" >Frequency *</p>
+        <!-- <input ref="Frequency" id="input" type="text" placeholder="  " /> -->
+        <div class="Frequency1">
+          <select  ref="Frequency" name="Frequency" id="Frequency" class ="row-input" v-model="selectedFrequency" style = "padding-left:5% ">
+           <option value="" disabled selected>Select Category</option>
+           <option value="Once a Day">Once a day</option>
+           <option value="Twice a Day">Twice a day</option>
+           <option value="Three times a Day">Three times a day</option>
+           <option value="Every x day">Every x day</option>
+           <option value="Every x week">Every x week</option>
+           <option value="Every x month">Every x month</option>
+          </select>
+        </div>
+
+        <div v-if="selectedFrequency ==='Every x day'|| selectedFrequency ==='Every x week'|| selectedFrequency ==='Every x month' ">
+          <p id = "label" >Interval *</p>
+          <input v-model="Interval" ref="Interval" id="Interval" type="number" />
+        </div>
+
+        <p id = "label" >Time *</p>
+        <div  v-if="selectedFrequency === 'Once a Day'|| selectedFrequency ==='Every x day'|| selectedFrequency ==='Every x week'|| selectedFrequency ==='Every x month' ">
+          <input type="time" v-model="timeInput1" />
+        </div>
+
+        <div v-else-if="selectedFrequency === 'Twice a Day'">
+          <input type="time" v-model="timeInput1" />
+          <input type="time" v-model="timeInput2" />
+        </div>
+
+        <div class="Frequency" v-else-if="selectedFrequency === 'Three times a Day'">
+          <input type="time" v-model="timeInput1" />
+          <input type="time" v-model="timeInput2" />
+          <input type="time" v-model="timeInput3" />
+        </div>
+
+        <div class = "container-flex" style="margin-top:10%">   
+      </div>   
+        </div>  
+        <el-footer class >
+            <div class="buttons" >
+                 <el-button class = "login-button" @click = "saveData">ADD</el-button> 
+            </div>
+         </el-footer> 
+        <!-- <date-picker v-model:value = "selectedDate"></date-picker> -->
+      </div>
+
+    </el-container>
+</template>
+
+<style lang = "css" scoped> 
+    .Frequency{
+      width:107%;
+      height:5.7vh;
+    }
+
+/* scoped src="@/style/addMed.css" */
+    h1{
+      color:#006973;
+      font-size:17px;
+      font-family: system-ui;
+    }
+    .container3{
+      border: 1px solid #eceff1;
+      padding-left:5%;
+      padding-right:5%;
+      margin:5%;
+      background-color: #ffffff;
+      padding-bottom:5%;
+    }
+    .calculationPart{
+      display:flex;
+      width:40%;
+      height:100%;
+      margin-left:20%;
+      border: 4px solid #1890FF;
+      border-radius:10px 10px 10px 10px;
+      margin:0;
+      padding:0;
+}
+.buttons{
+  height:30%;
+  width:100%;
+}
+
+#textarea1{
+  background-size: 100% 4rem;
+  border: 1px solid  #DDDDDD;
+  width: 96%;
+  padding: 2% ;
+  font-size:99%;
+  color:black;
+  font-family: arial;
+  margin-top:3%;
+  height:10px;
+}
+
+.row-input{
+  color: black;
+  background-color: white;
+  border: 1px solid #d9dfe0;
+  width: 100.5%;
+  height: 20%;
+  border-radius: 5px;
+  padding-left: 2%;
+  outline: none;
+  font-size:100%;
+  margin-top:3%;
+  position:relative;
+  z-index: 1;
+  padding-bottom:5%;
+  padding-top:5%;
+}
+select{
+  appearance: none;
+}
+.container-flex{
+  display:flex;
+  z-index: 1;
+}
+
+.container-block{
+  display:inline-block;
+  width:40%;
+  
+}
+
+.BellBtn{
+  font-size: 30px;
+  color: #1890FF;
+  position:relative;
+  margin-left:60%;
+  size:40%;
+}
+
+.note{
+  position:relative;
+  width:130px ; 
+  height:30px;
+  top:7%;
+  left:2%;
+  font-size:110%;
+  border-radius:10px 10px 10px 10px;
+  background-color:#56569D;
+  text-align: center;
+  color:white;
+  cursor: pointer;
+  
+}
+.note:hover{
+  background-color: grey;
+}
+
+#date{
+  margin-top: 2%; 
+  width:100.5%; 
+}
+.number{
+  display: block;
+  float:center;
+  background-color: rgb(253, 248, 248);
+  bottom: 13%;
+  width:1%;
+  position:relative;
+  font-size:200%;
+  color:#0b437a;
+  margin-left:12%;
+  margin-right:5%;
+  
+}
+.increaseButton{
+  font-size:180%;
+  margin-left:30%;
+  color:#56569D;
+  position:relative;
+  top:4px;
+  
+}
+
+.decreaseButton{
+  font-size:180%;
+  margin-right:10%;
+  color:#9F9FC8;
+  top:4px;
+  position:relative;
+}
+
+.calculationPart{
+  display:flex;
+  width:40%;
+  height:80%;
+  border: 2px solid#9F9FC8;
+  /* border: 2px solid #1890FF; */
+  border-radius:10px;
+  justify-content: center;
+  padding-left:10%;
+  padding-right:10%;
+  margin-left:17%;
+  margin-top:5%;
+}
+
+.unitButton{
+color: #a19191;
+text-align: center;
+float:right;
+display: block;
+cursor: pointer;
+padding: 10px;
+background-color: rgb(253, 248, 248);
+width:45px;
+position:relative;
+font-size: 15px;
+border-radius:10px 10px 10px 10px;
+border: 2px solid #a39e9e;
+height:8px;
+bottom:3%;
+right:49%;
+
+}
+
+#counter {
+font-size: 24px;
+text-align: center;
+}
+.Button{
+    position: relative;
+    background-color: #1890FF;
+    border: none;
+    font-size:130%;
+    color: #ffffff;
+    padding: 0px;
+    width: 50%;
+    text-align: center;
+    transition-duration: 0.6s;
+    text-decoration: none;
+    overflow: hidden;
+    cursor: pointer;
+    left:20%;
+    border-radius:10px 10px 10px 10px; 
+    height: 4%;
+    margin-top:40px;
+    line-height: -50px;
+}
+
+.Button::after{
+    content: '';
+    background:#53a4f0;
+    display: block;
+    position: absolute;
+    padding-top: 300%;
+    padding-left: 350%;
+    margin-left: -20px ;
+    margin-top: -120%;
+    opacity: 0;
+    transition:all 0.8s;
+}
+.Button:active::after{
+    padding: 0;
+    margin: 0;
+    opacity: 1;
+    transition: 0s;
+}
+
+.container{
+  overflow-y: auto;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  width:100%;
+  background-color:#006973;
+  overflow: auto;
+  flex-direction: column;
+  margin: 0 ;
+  }
+
+#container2{
+  overflow-y: auto;
+  padding-left:auto;
+  padding-right:auto;
+  align-items: center;
+  background-color: rgb(251, 251, 255);
+  height:200%;
+  width:100%;
+  padding-bottom:100px;
+  justify-content: center;
+  align-items: center;
+  display:inline-block;
+  }
+
+#title{
+  font-size: 100%;
+  position:relative;
+  color:#FFFFFF;
+  font-family: system-ui;
+  top:13%;
+  width:150%;
+  padding-top:6.5%;
+  }
+
+#label{   
+  width:95%;
+  font-weight:600;
+  font-size: 85%;
+  color:  #787885;
+  text-align: left;
+  margin-bottom:0%;
+  margin-top:4%;
+  font-family: system-ui;
+  margin-left:8px;
+  }
+
+input{
+  align-items: center;
+  width:100%;    
+  font-size:90%;   
+  background-color: white;
+  border:none; 
+  border : 1px solid #d9dfe0;
+  color: black;
+  margin-top:2%;
+  padding:5%;
+  border-radius: 5px;
+  font-family: system-ui;
+  box-sizing: border-box;
+  } 
+
+input[type="time"] {
+  width:30%;
+  height:50px;
+  padding:2%;
+  padding-left:3%;
+  font-size:100%;
+  size:5%;
+  font-family:system-ui;
+  padding-top:1%;
+  margin-top:1.5%;
+  position:relative;
+  margin-right:2%;
+  }
+
+  input:focus
+  { 
+  outline-style: none;
+  border-bottom: 1px solid #b5b7c2;
+  }
+
+  .backBtn{
+    color:#FFFFFF;
+    position:relative;
+    right:15vw;
+    top:2.5vh;
+    height:30px;
+    }
+
+.menu {
+  display: inline-block;
+  position:absolute;
+  top:25%;
+  right:40%;
+  height:auto;
+  width:50%;
+  }
+
+.selected-option {
+  width: 100%;
+  padding: 3vh;
+  background-color: #f4f4f4;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 1px solid white;
+  color:#008866;
+  font-size:10%;
+  letter-spacing:1px;
+  position: relative;
+  z-index: 3;
+  }
+
+.login-button{
+  margin-top:5%;
+  margin-left:2.5%;
+  width: 95%;
+  height: 350%;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size:17px;
+  }
+
+.login-button{
+  color:white;
+  position: relative;
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: transparent;
+  background-color:#006973;
+  border: 2px solid white;
+  transition: background-color 0.5s, color 0.5s;
+  }
+
+option {
+  padding-left: 20px;
+  background-image: url("@/assets/capsulesblue.png");
+  background-repeat: no-repeat;
+  }
+</style>
 
 <script>
 import VueDatePicker1 from '@vuepic/vue-datepicker';
 import VueDatePicker2 from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
+
+// import DatePicker from 'vue-datepicker-next';
+// import 'vue-datepicker-next/index.css';
+// import 'vue-datepicker-next/locale/es';
 
 export default {
   components: { VueDatePicker1 , VueDatePicker2},
+  computed: {
+    changeToTrue() {
+      return this.$store.changeToTrue;
+    },
+    
+  },
   data() {
     return {
-      date1: null,
-      date2: null,
+      timeInput1: this.getCurrentTime(),
+      timeInput2: this.getCurrentTime(),
+      timeInput3: this.getCurrentTime(),
+
+      Interval:1,
+      selectedDate: null, 
       counter: 0,
-      Meds : ["Abatacept","Adalimumab","Allopurinol","Ambrisentan","Anakinra","Anifrolumab","Apremilast","Azathioprine",
-      "Baricitinib","Biosimilars","Bisphosphonates (Oral)","Bisphosphonates (Intravenous/IV)","Bosentan"
-      ,"Cannabinoids - Medicinal Cannabis","Certolizumab","Colchicine","Ciclosporin"],
+      selectedCategory: "Pill",
+      selectedFrequency:  "Once a Day",
+      selectedStartDate: this.getCurrentDate(),
+      selectedEndDate: this.getCurrentDate(),
+
+      dateFormat: 'yyyy-MM-dd',
+      Meds : ["Abatacept","Adalimumab",
+      "Allopurinol",
+      "Ambrisentan",
+      "Anakinra",
+      "Anifrolumab",
+      "Apremilast",
+      "Azathioprine",
+      "Baricitinib",
+      "Biosimilars",
+      "Bisphosphonates (Oral)",
+      "Bisphosphonates (Intravenous/IV)",
+      "Bosentan",
+      "Cannabinoids - Medicinal Cannabis",
+      "Certolizumab",
+      "Colchicine",
+      "Ciclosporin",
+      "Cyclophosphamide",
+      "Denosumab",
+      "Duloxetine",
+      "Etanercept",
+      "Febuxostat",
+      "Glucosamine",
+      "Golimumab",
+      "Goserelin",
+      "Guselkumab",
+      "Hyaluronic Acid",
+      "Hydroxychloroquine",
+      "Iloprost",
+      "Infliximab",
+      "Ixekizumab",
+      "IV Immunuglobulin",
+      "Leflunomide",
+      "Methotrexate",
+      "Self-Injecting Methotrexate for the Treatment of Arthritis",
+      "Mycophenolate",
+      "NSAIDs",
+      "Opioids",
+      "Paracetamol",
+      "Prednisolone",
+      "Pregabalin",
+      "Probenecid",
+      "Raloxifene",
+      "Rituximab",
+      "Romosozumab",
+      "Secukinumab",
+      "Sulfasalazine",
+      "Tacrolimus",
+      "Teriparatide",
+      "Tocilizumab",
+      "Tofacitinib",
+      "Ustekinumab",
+      "Upadacitinib"],
       Meds2:[],
+
+      //always empty
       Meds3:[],
-    
 
       category: [
         { id: 1, title: 'Pill' },
@@ -41,6 +604,7 @@ export default {
   },
   
   methods: {
+
     increaseCounter() {
         this.counter++;
     },
@@ -51,7 +615,8 @@ export default {
         this.counter--;
       }
     },
-   
+
+    // fliter letter
     filterWordsByLetter(wordsArray, letter) {
       const lowercaseLetter = letter.toLowerCase();
       const filteredWords = wordsArray.filter(word => word.toLowerCase().startsWith(lowercaseLetter));
@@ -69,7 +634,7 @@ export default {
   }
    ,
    getResult(){
-    const filteredWordsStartingWithLetters = this.filterWordsByLetter(this.Meds, this.$refs.MedName.value);
+    const filteredWordsStartingWithLetters = this.filterWordsByLetter(this.words, this.$refs.MedName.value);
     return filteredWordsStartingWithLetters;
    },
    processInput(event) {
@@ -78,370 +643,90 @@ export default {
 
          }
       },
+      
+      //show Med in list
     handleItemClick(Med) {
       this.selectedMed = Med;
       this.showMed = false;
       this.$refs.MedName.value = Med;
       this.$refs.MedName.blur();
-      this.Meds2=this.getResult();
+      this.Meds2=this.getResult;
       console.log(Med);
-
     },
+
+
     
     toggleOptions() {
-      this.showMed = !this.showMed;
       this.$refs.MedName.focus();
+      this.showMed = !this.showMed;
     },
-  },
+
+    getCurrentTime() {
+      const now = new Date();
+      const formattedTime = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      console.log(formattedTime);
+      return formattedTime;
+    },
+
+    getCurrentDate() {
+      const now = new Date();
+      const formattedTime = now.toISOString().slice(0, 10);
+      console.log(formattedTime);
+      return formattedTime;
+    },
+
+    // pass value to MyMed
+    saveData() {
+      // const dataObject = {
+      //   Field: this.$refs.Field.value,
+      //   MedName: this.$refs.MedName.value,
+      //   Category: this.$refs.Category.value,
+      //   Frequency:this.$refs.Frequency.value,
+      //   StartDate: this.$refs.StartDate.value ,
+      //   EndDate: this.$refs.EndDate.value,
+      //   Note: this.$refs.Note.value,
+
+      //  };
+
+        //  this.$router.push({
+        //       path: '/MyMeds2',
+        //       query: {
+        //         Field: this.$refs.Field.value,
+        //         MedName: this.$refs.MedName.value,
+        //         Category: this.$refs.Category.value,
+        //     }
+        //   });
+        store.commit('changeToTrue');
+        this.$router.push({
+              path: '/MyMeds',
+              query: {
+                MedName: this.$refs.MedName.value,
+                Category: this.selectedCategory,
+                Frequency:this.selectedFrequency,
+                Unit:this.$refs.Unit.value,
+                StartDate: this.selectedStartDate ,
+                EndDate: this.selectedEndDate,
+                Note: this.$refs.Note.value,
+                Interval: this.Interval,
+                timeInput1: this.timeInput1,
+                timeInput2: this.timeInput2,
+                timeInput3: this.timeInput3,
+             }
+           })
+           console.log(this.timeInput1)
+           console.log(this.Interval + 'fffffff')
+           console.log(this.selectedEndDate)
+
+    }},
   mounted(){
-            document.title = 'Add Med | ArthriCare';
+            document.title = 'Add Medication';
+           // this.selectValue();
+
+  
         },
+        setup(){
+        
+        }
 }
+
 </script>
-
-<template>
-   <el-container class = "container">
-   
-    <div class = "container-flex">
-      <router-link to = "/">
-         <el-icon class = "backBtn"><ArrowLeftBold/></el-icon>
-      </router-link>
-      <p id = "title">My Meds</p>
-    </div>  
-      <div id = container2>
-        <p id = "label" style = "font-size : 35px ; font-weight:500;" >Add Medication</p>
-        <input id="Add" type="text" placeholder="Required Field*" style = "width:50%"/><br>
-        <p id = "label">MEDICATION NAME</p>
-
-        <input ref="MedName" id="MedName" type="text" placeholder="" @keyup="processInput" @focus="toggleOptions"/>
-
-        <div  class="menu" v-if="this.Meds2!==null  && showMed">
-          <div ref="MedOption"  class="selected-option" v-for="item in Meds2" :key="item" @click="handleItemClick(item)">{{ item }}</div>
-        </div> 
-
-        <p id = "label">CHANGE CATEGORY</p>
-        <div>
-          <b><label for = "category"></label></b>
-          <select name="category" id="category" class = "row-input" v-model="category">
-           <option value="" disabled selected>Select Category</option>
-           <option value="Pill">Pill</option>
-           <option value="Tablet">Tablet</option>
-           <option value="Injection">Injection</option>
-           <option value="Drop">Drop</option>
-         </select>
-        </div>
-
-        <p id = "label">HOW OFTEN ARE YOU TAKING THIS MEDICATION?</p>
-        <input id="input" type="text" placeholder="  " />
-        <p id = "label">HOW MANY UNITS DO YOU TAKE EACH TIME?</p>
-
-        <div class = "container-flex">
-          <div class="IncreaseButton" @click="increaseCounter">+</div>
-          <div class = "number">{{ counter }}</div>
-          <div class="DecreaseButton" @click="decreaseCounter">-</div>
-        </div>
-        
-        <p id = "label">WHEN DID YOU START TAKING THIS MEDICATION?</p>
-        <div id = "date" >
-          <VueDatePicker1 id="date1" v-model="date1"></VueDatePicker1>
-        </div>
-        
-        <p id = "label" style="margin-top: 50px;">WHEN DID YOU STOP TAKING THIS MEDICATION?</p>
-        <div id = "date">
-          <VueDatePicker2 id="date2" v-model="date2"></VueDatePicker2>
-        </div>
-
-        <p id = "label" style = "margin-top:60px">ADD A NOTE ? (optional)</p>
-        <div >
-          <textarea id = "textarea1" name = "Note" column="20" row="20"></textarea>
-        </div>
-        <div class = "container-flex" style="margin-top:5%">   
-
-        </div>  
-        <div class="Button" >
-           Next
-        </div>
-      </div>
-
-    </el-container>
-</template>
-
-<style scoped>
-
-        #textarea1{
-          background-image: linear-gradient(#F1F1F1 50%, #F9F9F9 50%);
-          background-size: 100% 4rem;
-          border: 1px solid #CCC;
-          width: 85%;
-          line-height: 2rem;
-          padding: 2% 2%;
-          font-size:20px;
-          color:#1890FF;
-          font-weight:bold;
-          margin-left:4%;
-        }
-
-       .row-input{
-          color: #1890FF;
-          background-color: #f4f4f4;
-          border: 2px solid #f0dddd;
-          width: 40%;
-          height: 30px;
-          border-radius: 5px;
-          margin: 3.5px;
-          padding-left: 10px;
-          outline: none;
-          font-size:100%;
-          font-weight:bold;
-          margin-left:4.5%;
-        }
-
-        .container-flex{
-          display:flex;
-        }
-
-        .BellBtn{
-          font-size: 30px;
-          color: #1890FF;
-          position:relative;
-          margin-left:60%;
-          size:40%;
-      }
-        
-        .note{
-          position:relative;
-          width:130px ; 
-          height:30px;
-          top:7%;
-          left:2%;
-          font-size:110%;
-          border-radius:10px 10px 10px 10px;
-          background-color: #1890FF;
-          text-align: center;
-          color:white;
-          cursor: pointer;
-        }
-        .note:hover{
-          background-color: grey;
-        }
-
-        #date{
-          margin-left: 3%;
-          margin-top: 10px; 
-          width:90%; 
-          height:10px;
-        }
-        .number{
-          z-index: 9;
-          display: block;
-          float:center;
-          padding: 10px;
-          background-color: rgb(253, 248, 248);
-          margin-bottom: 6%;
-          margin-top: 6%;
-          width:40px;
-          height:40px;
-          position:relative;
-          font-size:35px;
-          text-align: center;
-          border: 4px solid #1890FF;
-          border-radius:10px 10px 10px 10px;
-          color:#1890FF;
-          margin-left:12%;
-          margin-right:5%;
-          
-        }
-
-      .IncreaseButton {
-        text-align: center;
-        display: block;
-        cursor: pointer;
-        padding: 1%;
-        background-color: rgb(253, 248, 248);
-        margin-bottom: 10px;
-        width:40px;
-        height:40px;
-        position:relative;
-        font-size:200%;
-        border-radius:10px 10px 10px 10px;
-        border: 2.5px solid #a39e9e;
-        color: #a19191;
-        margin-top:7%;
-        margin-left:8%;
-
-      }
-
-      .DecreaseButton {
-        text-align: center;
-        display: block;
-        cursor: pointer;
-        padding: 1%;
-        background-color: rgb(253, 248, 248);
-        margin-bottom: 10px;
-        width:40px;
-        height:40px;
-        position:relative;
-        font-size:200%;
-        border-radius:10px 10px 10px 10px;
-        border: 2.5px solid #a39e9e;
-        color: #a19191;
-        margin-top:7%;
-        margin-left:8%;
-
-      }
-      .unitButton{
-        color: #a19191;
-        text-align: center;
-        float:right;
-        display: block;
-        cursor: pointer;
-        padding: 10px;
-        background-color: rgb(253, 248, 248);
-        width:45px;
-        position:relative;
-        font-size: 15px;
-        border-radius:10px 10px 10px 10px;
-        border: 2px solid #a39e9e;
-        height:8px;
-        bottom:3%;
-        right:49%;
-        
-      }
-
-      #counter {
-        font-size: 24px;
-        text-align: center;
-      }
-        .Button{
-            position: relative;
-            background-color: #1890FF;
-            border: none;
-            font-size:130%;
-            color: #ffffff;
-            padding: 0px;
-            width: 70%;
-            text-align: center;
-            transition-duration: 0.6s;
-            text-decoration: none;
-            overflow: hidden;
-            cursor: pointer;
-            left:15%;
-            border-radius:10px 10px 10px 10px; 
-            height: 4%;
-            margin-top:40px;
-            line-height: -50px;
-        }
-
-        .Button::after{
-            content: '';
-            background:#53a4f0;
-            display: block;
-            position: absolute;
-            padding-top: 300%;
-            padding-left: 350%;
-            margin-left: -20px ;
-            margin-top: -120%;
-            opacity: 0;
-            transition:all 0.8s;
-        }
-        .Button:active::after{
-            padding: 0;
-            margin: 0;
-            opacity: 1;
-            transition: 0s;
-        }
-
-    .container{
-        display: flex;
-        align-items: center;
-        height: 100vh;
-        width:100%;
-        background-color: #1890FF;
-        overflow: auto;
-        flex-direction: column;
-        margin: 0 ;
-    }
-
-    #container2{
-        padding-left:auto;
-        padding-right:auto;
-        align-items: center;
-        margin-top:6%;
-        background-color: rgb(253, 253, 253);
-        height:200%;
-        width:100%;
-        padding-bottom:100px;
-        justify-content: center;
-        align-items: center;
-        display:inline-block;
-    }
-
-    #title{
-      font-size: 130%;
-      position: relative;
-      color:#FFFFFF;
-      margin:5px;
-      right:9%;
-      top:30%;
-    }
-
-    #label{   
-      width:95%;
-      font-weight:600;
-      font-size: 20%;
-      color:  #1890FF;
-      margin-left:4%;
-      margin-bottom:2%;
-      margin-top:2%;
-      text-align: left;
-      letter-spacing:1px;
-    }
-
-    input{
-      align-items: center;
-      width:80%;    
-      height: 4%;    
-      font-size:100%;    
-      background-color: white;
-      margin:auto;
-      border:none; 
-      border-bottom: 3px solid #DDDDDD;
-      color: #000000;
-      margin-left:5%;
-      letter-spacing:1px;
-      
-    } 
-
-    input:focus
-    { 
-      outline-style: none;
-      border-bottom: 3px solid #c2b5b5;
-    }
-
-    .backBtn{
-        font-size: 25px;
-        color:#FFFFFF;
-        position:relative;
-        margin-top:80%;
-        right:350%;
-    }
-
-    .menu {
-      display: inline-block;
-      left:4%;
-      position:relative;
-    }
-
-    .selected-option {
-
-      width: 120%;
-      padding: 10px;
-      background-color: #f4f4f4;
-      border-radius: 5px;
-      cursor: pointer;
-      border: 1px solid white;
-      color:#000000;
-      font-size:17px;
-      letter-spacing:1px;
-    }
-</style>

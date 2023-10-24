@@ -1,0 +1,130 @@
+.container{
+    height: 100%;
+}
+.header{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #006973;
+    color: #FFFFFF;
+    height: 80px;
+}
+.header-icon{
+    font-size: 25px;
+    position: absolute;
+    left: 5%;
+    font-weight: bold;
+}
+.header-icon2{
+    font-size: 25px;
+    position: absolute;
+    right: 5%;
+}
+.username{
+    font-weight: bold;
+}
+.main{
+    --el-main-padding: 0;
+    background-color: #ffffff;  /* for the arrow's color of the calendar */
+    margin-bottom: 55px;
+}
+
+.divider{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    --divider-color: #006973;
+    text-align: center;
+    margin-top: 5vw;
+}
+.last-medication{
+    margin-bottom: 15vw;
+}
+.var-chip{
+    margin-right: 5vw;
+    color:#006973;
+    height: 7vh;
+    width: 98vw;
+}
+.el-dialog__header{
+    margin-right: 0px;
+    background-color: #006973;
+    color: #FFFFFF;
+}
+@media screen and (min-width: 380px){
+    .header{
+
+    }
+}
+@media screen and (min-width: 768px){
+    .header{
+        height: 10vh;
+    }
+    .username{
+        font-size: 25px;
+    }
+}
+
+
+
+.topping{
+    color:#FFFFFF;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.var-avatar{
+    position: relative;
+    top: 5vh;
+}
+.middle{
+    color:#FFFFFF;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+}
+.middle p{
+    margin-bottom: 20px;
+    text-align: center;
+}
+.icon-container {
+    display: inline-block;
+    margin-right: 50px; 
+}
+.icon-text-container {
+    display: flex;
+    align-items: center;
+    padding-inline: 5px;
+    justify-content: center;
+}
+
+.bottom{
+    color:#FFFFFF;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+}
+.bottom p {
+    margin-bottom: 20px;
+}
+
+.bottomButton{
+    padding-left:20px;
+    padding-right: 20px;
+}
+.footer{
+    display: inline;
+    position: fixed;
+    text-align: center;
+    bottom: 0;
+    height:80px;
+    --bottom-navigation-item-font-size: 13px;
+    --bottom-navigation-item-active-color: #55BDCA;
+    white-space: nowrap;
+}  
+.addButton{
+    font-size: 35px;
+}

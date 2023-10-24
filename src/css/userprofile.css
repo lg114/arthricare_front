@@ -1,0 +1,267 @@
+/* User Profile Css */
+.header{
+    display: flex;
+    align-items: center;
+    color: white;
+    text-align: center;
+    margin-right: 100px;
+    height: 60px;
+}
+.more{
+    position: absolute;
+    left: 5%;
+    top:2.5%;
+    font-size: 30px;
+    color: white;
+}
+.user{
+    position: relative;
+    font-size: 30px;
+    margin-right: 5px;
+    left: 45%;
+}
+.pageTitle{
+    position:absolute;
+    font-size: 20px;
+    left: 37%;
+    top: 3%;
+    white-space: nowrap;
+}
+.edit{
+    position: absolute;
+    right:5%;
+    top:2.5%;
+    font-size: 30px;
+}
+.container{
+    display: grid;
+    flex-direction: column;
+    place-items: center;
+    height: 100vh;
+    background-color: #006973;
+    overflow-y: auto;
+}
+.main{
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 90vh;
+    padding-bottom: 80px;
+    background-color: white;
+}
+h2{
+    text-align: center;
+    color: #006973;
+    margin-bottom: 0px;
+}
+p{
+    text-align: center;
+    color: #006973;
+    margin-top: 0px;
+    margin-bottom: 50px;
+}
+/* Avatar Upload */
+.avatarWrapper{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+.avatarLabel{
+    cursor: pointer;
+    display: block;
+    width: 120px;
+    height: 120px;
+    position: relative;
+}
+.avatar{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #CFEEF5;
+    background-size: cover;
+    background-position: center center;
+}
+.avatarLabel input[type="file"]{
+    position:absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+.plusIcon{
+    font-size:50px;
+    color:white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #CFEEF5;
+}
+.box{
+    width: 380px;
+    background-color: #CFEEF5;
+    border-radius: 10px;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+/* User Info */
+.itemValue{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: larger;
+    width: 100%;
+    color: #006973;
+}
+.item{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    color: #55BDCA;
+}
+.puzzleTitle{
+    color:#55BDCA;
+    margin-bottom: 5px;
+    font-weight: 400;
+}
+.puzzleImg{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    border-radius: 10px;
+    height: auto;
+    margin-top: 5px;
+}
+.boxTitle{
+    margin-top: 10px;
+    color: #006973;
+    font-weight: 800;
+}
+.collectionImage{
+    width: 90px;
+    height: 60px;
+    margin-left: 10px;
+    float: left;
+    border-radius: 10px;
+}
+.friend_avatar{
+    width: 55px;
+    height: 55px;
+    margin-left: 10px;
+    margin-right: 5px;
+    float:left;
+}
+/* Education components */
+.educationContainerWrapper {
+    display: flex; /* 使用 Flex 布局 */
+    justify-content: space-between; /* 在容器内均匀分布子元素，水平并列排列 */
+    align-items: center; /* 垂直居中子元素 */
+}
+.educationButtonGroup{
+}
+.add{
+    float: right;
+    padding-left: 10px;
+    font-size: 50px;
+    color: #F27B42;
+}
+.image{
+    height: 20px;
+    width: 40px;
+    margin-left: 10px;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+.sidebar{
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: 20px;
+    }
+    /* footer */
+    .bottomButton{
+        width: 90px;
+        padding-left:20px;
+        padding-right: 20px;
+    }
+    .footer{
+        display: inline;
+        position: fixed;
+        text-align: center;
+        bottom: 0;
+        height:80px;
+        --bottom-navigation-item-font-size: 13px;
+        --bottom-navigation-item-active-color: #646566;
+        white-space: nowrap;
+    }  
+    .addButton{
+        font-size: 35px;
+    }
+
+.uploaded-avatar {
+    width: 100%;
+    height: 100%;
+}
+.defalut-avatar{
+    width: 70%;
+    height: 80%;
+}
+.menu-item{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+}
+.menu-icon{
+    color: #ffffff;
+    font-size: 20px;
+}
+.menu-icon1{
+    color: #ffffff;
+    font-size: 25px;
+    margin-right: 15px;
+}
+.menu-icon2{
+    color: #ffffff;
+    font-size: 25px;
+    margin-right: 5px;
+}
+.menu-icon3{
+    color: #ffffff;
+    font-size: 25px;
+    margin-right: 1px;
+}
+.menu-button{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    cursor: pointer;
+}
+.menu-button3{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 130px;
+    cursor: pointer;
+}
+.menu-button3 p{
+    font-size: 20px;
+    font-weight: 550;
+    margin: 20px 35px;
+}
+.menu-button p{
+    font-size: 20px;
+    font-weight: 550;
+    margin: 30px 30px;
+    text-decoration: none;
+}

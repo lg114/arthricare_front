@@ -1,22 +1,46 @@
 <!--User Profile Page -->
 <script>
-    import { ref} from 'vue';
-    import { MoreFilled } from '@element-plus/icons';
-    import { UserFilled, Edit, CirclePlus, HomeFilled, Calendar, CirclePlusFilled, Sugar, Present, Avatar, CaretRight, Message, MessageBox, Reading, WarningFilled, SwitchButton } from '@element-plus/icons';
-
+    import { ref } from 'vue';
+    import { LineHorizontal320Filled,Pill28Filled, ChannelAdd20Regular, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular, Edit20Regular, Camera20Filled } from '@vicons/fluent'
+    import { Icon } from '@vicons/utils'
+    import SideBarContent from '@/component/Sidebar.vue';
+    import { UserFilled } from '@element-plus/icons-vue';
+    import { ImagePreview } from '@varlet/ui'
+    
     export default{
         mounted() {
-                document.title = "User Profile | ArthriCare";
+            document.title = "User Profile | ArthriCare";
+        },
+        setup(){
         },
         data(){
             return{
                 user:{
                     name: 'Username',
-                    level: '69',
-                    points: '420'
+                    email: 'arthricare@example.com',
+                    age: '26',
+                    height: '185cm',
+                    weight: '70kg',
+                },
+                puzzle:{
+                    url: require("@/assets/puzzleImage/puzzle1_completed.jpg"),
+                    title: 'Italian Landscape with Girl Milking a Goat',
                 },
                 drawer: ref(false),
+                showAction: ref(false), //Show actions of the fab
+                //For avatar upload
+                avatarData: null
             };
+        },
+        computed:{
+            avatarStyle(){
+                if(this.avatarData){
+                    return{
+                        backgroundImage: `url(${this.avatarData})`
+                    };
+                }
+                return {};
+            }
         },
         methods:{
             openDrawer() {
@@ -28,25 +52,40 @@
             //Router
             goToUserProfile(){
                 this.$router.push('/UserProfile');
+            },
+            toggleAction(){
+                this.showAction.value = !this.showAction.value
+            },
+            previewAvatar(event){
+                const file = event.target.files[0];
+                if(file){
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        this.avatarData = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            },
+            previewPuzzle1(){
+                ImagePreview(this.puzzle.url)
+            },
+            previewPuzzle2(){
+                ImagePreview("https://cdn.britannica.com/78/43678-050-F4DC8D93/Starry-Night-canvas-Vincent-van-Gogh-New-1889.jpg")
             }
         },
         components: {
-            MoreFilled,
             UserFilled,
-            Calendar,
-            CirclePlus,
-            HomeFilled,
-            Message,
-            MessageBox,
-            Reading,
-            WarningFilled,
-            Sugar,
-            SwitchButton,
-            Edit,
-            CaretRight,
-            Avatar,
-            Present,
-            CirclePlusFilled
+            LineHorizontal320Filled, 
+            Pill28Filled, ChannelAdd20Regular,
+            Home20Regular, 
+            BriefcaseMedical20Regular,
+             Gift20Regular, 
+             PeopleCommunity20Regular, 
+             Edit20Regular,
+            //  AddCircle20Regular,
+            Icon,
+            SideBarContent,
+            Camera20Filled
         }
     };
 </script>
@@ -55,259 +94,229 @@
     <div class="container">
         <el-container>
             <el-header class="header">
-                <el-icon class="more" @click="drawer = true"><MoreFilled></MoreFilled></el-icon>
-                <el-icon class="user"><UserFilled></UserFilled></el-icon>
+                <Icon class="more" @click="drawer = true"><LineHorizontal320Filled /></Icon>
+                <!-- <Icon class="user"><Person20Filled /></Icon> -->
                 <b class="pageTitle">My Profile</b>
-                <el-icon class="edit"><Edit></Edit></el-icon>
+                <router-link to="/EditProfile" style="color: white;">
+                <Icon class="edit"><Edit20Regular /></Icon>
+                </router-link>
             </el-header>
             <el-main class="main">
-                <el-avatar class="avatar" icon="el-icon-user-solid"></el-avatar> 
-                <h2>{{ user.name }}</h2>
-                <p>Level {{ user.level }} | {{ user.points }} points</p>
-                <div class="box">
-                    <text class="boxTitle">My Puzzles</text><br><br>
-                    <el-icon class="add"><CirclePlus></CirclePlus></el-icon>
+                <var-sticky>
+                    <div style="background-color: white;">
+                <div class="avatarWrapper">
+                    <!-- NEED TO BE CONNECTED TO THE BACKEND
+                         AVATAR IMAGE VARIABLE IS IN THE SCRIPT {avatarData}
+                         需要连接后端
+                         头像图片的变量名为{avatarData}
+                    -->
+                    <label class="avatarLabel">
+                        <div class="avatar" :style="avatarStyle">
+                            <div v-if="!avatarData" class="plusIcon"><Icon><Camera20Filled /></Icon></div>
+                        </div>
+                        <input type="file" @change="previewAvatar" style="display: none">
+                    </label>
                 </div>
-                <div class="box">
-                    <text class="boxTitle">My Friends</text><br><br>
-                    <el-icon class="add"><CirclePlus></CirclePlus></el-icon>
+                <h2 style="margin-top: 5px;">{{ user.name }}</h2>
+                <p>{{ user.email }}</p>
+                <div style="background-color: #CFEEF5; border-radius: 10px; box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);">
+                <var-row :gutter="[10,10]" justify="center" style="margin-top: -20px;">
+                    <var-col :span="7">
+                        <div class="itemValue">{{ user.age }}</div>
+                    </var-col>
+                    <var-divider vertical="ture" />
+                    <var-col :span="7" justify="center">
+                        <div class="itemValue">{{ user.height }}</div>
+                    </var-col>
+                    <var-divider vertical="ture" />
+                    <var-col :span="7" justify="flex-end">
+                        <div class="itemValue">{{ user.weight }}</div>
+                    </var-col>
+                </var-row>
+                <var-row :gutter="[10,8]" justify="center">
+                    <var-col :span="7" justify="flex-start">
+                        <div class="item">Age</div>
+                    </var-col>
+                    <var-divider vertical="ture" />
+                    <var-col :span="7" justify="center">
+                        <div class="item">Height</div>
+                    </var-col>
+                    <var-divider vertical="ture" />
+                    <var-col :span="7" justify="flex-end">
+                        <div class="item">Weight</div>
+                    </var-col>
+                </var-row>
                 </div>
-                <div class="box">
-                    <text class="boxTitle">My Posts</text><br><br>
-                    <el-icon class="add"><CirclePlus></CirclePlus></el-icon>
+                <br>
+                <var-divider description="My Puzzles" style="--divider-text-color: #006973; font-size: larger;" />
+
                 </div>
-                <div class="box">
-                    <text class="boxTitle">My Meds</text><br><br>
-                    <el-icon class="add"><CirclePlus></CirclePlus></el-icon>
+            </var-sticky>
+                <!-- <div class="box"> -->
+                    <!-- JUST PLACEHOLDER 无需连接后端 -->
+                    <!-- <span class="boxTitle">My Education</span><br><br>
+                    <var-row justify="center">
+                        <var-button-group class="educationButtonGroup" size="large">
+                            <var-link to="/EducationVideo" underline="none">
+                            <var-button color="#55BDCA" text-color="white">Video</var-button>
+                            </var-link>
+                            <var-link to="/EducationArticle" underline="none">
+                            <var-button color="#F27B42" text-color="white">Article</var-button>
+                            </var-link>
+                        </var-button-group>
+                    </var-row>
                 </div>
+                <div class="box"> -->
+                    <!-- NEED TO BE CONNECTED TO THE BACKEND
+                         INCLUDING CONTACTS' AVATARS
+                         AND CORRESPONDING CHAT PAGE
+                        需要连接后端
+                        包括联系人头像
+                        与相应的消息界面
+                    -->
+                    <!-- <span class="boxTitle">Latest Contacts</span><br><br>
+                    <var-link to="/Chat">
+                        <img src="@/assets/friend_1.png" class="friend_avatar"/>
+                    </var-link>
+                    <var-link to="/Chat">
+                        <img src="@/assets/friend_2.png" class="friend_avatar"/>
+                    </var-link>
+                    <var-link to="/Chat">
+                        <img src="@/assets/friend_3.png" class="friend_avatar"/>
+                    </var-link>
+                    <var-link to="/Chat">
+                        <img src="@/assets/friend_4.png" class="friend_avatar"/>
+                    </var-link>
+                    <var-link to="/Chat">
+                        <img src="@/assets/friend_5.png" class="friend_avatar"/>
+                    </var-link>
+                </div>
+                <div class="box"> -->
+                    <!-- NEED TO BE CONNECTED TO THE BACKEND
+                         USER'S MOST RECENT POST
+                         需要连接后端
+                         用户最新发布的帖子
+                    -->
+                    <!-- <span class="boxTitle">My Posts</span><br><br>
+                    <var-row justify="center">
+                        <var-link to="/PostDetail/1" underline="none">
+                        <var-button block size="large" color="#F27B42" text-color="white">My Recent Post</var-button>
+                        </var-link>
+                    </var-row>
+                </div> -->
+                <!-- <div class="box"> -->
+                    <!-- <h2 class="boxTitle">My Puzzles</h2> -->
+                    <div style="overflow: hidden; text-align: center;">
+                    
+                    <span class="puzzleTitle">{{ puzzle.title }}</span>
+                    <img :src="puzzle.url" @click="previewPuzzle1" class="puzzleImg"/>
+                    <var-divider></var-divider>
+                    <span class="puzzleTitle">The Starry Night</span>
+                    <img src="https://cdn.britannica.com/78/43678-050-F4DC8D93/Starry-Night-canvas-Vincent-van-Gogh-New-1889.jpg" @click="previewPuzzle2" class="puzzleImg"/>
+                </div>
+                    <!-- <var-row :gutter="[10,10]" justify="space-around" style="margin-bottom: 5px">
+                    <var-col :span="8">
+                        <img :src="puzzle.url" @click="previewPuzzle" class="puzzleImg"/>
+                    </var-col>
+                    <var-col :span="8">
+                        <img :src="puzzle.url" @click="previewPuzzle" class="puzzleImg"/>
+                    </var-col>
+                    <var-col :span="8">
+                        <img :src="puzzle.url" @click="previewPuzzle" class="puzzleImg"/>
+                    </var-col>
+                </var-row>
+                <var-row :gutter="[10,10]" justify="space-around">
+                    <var-col :span="8">
+                        <img :src="puzzle.url" @click="previewPuzzle" class="puzzleImg"/>
+                    </var-col>
+                    <var-col :span="8">
+                        <img :src="puzzle.url" @click="previewPuzzle" class="puzzleImg"/>
+                    </var-col>
+                    <var-col :span="8">
+                        <img :src="puzzle.url" @click="previewPuzzle" class="puzzleImg"/>
+                    </var-col>
+                </var-row> -->
+                    
+                <!-- </div> -->
+                    <!-- NEED TO BE CONNECTED TO THE BACKEND
+                         USER'S COMPLETED PUZZLE PICTURES
+                         需要连接后端
+                         用户已完成的拼图
+                    -->
+
+                    <!-- <span class="boxTitle">My Puzzles</span><br><br>
+                    <img src="@/assets/pic_1.jpg" class="collectionImage" :fit="cover"/>
+                    <img src="@/assets/pic_2.jpg" class="collectionImage" :fit="cover"/>
+                    <img src="@/assets/pic_3.png" class="collectionImage" :fit="cover"/>
+                    <Icon class="add"><AddCircle20Regular /></Icon> -->
+
+                
+                
             </el-main> 
         </el-container>
-        <el-footer class="footer">
-                <router-link to = "/Home">
-                <el-icon class="footerBtn" id="home"><HomeFilled></HomeFilled></el-icon>                    
-                </router-link>
-                <el-icon class="footerBtn" id="calendar"><Calendar></Calendar></el-icon>
-                <router-link to = "/AddMed">
-                    <el-icon class="footerBtn" id="addMed"><CirclePlusFilled></CirclePlusFilled></el-icon>
-                </router-link>
-                <el-icon class="footerBtn" id="medication"><Sugar></Sugar></el-icon>
-                <el-icon class="footerBtn" id="rewards"><Present></Present></el-icon>
-        </el-footer>
-        <el-drawer style="background-color: #1890FF;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
+        <var-bottom-navigation
+            class="footer"
+            v-model:active="active"
+            border="true"
+            safe-area="true"
+            :fab-props="{color:'#55BDCA'}"
+        >
+            <var-link href="/#/Home" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="homeButton">
+                <Icon  style="font-size: 38px;"><Home20Regular /></Icon><br>
+                <span>Home</span>
+            </var-bottom-navigation-item>
+            </var-link>
+            <var-link href="/#/MyMeds" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="medsButton">
+                <Icon style="font-size: 38px;"><BriefcaseMedical20Regular /></Icon><br>
+                <span>My Meds</span>
+            </var-bottom-navigation-item>
+            </var-link>
+            <var-link href="/#/Rewards" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="rewardsButton">
+                <Icon style="font-size: 38px;"><Gift20Regular /></Icon><br>
+                <span>Rewards</span>
+            </var-bottom-navigation-item>
+            </var-link>
+            <var-link href="/#/Community" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="profileButton">
+                <Icon style="font-size: 38px;"><PeopleCommunity20Regular /></Icon><br>
+                <span>Community</span>
+            </var-bottom-navigation-item>    
+            </var-link>
+
+        </var-bottom-navigation>
+                        <!-- Fab button -->
+                        <var-fab v-model:active="showAction" style="margin-bottom: 100px;" color="#006973" inactive-icon-size="26px" active-icon-size="30px" elevation="5">
+            <var-button class="action" round color="#F27B42" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
+                <var-link href="/#/AddPost" text-color="white" text-size="25px">
+                <Icon><ChannelAdd20Regular /></Icon>
+            </var-link>
+            </var-button>
+            <var-button class="action" round color="#55BDCA" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
+                <var-link href="/#/AddMed" text-color="white" text-size="25px">
+                    <Icon><Pill28Filled /></Icon>
+                </var-link>
+            </var-button>
+        </var-fab>
+        <el-drawer style="background-color: #006973;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
+            <!--Action是模拟接口，与后端连接时更换-->
                 <div class = "sidebar">
-                    <div>
-                        <div class = "menu-item">
-                                <el-upload action="" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                                    <el-avatar :size="65">
-                                    <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
-                                    <template v-else>
-                                        <UserFilled class="defalut-avatar" />
-                                    </template>
-                                    </el-avatar>
-                                </el-upload>                                
-                                <div class = "menu-item">
-                                    <div class = "menu-button" @click = "goToUserProfile">
-                                        <el-icon class="menu-icon"><Avatar/></el-icon>
-                                        <p>My Profile</p>
-                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
-                                    </div>
-                                    <div class = "menu-button">
-                                        <el-icon class="menu-icon1"><Message /></el-icon>
-                                        <p>Message</p>
-                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
-                                    </div>
-                                    <div class = "menu-button">
-                                        <el-icon class="menu-icon2"><MessageBox /></el-icon>
-                                        <p>Community</p>
-                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
-                                    </div>
-                                    <div class = "menu-button">
-                                        <el-icon class="menu-icon1"><Reading /></el-icon>
-                                        <p>Education</p>
-                                        <el-icon class="menu-icon"><CaretRight /></el-icon>
-                                    </div>
-                                    <div class = "menu-button3">
-                                        <el-icon class="menu-icon3"><WarningFilled /></el-icon>
-                                        <p>About</p>
-                                    </div>
-                                    <div class = "menu-button">
-                                        <el-icon class="menu-icon3"><SwitchButton /></el-icon>
-                                        <p>Log Out</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <el-upload action="" :show-file-list="false">
+                        <el-avatar :size="65">
+                            <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
+                                <template v-else>
+                                    <UserFilled class="defalut-avatar" />
+                                </template>
+                        </el-avatar>   
+                    </el-upload> 
                 </div>
-            </el-drawer>
+            <SideBarContent :imgUrl="imgUrl" />    
+        </el-drawer>
     </div>
 </template>
 
 
 
-<style scoped>
-    .header{
-        display: flex;
-        align-items: center;
-        color: white;
-    }
-    .more{
-        margin-left: 5px;
-        margin-right: 50px;
-        font-size: 30px;
-    }
-    .user{
-        margin-left: 10px;
-        margin-right: 10px;
-        font-size: 30px;
-    }
-    .edit{
-        margin-left: 100px;
-        font-size: 30px;
-    }
-    .pageTitle{
-        font-size: 20px;
-        white-space: nowrap;
-    }
-    .container{
-        display: grid;
-        flex-direction: column;
-        place-items: center;
-        height: 100vh;
-        background-color: #1890FF;
-        overflow:hidden;
-    }
-    .main{
-        justify-content: center;
-        align-items: center;
-        overflow-y: auto;
-        height: 100vh;
-    }
-    h2{
-        text-align: center;
-        color: white;
-    }
-    p{
-        text-align: center;
-        color: white;
-    }
-    .avatar{
-        display: flex;
-        align-items: center;
-        width: 130px;
-        height: 130px;
-        margin-left: 115px;
-        border: 3px solid white;
-        box-shadow: 2px 2px 2px rgb(83, 83, 83);
-    }
-    .box{
-        width: 350px;
-        height: 90px;
-        background-color: white;
-        border-radius: 20px;
-        box-shadow: 2px 2px 2px rgb(83, 83, 83);
-        margin-left: 5px;
-        margin-bottom: 15px;
-    }
-    .boxTitle{
-        padding-left: 15px;
-    }
-    .add{
-        font-size: 40px;
-        margin-left: 300px;
-        color: #1890FF;
-    }
-    .image{
-        height: 20px;
-        width: 40px;
-        margin-left: 10px;
-        padding-right: 5px;
-        padding-left: 5px;
-    }
-    .footer{
-        background-color: white;
-        position:fixed;
-        bottom:0;
-        height: 60px;
-        width:100%;
-        text-align: center;
-    }
-    .sidebar{
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-            padding: 20px;
-        }
-    #addMed{
-        color: #1890FF;
-    }
-    .footerBtn{
-        font-size: 45px;
-        color: gray;
-        height: 50px;
-        width: 50px;
-        padding-top: 5px;
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-    .uploaded-avatar {
-            width: 100%;
-            height: 100%;
-        }
-        .defalut-avatar{
-            width: 70%;
-            height: 80%;
-        }
-        .menu-item{
-            margin-top: 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: #ffffff;
-        }
-        .menu-icon{
-            color: #ffffff;
-            font-size: 20px;
-        }
-        .menu-icon1{
-            color: #ffffff;
-            font-size: 25px;
-            margin-right: 15px;
-        }
-        .menu-icon2{
-            color: #ffffff;
-            font-size: 25px;
-            margin-right: 5px;
-        }
-        .menu-icon3{
-            color: #ffffff;
-            font-size: 25px;
-            margin-right: 1px;
-        }
-        .menu-button{
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            cursor: pointer;
-        }
-        .menu-button3{
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            margin-top: 130px;
-            cursor: pointer;
-        }
-        .menu-button3 p{
-            font-size: 20px;
-            font-weight: 550;
-            margin: 20px 35px;
-        }
-        .menu-button p{
-            font-size: 20px;
-            font-weight: 550;
-            margin: 30px 30px;
-            text-decoration: none;
-        }
-</style>
+<style src = "@/css/userprofile.css" scoped></style>
