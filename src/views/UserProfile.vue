@@ -98,117 +98,74 @@ Date: 2023/10/20 -->
         <el-container>
             <el-header class="header">
                 <Icon class="more" @click="drawer = true"><LineHorizontal320Filled /></Icon>
-                <!-- <Icon class="user"><Person20Filled /></Icon> -->
                 <b class="pageTitle">My Profile</b>
                 <router-link to="/EditProfile" style="color: white;">
+                    <!-- The user can update his/her personal information by click the pen icon at the top-right corner.
+                        It also contains Delete Account function.
+                    -->
                 <Icon class="edit"><Edit20Regular /></Icon>
                 </router-link>
             </el-header>
             <el-main class="main">
                 <var-sticky>
-                    <div style="background-color: white;">
-                <div class="avatarWrapper">
-                    <!-- NEED TO BE CONNECTED TO THE BACKEND
-                         AVATAR IMAGE VARIABLE IS IN THE SCRIPT {avatarData}
-                         需要连接后端
-                         头像图片的变量名为{avatarData}
-                    -->
-                    <label class="avatarLabel">
-                        <div class="avatar" :style="avatarStyle">
-                            <div v-if="!avatarData" class="plusIcon"><Icon><Camera20Filled /></Icon></div>
+                    <!-- This first half section shows user's personal information. Username, email, avatar, age, height, and weight. -->
+                            <div style="background-color: white;">
+                        <div class="avatarWrapper">
+                            <!-- FOR TINGTING
+                                NEED TO BE CONNECTED TO THE BACKEND
+                                AVATAR IMAGE VARIABLE IS IN THE SCRIPT {avatarData}
+                                需要连接后端
+                                头像图片的变量名为{avatarData}
+                            -->
+                            <!-- FOR DON
+                                User is able to upload avatars by clicking the green round part, and the process can be repeated
+                            -->
+                            <label class="avatarLabel">
+                                <div class="avatar" :style="avatarStyle">
+                                    <div v-if="!avatarData" class="plusIcon"><Icon><Camera20Filled /></Icon></div>
+                                </div>
+                                <input type="file" @change="previewAvatar" style="display: none">
+                            </label>
                         </div>
-                        <input type="file" @change="previewAvatar" style="display: none">
-                    </label>
-                </div>
-                <h2 style="margin-top: 5px;">{{ user.name }}</h2>
-                <p>{{ user.email }}</p>
-                <div style="background-color: #CFEEF5; border-radius: 10px; box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);">
-                <var-row :gutter="[10,10]" justify="center" style="margin-top: -20px;">
-                    <var-col :span="7">
-                        <div class="itemValue">{{ user.age }}</div>
-                    </var-col>
-                    <var-divider vertical="ture" />
-                    <var-col :span="7" justify="center">
-                        <div class="itemValue">{{ user.height }}</div>
-                    </var-col>
-                    <var-divider vertical="ture" />
-                    <var-col :span="7" justify="flex-end">
-                        <div class="itemValue">{{ user.weight }}</div>
-                    </var-col>
-                </var-row>
-                <var-row :gutter="[10,8]" justify="center">
-                    <var-col :span="7" justify="flex-start">
-                        <div class="item">Age</div>
-                    </var-col>
-                    <var-divider vertical="ture" />
-                    <var-col :span="7" justify="center">
-                        <div class="item">Height</div>
-                    </var-col>
-                    <var-divider vertical="ture" />
-                    <var-col :span="7" justify="flex-end">
-                        <div class="item">Weight</div>
-                    </var-col>
-                </var-row>
-                </div>
-                <br>
-                <var-divider description="My Puzzles" style="--divider-text-color: #006973; font-size: larger;" />
+                        <h2 style="margin-top: 5px;">{{ user.name }}</h2>
+                        <p>{{ user.email }}</p>
+                        <div style="background-color: #CFEEF5; border-radius: 10px; box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);">
+                        <var-row :gutter="[10,10]" justify="center" style="margin-top: -20px;">
+                            <var-col :span="7">
+                                <div class="itemValue">{{ user.age }}</div>
+                            </var-col>
+                            <var-divider vertical="ture" />
+                            <var-col :span="7" justify="center">
+                                <div class="itemValue">{{ user.height }}</div>
+                            </var-col>
+                            <var-divider vertical="ture" />
+                            <var-col :span="7" justify="flex-end">
+                                <div class="itemValue">{{ user.weight }}</div>
+                            </var-col>
+                        </var-row>
+                        <var-row :gutter="[10,8]" justify="center">
+                            <var-col :span="7" justify="flex-start">
+                                <div class="item">Age</div>
+                            </var-col>
+                            <var-divider vertical="ture" />
+                            <var-col :span="7" justify="center">
+                                <div class="item">Height</div>
+                            </var-col>
+                            <var-divider vertical="ture" />
+                            <var-col :span="7" justify="flex-end">
+                                <div class="item">Weight</div>
+                            </var-col>
+                        </var-row>
+                        </div>
+                        <br>
+                        <var-divider description="My Puzzles" style="--divider-text-color: #006973; font-size: larger;" />
 
-                </div>
+                        </div>
             </var-sticky>
-                <!-- <div class="box"> -->
-                    <!-- JUST PLACEHOLDER 无需连接后端 -->
-                    <!-- <span class="boxTitle">My Education</span><br><br>
-                    <var-row justify="center">
-                        <var-button-group class="educationButtonGroup" size="large">
-                            <var-link to="/EducationVideo" underline="none">
-                            <var-button color="#55BDCA" text-color="white">Video</var-button>
-                            </var-link>
-                            <var-link to="/EducationArticle" underline="none">
-                            <var-button color="#F27B42" text-color="white">Article</var-button>
-                            </var-link>
-                        </var-button-group>
-                    </var-row>
-                </div>
-                <div class="box"> -->
-                    <!-- NEED TO BE CONNECTED TO THE BACKEND
-                         INCLUDING CONTACTS' AVATARS
-                         AND CORRESPONDING CHAT PAGE
-                        需要连接后端
-                        包括联系人头像
-                        与相应的消息界面
+
+                    <!-- The second half section shows all the puzzles that the user has completed.
+                        If the picture is clicked it will show in full screen.
                     -->
-                    <!-- <span class="boxTitle">Latest Contacts</span><br><br>
-                    <var-link to="/Chat">
-                        <img src="@/assets/friend_1.png" class="friend_avatar"/>
-                    </var-link>
-                    <var-link to="/Chat">
-                        <img src="@/assets/friend_2.png" class="friend_avatar"/>
-                    </var-link>
-                    <var-link to="/Chat">
-                        <img src="@/assets/friend_3.png" class="friend_avatar"/>
-                    </var-link>
-                    <var-link to="/Chat">
-                        <img src="@/assets/friend_4.png" class="friend_avatar"/>
-                    </var-link>
-                    <var-link to="/Chat">
-                        <img src="@/assets/friend_5.png" class="friend_avatar"/>
-                    </var-link>
-                </div>
-                <div class="box"> -->
-                    <!-- NEED TO BE CONNECTED TO THE BACKEND
-                         USER'S MOST RECENT POST
-                         需要连接后端
-                         用户最新发布的帖子
-                    -->
-                    <!-- <span class="boxTitle">My Posts</span><br><br>
-                    <var-row justify="center">
-                        <var-link to="/PostDetail/1" underline="none">
-                        <var-button block size="large" color="#F27B42" text-color="white">My Recent Post</var-button>
-                        </var-link>
-                    </var-row>
-                </div> -->
-                <!-- <div class="box"> -->
-                    <!-- <h2 class="boxTitle">My Puzzles</h2> -->
                     <div style="overflow: hidden; text-align: center;">
                     
                     <span class="puzzleTitle">{{ puzzle.title }}</span>
@@ -217,43 +174,6 @@ Date: 2023/10/20 -->
                     <span class="puzzleTitle">The Starry Night</span>
                     <img src="https://cdn.britannica.com/78/43678-050-F4DC8D93/Starry-Night-canvas-Vincent-van-Gogh-New-1889.jpg" @click="previewPuzzle2" class="puzzleImg"/>
                 </div>
-                    <!-- <var-row :gutter="[10,10]" justify="space-around" style="margin-bottom: 5px">
-                    <var-col :span="8">
-                        <img :src="puzzle.url" @click="previewPuzzle" class="puzzleImg"/>
-                    </var-col>
-                    <var-col :span="8">
-                        <img :src="puzzle.url" @click="previewPuzzle" class="puzzleImg"/>
-                    </var-col>
-                    <var-col :span="8">
-                        <img :src="puzzle.url" @click="previewPuzzle" class="puzzleImg"/>
-                    </var-col>
-                </var-row>
-                <var-row :gutter="[10,10]" justify="space-around">
-                    <var-col :span="8">
-                        <img :src="puzzle.url" @click="previewPuzzle" class="puzzleImg"/>
-                    </var-col>
-                    <var-col :span="8">
-                        <img :src="puzzle.url" @click="previewPuzzle" class="puzzleImg"/>
-                    </var-col>
-                    <var-col :span="8">
-                        <img :src="puzzle.url" @click="previewPuzzle" class="puzzleImg"/>
-                    </var-col>
-                </var-row> -->
-                    
-                <!-- </div> -->
-                    <!-- NEED TO BE CONNECTED TO THE BACKEND
-                         USER'S COMPLETED PUZZLE PICTURES
-                         需要连接后端
-                         用户已完成的拼图
-                    -->
-
-                    <!-- <span class="boxTitle">My Puzzles</span><br><br>
-                    <img src="@/assets/pic_1.jpg" class="collectionImage" :fit="cover"/>
-                    <img src="@/assets/pic_2.jpg" class="collectionImage" :fit="cover"/>
-                    <img src="@/assets/pic_3.png" class="collectionImage" :fit="cover"/>
-                    <Icon class="add"><AddCircle20Regular /></Icon> -->
-
-                
                 
             </el-main> 
         </el-container>
@@ -304,7 +224,7 @@ Date: 2023/10/20 -->
             </var-button>
         </var-fab>
         <el-drawer style="background-color: #006973;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
-            <!--Action是模拟接口，与后端连接时更换-->
+
                 <div class = "sidebar">
                     <el-upload action="" :show-file-list="false">
                         <el-avatar :size="65">
