@@ -9,7 +9,7 @@
   import { ChevronLeft20Filled } from '@vicons/fluent'
 </script>
 
-// This view is used to edit the information about medication.
+ <!-- This view is used to edit the information about medication. -->
 <template>
   <el-container class = "container">
      
@@ -508,7 +508,7 @@ export default {
       timeInput1: this.getCurrentTime(),
       timeInput2: this.getCurrentTime(),
       timeInput3: this.getCurrentTime(),
-        // array to save the name of medication
+        <!-- array to save the name of medication-->
       Meds : [
        "Abatacept",
       "Adalimumab",
@@ -585,7 +585,7 @@ export default {
   },
   
   methods: {
-      // function to get the current time.
+      <!-- the function to get the current time.-->
     getCurrentTime() {
       const now = new Date();
       const formattedTime = now.toISOString().slice(11, 16);
