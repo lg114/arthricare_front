@@ -3,6 +3,13 @@
     Author: Lin Gan
     Student number: 6502933
     Date: 2023/10/20  
+ --- Description: In the script section, necessary Vue components and libraries are imported, and various variables and methods are defined.
+    These include methods for handling user-selected dates, formatting time, displaying medication details, etc.
+    In the template section, the layout structure of the page is defined, including the top navigation bar, the calendar component,
+    the medication reminder list, the discussion component, etc.
+    It also includes a dialog for displaying medication details and another dialog for selecting a specific time.
+    Finally, at the bottom of the page, there is a bottom navigation bar with several navigation buttons for redirecting to other pages. 
+    There is also a floating action button for performing addition operations.
 -->
 <script>
     import { ref } from 'vue';
