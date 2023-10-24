@@ -5,7 +5,7 @@
   // import {Plus,Minus} from '@element-plus/icons-vue';
   import '@varlet/ui/es/button/style/index';
  
-  
+// totally a placeholder , you can ignore this view.
 </script>
 
 <template>
