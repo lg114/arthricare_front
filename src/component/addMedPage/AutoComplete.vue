@@ -20,8 +20,9 @@
   
   export default {
     name: 'AutoCompleteComponent',
-    setup(_, { emit }) {
-      const selectedMed = ref('');
+
+    setup(_,{ emit }) {
+      const selectedMed = ref();
   
       const Meds = [
       "Abatacept","Adalimumab",
@@ -93,6 +94,7 @@
       watch(selectedMed, (newValue) => {
         emit('med-selected', newValue);  // Emitting the input value to parent
       });
+
   
       return {
         selectedMed,
@@ -100,6 +102,8 @@
         handleSelect
       };
     }
+
+    
   };
   </script>
   

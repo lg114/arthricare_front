@@ -6,14 +6,8 @@
 <script setup>
    //import {ArrowLeftBold} from '@element-plus/icons-vue';
    //import {ArrowRightBold} from '@element-plus/icons-vue';
-   import red from "@/assets/capsulesred.png";
-   import yellow from "@/assets/capsulesyellow.png";
-   import green from "@/assets/capsulesgreen.png";
-   import blue from "@/assets/capsulesblue.png";
-   import purple from "@/assets/capsulespurple.png";
-   import orange from "@/assets/capsulesorange.png";
-   import bottle from "@/assets/pills-bottle.png";
-   import tablet from "@/assets/capsules.png";
+   import pill from "@/assets/capsules.png";
+   import tablet from "@/assets/pill.png";
    import DoubleArrow from "@/assets/previous3.png";
    import injection from "@/assets/injection.png";
    import drop from "@/assets/drop.png";
@@ -40,19 +34,30 @@
    <div id = container2>
     <div class="ExpiredContainer">
         <div class="ExpiredMedication">
-          <p class="medication-word">Current Medication</p>
+          <p class="medication-word" v-motion-slide-right>Current Medication</p>
         </div>
         
-        <div class = "zeroObjAlert" v-if="store.state.unExperiedMedArray.length === 0">
+        <div class = "zeroObjAlert" v-if="unExperiedMedArray.length === 0">
           <img src="@/assets/notification-bell.png" alt="Image" class="testImg">
           <p class="zeroObjAlertP">You haven't added any medication</p>
         </div >
         
-        <div class="unExperiedmed" v-for="(item, index) in store.state.unExperiedMedArray" :key="index" data-type="0">
-          
-          <div class="medObject" @touchstart.capture="touchStart" @touchend.capture="touchEnd" @click="oneself">
-           <div class="container-flex">
-            <div class="imgSpace">
+       
+        <div class="unExperiedmed" v-for="item in unExperiedMedArray" :key="item.medicationId" data-type="0" >
+          <div class="medObject" @touchstart.capture="touchStart" @touchend.capture="touchEnd" @click="oneself"
+          v-motion="`item-${item.medicationId}`"
+           :initial="{ opacity: 0, x: 100 }"
+           :enter="{ opacity: 1, x: 0 }"
+           :leave="{ opacity: 0, x: -250 }"
+           :variants="{moveUp: {opacity: 1, y: -102,    transition: {
+            type: 'spring',
+            stiffness: 250,
+            damping: 25,
+            mass: 0.5,
+          },}}">
+           <div class="container-flex" 
+           >
+            <div class="imgSpace" >
             <div class="Drug_picture">
               <img :src= imgArray[0] v-if="item.Category=='Pill'" alt="Icon" class="capsules_blue-img" /> 
               <img :src= imgArray[1] v-if="item.Category=='Tablet'" alt="Icon" class="capsules_blue-img" /> 
@@ -63,32 +68,30 @@
            </div>
             <div class="container-block">
               <div class="Drug_name">
-                <p class="medName-font">{{ item.MedName }}</p>
+                <div class="medName-font">{{ item.MedName }}</div>
               </div>
+              
               <div class="Drug_data">
-                <p class="medData-font">{{ item.date }}</p>
+                <div class="medData-font">Next reminder:</div>
+                <div class="medData-font">{{ item.Message }}</div>
               </div>
             </div>
-             <!-- <div class="arrow_button">
-              <router-link :to="{ path: '/EditMed', query: { Index: index } }" @click="handleArrowButtonClick('unExperiedMedArray', index)">
-                <ChevronRight20Filled class="arrowBtn_icon"/>
-              </router-link>
-            </div>  -->
+
 
             <img :src="DoubleArrow" alt="Icon" class="doubleArrow" /> 
            
           </div>
-          <div class="removeBtn" :data-index="index">
-            <router-link :to="{ path: '/EditMed', query: { Index: index } }">
+          <div class="removeBtn" >
+            <router-link :to="{ path: '/EditMed', query: { Index: item.medicationId } }">
               <Edit  class="cross"/>
             </router-link>
             <p class="removeP">Edit</p>
           </div>
-          <div class="removeBtn2" @click="stopMed(index)" :data-index="index">
+          <div class="removeBtn2" @click="stopMed(item.medicationId)" >
             <TrashCan  class="cross"/>
             <p class="removeP">Stop</p>
           </div>
-          <div class="removeBtn3" @click="unExpiredRemove" :data-index="index">
+          <div class="removeBtn3" @click="unExpiredRemove(item.medicationId)" >
             <Error  class="cross"/>
             <p class="removeP">Delete</p>
           </div>
@@ -98,17 +101,29 @@
       </div>
       <div class="ExpiredContainer" style="margin-bottom:4vh;">
         <div class="ExpiredMedication">
-          <p class="medication-word">Past Medication</p>
+          <p class="medication-word" v-motion-slide-right>Past Medication</p>
         </div>
-        <div class = "zeroObjAlert" v-if="store.state.ExperiedMedArray.length === 0">
+        <div class = "zeroObjAlert" v-if="ExperiedMedArray.length === 0">
           <img src="@/assets/folder1.png" alt="Image" class="testImg">
           <p class="zeroObjAlertP">You don't have any past medication</p>
         </div >
 
-        <div class="Experiedmed" v-for="(item, index) in store.state.ExperiedMedArray" :key="index" data-type="0">
+
+        <div class="Experiedmed" v-for="item in ExperiedMedArray" :key="item.medicationId" data-type="0">
           <div class="medObject" @touchstart.capture="touchStart" @touchend.capture="touchEnd" @click="oneself" >
-            <div class="container-flex">
-            <div class="imgSpace">
+            <div class="container-flex"     
+            v-motion="`item-${item.medicationId}`"
+            :initial="{ opacity: 0, x: 100 }"
+            :enter="{ opacity: 1, x: 0 }"
+            :leave="{ opacity: 0, x: -250 }"
+            :variants="{moveUp:{opacity: 1, y: -61,},moveDown: {opacity: 1, y: 102,    
+            transition: {
+              type: 'spring',
+              stiffness: 250,
+              damping: 25,
+              mass: 0.5,
+            },}}">
+            <div class="imgSpace" >
             <div class="Drug_picture">
               <img :src= imgArray[0] v-if="item.Category=='Pill'" alt="Icon" class="capsules_blue-img" /> 
               <img :src= imgArray[1] v-if="item.Category=='Tablet'" alt="Icon" class="capsules_blue-img" /> 
@@ -118,10 +133,11 @@
           </div>
             <div class="container-block">
               <div class="Drug_name">
-                <p class="medName-font">{{ item.MedName }}</p>
+                <div class="medName-font">{{ item.MedName }}</div>
               </div>
               <div class="Drug_data">
-                <p class="medData-font">{{ item.date }}</p>
+                <div class="medData-font">Doses Taken/Total:</div>
+                <div class="medData-font">{{ item.Message }}</div>
               </div>
               <ChevronLeft20Filled  class="arrowBtn_icon"/>
             </div>
@@ -136,23 +152,21 @@
 
             <!-- ///////////////////////////////// -->
             </div>
-            <div class="removeBtn" @click="ExpiredRemove" :data-index="index">
+            <div class="removeBtn"  >
               <Edit  class="cross"/>
-              <p class="removeP">Edit</p>
-              
+              <p class="removeP">view history</p> 
             </div>
-            <div class="removeBtn2" @click="ExpiredRemove" :data-index="index">
+            <div class="removeBtn2"  >
               <Error  class="cross"/>
-              <p class="removeP">Stop</p>
+              <p class="removeP">Add dosages</p>
             </div>
-            <div class="removeBtn3"  @click="ExpiredRemove" :data-index="index">
+            <div class="removeBtn3"  @click="ExpiredRemove(item.medicationId)" >
               <TrashCan  class="cross"/>
               <p class="removeP">Delete</p>
            </div>
           </div>
        
         </div>
-     
       </div>
  </div>
  <var-bottom-navigation
@@ -519,7 +533,7 @@
     font-size: 2vh;
     line-height: 20px;
     text-align: left;
-    color: #006973;
+    color: #01385C;
     font-family: system-ui;
     font-weight: 500;
   }
@@ -613,7 +627,7 @@
     width:220px;
     height:25px;
     position: relative;
-    top:18px;
+    top:8px;
     left: 20px;
     display:flex;
     align-items: center;
@@ -621,36 +635,31 @@
 }
 
 .medName-font{
-    font-family: Myanmar Khyay;
     font-size: 120%;
     font-weight: bold;  
-    line-height: 28px;
     text-align: left;
     display: flex;
     align-items: flex-end;
     font-family: system-ui;
-    color:#006973;
+    color:#01385C;
 }
 
 .Drug_data{
     width: 230px;
     height: 12px;
     position: relative;
-    top:25px;
+    top:10px;
     left: 20px;
     display:flex;
+    flex-direction: column; 
     align-items: center;
 }
 .medData-font{
-    font-family: Myanmar Khyay;
     font-size: 90%;
     font-weight: 400;
-    line-height: 28px;
-    letter-spacing: 0em;
     text-align: left;
-    margin-bottom:1vw;
     font-family:system-ui;
-    color: #8fa9ac;
+    color: #01385C;
     width:100%
 }
 .arrowBtn_icon{
@@ -747,12 +756,18 @@
     color:white;
     z-index:2;
   }
+
+
+
 </style>
 <style>
+
+
  .var-button__content{
     font-size:20px;
     
   }
+
   :root {
   --font-size-xs: 10px;
   --font-size-sm: 12px;
@@ -775,9 +790,13 @@
 }
 </style>
 
+
 <script>
 import axios from 'axios';
 import { mapGetters } from 'vuex';
+import { useMotions } from '@vueuse/motion'
+import { Snackbar } from '@varlet/ui'
+const motions = useMotions();
 const port = 8181;
 const baseURL = `http://localhost:${port}`;
 
@@ -791,12 +810,13 @@ export default {
 
   },
 
+
   data() {
     return{
       MedicineArray: [],
       drawer: ref(false),
       showAction: ref(false),
-      imgArray:[bottle,tablet,injection,drop ,yellow,red,green,purple,orange,blue],
+      imgArray:[pill,tablet,injection,drop],
       isDragging: false,
       showDiv: false,
       startX: 0, 
@@ -806,7 +826,11 @@ export default {
         confirm: () => this.dialogYes(),
         cancel: () => this.dialogNo(),
         close: () => console.log("close"),
-      }
+      },
+
+      unExperiedMedArray:[],
+      ExperiedMedArray:[],
+      motionInstances: [],
     };
   },
   methods: {
@@ -852,46 +876,109 @@ export default {
     
      
       restSlide() {
-        let listItems = document.querySelectorAll(".unExperiedmed");
-       
-        for (let i = 0; i < listItems.length; i++) {
-          listItems[i].dataset.type = 0;
+        let listItem1 = document.querySelectorAll(".unExperiedmed");
+        let listItem2 = document.querySelectorAll(".Experiedmed");
+        for (let i = 0; i < listItem1.length; i++) {
+          listItem1[i].dataset.type = 0;
+        }
+        for (let i = 0; i < listItem2.length; i++) {
+          listItem2[i].dataset.type = 0;
         }
       },
 
-      stopMed(number){
-        let unExperiedmed = store.state.unExperiedMedArray[number];
+      removeItem(medId) {
+        const motionInstance = motions[`item-${medId}`];
+        const index = this.unExperiedMedArray.findIndex(med => med.medicationId === medId);
+        //const medRemove = this.unExperiedMedArray[index];
+
+        // Step 1: 触发leave动画
+        motionInstance.leave(async () => {
+          // Step 2: 触发后续元素的moveUp动画
+          for (let i = index + 1; i < this.unExperiedMedArray.length; i++) {
+            const nextMedId = this.unExperiedMedArray[i].medicationId;
+            const nextMotionInstance = motions[`item-${nextMedId}`];
+            nextMotionInstance.variant.value = 'moveUp';
+          }
+
+          // Step 3: 从unExperiedMedArray中删除该元素
+          //this.unExperiedMedArray.splice(index, 1);
+          
+
+        });
+      },
+
+      stopMed(medId){
+        this.restSlide();
         this.createStopAction().then(() =>{
         if(this.dialog==true){
-        store.state.unExperiedMedArray.splice(number, 1);
-        store.state.ExperiedMedArray.push(unExperiedmed);  
-        this.restSlide();
+
+        const motionInstance = motions[`item-${medId}`];
+        motionInstance.leave(() => {
+          const index = this.unExperiedMedArray.findIndex(med => med.medicationId === medId);
+          if (index !== -1) {
+              
+              const unExperiedmed = this.unExperiedMedArray[index];
+              this.unExperiedMedArray.splice(index, 1);
+              this.ExperiedMedArray.unshift(unExperiedmed); 
+          }
+        });
+        
+        /* 
+        axios.put(`${baseURL}/medications/updateMedicationExpiration/${unExperiedmed.medicationId}`)
+            .then(response => {
+              unExperiedmed.Message = response.data
+              ;
+            })
+            .catch(error => {
+                console.error('There was an error updating the medication expiration:', error);
+            });*/
         console.log("done")
       }else{
         console.log("NoNo")
       }
       })},
      
-      unExpiredRemove(e) {
-        let index = e.currentTarget.dataset.index;
+      unExpiredRemove(medId) {
+        const index = this.unExperiedMedArray.findIndex(med => med.medicationId === medId);
+        let unExperiedmed = this.unExperiedMedArray[index];
         this.restSlide();
         this.createDeleteAction().then(() =>{
         if(this.dialog==true){
-          store.state.unExperiedMedArray.splice(index, 1);
+          this.unExperiedMedArray.splice(index, 1);
         this.dialog = null
+          
+        axios.delete(`${baseURL}/medications/deleteMedication/${unExperiedmed.medicationId}`)
+          .then(response => {
+              Snackbar['success']("The medication has been deleted.")
+              console.log(response.data); // Should log "delete Success" if successful
+          })
+          .catch(error => {
+              console.error('Error deleting medication:', error);
+          });
       }else{
         console.log("NO")
       }
       })},
       
 
-      ExpiredRemove(e) {
-        let index = e.currentTarget.dataset.index;
+      ExpiredRemove(medId) {
+        const index = this.ExperiedMedArray.findIndex(med => med.medicationId === medId);
+        let Experiedmed = this.ExperiedMedArray[index];
         this.restSlide();
         this.createDeleteAction().then(() =>{
         if(this.dialog==true){
-        store.state.ExperiedMedArray.splice(index, 1);
+        this.ExperiedMedArray.splice(index, 1);
         this.dialog = null
+
+        
+        axios.delete(`${baseURL}/medications/deleteMedication/${Experiedmed.medicationId}`)
+          .then(response => {
+              Snackbar['success']("The medication has been deleted.")
+              console.log(response.data); // Should log "delete Success" if successful
+          })
+          .catch(error => {
+              console.error('Error deleting medication:', error);
+          });
       }else{
         console.log("NO")
       }
@@ -984,9 +1071,20 @@ export default {
           const dataObject = {
             medicationId:medication.medicationId,
             MedName:medication.medicationName,
-            date:test,
+            Category:medication.medicationCategory,
+            Date:medication.endDate,
+            Message:test,
           };
-          store.state.ExperiedMedArray.push(dataObject);
+          //console.log(dataObject)
+          this.ExperiedMedArray.push(dataObject);
+          
+
+          this.ExperiedMedArray.sort((a, b) => {
+            if (a.Date === b.Date) {
+                  return b.medicationId - a.medicationId; // If dates are the same, sort by medicationId in descending order
+              }
+              return b.Date - a.Date; // Sort in descending order
+          });
         })
         .catch(error => {
           console.log('Error fetching next reminder time:', error);
@@ -1005,33 +1103,38 @@ export default {
             return "An error occurred";
           }
         })
-        .then(nextReminder => {
+        .then(nextReminderData => {
+          //console.log(nextReminderData)
           const dataObject = {
             medicationId:medication.medicationId,
             MedName:medication.medicationName,
-            date:nextReminder,
+            Category:medication.medicationCategory,
+            Date:nextReminderData.reminderDate,
+            Message:nextReminderData.reminderMessage
           };
-          store.state.unExperiedMedArray.push(dataObject);
+          
+          this.unExperiedMedArray.push(dataObject);
+
+          this.unExperiedMedArray.sort((a, b) => {
+              if (a.Date === b.Date) {
+                  return b.medicationId - a.medicationId; // If dates are the same, sort by medicationId in descending order
+              }
+              return a.Date - b.Date; // Sort dates in ascending order
+          });
         })
         .catch(error => {
           console.log('Error fetching next reminder time:', error);
         });
     },
 
-    clearMedArray()
-    {
-      store.state.ExperiedMedArray = []
-      store.state.unExperiedMedArray = []
-    },
-
     handleArrowButtonClick(arrayName, index) {
       // arrayName表示点击的是哪个数组，index表示点击的是数组中的第几个药物项
       var medicationId;
       if (arrayName === 'unExperiedMedArray') {
-        medicationId = store.state.unExperiedMedArray[index].medicationId;
+        medicationId = this.unExperiedMedArray[index].medicationId;
         console.log('点击了未过期药物数组中的第' + (index + 1) + '项');
       } else if (arrayName === 'ExperiedMedArray') {
-        medicationId = store.state.ExperiedMedArray[index].medicationId;
+        medicationId = this.ExperiedMedArray[index].medicationId;
         console.log('国企药物'+medicationId);
       }
       sessionStorage.setItem('medicationId', medicationId);
@@ -1055,52 +1158,9 @@ export default {
   mounted(){
    
           document.title = "User Profile | ArthriCare";
-          this.clearMedArray();
-
-          const unExpiredMedicationTestData = {            
-            medicationId:2,
-            Category:"Tablet",
-            MedName:"Tamitami nmnni",
-            date:"Today 10:00"}
-         const unExpiredMedicationTestData2 = {            
-            medicationId:3,
-            Category:"Pill",
-            MedName:"grandonamo",
-            date:"Today 10:00"}
-            const unExpiredMedicationTestData3 = {            
-            medicationId:4,
-            Category:"Injection",
-            MedName:"Potion",
-            date:"Today 10:00"}
-
-             const unExpiredMedicationTestData4 = {            
-             medicationId:4,
-             Category:"Drop",
-             MedName:"Drop",
-             date:"Today 10:00"}
-
-          const expiredMedicationTestData = {            
-            medicationId:1,
-            Category:"Pill",
-            MedName:"Aspirin1",
-            date:"4/4"}
-
-           const expiredMedicationTestData2= {            
-            medicationId:1,
-            Category:"Pill",
-            MedName:"Aspirin2",
-            date:"6/4"}
-            
-          console.log(expiredMedicationTestData);
-          console.log(unExpiredMedicationTestData);
-          store.state.unExperiedMedArray.push(unExpiredMedicationTestData);
-          store.state.unExperiedMedArray.push(unExpiredMedicationTestData2);
-          store.state.unExperiedMedArray.push(unExpiredMedicationTestData3);
-          store.state.unExperiedMedArray.push(unExpiredMedicationTestData4);
-          store.state.ExperiedMedArray.push(expiredMedicationTestData);
-          store.state.ExperiedMedArray.push(expiredMedicationTestData2);
-          
-          
+          this.$nextTick(() => {
+            this.fetchData();
+          });
           //this.fetchData();
     }
 ,

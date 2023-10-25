@@ -55,16 +55,35 @@
 <script setup>
 import { ElTimePicker } from 'element-plus';
 import { StyleProvider } from '@varlet/ui';
-import { ref, watch, onMounted,defineEmits } from 'vue';
+import { ref, watch, onMounted,defineProps, defineExpose} from 'vue';
 
 
 const timeUnit = ref("Hours");
-const timePickers = ref([new Date().setHours(8, 0, 0, 0)]);
+const timePickers = ref(props.TimeArrayFromParent);
 const timeGap = ref(null);
-const emits = defineEmits(["update-time-pickers"]);
 
-watch(timePickers, newVal => {
-  emits('update-time-pickers', newVal);
+const props = defineProps({
+  TimeArrayFromParent: {
+    type: Array,
+    default: () => []
+  }
+});
+
+function fetchData()
+{
+    return timePickers.value;
+}
+defineExpose({ fetchData });
+
+watch(() => props.TimeArrayFromParent, (newValue) => {
+  console.log("TimeArray watch: "+newValue);
+  console.log("timePicker watch: "+timePickers.value)
+  if(newValue)
+  {
+    console.log("TimeArray watch: "+newValue);
+    //timePickers.value = newValue
+  }
+
 }, { deep: true });
 
 watch([timeGap,timeUnit], () => {

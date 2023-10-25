@@ -35,14 +35,12 @@
       <div class = "container3">
         <h1>MEDICATION DETAIL </h1>
 
+<!-- From here to the end of template, are the input bars user can input the medication information that they want to record.-->
         <p id = "label" >Medication Name *</p>
 
         <AutoComplete @med-selected="onMedSelected"></AutoComplete>
-        <div  class="menu" v-if="this.Meds2!==null  && showMed">
-          <div ref="MedOption"  class="selected-option" v-for="item in Meds2" :key="item" @click="handleItemClick(item)">{{ item }}</div>
-        </div> 
 
-
+    
       <div class="container-flex" >
         <div class="container-block"  >
           <p id = "label" >Category *</p>
@@ -74,16 +72,21 @@
         <div id="date">
             <DailyDatePicker v-if="selectedFrequency === 'Daily medication'"
               @update:start-date="handleStartDate"
-              @update:end-date="handleEndDate">
+              @update:end-date="handleEndDate"
+              @update:duration = "handleduration">
             </DailyDatePicker>
             <IntermittentDatePicker v-else-if="selectedFrequency === 'Intermittent medication'"
               @update:start-date="handleStartDate"
-              @update:end-date="handleEndDate">
+              @update:end-date="handleEndDate"
+              @update:duration = "handleduration">
               </IntermittentDatePicker>
         </div>
 
-        <p id = "label" >Time *</p>
-        <TimePickerGroup @update-time-pickers="handleTimePickersUpdate"></TimePickerGroup>
+        <p id = "label" v-if="selectedFrequency !== 'Only as needed'">Time *</p>
+        <TimePickerGroup 
+          v-if="selectedFrequency !== 'Only as needed'"
+          @update-time-pickers="handleTimePickersUpdate">
+        </TimePickerGroup>
  
         <el-footer class >
             <div class="buttons" >
@@ -367,7 +370,7 @@ text-align: center;
   width:95%;
   font-weight:600;
   font-size: 16px;
-  color:  #787885;
+  color:  #01385C;
   text-align: left;
   margin-bottom:3px;
   margin-top:4%;
@@ -489,6 +492,7 @@ option {
 </style>
 
 <script>
+   // The plugin is imported from here, including time picker, date picker, and array in vuex.
 import DailyDatePicker from "@/component/addMedPage/DailyDatePicker.vue";
 import TimePickerGroup from "@/component/addMedPage/TimePickerGroup.vue";
 import IntermittentDatePicker from "@/component/addMedPage/IntermittentDatePicker.vue";
@@ -502,16 +506,17 @@ import { Snackbar } from '@varlet/ui'
 import { StyleProvider } from '@varlet/ui'
 
 
-
+// Some constants
 const dosage = ref();
-const note = ref();
+const note = ref("");
 const selectedFrequency = ref("Daily medication");
 const medName = ref();
 const category = ref("Pill");
-const TimeData = ref([]);
+const TimeData = ref([new Date().setHours(8, 0, 0, 0)]);
 const StartDate = ref();
 const EndDate = ref([]);
 const EndDateSingle = ref();
+const duration = ref();
 
 const largeSnackBar = {
   '--snackbar-width': '512px'
@@ -538,6 +543,8 @@ export default {
         }, 2000)
       }
     },
+
+      // define the format of data and time
     formatDate(dateString) {
       return format(new Date(dateString), "yyyy-MM-dd"); 
     },
@@ -546,9 +553,10 @@ export default {
       return format(new Date(dateString), 'HH:mm'); 
     },
 
+
+    // get input of user from input bar
     onMedSelected(selectedValue) {
       medName.value = selectedValue;
-
     },
 
     onCategorySelected(selectedValue) {
@@ -556,15 +564,19 @@ export default {
 
     },
 
+    // set the data of time and date
     handleTimePickersUpdate(newTimePickers) {
       TimeData.value = newTimePickers;
     },
 
     handleStartDate(newStartDate) {
-      StartDate.value = newStartDate; // 或其他你想做的操作
+      StartDate.value = newStartDate; // 或其他你想做的操作 tingting
     },
     handleEndDate(newEndDate) {
-      EndDate.value = newEndDate; // 或其他你想做的操作
+      EndDate.value = newEndDate; // 或其他你想做的操作 tingting
+    },
+    handleduration(newDuration){
+      duration.value = newDuration;
     },
 
     getEndDate()
@@ -581,6 +593,7 @@ export default {
       TimeData.value = TimeData.value.map(date => this.formatTime(date));
     },
 
+      // a function that used to check if there are some non-optional bars are null
     checkBeforeSave()
     {
       StyleProvider(largeSnackBar)
@@ -606,16 +619,18 @@ export default {
       }
       else if(TimeData.value.includes(null)||TimeData.value.length==0)
       {
+        console.log(TimeData.value.includes(null));
+        console.log(TimeData.value);
         Snackbar['warning']("The time for taking the medication has not been setted.")
         return false;
       }
 
       return true;
     },
-    // New function for medicineData
+    // New function for medicineData,used to generate a medication object using the value in input bar.      
     saveMedData() {
 
-      if(this.checkBeforeSave())
+      if(this.checkBeforeSave()&&selectedFrequency.value!="Only as needed")
       {
         this.getEndDate();
         this.formatArray();
@@ -628,12 +643,13 @@ export default {
           startDate: this.formatDate(StartDate.value),
           endDate: this.formatDate(EndDateSingle.value),
           note: note.value,
+          duration:duration.value,
           reminderDate: JSON.stringify(EndDate.value),
           reminderTimes: JSON.stringify(TimeData.value),
         };
 
         console.log(dataObject)
-
+        
         const backendurl = 'http://localhost:8181/medications/create';
         
         axios

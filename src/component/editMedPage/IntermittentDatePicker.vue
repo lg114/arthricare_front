@@ -6,7 +6,8 @@
 -->
 <template>
   <p id="label">Start Time *</p>
-  <VueDatePicker v-model="StartDate" :enable-time-picker="false" auto-apply partial-flow :flow="['calendar']" :format="formatStartDate" ref="StartTimeDatePicker">
+  <VueDatePicker v-model="StartDate" :enable-time-picker="false" auto-apply partial-flow :flow="['calendar']" 
+  :format="formatStartDate" ref="StartTimeDatePicker" disabled>
     <template #clear-icon="{  }">
        <img class="input-slot-image"/>
     </template>
@@ -16,10 +17,10 @@
   :allowed-dates="allowedDates" :disabled="shouldBeDisabled">
     <template #left-sidebar="props" >
       <div class="interval-label">Interval Days:</div>
-      <button class="custom-button" @click="addDaysToCurrentDate(props,1)">+ 1 Day</button>
-       <button class="custom-button" @click="addDaysToCurrentDate(props,3)">+ 3 Days</button>
-      <button class="custom-button" @click="addWeeksToCurrentDate(props,1)">+ 1 Week</button>
-      <button class="custom-button" @click="addMonthsToCurrentDate(props,1)">+ 1 Month</button>
+      <button class="custom-button-disable" disabled>+ 1 Day</button>
+       <button class="custom-button-disable" disabled>+ 3 Days</button>
+      <button class="custom-button-disable" disabled>+ 1 Week</button>
+      <button class="custom-button-disable" disabled>+ 1 Month</button>
       <div class="interval-label">Eat Times:</div>
       <button class="custom-button" @click="repeat(props,1)">+ 1 Times</button>
       <button class="custom-button" @click="repeat(props,2)">+ 2 Times</button>
@@ -33,77 +34,74 @@
 </template>
 
 <script setup>
-import { ref, watch, computed, defineEmits} from 'vue';
-import { addDays, addWeeks, addMonths,} from 'date-fns';
+import { ref, watch,computed,defineProps,defineExpose} from 'vue';
+import { addDays,} from 'date-fns';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 
-const emits = defineEmits(["update:start-date", "update:end-date","update:duration"]);
+const props = defineProps({
+  StartDateFromParent: {
+    type: Number,
+    default: 0
+  },
+  EndDateFromParent: {
+    type: Array,
+    default: () => [new Date()]
+  },
+  Duration: {
+    type: String,
+    default: "defalut value"
+  },
+});
 
-const StartDate = ref();
-const EndDate = ref();
+const StartDate = ref(new Date(props.StartDateFromParent));
+const EndDate = ref(props.EndDateFromParent);
 const StartTimeDatePicker = ref();
 const EndTimeDatePicker = ref();
-const formattedOutput = ref();
+const formattedOutput = ref(props.Duration);
 const IntervalDays = ref(0);
 const RepeatTimes = ref(0);
 const perferUnit = ref("days");
 
 
-watch(StartDate, (newStartDate) => {
-if(newStartDate !== null) {
-  EndDate.value = [newStartDate, ];
+function fetchData()
+{
+    return EndDate.value;
 }
-StartTimeDatePicker.value.closeMenu();
-emits('update:start-date', newStartDate);
-});
+function fetchDurationData(){return formattedOutput.value}
+defineExpose({ fetchData,fetchDurationData });
 
-watch(EndDate, newEndDate => {
-emits('update:end-date', newEndDate);
-});
+watch(() => props.StartDateFromParent, (newValue) => {
+  console.log("StartDate watch: "+newValue);
+  StartDate.value = new Date(newValue);
+}, { deep: true });
 
-watch(formattedOutput, newValue => {
-emits('update:duration', newValue);
-});
+watch(() => props.EndDateFromParent, (newValue) => {
+  console.log("EndDate watch: "+newValue);
+  EndDate.value = newValue;
+}, { deep: true });
 
-const addDaysToCurrentDate = (props,daysToAdd) => {
+watch(() => props.Duration, (newValue) => {
+    console.log("Duration watch: " + newValue);
+    formattedOutput.value = newValue;
+    perferUnit.value = checkPeriodType(newValue);
+    EndTimeDatePicker.value.openMenu();
+    
+    setTimeout(() => {
+        EndTimeDatePicker.value.closeMenu();
+    }, 50); // 100 milliseconds = 0.1 seconds
+}, { deep: true });
 
-if(props.modelValue.value[1])
-{
-  props.modelValue.value[1] = addDays(props.modelValue.value[1], daysToAdd)
-}
-else
-{
-  props.modelValue.value[1] = addDays(props.modelValue.value[0], daysToAdd)
-}
-perferUnit.value = "days"
-IntervalDays.value += daysToAdd;
-}
-const addWeeksToCurrentDate = (props,daysToAdd) => {
-if(props.modelValue.value[1])
-{
-  props.modelValue.value[1] = addWeeks(props.modelValue.value[1], daysToAdd)
-}
-else
-{
-  props.modelValue.value[1] = addWeeks(props.modelValue.value[0], daysToAdd);
-}
-perferUnit.value = "weeks"
-IntervalDays.value += 7;
-}
-const addMonthsToCurrentDate = (props,daysToAdd) => {
-if(props.modelValue.value[1])
-{
-  props.modelValue.value[1] = addMonths(props.modelValue.value[1], daysToAdd)
-}
-else
-{
-  props.modelValue.value[1] = addMonths(props.modelValue.value[0], daysToAdd);
-}
-perferUnit.value = "months"
-IntervalDays.value += 30;
-}
 
+function checkPeriodType(duration) {
+  if (duration.includes('day')) {
+      return 'days';
+    } else if (duration.includes('week')) {
+      return 'weeks';
+    } else if (duration.includes('month')) {
+      return 'months';
+    } 
+  }
 
 const repeat = (props,repeatTime) => {
 if(IntervalDays.value!=0)
@@ -128,7 +126,24 @@ formattedOutput.value = "";
 };
 
 const getDate = (SelectedDate) => {
-
+if(formattedOutput.value&&IntervalDays.value==0&&RepeatTimes.value==0)
+{
+  const numbers = formattedOutput.value.match(/\d+/g).map(Number);
+  RepeatTimes.value = numbers[1]-2;
+  perferUnit.value = checkPeriodType(formattedOutput.value);
+  if(perferUnit.value == "weeks")
+  {
+    IntervalDays.value = numbers[0]*7;
+  }else if(perferUnit.value == "months")
+  {
+    IntervalDays.value = numbers[0]*30;
+  }
+  else
+  {
+    IntervalDays.value = numbers[0]*1;
+  }
+  return formattedOutput.value;
+}
 
 if (Array.isArray(SelectedDate) && SelectedDate.length >= 2)  
 {
@@ -160,6 +175,8 @@ const formatEndDate = () => {
   }
   else
   {
+    console.log(formattedOutput.value);
+      perferUnit.value = checkPeriodType(formattedOutput.value);
       return formattedOutput.value;
   }
 
@@ -184,7 +201,6 @@ const formatStartDate = () => {
 const shouldBeDisabled = computed(() => StartDate.value == null);
 
 const alertFn = () => {
-console.log(EndDate.value);
 if(!EndDate.value.includes(null)&&EndDate.value.length>=2)
 {
   console.log();
@@ -206,6 +222,23 @@ const allowedDates = computed(() => {
 </script>
 
 <style scoped>
+.custom-button-disable {
+  background: none;
+  border: none;
+  color: #A9A9A9;
+  font-size: var(--dp-font-size);
+  font-family:var(--dp-font-family);
+  cursor: pointer;
+  outline: none;
+  text-align: left !important; /* Force left-alignment */
+  padding: 5px 0;
+  margin-left: 0; /* Ensure no margin is moving the text */
+  
+  display: inline-block; /* Treat inline elements like block */
+  width: 100%; /* Optional: Use if you want to ensure full width */
+  min-width: 85px;
+  display: block;
+}
 
 .custom-button {
   background: none;

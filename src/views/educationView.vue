@@ -15,6 +15,7 @@
   
 </script>
 
+<!-- a page to introduct some artical or video to user, totally a placeholder-->
 <template>
    <el-container class = "container">
       

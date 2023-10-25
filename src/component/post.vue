@@ -1,7 +1,9 @@
 <!--   
     Author: Lin Gan
     Student number: 6502933
-    Date: 2023/10/20 
+    Date: 2023/10/20
+    Description:
+    Referencing from community.vue
 -->
 <template>
     <div style="padding: 20px;"> 

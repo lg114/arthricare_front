@@ -2,6 +2,10 @@
 <!-- Author: Tianyi Hu
 Student number: 6774179
 Date: 2023/10/20 -->
+
+<!-- This is education video page, can be accessed from the Education page.
+    At this moment it's just placeholders.
+-->
 <script>
     import { ref } from 'vue';
     import { ChevronLeft20Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular, CommentMultiple20Regular, Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
@@ -20,22 +24,12 @@ Date: 2023/10/20 -->
                 selectedVideo:{
                     id: 1,
                     title: 'Example Video',
-                    // coverImage: 'https://orthoinfo.aaos.org/globalassets/figures/a00389f02.jpg',
-                    // content: 'Arthritis is a term often used to mean any disorder that affects joints. Symptoms generally include joint pain and stiffness. Other symptoms may include redness, warmth, swelling, and decreased range of motion of the affected joints. In some types of arthritis, other organs are also affected. Onset can be gradual or sudden. There are over 100 types of arthritis. The most common forms are osteoarthritis (degenerative joint disease) and rheumatoid arthritis. Osteoarthritis usually occurs with age and affects the fingers, knees, and hips. Rheumatoid arthritis is an autoimmune disorder that often affects the hands and feet.Other types include gout, lupus, fibromyalgia, and septic arthritis.They are all types of rheumatic disease.',
                     likes: 0
             },
                 liked: false,
                 showAction: ref(false), //Show actions of the fab
             };
         },
-        // computed:{
-        //     relatedArticles(){
-        //         return [
-        //             {id: 1, title: 'Relative Article 1'},
-        //             {id: 2, title: 'Relative Article 2'}
-        //         ]
-        //     }
-        // },
         methods:{
             toggleLike(){
                 this.liked = !this.liked;
@@ -79,8 +73,6 @@ Date: 2023/10/20 -->
                 <video controls class="video">
                     <source src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=H_AROzOjRZQfJgBm" type="video/mp4">
                 </video>
-                <!-- <img :src="selectedVideo.coverImage" class="coverImage">
-                <p class="articleContent">{{ selectedVideo.content }}</p> -->
                 <div class="likeComment">
                     <Icon :class="['likeButton', {liked : liked}]" @click="toggleLike"><ThumbUpAltOutlined/></Icon>
                     <span class="likeCount">{{ selectedVideo.likes }}</span>
@@ -89,10 +81,6 @@ Date: 2023/10/20 -->
                 </div>
                 <var-divider />
 
-                <!-- <h4>Related Articles:</h4>
-                <ul>
-                    <li v-for="relatedArticle in relatedArticles" :key="relatedArticle.id" class="relativeTitle">{{ relatedArticle.title }}</li>
-                </ul> -->
             </el-main> 
         <var-bottom-navigation
             class="footer"
@@ -124,11 +112,6 @@ Date: 2023/10/20 -->
                 <span>Community</span>
             </var-bottom-navigation-item>    
             </var-link>
-            <!-- <template #fab>
-                <var-link href="/#/AddMed" style="color: white;">
-            <Icon class="addButton"><Add20Filled /></Icon>
-            </var-link>
-            </template> -->
         </var-bottom-navigation>
                         <!-- Fab button -->
                         <var-fab v-model:active="showAction" style="margin-bottom: 100px;" color="#006973" inactive-icon-size="26px" active-icon-size="30px" elevation="5">
