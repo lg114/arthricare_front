@@ -1,29 +1,24 @@
-<!--
-    Name: Jihao Li
-    Student number: 7025300
-    Date: 2023/10/20
--->
+<!--Welcome Page -->
+<!--Welcome Page -->
 <script setup>
   import store from "@/store";
   // import {Plus,Minus} from '@element-plus/icons-vue';
   import '@varlet/ui/es/button/style/index';
-  import SideBarContent from '@/component/Sidebar.vue';
   import { ref } from 'vue'
-  import { LineHorizontal320Filled, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular,Pill28Filled, ChannelAdd20Regular } from '@vicons/fluent'
-  import { Icon } from '@vicons/utils';
   const active = ref(0);
   
 </script>
 
-<!-- a page to introduct some artical or video to user, totally a placeholder-->
 <template>
    <el-container class = "container">
       
     <div class = "container-flex" style="height:100% ; width:50% ;">
-          <Icon  @click="drawer = true" class="backBtn" name="menu" :size="25" color="white"><LineHorizontal320Filled /></Icon>
+        <router-link to = "/">
+          <var-icon class="backBtn" name="menu" :size="25" color="white"/>
+        </router-link> 
         <p id= "title">Education</p>
 
-        <router-link to = "/SearchArticle">
+        <router-link to = "/Search">
           <var-icon name="magnify" class="searchBtn" size="30" color="white"/>
         </router-link> 
       </div> 
@@ -41,7 +36,7 @@
       <!-- indicator-position="none"
         indicator-size="0px"  it is a border attribute-->
         <var-tab @click="showVideo">Video</var-tab>
-        <var-tab @click="showArtical">Article</var-tab>
+        <var-tab @click="showArtical">Artical</var-tab>
        
       </var-tabs>
 
@@ -49,11 +44,9 @@
         <img class="starIcon" src= "@/assets/circle-star.png" alt="Image" id  = "medIcon">
         <h1  v-if="VideoVisible">SUGGESTED VIDEO</h1>
         <h1 v-if="ArticalVisible">SUGGESTED ARTICAL</h1>
-
       </div>
 
       <div v-if="VideoVisible" style=" align-items: center;">
-        <router-link to="/EducationVideo">
         <div class = "container3" style="margin-top:3vh">
           <img src="@/assets/Med1.jpg" alt="Image" class="image">
           <div id = "label">
@@ -62,9 +55,7 @@
             <p class="likeNumber"> 562</p>
           </div>
         </div>
-      </router-link>
 
-        <router-link to="/EducationVideo">
         <div class = "container3">   
           <img src="@/assets/exe2.jpg" alt="Image" class="image">
           <div id = "label">
@@ -73,9 +64,7 @@
             <p class="likeNumber"> 222</p>
           </div>
         </div>
-      </router-link>
 
-        <router-link to="/EducationVideo">
         <div class = "container3">
           <img src="@/assets/Med3.jpg" alt="Image" class="image">
           <div id = "label">
@@ -85,11 +74,9 @@
             <p class="likeNumber"> 442</p>
           </div>
         </div>
-      </router-link>
       </div>
 
       <div v-if="ArticalVisible" style="margin-top:3vh">
-        <router-link to="/educationArticle">
         <div class = "container3">
           <img src="@/assets/Med4.jpg" alt="Image" class="image">
           <div id = "label">
@@ -98,9 +85,7 @@
             <p class="likeNumber"> 17</p>
           </div>
         </div>
-      </router-link>
 
-        <router-link to="/educationArticle">
         <div class = "container3">   
           <img src="@/assets/exe1.png" alt="Image" class="image">
           <div id = "label">
@@ -109,82 +94,19 @@
             <p class="likeNumber"> 83</p>
           </div>
         </div>
-      </router-link>
 
-        <router-link to="/educationArticle">
-        <div class = "container3">
+        <div class = "container3">   
           <img src="@/assets/doc1.png" alt="Image" class="image">
           <div id = "label">
-            <p style="margin:0;width:70"> Doctor</p>
+            <p style="margin:0;width:70%"> Medication</p>
             <img class="like" src= "@/assets/like.png" alt="Image" id  = "medIcon">
-            <p class="likeNumber"> 54</p>
-            
+            <p class="likeNumber"> 22</p>
           </div>
         </div>
-      </router-link>
       </div>
     </div>
    
     </el-container>
-    <var-bottom-navigation
-            class="footer"
-            v-model:active="activeBottom"
-            border="true"
-            safe-area="true"
-            :fab-props="{color:'#55BDCA'}"
-        >
-            <var-link href="/#/Home" underline="none">
-            <var-bottom-navigation-item class="bottomButton" name="homeButton">
-                <Icon  style="font-size: 38px;"><Home20Regular /></Icon><br>
-                <span>Home</span>
-            </var-bottom-navigation-item>
-            </var-link>
-            <var-link href="/#/MyMeds" underline="none">
-            <var-bottom-navigation-item class="bottomButton" name="medsButton">
-                <Icon style="font-size: 38px;"><BriefcaseMedical20Regular /></Icon><br>
-                <span>My Meds</span>
-            </var-bottom-navigation-item>
-            </var-link>
-            <var-link href="/#/Rewards" underline="none">
-            <var-bottom-navigation-item class="bottomButton" name="rewardsButton">
-                <Icon style="font-size: 38px;"><Gift20Regular /></Icon><br>
-                <span>Rewards</span>
-            </var-bottom-navigation-item>
-            </var-link>
-            <var-link href="/#/Community" underline="none">
-            <var-bottom-navigation-item class="bottomButton" name="profileButton">
-                <Icon style="font-size: 38px;"><PeopleCommunity20Regular /></Icon><br>
-                <span>Community</span>
-            </var-bottom-navigation-item>    
-            </var-link>
-        </var-bottom-navigation>
-                        <!-- Fab button -->
-                        <var-fab v-model:active="showAction" style="margin-bottom: 100px;" color="#006973" inactive-icon-size="26px" active-icon-size="30px" elevation="5">
-            <var-button class="action" round color="#F27B42" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
-                <var-link href="/#/AddPost" text-color="white" text-size="25px">
-                <Icon><ChannelAdd20Regular /></Icon>
-            </var-link>
-            </var-button>
-            <var-button class="action" round color="#55BDCA" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
-                <var-link href="/#/AddMed" text-color="white" text-size="25px">
-                    <Icon><Pill28Filled /></Icon>
-                </var-link>
-            </var-button>
-        </var-fab>
-    <el-drawer style="background-color: #006973;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
-            <!--Action是模拟接口，与后端连接时更换-->
-                <div class = "sidebar">
-                    <el-upload action="" :show-file-list="false">
-                        <el-avatar :size="65">
-                            <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
-                                <template v-else>
-                                    <UserFilled class="defalut-avatar" />
-                                </template>
-                        </el-avatar>   
-                    </el-upload> 
-                </div>
-            <SideBarContent :imgUrl="imgUrl" />    
-        </el-drawer>
 </template>
 
 <style lang = "css" scoped> 
@@ -370,7 +292,7 @@
   font-family: system-ui;
   top:13%;
   width:100%;
-  left:25%;
+  left:10%;
   padding-top:6.5%;
   }
 
@@ -383,7 +305,7 @@
   text-align: left;
   font-family: system-ui;
   background: repeating-linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4));
-
+  z-index: 3;
   position:absolute;
   bottom:0;
   display:flex;
@@ -419,9 +341,9 @@ input{
 
   .backBtn{
     color:#FFFFFF;
-    position:absolute;
-    left: 30px;
-    top:4%;
+    position:relative;
+    right:250%;
+    top:42%;
     }
 
   .searchBtn{
@@ -452,36 +374,13 @@ input{
   border: 2px solid white;
   transition: background-color 0.5s, color 0.5s;
   }
- /* footer */
- .bottomButton{
-        width: 90px;
-        padding-left:20px;
-        padding-right: 20px;
-    }
-    .footer{
-        display: inline;
-        position: fixed;
-        text-align: center;
-        bottom: 0;
-        height:80px;
-        --bottom-navigation-item-font-size: 13px;
-        --bottom-navigation-item-active-color: #646566;
-        white-space: nowrap;
-    }  
-    .addButton{
-        font-size: 35px;
-    }
+
 </style>
 
 <script>
 
 export default {
-  components: {
-    Icon,
-    SideBarContent,
-    Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular,Pill28Filled, ChannelAdd20Regular
-
-  },
+  components: {},
   computed: {
     changeToTrue() {
       return this.$store.state.changeToTrue;
@@ -493,17 +392,11 @@ export default {
       VideoVisible: true,
       ArticalVisible: false,
       Meds : [],
-      drawer: ref(false),
+
     };
   },
   
   methods: {
-    openDrawer() {
-            this.drawer = true;
-            },
-            beforeDrawerClose(done) {
-                done();
-            },
     showVideo() {
       this.VideoVisible = true;
       this.ArticalVisible = false;
@@ -519,7 +412,7 @@ export default {
 
 },
   mounted(){
-            document.title = 'Education | ArthriCare'
+            document.title = 'Add Medication'
 
         },
         setup(){
