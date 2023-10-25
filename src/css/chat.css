@@ -138,7 +138,7 @@ p.text_from_partner{
 .chat_footer{
     bottom: 0;
     height: 60px;
-    width: 100%; /* NOTE: Better to use '100%' or 'rem' ? */
+    width: 100%;
     white-space: nowrap;
 
     display: flex;
@@ -148,34 +148,14 @@ p.text_from_partner{
     background-color: white;
     position:fixed;
 }
-.camera_icon{
-    font-size: 32px;
+.image_icon{
+    font-size: 39px;
     color: #006973;
     padding: 5px;
 
     position: absolute;
     bottom: -0.8%;
     left: 0%;
-    z-index: 1;
-}
-.image_icon{
-    font-size: 32px;
-    color: #006973;
-    padding: 5px;
-
-    position: absolute;
-    bottom: -0.8%;
-    left: 10%;
-    z-index: 1;
-}
-.microphone_icon{
-    font-size: 32px;
-    color: #006973;
-    padding: 5px;
-
-    position: absolute;
-    bottom: -0.8%;
-    left: 20%;
     z-index: 1;
 }
 .arrow_to_send_a_message{
@@ -197,7 +177,7 @@ input{
     width: 100%;
 }
 input:focus {
-    border: 2px solid #55BDCA; 
+    border: 1px solid #55BDCA; 
     z-index: 10;
     outline: 0;
 }
@@ -208,7 +188,7 @@ div.enterMessageHere{
     z-index: 1;
     padding-bottom: 5px;
     padding-right: 10px;
-    width: 65%;
+    width: 85%;
 }
 ::placeholder {
 	padding-left: 9px;

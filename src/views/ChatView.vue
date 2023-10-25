@@ -1,8 +1,7 @@
 <!-- Chat Page -->
-<!-- NOTE: Run the page on a smartphone, and check if a keyboard comes up on the screen when a user clicks the input fields. -->
 <script>
     import { ref } from 'vue';
-    import { ArrowBackFilled, CameraAltFilled, ImageRound, MicRound, ArrowCircleUpTwotone } from '@vicons/material';
+    import { ArrowBackFilled, ImageRound, ArrowCircleUpTwotone } from '@vicons/material';
     import { Icon } from '@vicons/utils'
     import axios from 'axios';
     import SockJS from 'sockjs-client';
@@ -38,7 +37,6 @@
             avatar4.value = require('@/assets/friend_3.png')
             avatar5.value = require('@/assets/friend_4.png')
 
-
             return {
                 avatar1,
                 avatar2,
@@ -58,7 +56,6 @@
                 drawer: ref(false),
                 chatPartnerName: '', // Initialize with the chat partner's name
                 chatMessages: [], // Array to store chat messages
-                
             };
         },
         /*
@@ -229,9 +226,7 @@
         components: {
             Icon,
             ArrowBackFilled,
-            CameraAltFilled,
             ImageRound,
-            MicRound,
             ArrowCircleUpTwotone
         }
     };
@@ -267,17 +262,14 @@
                 </div>
 
                 <div class="chat_footer">
-                    <div class="chat_footer_icons">
-                        <Icon class="camera_icon"><CameraAltFilled /></Icon> <!-- NOTE: put @click="" inside the icon tag-->
+                    <div>
                         <Icon class="image_icon"><ImageRound /></Icon> <!-- NOTE: put @click="" inside the icon tag-->
-                        <Icon class="microphone_icon"><MicRound /></Icon> <!-- NOTE: put @click="" inside the icon tag-->
                     </div>
                     <div class="message_input_textField">
                         <div class="enterMessageHere">
                             <input type="text" placeholder="Message..." v-model="messageInput" @keyup.enter="sendMessage" />
                         </div>
                         <div class="arrow_to_send_a_message" @click="handleSendClick">
-                            <!-- NOTE: How can I place the arrowUp icon inside the texFiled above? -->
                             <Icon><ArrowCircleUpTwotone /></Icon>
                         </div>
                     </div>
