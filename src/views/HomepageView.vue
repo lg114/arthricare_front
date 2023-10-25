@@ -66,6 +66,7 @@
                 //假设medicationList是从后端获取的当天药物数据的数组
                 const medicationList = await this.fetchRemindersFromBackend(selectedDate);
                 //然后从早到晚排序 sorting
+                this.medicationList = medicationList;
                 this.medicationList.sort((a, b) => {
                     const timeA = a.time.split(":").map(Number);
                     const timeB = b.time.split(":").map(Number);
@@ -76,7 +77,7 @@
 
                     return timeA[1] - timeB[1];
                 });
-                this.medicationList = medicationList;
+                
                 //testing
                 console.log("Medication List for selected date:", this.medicationList);
             },

@@ -77,7 +77,7 @@
                     this.$emit('date-selected', parsedDate);
                     console.log(parsedDate);
                 } else {
-                    console.error('Invalid date:', this.selectedDate);
+                    console.error('Invalid date:', parsedDate);
                 }
             }
         },
