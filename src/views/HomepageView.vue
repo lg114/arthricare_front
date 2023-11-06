@@ -20,7 +20,7 @@
     import Discussion from '@/component/post.vue';
     import { mapGetters, mapActions, mapMutations } from 'vuex';
     import SidebarContent from '@/component/Sidebar.vue';
-    
+    import axios from 'axios';
     export default{
         mounted(){
             //title
@@ -28,6 +28,8 @@
             //默认当天日期
             const today = new Date(); 
             this.onDateSelected(today);
+            this.fetchLoginStatueFromBackend();
+            this.initializeTakeMedNum();
         },
         data(){
             return{
@@ -44,7 +46,64 @@
         },
         methods:{
             ...mapMutations('reminder', ['SET_SELECTED_DATE']),
+            ...mapMutations('task',['setTakeMedNum','setAlreadyTakeMedNum','setPuzzleNum']),
             ...mapActions('reminder', ['fetchRemindersFromBackend']),
+
+            showTakeMedTaskDialog(){
+                this.$refs.TaskDialogRef.showTakeMedTaskDialog();
+            },
+
+            fetchTakeMedStatueFromBackend(reminderId){
+                axios.get('http://localhost:8181/reminders/findReminderByReminderId/' + reminderId)
+                        .then(response => {
+                            console.log(response.data);
+                           if(!response.data.alreadyTakeMedication){
+                                this.showTakeMedTaskDialog();
+                           }
+                        })
+                        .catch(error => {
+                        console.log('Error fetching user information:', error);
+                        });
+
+            },
+
+
+            fetchLoginStatueFromBackend()
+            {
+                axios.get('http://localhost:8181/rewards/checkLoginRewardStatue/' + this.loggedInUser.userId)
+                        .then(response => {
+                            if(response.data)
+                            {
+                                this.showTaskDialog(1,response.data.puzzleNum);
+                                this.completeLoginTask();
+                            }
+                        })
+                        .catch(error => {
+                        console.log('Error fetching user information:', error);
+                        });
+            },
+
+            completeLoginTask() {
+                // Claim login reward by making a PUT request to the backend using axios
+                axios.put('http://localhost:8181/rewards/claimLoginReward/' + this.loggedInUser.userId)
+                    .then(response => {
+                    if (response.status === 200) {
+                        // The reward was successfully claimed
+                        // You can perform additional actions here if needed
+                        console.log('Reward claimed successfully');
+                    } else {
+                        throw new Error('Failed to claim reward.');
+                    }
+                    })
+                    .catch(error => {
+                    console.log('Error claiming reward:', error);
+                    });
+            },
+
+            showTaskDialog(taskId,puzzleNum)
+            {
+                this.$refs.TaskDialogRef.showTaskDialog(taskId,puzzleNum);
+            },
 
             // side bar goes to profile page
             goToUserProfile(){
@@ -57,6 +116,31 @@
             async logout(){
                 this.$store.dispatch('user/logout');
             },
+
+            async initializeTakeMedNum(){
+
+                axios.get('http://localhost:8181/rewards/getPuzzleNumByUserId/' + this.loggedInUser.userId)
+                        .then(response => {
+                            this.setPuzzleNum(response.data);
+                            console.log("initialize data")
+                        })
+                        .catch(error => {
+                        console.log('Error fetching user information:', error);
+                        });
+
+
+                const medicationListFromBack = await this.fetchRemindersFromBackend(new Date());
+                this.setTakeMedNum(medicationListFromBack.length); 
+                let alreadyTakeMedNum = 0;
+                for(const item of  medicationListFromBack){
+                    if(item.alreadyTakeMedication){
+                        alreadyTakeMedNum++;
+                    }
+                }
+                console.log("alreadyTakeMedNum"+alreadyTakeMedNum)
+                this.setAlreadyTakeMedNum(alreadyTakeMedNum);
+            },
+
             //Calendar (父组件中的处理选定日期的方法)
             async onDateSelected(selectedDate){
                 //存储选定的日期
@@ -64,10 +148,10 @@
                 this.SET_SELECTED_DATE(selectedDate);
                 console.log('Selected date:', selectedDate);
                 //假设medicationList是从后端获取的当天药物数据的数组
-                const medicationList = await this.fetchRemindersFromBackend(selectedDate);
+                const medicationListFromBack = await this.fetchRemindersFromBackend(selectedDate);
+
                 //然后从早到晚排序 sorting
-                this.medicationList = medicationList;
-                this.medicationList.sort((a, b) => {
+                medicationListFromBack.sort((a, b) => {
                     const timeA = a.time.split(":").map(Number);
                     const timeB = b.time.split(":").map(Number);
 
@@ -77,6 +161,12 @@
 
                     return timeA[1] - timeB[1];
                 });
+
+                this.medicationList.splice(0, this.medicationList.length);
+
+                for (let item of medicationListFromBack) {
+                    this.medicationList.push(item);
+                }
                 
                 //testing
                 console.log("Medication List for selected date:", this.medicationList);
@@ -91,7 +181,11 @@
 
                 const [year, month, day, hour, minute] = takeMedTimeArray;
 
-                const formattedTime = `${year}-${month}-${day} ${hour}:${minute}`; // 格式化为字符串
+                // 使用 padStart() 来补零
+                const formattedHour = String(hour).padStart(2, '0');
+                const formattedMinute = String(minute).padStart(2, '0');
+
+                const formattedTime = `${day}/${month}/${year} ${formattedHour}:${formattedMinute}`; // 格式化为字符串
 
                 return `Take med time: ${formattedTime}`;
             },
@@ -100,7 +194,8 @@
                 this.$store.commit('reminder/SET_SELECTED_MEDICATION', this.selectedMedication);
                 this.dialog = true;
             },
-            handleNow() {
+            handleNow(reminderId) {
+                this.fetchTakeMedStatueFromBackend(reminderId);
                 console.log('Now button clicked');
                 const currentTime = new Date();
                 const isoTime = currentTime.toISOString();
@@ -113,7 +208,8 @@
                         console.error('Error:', error);
                     });
             },
-            handleOnTime() {
+            handleOnTime(reminderId) {
+                this.fetchTakeMedStatueFromBackend(reminderId);
                 console.log('On Time button clicked');
 
                 const selectedDate = new Date(this.selectedDate);
@@ -140,7 +236,8 @@
             openTimeDialog(){
                 this.timeDialog = true;
             },
-            handleSetTime() {
+            handleSetTime(reminderId) {
+                this.fetchTakeMedStatueFromBackend(reminderId);
                 console.log('Set Time button clicked');
                 
                 const date = this.setTimeSelected;
@@ -179,11 +276,12 @@
             ChannelAdd20Regular,
             Pill28Filled,
             Home20Filled, PeopleCommunity20Regular,
-            SidebarContent
+            SidebarContent,
         }
     }
 </script>
 <template>
+    <TaskDialog ref="TaskDialogRef"/>
     <el-container class = "container">
         <el-header class = "header">
             <Icon class="header-icon" @click="drawer = true"><LineHorizontal320Filled /></Icon>
@@ -196,9 +294,16 @@
             <div class = "calendar">
                 <HorizontalCalendar @date-selected="onDateSelected" />
             </div>
-            <el-scrollbar max-height="30vh" always>
+
+            <!--<button @click="showTakeMedTaskDialog(1,0)">show task</button>-->
+
+            <el-scrollbar max-height="30vh" always >
                 <template v-if = "medicationList && medicationList.length > 0">
-                <div :class="['divider', {'last-medication': index === medicationList.length - 1}]" v-for = "(medication, index) in medicationList" :key = "medication.reminderId">
+                <div :class="['divider', {'last-medication': index === medicationList.length - 1}]" v-for = "(medication, index) in medicationList" :key = "medication.id"
+                v-motion="`item-${medication.id}`"
+                :initial="{ opacity: 0, x: 100 }"
+                :enter="{ opacity: 1, x: 0 }"
+                :leave="{ opacity: 0, x: -250 }">
                     <span style = "width: 30vw; color: #006973; font-weight: bold;">{{ medication.time }}</span>
                     <var-divider vertical/>
                     <var-chip size="large"  @click = "showMedicationDetails(medication)">
@@ -223,7 +328,7 @@
     </el-container>
     <el-dialog  v-model = "dialog" center align-center width="90%" round>
         <template #header>
-            <span style="color: #006973; font-weight: bold; font-size: larger;">{{ selectedMedication.name }}</span>
+            <span style="color: #006973; font-weight: bold; font-size: larger; margin-left: 16px">{{ selectedMedication.name }}</span>
         </template>
         <div style = "text-align: center; font-size: small; line-height: 2;">
             <span>Scheduled for {{ selectedMedication.time}}, {{ formattedDate }}</span><br>
@@ -238,12 +343,12 @@
             <b><span v-if="selectedMedication.alreadyTakeMedication">{{ formatTakeMedTime(selectedMedication.takeMedTime) }}</span></b>
         </div>
         <template #footer>
-            <div style = "text-align: center;">
-                <el-button color="#006973" @click="handleNow()" round>Now &#10004;</el-button>
-                <el-button color="#006973" @click="handleOnTime()" round>On Time &#10004;</el-button>
-                <el-button color="#006973" @click="openTimeDialog()" round>Set Time &#10004;</el-button>
-            </div>
-        </template>
+        <div v-if="!selectedMedication.alreadyTakeMedication" style="text-align: center;">
+            <el-button color="#006973" @click="handleNow(selectedMedication.id)" round>Now &#10004;</el-button>
+            <el-button color="#006973" @click="handleOnTime(selectedMedication.id)" round>On Time &#10004;</el-button>
+            <el-button color="#006973" @click="openTimeDialog()" round>Set Time &#10004;</el-button>
+        </div>
+    </template>
     </el-dialog>
 
     <!-- time selector dialog -->
@@ -253,7 +358,7 @@
         </template>
         <div style = "text-align: center; font-size: small; line-height: 2;">
             <el-date-picker class = "timedialog" v-model = "setTimeSelected" type="datetime" placeholder="Pick a date and time" format="YYYY/MM/DD HH:mm:ss"/>
-            <el-button color="#006973" @click="handleSetTime()" round style="margin-top: 1vh;">Continue</el-button>
+            <el-button color="#006973" @click="handleSetTime(selectedMedication.id)" round style="margin-top: 1vh;">Continue</el-button>
         </div>
     </el-dialog>
 

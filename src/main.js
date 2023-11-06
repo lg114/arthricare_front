@@ -12,12 +12,14 @@ import store from './store';
 import VueHashCalendar from 'vue3-hash-calendar';
 import 'vue3-hash-calendar/es/index.css';
 import '@varlet/ui/es/button/style/index';
-import { MotionPlugin } from '@vueuse/motion'
+import { MotionPlugin } from '@vueuse/motion';
+import TaskDialog from '@/component/taskPage/TaskDialog.vue';
 
 
 const app = createApp(App);
 
 app.component('VueDatePicker', VueDatePicker);
+app.component('TaskDialog',TaskDialog);
 
 app.use(ElementPlus);
 app.use(router);

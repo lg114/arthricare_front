@@ -16,6 +16,7 @@ import { Snackbar } from '@varlet/ui';
 
 const state = {
   loggedInUser: null,
+  avatarUrl:" "
 };
 
 const mutations = {
@@ -26,14 +27,25 @@ const mutations = {
     state.loggedInUser = null;
     console.log(state.loggedInUser);
   },
+  setAvatarUrl(state, url) {
+    state.avatarUrl = url;
+  }
 };
 
 const getters = {
     isLoggedIn: (state) => state.loggedInUser !== null,
     loggedInUser: (state) => state.loggedInUser,
+    avatarUrl:(state) => state.avatarUrl
 };
 
 const actions = {
+
+    async fetchUserAvatarFromBackend({ state, commit }) {
+        if (state.loggedInUser && state.loggedInUser.userId) {
+          const response = await axios.get('http://localhost:8181/api/getUserAvatar/' + state.loggedInUser.userId);
+          commit('setAvatarUrl', "http://localhost:8181/" + response.data);
+        }
+      },
 
     //email validation
     isValidEmail(email){

@@ -54,8 +54,7 @@
                 },
                 chathistory: [], // Initialize an empty chat list
                 drawer: ref(false),
-                
-
+                userAvatarUrl:require('@/assets/default-avatar.png'),
 
             };
         },
@@ -82,29 +81,39 @@
 
             },
 
+            async fetchUserAvatarFromBackend(userId){
+                const response = await axios.get('http://localhost:8181/api/getUserAvatar/'+ userId);
+                return "http://localhost:8181/" + response.data || require('@/assets/default-avatar.png');
+            },
+
             
-         async getChannels(userFromId) {
-            try {
-                const response = await axios.get(`http://localhost:8181/ComityChat/getChatChannel?userFromId=${userFromId}`);
-                const data = response.data;
-                /*
-                this.chathistory = data.map(chat => ({
-                userFromId: chat.userFromId,
-                userToId: chat.userToId,
-                newContent: chat.newContent,
-                }));*/
-                data.forEach(chat => {
-                    if (chat.userFromId !== userFromId) {
-                        const t = chat.userFromId;
-                        chat.userFromId = chat.userToId;
-                        chat.userToId = t;
-                    }
-                });
-                this.chathistory = data;
-            } catch (error) {
-                console.error('Fetch error:', error);
-            }
-         },
+            async getChannels(userFromId) {
+                try {
+                    const response = await axios.get(`http://localhost:8181/ComityChat/getChatChannel?userFromId=${userFromId}`);
+                    const data = response.data;
+
+                    // 首先添加不包含头像的聊天记录
+                    this.chathistory = data.map(chat => {
+                        if (chat.userFromId !== userFromId) {
+                            const t = chat.userFromId;
+                            chat.userFromId = chat.userToId;
+                            chat.userToId = t;
+                        }
+                        // 设置一个初始的占位头像或空值
+                        chat.avatar = ''; // 或使用占位图像
+                        return chat;
+                    });
+
+                    // 异步更新头像信息
+                    this.chathistory.forEach(async (chat, index) => {
+                        const avatarUrl = await this.fetchUserAvatarFromBackend(chat.userToId.split('-')[0]);
+                        // 在 Vue 3 中，直接更新对象即可
+                        this.chathistory[index] = { ...chat, avatar: avatarUrl };
+                    });
+                } catch (error) {
+                    console.error('Fetch error:', error);
+                }
+            },
         
             openDrawer() {
                 this.drawer = true;
@@ -154,7 +163,7 @@
             
                 <div class="chatPartners">
                     <div v-for="chat in chathistory" :key="chat.id" class="chatPartner" @click="viewChat(chat)">
-                        <img :src="avatar5" alt="avatar" class="avatar" />
+                        <img :src="chat.avatar" alt="avatar" class="avatar" />
                               <!-- Display the user's profile picture (icon) -->
                        <!-- <img :src="chat.icon" alt="avatar" class="avatar" /> -->
                         <div class="name_message">

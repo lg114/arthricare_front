@@ -166,7 +166,7 @@ const router  = createRouter({
           component: AssessmentPage,
         },
         {
-            path: '/PostDetail/:id',
+            path: '/PostDetail/',
             name: 'PostDetail',
             component: PostDetailPage,
             meta: {

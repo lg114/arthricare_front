@@ -2,6 +2,7 @@
 import {createStore} from "vuex";
 import user from '@/store/modules/user.js';
 import reminder from '@/store/modules/reminder.js'
+import task from '@/store/modules/task.js'
 export default createStore({
     state:{
         ExperiedMedArray: [],
@@ -31,6 +32,6 @@ export default createStore({
     modules:{
       user,
       reminder,
-
+      task,
     }
 })

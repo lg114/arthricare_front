@@ -9,16 +9,16 @@ Date: 2023/10/20 -->
     import SideBarContent from '@/component/Sidebar.vue';
     import { UserFilled } from '@element-plus/icons-vue';
     import axios from 'axios';
+    import { mapGetters,mapMutations } from 'vuex';
 
     export default{
         mounted(){
             document.title = "Rewards | ArthriCare";
             this.findPointFromBackend();
             this.checkRewardsStatue();
+            this.initializePuzzle();
         },
         setup(){
-
-
 
             const activeBottom = ref(2);
             const active = ref(0);
@@ -27,11 +27,12 @@ Date: 2023/10/20 -->
             //task list, rewrite into "const tasks = ref([]);" if it needs to connect to the backend, however
             //"completed:" is a value that need to be deal with backend, "false" is the default value
             const tasks = reactive([
-                { id: 1, description: 'Take Medications', completed: true },
-                { id: 2, description: 'Create Medication Schedules (Reminder)', completed: true },
-                { id: 3, description: 'Upload Information for Your Medication', completed: true },
-                { id: 4, description: 'Daily Login', completed: true },
-                { id: 5, description: 'Completed Profile', completed: true },
+                { id: 1, description: 'Daily Login', completed: true, url: require("@/assets/tasks/calendar.png"),progress:"0/1",progressPercentage:0, },
+                { id: 2, description: 'Take All Medications', completed: true, url: require("@/assets/tasks/takeMed.png"),progress:"0/5",progressPercentage:0 },
+                { id: 3, description: 'Create Medication Schedules (Reminder)', completed: true, url: require("@/assets/tasks/addReminder.png"),progress:"0/1",progressPercentage:0 },
+                { id: 4, description: 'Complete daily task', completed: true, url: require("@/assets/tasks/completeTask.png"),progress:"0/1",progressPercentage:0 },
+                { id: 5, description: 'Complete daily education learning', completed: true, url: require("@/assets/tasks/Learning.png"),progress:"0/1",progressPercentage:0 },
+                { id: 6, description: 'Completed Profile', completed: true, url: require("@/assets/tasks/completeProfile.png"),progress:"0/1",progressPercentage:0 },
             ]);
             //Store search status
             const selectedStatus = ref('');
@@ -60,11 +61,13 @@ Date: 2023/10/20 -->
                 filteredTasks,
                 tasks,
                 activeBottom,
-                active
+                active,
             }
         },
         data(){
             return{
+                puzzleNumLeft:0,
+                
                 imageMap: [
                     require("@/assets/puzzleImage/puzzle1_initial.jpg"),
                     ...Array.from({ length: 34 }, (v, i) => require(`@/assets/puzzleImage/puzzle1_${i + 1}.jpg`)),
@@ -79,7 +82,7 @@ Date: 2023/10/20 -->
                     pointsNoLevel: "10"
                 },
                 puzzle:{
-                    url: require("@/assets/puzzleImage/puzzle1_initial.jpg"),
+                    url: require("@/assets/puzzleImage/puzzle1_26.jpg"),
                     title: 'Italian Landscape with Girl Milking a Goat',
                     completed: 0,
                     total: 35,
@@ -89,6 +92,8 @@ Date: 2023/10/20 -->
             };
         },
         computed:{
+            ...mapGetters('user', ['loggedInUser']),
+            ...mapGetters('task',['takeMedNum','alreadyTakeMedNum','puzzleNum','addPuzzleNum']),
             calculatedPercentage(){  
                 const number =  (this.user.pointsNoLevel/ this.user.pointsTotal) * 100;    
                 const roundedNumber = Math.floor(number);
@@ -97,6 +102,18 @@ Date: 2023/10/20 -->
             },
         },
         methods:{
+            ...mapMutations('task',['resetAddPuzzleNum']),
+            initializePuzzle(){
+                if(this.addPuzzleNum == 0){
+                    this.puzzle.url = this.imageMap[this.puzzleNum];
+                    this.puzzle.completed = this.puzzleNum;
+                }
+                else{
+                    this.puzzle.url = this.imageMap[this.puzzleNum-this.addPuzzleNum];
+                    this.puzzle.completed = this.puzzleNum-this.addPuzzleNum;
+                }
+                this.puzzleNumLeft = this.addPuzzleNum;
+            },
             
             openDrawer() {
             this.drawer = true;
@@ -111,11 +128,8 @@ Date: 2023/10/20 -->
 
             findPointFromBackend()
             {
-                var loggedInUser = sessionStorage.getItem('loggedInUser');
-                if (loggedInUser) {
-                    loggedInUser = JSON.parse(loggedInUser);
-                    if (loggedInUser) {
-                    axios.get('http://localhost:8181/rewards/findPointByUserId/' + loggedInUser.id)
+                if (this.loggedInUser) {
+                    axios.get('http://localhost:8181/rewards/findPointByUserId/' + this.loggedInUser.userId)
                         .then(response => {
                         var userScore = response.data;
                         this.user.points = userScore;
@@ -130,26 +144,23 @@ Date: 2023/10/20 -->
                     } else {
                     window.location.href = 'index.html';
                     }
-                }else
-                {
-                    console.log("login first");
-                }
             },
 
             
             checkRewardsStatue()
-            {   var loggedInUser = sessionStorage.getItem('loggedInUser');
-                if (loggedInUser) {
-                    loggedInUser = JSON.parse(loggedInUser);
-                    if (loggedInUser) {
-                        axios.get('http://localhost:8181/rewards/checkLoginRewardStatue/' + loggedInUser.id)
+            {   
+                const takeMedTask = this.tasks.find(task => task.id === 2);
+                takeMedTask.progress = `${this.alreadyTakeMedNum}/${this.takeMedNum}`;
+                takeMedTask.progressPercentage = this.alreadyTakeMedNum/this.takeMedNum*100
+
+                if (this.loggedInUser) {
+                        axios.get('http://localhost:8181/rewards/checkLoginRewardStatue/' + this.loggedInUser.userId)
                         .then(response => {
-                        const alreadyClaimedLoginReward = response.data;
-                        console.log(alreadyClaimedLoginReward);
-                        if (alreadyClaimedLoginReward) {
-                                const loginTask = this.tasks.find(task => task.id === 4);
+                        if (!response.data.canClaimedLoginReward) {
+                                const loginTask = this.tasks.find(task => task.id === 1);
                                 if (loginTask) {
-                                    loginTask.completed = false;
+                                    loginTask.progressPercentage = 100;
+                                    loginTask.progress = "1/1"
                                 }
                             }
                         })
@@ -157,33 +168,28 @@ Date: 2023/10/20 -->
                         console.log('Error fetching user information:', error);
                         });
 
-                        axios.get('http://localhost:8181/rewards/checkProfileRewardStatue/' + loggedInUser.id)
+                        axios.get('http://localhost:8181/rewards/checkProfileRewardStatue/' + this.loggedInUser.userId)
                         .then(response => {
                         const ProfileRewardCanBeClaimed = response.data;
-
-                        if (ProfileRewardCanBeClaimed) {
-                            const ProfileTask = this.tasks.find(task => task.id === 5);
+                        console.log("ProfileRewardCanBeClaimed "+ ProfileRewardCanBeClaimed)
+                        if (!ProfileRewardCanBeClaimed) {
+                            const ProfileTask = this.tasks.find(task => task.id === 6);
                                 if (ProfileTask) {
-                                    ProfileTask.completed = false;
+                                    ProfileTask.progress = "1/1";
+                                    ProfileTask.progressPercentage = 100
                                 }
                         }
                         })
                         .catch(error => {
                         console.log('Error fetching user information:', error);
                         });
-                        }
-                }else
-                {
-                    console.log("login first");
-                }
+                    }
             
 
             },
 
             completeProfileTask() {
-                var loggedInUser = sessionStorage.getItem('loggedInUser');
-                loggedInUser = JSON.parse(loggedInUser);
-                axios.put('http://localhost:8181/rewards/claimProfileReward/' + loggedInUser.id)
+                axios.put('http://localhost:8181/rewards/claimProfileReward/' + this.loggedInUser.userId)
                     .then(response => {
                     if (response.status === 200) {
                         console.log('Reward claimed successfully');
@@ -197,10 +203,8 @@ Date: 2023/10/20 -->
                 },
 
                 completeLoginTask() {
-                    var loggedInUser = sessionStorage.getItem('loggedInUser');
-                    loggedInUser = JSON.parse(loggedInUser);
                     // Claim login reward by making a PUT request to the backend using axios
-                    axios.put('http://localhost:8181/rewards/claimLoginReward/' + loggedInUser.id)
+                    axios.put('http://localhost:8181/rewards/claimLoginReward/' + this.loggedInUser.userId)
                         .then(response => {
                         if (response.status === 200) {
                             // The reward was successfully claimed
@@ -220,9 +224,14 @@ Date: 2023/10/20 -->
             },    
             
             collectPuzzle() {
-                if(this.puzzle.completed<this.puzzle.total){
+                if(this.puzzle.completed<this.puzzle.total&&this.puzzleNumLeft>0){
                     this.puzzle.completed++;
                     this.puzzle.url = this.imageMap[this.puzzle.completed];
+                    this.puzzleNumLeft --;
+                    if(this.puzzleNumLeft==0)
+                    {
+                        this.resetAddPuzzleNum;
+                    }
                 }
             },
 
@@ -302,7 +311,8 @@ Date: 2023/10/20 -->
                     <!-- The puzzle will automatically adds a piece after the user completes certain tasks -->
                     <var-tab-item>
                         <h2 class="puzzleTitle">{{ puzzle.title }} ({{ puzzle.completed }}/{{ puzzle.total }})</h2>
-                        <img :src="puzzle.url" :alt="puzzle" class="puzzleImage" :fit="contain"/><br><br>
+                        <img :src="puzzle.url" :alt="puzzle" class="puzzleImage" :fit="contain"/>
+                        <var-button v-if="puzzleNumLeft != 0" type="primary" @click="collectPuzzle" style="margin-bottom: 10px;margin-top: -10px">Collect Puzzle</var-button>
                         <var-link to="/userprofile" underline="none" style="display: block;">
                             <!-- By clicking the My Collection section, it will jump to User Profile page showing all the puzzles the user has completed -->
                         <div class="box">
@@ -315,32 +325,19 @@ Date: 2023/10/20 -->
                     <!-- This is task section. If user meets the requirements of tasks, the user will be able to click the button to complete tasks.
                          And the user will gain points and pieces of puzzles -->
                     <var-tab-item>
-                        <el-row class="main-row" justify="center">
-                    <el-col class="main-col">
-                        <el-select v-model="selectedStatus" placeholder="Select Status">
-                            <el-option label="All" value="all"></el-option>
-                            <el-option label="Incomplete" value="incomplete"></el-option>
-                            <el-option label="Completed" value="completed"></el-option>
-                        </el-select>
-                    </el-col>
-                    </el-row>
 
                     <!--Displaying Tasks-->
                     <el-row class = "main-row task-container" justify = "center">
                         <el-col class = "main-col" v-for="task in filteredTasks" :key="task.id">
                             <div class = "task">
                                 <div class = "task-content">
-                                    <span>{{ task.description }}</span>
-                                    <el-button round class = "missionBtn " :class="{ 'completed-btn': task.completed, 'disabled-btn': task.completed }" 
-                                        @click="toggleCompletion(task)" :disabled="task.completed">{{ task.completed ? 'Completed' : 'Complete' }}</el-button>
-                                </div>
-                            </div>
-                        </el-col>
-
-                        <el-col class = "main-col">
-                            <div class = "task">
-                                <div class = "task-content">
-                                    <span>More Missions Coming Soon</span>
+                                    <var-image :src= "task.url" style = "width: 64px;height: 64px;"/>
+                                    <div class = "task-progress-word">
+                                        <span style = "text-align: left;">{{ task.description }}</span>
+                                        <el-progress :text-inside="true" :stroke-width="20" :percentage="task.progressPercentage" :color="'#F27B42'" style = "width：100%;min-width: 220px;">
+                                        <span>{{task.progress}}</span>
+                                        </el-progress>
+                                    </div>
                                 </div>
                             </div>
                         </el-col>
@@ -440,3 +437,17 @@ Date: 2023/10/20 -->
 </template>
 
 <style src = "@/css/rewards.css" scoped></style>
+<style>
+.el-progress-bar__innerText {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    color: #fff;
+    font-size: 12px;
+    margin: 3px 0px;
+    width: 220px;
+}
+.el-progress-bar__outer {
+    background-color: #ffffff;
+}
+</style>

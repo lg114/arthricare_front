@@ -9,6 +9,7 @@ import { mapGetters } from 'vuex';
     export default{
         mounted() {
             document.title = "Add Post | ArthriCare";
+            this.initializeUserInfor();
         },
         setup(){
             const avatar1 = ref(require('@/assets/user_avatar.png'));
@@ -21,7 +22,8 @@ import { mapGetters } from 'vuex';
                 user:{
                     name: 'Kris Wu',
                     level: '10',
-                    points: '1000'
+                    points: '1000',
+                    avatar: ''
                 },
                 newPost:{
                     postID: "",
@@ -39,11 +41,18 @@ import { mapGetters } from 'vuex';
         
         computed: {
             // Use the loggedInUser computed property from Vuex
-            ...mapGetters('user', ['loggedInUser'])
+            ...mapGetters('user', ['loggedInUser','avatarUrl'])
+
         },
 
 
         methods:{
+
+            initializeUserInfor(){
+                this.user.name = this.loggedInUser.name;
+                this.user.avatar = this.avatarUrl;
+
+            },
             openDrawer() {
             this.drawer = true;
             },
@@ -162,7 +171,7 @@ import { mapGetters } from 'vuex';
 
                 <div class="user_icon_name">
                     <!-- NOTE: After Flyger figures out how to display the avatar images by using Vue-dataset, the hard-code below will be updated in the future. -->
-                    <img :src="avatar1" alt="user_icon" class="user_icon" />
+                    <img :src="user.avatar" alt="user_icon" class="user_icon" />
                     <p class="userName">{{ user.name }}</p>
                 </div>
 

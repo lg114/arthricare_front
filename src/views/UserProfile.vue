@@ -4,15 +4,17 @@ Student number: 6774179
 Date: 2023/10/20 -->
 <script>
     import { ref } from 'vue';
-    import { LineHorizontal320Filled,Pill28Filled, ChannelAdd20Regular, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular, Edit20Regular, Camera20Filled } from '@vicons/fluent'
+    import { LineHorizontal320Filled,Pill28Filled, ChannelAdd20Regular, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Regular, Edit20Regular, } from '@vicons/fluent'
     import { Icon } from '@vicons/utils'
     import SideBarContent from '@/component/Sidebar.vue';
     import { UserFilled } from '@element-plus/icons-vue';
     import { ImagePreview } from '@varlet/ui'
-    
+    import { mapGetters} from 'vuex';
+    import axios from 'axios';
     export default{
         mounted() {
             document.title = "User Profile | ArthriCare";
+            this.initializeUserInfor();
         },
         setup(){
         },
@@ -22,8 +24,10 @@ Date: 2023/10/20 -->
                     name: 'Username',
                     email: 'arthricare@example.com',
                     age: '26',
-                    height: '185cm',
-                    weight: '70kg',
+                    height: '185',
+                    heightUnit: 'cm',
+                    weightUnit: 'kg',
+                    weight: '70',
                 },
                 puzzle:{
                     url: require("@/assets/puzzleImage/puzzle1_completed.jpg"),
@@ -32,7 +36,7 @@ Date: 2023/10/20 -->
                 drawer: ref(false),
                 showAction: ref(false), //Show actions of the fab
                 //For avatar upload
-                avatarData: null
+                avatarData: null,
             };
         },
         computed:{
@@ -43,9 +47,27 @@ Date: 2023/10/20 -->
                     };
                 }
                 return {};
-            }
+            }, 
+            ...mapGetters('user', ['loggedInUser','avatarUrl']),
+
+            userAvatarUrl() {
+            // 如果 Vuex 中有 avatarUrl，则使用它，否则使用默认头像
+                return this.avatarUrl || require('@/assets/default-avatar.png');
+            },
         },
         methods:{
+            initializeUserInfor(){
+                console.log(this.loggedInUser);
+                this.user.name = this.loggedInUser.name;
+                this.user.age = this.loggedInUser.age;
+                this.user.email = this.loggedInUser.email;
+                this.user.height = this.loggedInUser.height;
+                this.user.weight = this.loggedInUser.weight;
+                this.user.heightUnit = this.loggedInUser.heightUnit;
+                this.user.weightUnit = this.loggedInUser.weightUnit;
+                
+            },
+
             openDrawer() {
             this.drawer = true;
             },
@@ -67,8 +89,31 @@ Date: 2023/10/20 -->
                         this.avatarData = e.target.result;
                     };
                     reader.readAsDataURL(file);
+                    this.saveAvatar(file);
+
                 }
             },
+
+            async saveAvatar(imageFile) {
+                try {
+                    const formData = new FormData();
+                    formData.append('userId', this.loggedInUser.userId);
+                    formData.append('image', imageFile);
+
+                    // 等待 axios 请求完成
+                    const response = await axios.post('http://localhost:8181/uploadImage/avatarImage', formData);
+
+                    // 处理响应
+                    if (response.data.success) {
+                        console.log(`Image uploaded successfully.`);
+                    } else {
+                        console.log(`Image failed to upload.`);
+                    }
+                } catch (error) {
+                    console.error('Error uploading images:', error);
+                }
+            },
+
             previewPuzzle1(){
                 ImagePreview(this.puzzle.url)
             },
@@ -88,7 +133,6 @@ Date: 2023/10/20 -->
             //  AddCircle20Regular,
             Icon,
             SideBarContent,
-            Camera20Filled
         }
     };
 </script>
@@ -122,9 +166,9 @@ Date: 2023/10/20 -->
                             -->
                             <label class="avatarLabel">
                                 <div class="avatar" :style="avatarStyle">
-                                    <div v-if="!avatarData" class="plusIcon"><Icon><Camera20Filled /></Icon></div>
+                                    <var-avatar :src="userAvatarUrl" :size="120" />
                                 </div>
-                                <input type="file" @change="previewAvatar" style="display: none">
+                                 <!--<input type="file" @change="previewAvatar" style="display: none"> -->
                             </label>
                         </div>
                         <h2 style="margin-top: 5px;">{{ user.name }}</h2>
@@ -136,11 +180,11 @@ Date: 2023/10/20 -->
                             </var-col>
                             <var-divider vertical="ture" />
                             <var-col :span="7" justify="center">
-                                <div class="itemValue">{{ user.height }}</div>
+                                <div class="itemValue">{{ user.height+' '+user.heightUnit }}</div>
                             </var-col>
                             <var-divider vertical="ture" />
                             <var-col :span="7" justify="flex-end">
-                                <div class="itemValue">{{ user.weight }}</div>
+                                <div class="itemValue">{{ user.weight+' '+user.weightUnit }}</div>
                             </var-col>
                         </var-row>
                         <var-row :gutter="[10,8]" justify="center">

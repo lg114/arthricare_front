@@ -65,6 +65,10 @@
             this.selectedUser_postsPage.name = this.postUserInforName;
         },
         methods:{
+            async fetchUserAvatarFromBackend(userId){
+                const response = await axios.get('http://localhost:8181/api/getUserAvatar/'+ userId);
+                return "http://localhost:8181/" + response.data;
+            },
 
         async setupUserProfileAndChatButton() {
             console.log ("here is the post infor ID", this.postUserInforId)
@@ -128,10 +132,11 @@
                 const formattedDate = date.toLocaleString();
                 // Await the result of makeImageArray(post)
                 const images = await this.makeImageArray(post);
+                const avatarUrl = await this.fetchUserAvatarFromBackend(post.userId);
 
                 const postData = {
                     postId: post.postId,
-                    avatar: require('@/assets/user_avatar.png'),
+                    avatar: avatarUrl,
                     userId: post.userId,
                     username: post.userName,
                     postedDateTime: formattedDate,
@@ -143,7 +148,7 @@
                     haveImage:post.haveImage,
                     images: images,
                 };
-
+                this.selectedUser_postsPage.avatar = avatarUrl;
                 this.selectedUser_postsPage.posts.push(postData);
             },
             determinePostExpandOrNot(content){
@@ -279,7 +284,7 @@
                 <div v-for="(post, index) in selectedUser_postsPage.posts" :key="post.postID" class="postCard">
                     <div class="icon_name_time">
                         <!-- NOTE: the code below to display an image is a hardcode and shouldn'r be used. -->
-                        <img :src="selectedUser_postsPage.avatar" alt="avatar" class="avatar" />
+                        <img :src="post.avatar" alt="avatar" class="avatar" />
                         <div class="username">{{ post.username }}</div>
                         <div class="time-ago">{{ formattedPostTime[index] }}</div>
                     </div>

@@ -62,10 +62,8 @@ const actions = {
                 const response = await axios.post('http://localhost:8181/medications/findMedicationByUserIdAndDate', data);
                 
                 let reminders = [];
-
                 response.data.forEach(reminder => {
                     const timeWithoutSeconds = reminder.reminderTime.slice(0, -3);
-
                     reminders.push({
                         id: reminder.reminderId,
                         name: reminder.medicationName,
@@ -89,12 +87,13 @@ const actions = {
             throw error;
         }
     },
-    async takeMedication({ commit, state}, { date }) {
+    async takeMedication({ commit, state,getters}, { date }) {
         try {
             if (state.selectedMedication) {
                 const medication = state.selectedMedication;
 
                 const data = {
+                    userId:getters.loggedInUser.userId,
                     reminderId: medication.id,
                     takeMedTime: date
                 }

@@ -24,6 +24,9 @@
         },
         data(){
             return{
+                messageInput:null,
+                showCommentInputForm:false,
+                isLinked:false,
                 postId:null,
                 user:{
                     name: 'Kris Wu',
@@ -74,15 +77,19 @@
                     console.error("Error fetching data:", error);
                 }
             }, 
+            async fetchUserAvatarFromBackend(userId){
+                const response = await axios.get('http://localhost:8181/api/getUserAvatar/'+ userId);
+                return "http://localhost:8181/" + response.data || require('@/assets/default-avatar.png');
+            },
             async makePost(post) {
                 const date = new Date(post.createdTime);
                 const formattedDate = date.toLocaleString();
                 // Await the result of makeImageArray(post)
                 const images = await this.makeImageArray(post);
                 const comments = await this.makeCommentArray(post);
-
+                const userAvatar = await this.fetchUserAvatarFromBackend(post.userId);
                 this.selectedPost.postId = post.postId;
-                this.selectedPost.avatar = require('@/assets/user_avatar.png');
+                this.selectedPost.avatar = userAvatar;
                 this.selectedPost.userId = post.userId;
                 this.selectedPost.username = post.userName;
                 this.selectedPost.postedDateTime = formattedDate;

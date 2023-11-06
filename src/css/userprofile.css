@@ -167,8 +167,7 @@ p{
     justify-content: space-between; /* 在容器内均匀分布子元素，水平并列排列 */
     align-items: center; /* 垂直居中子元素 */
 }
-.educationButtonGroup{
-}
+
 .add{
     float: right;
     padding-left: 10px;

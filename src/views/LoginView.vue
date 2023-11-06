@@ -27,9 +27,13 @@
             email: email.value,
             password: password.value,
           });
+
+          await store.dispatch('user/fetchUserAvatarFromBackend');
         }catch(error){
           console.log('Login failed', error);
         }
+
+        store.dispatch
       };
 
       return{

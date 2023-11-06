@@ -5,22 +5,74 @@ Date: 2023/10/20 -->
 
 <script>
     import { reactive } from 'vue';
-    import { ChevronLeft20Filled } from '@vicons/fluent'; //, MedicationOutlined, CardGiftcardOutlined, HomeRound, AccountCircleOutlined, AddCircleFilled
+    import { ChevronLeft20Filled} from '@vicons/fluent'; //, MedicationOutlined, CardGiftcardOutlined, HomeRound, AccountCircleOutlined, AddCircleFilled
     import { Icon } from '@vicons/utils';
     import { ElMessage } from 'element-plus';
     import axios from 'axios';
     import router from '@/router';
-    
+    import { mapGetters} from 'vuex';
     export default{
         mounted() {
                 document.title = "Edit Profile | ArthriCare";
+                this.initializeUserInfor();
+        },
+        data(){
+            return{
+            }
+        },
+        computed:{
+            ...mapGetters('user', ['loggedInUser','avatarUrl']),
+
+            userAvatarUrl() {
+              // 如果 Vuex 中有 avatarUrl，则使用它，否则使用默认头像
+              return this.avatarUrl || require('@/assets/default-avatar.png');
+            }
         },
         methods:{
-            //Router
-            // goToEditProfile(){
-            //     this.$router.push('/EditProfile');
-            // }
-        },
+          initializeUserInfor(){
+                console.log(this.loggedInUser);
+                this.registerForm.name = this.loggedInUser.name;
+                this.registerForm.gender = this.loggedInUser.age;
+                this.registerForm.height = this.loggedInUser.height;
+                this.registerForm.weight = this.loggedInUser.weight;
+                this.registerForm.heightUnit = this.loggedInUser.heightUnit;
+                this.registerForm.weightUnit = this.loggedInUser.weightUnit;
+            },
+
+            previewAvatar(event){
+                const file = event.target.files[0];
+                if(file){
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        this.avatarData = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                    this.saveAvatar(file);
+
+                }
+            },
+
+            async saveAvatar(imageFile) {
+                try {
+                    const formData = new FormData();
+                    formData.append('userId', this.loggedInUser.userId);
+                    formData.append('image', imageFile);
+
+                    console.log(formData);
+                    // 等待 axios 请求完成
+                    const response = await axios.post('http://localhost:8181/uploadImage/avatarImage', formData);
+
+                    // 处理响应
+                    if (response.data.success) {
+                        console.log(`Image uploaded successfully.`);
+                    } else {
+                        console.log(`Image failed to upload.`);
+                    }
+                } catch (error) {
+                    console.error('Error uploading images:', error);
+                }
+            },
+          },
         setup() {
     // Set up register data
     const registerForm = reactive({
@@ -108,7 +160,13 @@ Date: 2023/10/20 -->
                 <b class="pageTitle">Edit Profile</b>
             </el-header>
             <el-main class="main">
-                <form>
+                <form>        
+                    <label class="avatarLabel">
+                        <div class="avatar" style="display: flex;justify-content: center;">
+                            <var-avatar :src="userAvatarUrl" :size="120" />
+                        </div>
+                        <input type="file" @change="previewAvatar" style="display: none">
+                    </label>
                     <div class = "input-row">
                         <b><label for = "name">Name:</label></b>
                         <input id = "name" type="text" class = "input" placeholder="Please update your full name" v-model="registerForm.name"/>
@@ -166,4 +224,21 @@ Date: 2023/10/20 -->
 
 
 
-<style src = "@/css/EditProfile.css" scoped></style>
+<style src = "@/css/EditProfile.css" scoped>
+.avatarLabel{
+    cursor: pointer;
+    display: block;
+    width: 120px;
+    height: 120px;
+    position: relative;
+}
+.avatarLabel input[type="file"]{
+    position:absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+</style>

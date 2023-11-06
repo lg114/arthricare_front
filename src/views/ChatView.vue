@@ -23,7 +23,21 @@
         },
 
         computed: {
-         ...mapGetters('user', ['loggedInUser']), // Map the loggedInUser getter
+         ...mapGetters('user', ['loggedInUser','avatarUrl']), // Map the loggedInUser getter
+
+         userAvatarUrl() {
+            // 如果 Vuex 中有 avatarUrl，则使用它，否则使用默认头像
+                return this.avatarUrl || require('@/assets/default-avatar.png');
+            },
+
+            partnerAvatarUrl() {
+            // 如果 Vuex 中有 avatarUrl，则使用它，否则使用默认头像
+                if(this.chatChannelInfor){
+                    return this.chatChannelInfor.avatar;
+                }
+                return require('@/assets/default-avatar.png');
+            },
+
         },
 
         setup(){
@@ -57,6 +71,7 @@
                 chatHistory: [], // Add this property to store chat history
                 drawer: ref(false),
                 chatPartnerName: '', // Initialize with the chat partner's name
+                chatPartnerAvatar:'',
                 chatMessages: [], // Array to store chat messages
                 
             };
@@ -240,12 +255,12 @@
     <div class="container">
             <el-header class="header">
                     <Icon class="arrowBack" @click="goBack_messagePage()"><ArrowBackFilled /></Icon>
-                    <img :src="avatar5" alt="avatar" class="header_avatar" />
+                    <img :src="partnerAvatarUrl" alt="avatar" class="header_avatar" />
                     <b class="header_chatPartnerName">{{ this.chatPartnerName }}</b> <!-- NOTE: I guess'Timothy' should come from the session info? -->
             </el-header>
                 <div id="chat_background">
                     <div id="messageTop">
-                        <img :src="avatar5" alt="avatar" id="messageTop_avatar" />
+                        <img :src="partnerAvatarUrl" alt="avatar" id="messageTop_avatar" />
                         <b id="messageTop_partnerName">{{ this.chatPartnerName }}</b> <!-- NOTE: I guess'Timothy' should come from the session info? -->
                     </div>
                     
@@ -256,10 +271,11 @@
                             <!--<p class="messageDate">{{ formatDateAndTime(message.timestamp) }}</p>-->
                             <div v-if="message.sender === myMessageId" class="reply_from_me" >
                                 <p class="text_from_me">{{ message.content }}</p>
-                                <img :src="avatar4" alt="avatar" class="miniIcon_me" />
+                                <img :src="userAvatarUrl" alt="avatar" class="miniIcon_me" />
                             </div>
                             <div v-else class="reply_from_chatPartner">
-                                <img :src="avatar5" alt="avatar" class="miniIcon_chatPartner" />
+                                <img :src="partnerAvatarUrl
+                                " alt="avatar" class="miniIcon_chatPartner" />
                                 <p class="text_from_partner">{{ message.content }}</p>
                             </div>
                         </div>

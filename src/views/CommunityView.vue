@@ -28,90 +28,8 @@
                     avatar: require('@/assets/user_avatar.png')
                 },
                 posts:[
-                    {
-                        postId: 1,
-                        avatar: require('@/assets/friend_2.png'),
-                        userId: 'testID_1',
-                        username: 'Adam',
-                        postedDateTime: new Date("2023-09-20T15:25:00+10:00"), // September 20, 2023, 15:20:00 AEST
-                        title: '21M diagnosed with Rheumatoid Arthritis',
-                        content: "I'm a 21M who was recently diagnosed with Rheumatoid Arthritis by a GP. It was first assumed I had some form of vasculitis, but I failed to ask what exactly my blood test results had shown that had her determine RA. It's a long wait for a specialist, if I can get one, and I can't find much on this disease in people my age. It is also to my understanding that blood test don't always point to a definitive diagnosis. I've had problem beginning as early as 12 and they never went away. I finally ignored my fear of being regarded as another \"self diagnosing patient\"; by taking the years of documented evidence and my research that never stopped pointing to some form of arthritis, it was so relieving to hear I wasn't crazy after all, although it's almost created more questions like the likelihood of misdiagnosis. Unfortunately, my current answers anytime soon. Is anyone familiar with rheumatoid vasculitis of similar autoimmune disorder within my age group?",
-                        expanded: false,
-                        numberOfLikes: 17,
-                        numberOfComments: 8,
-                        haveImage:true,
-                        images: [
-                            { url: require('@/assets/postImage1.png'), alt: 'postImage1 for postID 1' },
-                            { url: require('@/assets/postImage2.png'), alt: 'postImage2 for postID 1' }, 
-                            { url: require('@/assets/postImage3.png'), alt: 'postImage3 for postID 1' },
-                            { url: require('@/assets/postImage4.png'), alt: 'postImage4 for postID 1' }
-                        ]
-                    },
-                    {
-                        postId: 2,
-                        avatar: require('@/assets/friend_4.png'),
-                        userId: 'testID_2',
-                        username: 'Timothy',
-                        postedDateTime: new Date("2023-09-20T09:30:00+10:00"), // September 20, 2023, 9:30:00 AEST
-                        title: '“Morning” stiffness worse in the middle of the night?',
-                        content: "While I am stiff for an hour or two in the morning, the stiffness seems much worse in the middle of the night or if I get up really early. Last night I almost bit it when I got up to go to the washroom because my brain headed in the direction of the bathroom but my hips and knees were locked and didn't want to move. Sometimes I walk like a penguin in the middle of the night (but not the cute ones!) due to feet and ankle stiffness but in the morning it isn't quite so bad. Anyone else find this?",
-                        expanded: false,
-                        numberOfLikes: 14,
-                        numberOfComments: 8,
-                        haveImage:true,
-                        images: [
-                            { url: require('@/assets/postImage5.png'), alt: 'postImage5 for postID 2' }, 
-                            { url: require('@/assets/postImage6.png'), alt: 'postImage6 for postID 2' },
-                            { url: require('@/assets/postImage7.png'), alt: 'postImage7 for postID 2' }
-                        ]
-                    }, 
-                    {
-                        postId: 3,
-                        avatar: require('@/assets/friend_3.png'),
-                        userId: 'testID_3',
-                        username: 'Tom',
-                        postedDateTime: new Date("2023-09-19T09:30:00+10:00"), // September 19, 2023, 9:30:00 AEST
-                        title: 'When to resume mtx',
-                        content: "I started mtx just over three weeks ago, took the first two weekly doses then got sick with Norovirus. Next dose was due on Saturday but pharmacist recommended not taking it until I'm 'feeling completely better.' Although the diarrhoea stopped by Thursday I still feel a bit washed out, shall I just take the next dose now I'm clear of the virus?",
-                        expanded: false,
-                        numberOfLikes: 3,
-                        numberOfComments: 2,
-                        haveImage:true,
-                        images: [
-                            { url: require('@/assets/postImage8.png'), alt: 'postImage6 for postID 3' },
-                            { url: require('@/assets/postImage6.png'), alt: 'postImage7 for postID 3' }
-                        ]
-                    },
-                    {
-                        postId: 4,
-                        avatar: require('@/assets/friend_5.png'),
-                        userId: 'testID_4',
-                        username: 'Anthony',
-                        postedDateTime: new Date("2023-09-06T09:30:00+10:00"), // September 6, 2023, 9:30:00 AEST
-                        title: 'This is a title for the General post',
-                        content: "ghju fgufj fgrfd dfgv ed fgf f f gea.",
-                        expanded: true,
-                        numberOfLikes: 8,
-                        numberOfComments: 6,
-                        haveImage:true,
-                        images: [
-                            { url: require('@/assets/postImage1.png'), alt: 'postImage1 for postID 4' }
-                        ]
-                    },
-                    {
-                        postId: 5,
-                        avatar: require('@/assets/friend_5.png'),
-                        userId: 'testID_5',
-                        username: 'Anthony',
-                        postedDateTime: new Date("2023-08-24T09:30:00+10:00"), // August 24, 2023, 9:30:00 AEST
-                        title: 'This is a title for the News post',
-                        content: "The shortest content.",
-                        expanded: true,
-                        numberOfLikes: 8,
-                        numberOfComments: 0,
-                        haveImage:false,
-                        images: []
-                    }
+
+
                     // Add more posts here
                 ], 
                 showCommentInputId: null,
@@ -141,6 +59,7 @@
                 post.expanded = !post.expanded;
             },
             goToPostDetail(postId) {
+                console.log(postId)
                 sessionStorage.setItem("postDetailInfoId",postId);
                 this.$router.push({ name: 'PostDetail'});
             },
@@ -206,15 +125,21 @@
                     console.error("Error fetching data:", error);
                 }
             }, 
+
+            async fetchUserAvatarFromBackend(userId){
+                const response = await axios.get('http://localhost:8181/api/getUserAvatar/'+ userId);
+                return "http://localhost:8181/" + response.data;
+            },
             async makePost(post) {
                 const date = new Date(post.createdTime);
                 const formattedDate = date.toLocaleString();
                 // Await the result of makeImageArray(post)
                 const images = await this.makeImageArray(post);
+                const avatarUrl = await this.fetchUserAvatarFromBackend(post.userId);
 
                 const postData = {
                     postId: post.postId,
-                    avatar: require('@/assets/user_avatar.png'),
+                    avatar: avatarUrl,
                     userId: post.userId,
                     username: post.userName,
                     postedDateTime: formattedDate,
