@@ -1,0 +1,449 @@
+<!-- Community Page -->
+<script>
+    import { ref } from 'vue';
+    import { ThumbLike20Regular, LineHorizontal320Filled, CommentMultiple20Regular, Home20Regular, BriefcaseMedical20Regular, Gift20Regular, PeopleCommunity20Filled, Pill28Filled, ChannelAdd20Regular  } from '@vicons/fluent'
+    import { Icon } from '@vicons/utils'
+    import SideBarContent from '@/component/Sidebar.vue';
+    import { UserFilled } from '@element-plus/icons-vue';
+    import axios from 'axios';
+
+    export default{
+        mounted() {
+            document.title = "Community | ArthriCare";
+            this.fetchDataFromBackend();
+        },
+        setup(){
+            const activeBottom = ref(3);
+            return {
+                activeBottom
+            }
+        },
+        data(){
+            return{
+                activeSection: 'discussion_section',
+                user:{
+                    name: 'Kris Wu',
+                    level: '10',
+                    points: '1000',
+                    avatar: require('@/assets/user_avatar.png')
+                },
+                posts:[
+
+
+                    // Add more posts here
+                ], 
+                showCommentInputId: null,
+                newComment: "",
+                drawer: ref(false),
+            };
+        },
+        methods:{
+            openDrawer() {
+                this.drawer = true;
+            },
+            beforeDrawerClose(done) {
+                done();
+            },
+//============================== START: Unique Functions for Community Page ==============================//
+            changeSection(sectionName) {
+                this.activeSection = sectionName;
+            },
+            // START: 3 methods for SeeMore buttons
+            truncateContent(content) {
+                const sentences = content.split(" ");
+                const truncated = sentences.slice(0, 22).join(" ");
+                return truncated;
+            },
+            togglePostExpansion(post) {
+                console.log('Toggling post expansion', post);
+                post.expanded = !post.expanded;
+            },
+            goToPostDetail(postId) {
+                console.log(postId)
+                sessionStorage.setItem("postDetailInfoId",postId);
+                this.$router.push({ name: 'PostDetail'});
+            },
+            // END: 3 methods for SeeMore buttons
+
+            // START: 2 methods to add a comment
+            showCommentInput(postId) {
+                this.showCommentInputId = postId;
+            },
+            addComment(postid) {
+                const post = this.posts.find((p) => p.postId === postid);
+                post.comments.push({
+                    username: this.user.name,
+                    content: this.newComment,
+                });
+                this.newComment = "";
+            },
+            // END: 2 methods to add a comment
+
+            // SATR: Filter the posts by a section
+            filterBysection(sectionID){
+                if(sectionID==="1"){
+                    // Only display the posts with Discussion section
+                }else if(sectionID==="2"){
+                    // Only display the posts with Event section
+                }
+                else if(sectionID==="3"){
+                    // Only display the posts with News section
+                }
+            },
+            // END: Filter the posts by a section
+
+            // Note for Don: Add a function which adds/remove a like, changes the status of the thumbUp icon.
+            toggleLike(){
+                // Add or remove a like
+                // The thumbUp icon when a user added 'a like' should be 'ThumbLike20Filled'
+                // The thumbUp icon when a user removed 'a like' should be 'ThumbLike20Regular'
+            },
+            open_MyPosts(userId,userName){
+                const postUserInfor = {
+                    userId:userId,
+                    userName:userName
+                }
+                sessionStorage.setItem("postUserInfor",JSON.stringify(postUserInfor));
+                this.$router.push({ name: 'MyPosts'});
+            },
+
+            // START: Merging backend
+            async fetchDataFromBackend(){
+                try {
+                    const response = await axios.get('http://localhost:8181/ComityPost/getAllPost')
+
+                    const posts = response.data;
+
+                    if (posts.length !== 0) {
+                        // 显示加载的帖子
+                        for (const post of posts) {
+                            //console.log(post)
+                            this.makePost(post);
+                        }
+                    }
+                } catch (error) {
+                    console.error("Error fetching data:", error);
+                }
+            }, 
+
+            async fetchUserAvatarFromBackend(userId){
+                const response = await axios.get('http://localhost:8181/api/getUserAvatar/'+ userId);
+                return "http://localhost:8181/" + response.data;
+            },
+            async makePost(post) {
+                const date = new Date(post.createdTime);
+                const formattedDate = date.toLocaleString();
+                // Await the result of makeImageArray(post)
+                const images = await this.makeImageArray(post);
+                const avatarUrl = await this.fetchUserAvatarFromBackend(post.userId);
+
+                const postData = {
+                    postId: post.postId,
+                    avatar: avatarUrl,
+                    userId: post.userId,
+                    username: post.userName,
+                    postedDateTime: formattedDate,
+                    title: post.title,
+                    content: post.content,
+                    expanded: this.determinePostExpandOrNot(post.content),
+                    numberOfLikes: post.likeNum,
+                    numberOfComments: post.commentNum,
+                    haveImage:post.haveImage,
+                    images: images,
+                };
+
+                this.posts.push(postData);
+            },
+            determinePostExpandOrNot(content){
+                if(content.length > 100){
+                    return false;
+                }
+                return true;
+            },
+            async makeImageArray(post) {
+                if (!post.haveImage) {
+                    return [];
+                }
+                try {
+                    const { data: urls } = await axios.get(`http://localhost:8181/ComityPost/getPostImages?postId=${post.postId}`);
+                    const images = urls.map((url, index) => ({
+                        url: "http://localhost:8181/" + url,
+                        alt: `postImage${index + 1} for postID ${post.postId}`
+                    }));
+                    //console.log(images);
+                    return images;
+                } catch (error) {
+                    console.error("Error fetching image URLs:", error);
+                    return [];
+                }
+            },
+            incrementLikes(index)
+            {
+                this.posts[index].numberOfLikes += 1;
+            }
+
+            // END: Merging backend
+        },
+//============================== END: Unique Functions for Community Page ==============================//
+        components: {
+            Icon,
+            SideBarContent,
+            UserFilled,
+            LineHorizontal320Filled,
+            Pill28Filled, 
+            ChannelAdd20Regular, 
+            Home20Regular, 
+            BriefcaseMedical20Regular, 
+            Gift20Regular, 
+            PeopleCommunity20Filled,
+            ThumbLike20Regular,  // Default like button  // When user liked a post
+            CommentMultiple20Regular // comment icon
+        },
+        computed: {
+            formattedPostTime() {
+                return this.posts.map((post) => {
+                const postDate = new Date(post.postedDateTime);
+                const now = new Date();
+                const timeDifference = now - postDate;
+                const oneWeekInMilliseconds = 7 * 24 * 60 * 60 * 1000; // One week in milliseconds
+
+                // If the time difference is more than a week, display the posted date
+                if (timeDifference > oneWeekInMilliseconds) {
+                    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                    //console.log(postDate.toLocaleDateString(undefined, options));
+                    return postDate.toLocaleDateString(undefined, options);
+                }
+
+                // Calculate the time units (e.g., seconds, minutes, hours, etc.)
+                const seconds = Math.floor(timeDifference / 1000);
+                const minutes = Math.floor(seconds / 60);
+                const hours = Math.floor(minutes / 60);
+                const days = Math.floor(hours / 24);
+
+                if (days > 0) {
+                    return `${days} d`;
+                } else if (hours > 0) {
+                    return `${hours} h`;
+                } else if (minutes > 0) {
+                    return `${minutes} m`;
+                } else {
+                    return `${seconds} s`;
+                }
+                });
+            },
+        },
+    };
+</script>
+
+<template>
+    <div class="container">
+        <el-container>
+            <el-header class="header">
+                <Icon class="more" @click="drawer = true"><LineHorizontal320Filled /></Icon>
+                <b class="pageTitle">Community</b>
+            </el-header>
+
+            <el-main class="main">
+                <div class="sectionFilter">
+                    <input type="radio" checked id="1" name="section" class="section" @click="changeSection('discussion_section')"><label for="1">Discussion</label>
+                    <input type="radio" id="2" name="section" class="section" @click="changeSection('event_section')"><label for="2">Event</label>
+                    <input type="radio" id="3" name="section" class="section" @click="changeSection('news_section')"><label for="3">News</label>
+                </div>
+
+                <div v-if="activeSection === 'discussion_section'">
+                    <div v-for="(post, index) in posts" :key="post.id" class="postCard">
+                        <div class="icon_name_time">
+                            <!-- NOTE: the code below to display an image is a hardcode and shouldn'r be used. -->
+                            <img :src="post.avatar" alt="avatar" class="avatar" @click="open_MyPosts(post.userId,post.username)" />
+                            <!-- NOTE: This code should work, but, for some reason, it's not working. <img :src="post.avatar" :alt="post.alt" />  -->
+                            <div class="username" @click="open_MyPosts(post.userId,post.username)">{{ post.username }}</div>
+                            <div class="time-ago">{{ formattedPostTime[index] }}</div>
+                        </div>
+                        <div class="content" @click="goToPostDetail(post.postId)">
+                            <p class="postTitle">{{ post.title }}</p>
+                            <p v-if="!post.expanded" class="content">{{ truncateContent(post.content) }}</p>
+                            <p v-else class="content">{{ post.content }}</p>
+                            <button v-if="!post.expanded" @click="goToPostDetail(post.postId)" class="seeMoreButton">
+                                ... See more
+                            </button><br>
+                            <div v-if="post.haveImage" class="image-scroll-container">
+                                <span v-for="(image, imageIndex) in post.images" :key="imageIndex">
+                                    <img :src="image.url" :alt="image.alt" class="aImage"/> 
+                                </span>    
+                            </div>
+                        </div>
+                        <div class="like_comment_section">
+                            <div @click="incrementLikes(index)">
+                                <Icon class="thumbLike_icon"><ThumbLike20Regular /></Icon>
+                            </div>
+                            <p class="numberOfLikes">{{ post.numberOfLikes }}</p>
+                                <Icon class="comment_icon" @click="showCommentInput(post.postId)"><CommentMultiple20Regular /></Icon>
+                                <p class="numberOfComments">{{ post.numberOfComments }}</p>
+                            </div>
+                        <hr style="width: 100%;">
+                    </div>
+
+                    <!-- Note for Don: This is #4. The code below is to jump to the top of the page, but this function is not working. 
+                    <div class="scroll-to-top-container">
+                        <Icon @click="scrollToTop"><ArrowCircleUpTwotone class="scrollToTopButton" /></Icon>
+                    </div>
+                    -->
+                </div> <!-- END: Discussion Section -->
+
+                <!-- START: Event Section -->
+                <!-- Note: At this moment, this section is just a placeholder. It's been hardcoded. -->
+                <div v-if="activeSection === 'event_section'">
+                    <h3>Upcoming Events</h3>
+                    <div class="card_event">
+                        <img src="@/assets/communityPage_event_1.jpg" alt="1st event" class="event" />
+                        <h5 class="event-date">15. Apr. 2023</h5>
+                        <a href="https://events.arthritis.org/index.cfm?fuseaction=donorDrive.event&eventID=1479" target="_blank" class="eventLink">2023 Walk to CURE Arthritis - Savannah, GA</a>
+                    </div>
+                    <div class="card_event">
+                        <img src="@/assets/communityPage_event_2.jpg" alt="2nd event" class="event" />
+                        <h5 class="event-date">22. Apr. 2023</h5>
+                        <a href="https://events.arthritis.org/index.cfm?fuseaction=donorDrive.event&eventID=1466" target="_blank" class="eventLink">2023 Walk to CURE Juvenile Arthritis - Bloomington, MN</a>
+                    </div>
+                    <div class="card_event">
+                        <img src="@/assets/communityPage_event_1.jpg" alt="3rd event" class="event" />
+                        <h5 class="event-date">22. Apr. 2023</h5>
+                        <a href="https://events.arthritis.org/index.cfm?fuseaction=donorDrive.event&eventID=1480" target="_blank" class="eventLink">2023 Walk to CURE Arthritis - Jacksonville, FL</a>
+                    </div>
+                </div>
+                <!-- END: Event Section -->
+
+                <!-- START: News Section -->
+                <!-- Note: At this moment, this section is just a placeholder. It's been hardcoded. -->
+                <div v-if="activeSection === 'news_section'" class="news_section">
+                    <h3>Trending News</h3>
+                        <div class="trendingNews-scroll-container">
+                            <div class="card_TrendingNews">
+                                <img src="@/assets/communityPage_NewsSection_1.jpg" alt="1st Treanding News" />
+                                <h5 class="top-left">05. Sep. 2023</h5>
+                                <h4 class="bottom-center">Australians 'in the dark' with arthritis: one of our most prevalent and costly diseases</h4>
+                            </div>
+                            <div class="card_TrendingNews">
+                                <img src="@/assets/communityPage_NewsSection_5.jpg" alt="2nd Treanding News" />
+                                <h5 class="top-left">04. Sep. 2023</h5>
+                                <h4 class="bottom-center">Reducing opioid harm through regulatory changes - Information for consumers, patients and carers</h4>
+                            </div>
+                        </div>    
+
+                    <h3 style="padding-top:15px;">Latest News</h3>
+                    <div class="card_latestNews">
+                        <div class="latestNews_title_date">
+                            <h4 class="latestNews-title">Arthritis Australia launches new Multicultural Resources</h4>
+                            <h5 class="latestNews-date">06. Sep. 2023</h5>
+                        </div>
+                        <div class="latestNews_img">
+                            <img src="@/assets/communityPage_NewsSection_2.jpg" alt="1st Today's News" class="latestNews" />
+                        </div>
+                    </div>
+                    <hr class="latestNews">
+                    <div class="card_latestNews">
+                        <div class="latestNews_title_date">
+                            <h4 class="latestNews-title">Young women urged to be vigilant and assess persistent back pain</h4>
+                            <h5 class="latestNews-date">01. Sep. 2023</h5>
+                        </div>
+                        <div class="latestNews_img">
+                            <img src="@/assets/communityPage_NewsSection_3.jpg" alt="2nd Today's News" class="latestNews" />
+                        </div>
+                    </div>
+                    <hr class="latestNews">
+                    <div class="card_latestNews">
+                        <div class="latestNews_title_date">
+                            <h4 class="latestNews-title">Parliamentary Friends of Arthritis event</h4>
+                            <h5 class="latestNews-date">25. Aug. 2023</h5>
+                        </div>
+                        <div class="latestNews_img">
+                            <img src="@/assets/communityPage_NewsSection_4.jpg" alt="3rd Today's News" class="latestNews" />
+                        </div>
+                    </div>
+                    <hr class="latestNews">
+                    <div class="card_latestNews">
+                        <div class="latestNews_title_date">
+                            <h4 class="latestNews-title">Crisis brewing in arthritis set to hit community and economy hard</h4>
+                            <h5 class="latestNews-date">23. Aug. 2023</h5>
+                        </div>
+                        <div class="latestNews_img">
+                            <img src="@/assets/communityPage_NewsSection_6.jpg" alt="4th Today's News" class="latestNews" />
+                        </div>
+                    </div>
+                    <hr class="latestNews">
+                </div>
+                <!-- END: News Section -->
+            </el-main> 
+        </el-container>
+
+<!--============================ START: The Bottom Navigation Bar ============================-->       
+        <var-bottom-navigation
+            class="footer"
+            v-model:active="activeBottom"
+            border="true"
+            safe-area="true"
+            :fab-props="{color:'#55BDCA'}"
+        >
+            <var-link href="/#/Home" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="homeButton">
+                <Icon  style="font-size: 38px;"><Home20Regular /></Icon><br>
+                <span>Home</span>
+            </var-bottom-navigation-item>
+            </var-link>
+            <var-link href="/#/MyMeds" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="medsButton">
+                <Icon style="font-size: 38px;"><BriefcaseMedical20Regular /></Icon><br>
+                <span>My Meds</span>
+            </var-bottom-navigation-item>
+            </var-link>
+            <var-link href="/#/Rewards" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="rewardsButton">
+                <Icon style="font-size: 38px;"><Gift20Regular /></Icon><br>
+                <span>Rewards</span>
+            </var-bottom-navigation-item>
+            </var-link>
+            <var-link href="/#/Community" underline="none">
+            <var-bottom-navigation-item class="bottomButton" name="profileButton">
+                <Icon style="font-size: 38px;"><PeopleCommunity20Filled /></Icon><br>
+                <span>Community</span>
+            </var-bottom-navigation-item>    
+            </var-link>
+            <!-- <template #fab >
+                <var-link href="/#/AddMed" style="color: white;">
+                <Icon class="addButton"><Add20Filled /></Icon>
+                </var-link>
+            </template> -->
+        </var-bottom-navigation>
+                <!-- Fab button -->
+                <var-fab v-model:active="showAction" style="margin-bottom: 100px;" color="#006973" inactive-icon-size="26px" active-icon-size="30px" elevation="5">
+            <var-button class="action" round color="#F27B42" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
+                <var-link href="/#/AddPost" text-color="white" text-size="25px">
+                <Icon><ChannelAdd20Regular /></Icon>
+            </var-link>
+            </var-button>
+            <var-button class="action" round color="#55BDCA" text-color="white" elevation="5" style="width:40px; height:40px; font-size: 25px;">
+                <var-link href="/#/AddMed" text-color="white" text-size="25px">
+                    <Icon><Pill28Filled /></Icon>
+                </var-link>
+            </var-button>
+        </var-fab>
+<!--============================ END: The Bottom Navigation Bar ============================-->       
+<!--============================ START: The Side Menu Bar ============================-->               
+        <el-drawer style="background-color: #006973;" v-model="drawer" title="sidebar" :with-header="false" direction="ltr" size="70%" :append-to-body = "true" :before-close = "beforeDrawerClose">
+            <!--Action是模拟接口，与后端连接时更换-->
+                <div class = "sidebar">
+                    <el-upload action="" :show-file-list="false">
+                        <el-avatar :size="65">
+                            <img :src="imgUrl" v-if="imgUrl" class="uploaded-avatar" />
+                                <template v-else>
+                                    <UserFilled class="defalut-avatar" />
+                                </template>
+                        </el-avatar>   
+                    </el-upload> 
+                </div>
+            <SideBarContent :imgUrl="imgUrl" />    
+        </el-drawer>
+<!--============================ END: The Side Menu Bar ============================-->        
+    </div>
+</template>
+
+<style src="@/css/community.css" scoped></style>

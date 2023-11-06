@@ -1,0 +1,148 @@
+/* Welcome Page Css */
+/* 
+    Author: Lin Gan
+    Student number: 6502933
+    Date: 2023/10/20 
+*/
+.container{
+  position: relative;
+  background-color: #CFEEF5;
+  height: 100vh;
+}
+.header-left p{
+  font-size: 20px;
+  font-weight: 500;
+  color: #006973;
+}
+.popping-text{
+  position: relative;
+  top: 10%;
+  left: 50;
+}
+.popping-text h2{
+  color: #006973;
+  font-size: 32px;
+  font-weight: 700;
+}
+.bottom{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: #006973;
+  width: 100%;
+  height: 260px;
+  border-radius: 30px 30px 0px 0px;
+  text-align: center;
+}
+.bottom p{        
+  margin: 35px;
+  font-size: 20px;
+  font-weight: 500;
+  color: #CFEEF5;
+}
+.buttons{
+  margin-top: -18px;
+  display: flex;
+  justify-content: space-evenly;
+  --button-normal-height: 48px;
+  --button-normal-padding: 0 55px;
+  --button-normal-font-size: 16px;
+  --button-border-radius: 5px;
+}
+.main{
+  overflow: hidden;
+}
+.name{
+  margin-top: 45px;
+}
+.name span{
+  font-size: .75rem;
+  color: rgba(217,217,227,.8);
+  line-height: 1.5rem;
+}
+.divider-example-vertical-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.divider-example-vertical-container span {
+  font-size: .75rem;
+  color: rgba(217,217,227,.8);
+  line-height: 1.5rem;
+}
+a {
+  text-decoration: none;
+}
+/* responsive design */
+@media screen and (min-width: 380px) {
+  .popping-text{
+    position: relative;
+    top: 20%;
+    left: 50;
+  }
+
+}
+@media screen and (min-width: 768px) {
+  .main{
+    overflow: hidden;
+  }
+  .popping-text{
+    position: relative;
+    top: 35%;
+    height: 100%;
+  }
+  .bottom p{        
+    font-size: 30px;
+    font-weight: 600;
+    color: #CFEEF5;
+  }
+  .bottom{
+    position: absolute;
+    width: 50%;
+    left: 50%;
+    height: 100%;
+    border-radius: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .buttons{
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+  }
+  .name{
+    position: absolute;
+    bottom: 7%;
+  }
+  .divider-example-vertical-container{
+    position: absolute;
+    bottom: 2%;
+  }
+}
+/* animation */
+.slide-down-enter-from {
+  opacity: 0;
+  transform: translateY(200%);
+}
+.slide-down-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+}
+.slide-down-enter-active {
+  transition: all 1s ease-in;
+}
+.slide-down-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+.slide-down-leave-to {
+  opacity: 0;
+  transform: translateY(200%);
+}
+.slide-down-leave-active {
+  transition: all 1s ease-in;
+}

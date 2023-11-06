@@ -1,0 +1,144 @@
+/* START: Unique CSS for Add Post Page */
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #006973;
+    color: #fff; 
+    width:100%;
+}
+.cancelButton {
+    background-color: transparent;
+    color: #fff; /* Button text color */
+    border: none;
+    cursor: pointer;
+    font-size: 22px;
+    transition: background-color 0.3s ease; /* Add a smooth hover effect */
+}
+.postButton {
+    background-color: transparent;
+    color: #fff; /* Button text color */
+    border: none;
+    cursor: pointer;
+    font-size: 22px;
+    transition: background-color 0.3s ease; /* Add a smooth hover effect */
+    position: relative;
+  }
+.container{
+    display: grid;
+    flex-direction: column;
+    place-items: center;
+    height: 100vh;
+    background-color: #006973;
+    overflow-y: hidden;
+}
+.main{
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding-bottom: 80px;
+    background-color: white;
+}
+.user_icon_name{
+    display: flex;
+    align-items: left;
+    flex-direction: row;
+}
+.user_icon{
+    display: flex;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #CFEEF5;
+}
+.userName{
+    font-size: 15px;
+    font-weight: bold;
+    margin-left: 15px;
+}
+.post_title{
+    outline: solid 1px #CAC4CD;
+    border: none;
+    border-radius: 10px;
+    width: 98%;
+    height: 34px;
+    padding-left: 10px;
+    font-size: 18px;
+    margin-top: 15px;
+}
+input[type="text"]:focus {
+    outline: solid 1px #55BDCA;
+}
+::placeholder{
+    font-size: 18px;
+    color: #949596;
+    padding-left: 5px;
+}
+.post_content{
+    border: none; 
+    outline: none;
+    background-color: transparent;
+    caret-color: #55BDCA;
+    font-size: 18px;
+    width: 100%;
+    margin-top: 15px;
+    padding-left: 0;
+    overflow-y: auto;
+}
+.image-container {
+    display: inline-block;
+    position: relative;
+    margin-right: 10px;
+    overflow: hidden;
+} 
+.image-container img {
+    width: 192px;
+    height: 125px;
+    display: block;
+    object-fit: contain;
+    border-radius: 10px;
+}
+.cancel_icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 25px;
+    color: white;
+    padding: 4px 8px;
+    font-size: 12px;
+    cursor: pointer;
+    z-index: 1; /* Ensures the button is above the image */
+}
+.scrollable-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    border-radius: 10px;
+    width: 350px;
+    bottom:10px;
+}
+/* Optional: Hide horizontal scrollbar */
+.scrollable-container::-webkit-scrollbar {
+    display: none;
+}
+.addPost_footer{
+    bottom: 0;
+    width: 100%; /* NOTE: Better to use '100%' or 'rem' ? */
+    white-space: nowrap;
+    position:fixed;
+}
+.image_icon{
+    font-size: 30px;
+    position: relative;
+    bottom:10px;
+    left:0;
+    color:#006973;
+    padding: 5px;
+
+    position: absolute;
+    bottom: -0.8%;
+    left: 0%;
+    z-index: 1;
+} 
+/* END: Unique CSS for Add Post Page */
